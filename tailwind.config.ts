@@ -11,11 +11,11 @@ const config: Config = {
       colors: {
         darkBlue: '#1C1C1F',
         blue: '#5383E8',
-        mediumBlue: '#27344E',
         lightBlue: '#2F436E',
-        lightestBlue: '#B3CDFF',
-        mediumGray: '#31313c',
-        lightGrayBackground: '#424254'
+        gray: '#c0c8ce',
+        lighterGray: '#9e9eb1',
+        lightGrayBackground: '#424254',
+        lightGreen: '#03f9de'
       }
     },
   },

@@ -2,18 +2,20 @@
 
 import { FC, useState } from 'react';
 import Image from 'next/image';
-import { FaDesktop } from "react-icons/fa";
-import { CgWebsite } from "react-icons/cg";
 import { FaChevronDown } from "react-icons/fa";
 
 const games = [
+  {
+    gameImage: '/services/games/image-1.png',
+    text: 'Discover Inkborn Fables'
+  },
   {
     logo: '/services/image-2.png',
     name: 'League of Legends',
     gameImage: '/services/games/image-2.png',
     gameForDeivces: [
-      <CgWebsite />,
-      <FaDesktop />
+      '/icons/website.svg',
+      '/icons/desktop.svg'
     ]
   },
   {
@@ -21,8 +23,8 @@ const games = [
     name: 'Teamfight Tactics',
     gameImage: '/services/games/image-3.png',
     gameForDeivces: [
-      <CgWebsite />,
-      <FaDesktop />
+      '/icons/website.svg',
+      '/icons/desktop.svg'
     ]
   },
   {
@@ -30,8 +32,8 @@ const games = [
     name: 'Valorant',
     gameImage: '/services/games/image-4.png',
     gameForDeivces: [
-      <CgWebsite />,
-      <FaDesktop />
+      '/icons/website.svg',
+      '/icons/desktop.svg'
     ]
   },
   {
@@ -39,7 +41,7 @@ const games = [
     name: 'Overwatch 2',
     gameImage: '/services/games/image-5.png',
     gameForDeivces: [
-      <CgWebsite />
+      '/icons/website.svg'
     ]
   },
   {
@@ -47,13 +49,14 @@ const games = [
     name: 'PUBG',
     gameImage: '/services/games/image-6.png',
     gameForDeivces: [
-      <CgWebsite />
+      '/icons/website.svg'
     ]
   }
 ]
 
 const GamesServies: FC = () => {
   const [displayService, setDisplayService] = useState(false);
+  const [hoveredGameIndex, setHoveredGameIndex] = useState(0);
 
   return (
     <div className='relative flex items-center gap-2 ml-1 mr-4'>
@@ -85,18 +88,26 @@ const GamesServies: FC = () => {
             League of Legends
           </span>
           <FaChevronDown
-            className='max-w-3 w-3 h-auto text-[#9495a0]'
+            className={`max-w-3 w-3 h-auto text-[#9495a0] 
+            ${displayService ? 'rotate-180' : 'rotate-0'} transition-transform`}
             width={20}
             height={20}
           />
         </div>
       </button>
-      <div className='absolute left-0 top-[3.5rem] flex items-center bg-mediumGray rounded-sm min-w-[30rem] p-4'>
-        <ul>
+      <div className={`${displayService ? 'visible opacity-100' : 'invisible opacity-0'} 
+      absolute left-0 top-[3rem] z-10 flex justify-between gap-10 bg-mediumGray rounded
+      border border-[#676678] min-w-[32rem] h-[210px] py-4 pl-4 pr-6 transition-all`}
+      >
+        <ul className='min-w-[180px]'>
           {games.map((game, index) => (
+            game.logo
+            &&
             <li
-              className='flex items-center gap-1 cursor-pointer rounded p-1 
-              transition-colors hover:bg-lightGrayBackground'
+              onMouseEnter={() => setHoveredGameIndex(index)}
+              onMouseLeave={() => setHoveredGameIndex(0)}
+              className='flex items-center gap-1 w-full group cursor-pointer 
+              rounded p-1.5 transition-colors hover:bg-lightGrayBackground'
               key={index}
             >
               <Image
@@ -112,15 +123,40 @@ const GamesServies: FC = () => {
           ))}
         </ul>
         {games.map((game, index) => (
-          <Image
-            className='size-full'
+          <div
+            className={`${hoveredGameIndex === index ? 'block' : 'hidden'} size-full`}
             key={index}
-            src={game.gameImage}
-            width={100}
-            height={100}
-            alt=''
-            aria-hidden='true'
-          />
+          >
+            <Image
+              className='max-h-[141px] size-full rounded-md'
+              src={game.gameImage}
+              width={100}
+              height={100}
+              alt=''
+              aria-hidden='true'
+            />
+            {game.gameForDeivces
+              &&
+              <div className='flex items-center gap-1 mt-2'>
+                {game.gameForDeivces.map((image, imageIndex) => (
+                  <div className='bg-lightGrayBackground p-2 aspect-square rounded-full' key={imageIndex}>
+                    <Image
+                      className='max-w-3 w-3 h-auto'
+                      src={image}
+                      width={15}
+                      height={15}
+                      alt=''
+                      aria-hidden='true'
+                    />
+                  </div>
+                ))}
+              </div>
+            }
+            {game.text
+              &&
+              <p className='text-xs text-white mt-2'>{game.text}</p>
+            }
+          </div>
         ))}
       </div>
     </div>

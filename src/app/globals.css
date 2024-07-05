@@ -7,3 +7,22 @@
     background-color: theme(colors.darkBlue);
   }
 }
+
+@layer components {
+  .white-underline {        
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0; 
+      width: 0;     
+      height: 3px;
+      background-color: theme(colors.white);
+      transition: width .15s ease-in-out;
+    }
+
+    &:hover::before {
+      width: theme(width.full);
+    }
+  }
+}
