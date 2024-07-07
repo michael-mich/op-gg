@@ -120,7 +120,7 @@ const socials = [
 
 const Footer: FC = () => {
   return (
-    <footer className='w-[1080px] m-auto'>
+    <footer className='w-[1080px] m-auto pb-10'>
       <div className='flex justify-between'>
         <Link href='/'>
           <Image
@@ -128,8 +128,7 @@ const Footer: FC = () => {
             src='/company-logo/logo-without-bg.svg'
             width={50}
             height={50}
-            alt=''
-            aria-hidden='true'
+            alt='back to home page'
           />
         </Link>
         {data.map((data, index) => (
@@ -141,7 +140,7 @@ const Footer: FC = () => {
                   className='flex gap-2 group cursor-pointer'
                   key={linkIndex}
                 >
-                  <span className='text-[13px] text-lighterGray 
+                  <span className='text-[13px] text-white dark:text-darkMode-lighterGray 
                   transition-colors group-hover:text-white'
                   >
                     {link.name}
@@ -149,7 +148,8 @@ const Footer: FC = () => {
                   {link.image
                     &&
                     <Image
-                      className='max-w-4 w-4 h-auto transition-all group-hover:brightness-[2]'
+                      className='max-w-4 w-4 h-auto brightness-200 dark:brightness-100 
+                      transition-all group-hover:brightness-[2]'
                       src={link.image}
                       width={15}
                       height={15}
@@ -163,8 +163,8 @@ const Footer: FC = () => {
           </div>
         ))}
       </div>
-      <div className='flex items-center gap-8 border-t border-t-[#2f2f39] pt-5 mt-6'>
-        <p className='text-xs text-[#727184]'>
+      <div className='flex items-center gap-8 border-t border-t-white dark:border-t-[#2f2f39] pt-5 mt-6'>
+        <p className='text-xs text-white dark:text-[#727184]'>
           © 2012-2024 OP.GG. OP.GG is not endorsed by Riot Games and does not reflect the views
           or opinions of Riot Games or anyone officially involved in producing or managing
           League of Legends. League of Legends and Riot Games are trademarks or registered

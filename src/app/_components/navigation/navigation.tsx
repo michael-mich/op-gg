@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import GamesServies from './games-servies';
 import PagesNavigation from './pages-navigation';
-import { FaMoon } from 'react-icons/fa';
+import ThemeSwitch from './theme-switch';
 
 const services = [
   {
@@ -45,9 +45,8 @@ const Navigation: FC = () => {
               src='/company-logo/logo-without-bg.svg'
               width={50}
               height={50}
-              alt=''
+              alt='back to home page'
               priority
-              aria-hidden='true'
             />
           </Link>
           <GamesServies />
@@ -72,7 +71,7 @@ const Navigation: FC = () => {
               </span>
               {service.info
                 &&
-                <span className={`text-[.55rem] rounded-xl py-px px-1 ${service.info === 'Beta' ? 'bg-lightGreen' : 'bg-[#eb9c00]'}`}>
+                <span className={`text-[.55rem] text-black rounded-xl py-px px-1 ${service.info === 'Beta' ? 'bg-lightGreen' : 'bg-[#eb9c00]'}`}>
                   {service.info}
                 </span>
               }
@@ -80,17 +79,7 @@ const Navigation: FC = () => {
           ))}
         </div>
         <div className='flex items-center gap-4 pr-6'>
-          <button
-            className='group rounded-md p-3 transition-colors hover:bg-lightGrayBackground'
-            type='button'
-            aria-label='change color theme'
-          >
-            <FaMoon
-              className='max-w-6 w-auto h-auto text-[#9aa4af] transition-colors group-hover:text-white'
-              width={25}
-              height={25}
-            />
-          </button>
+          <ThemeSwitch />
           <span className='text-sm rounded-md text-gray bg-lightGrayBackground p-2.5'>
             Sign in
           </span>

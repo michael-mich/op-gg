@@ -9,17 +9,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        darkBlue: '#1C1C1F',
         blue: '#5383E8',
         lightBlue: '#2F436E',
         gray: '#c0c8ce',
-        lighterGray: '#9e9eb1',
         lightGrayBackground: '#424254',
-        lightGreen: '#03f9de'
+        lightGreen: '#03f9de',
+        darkMode: {
+          darkBlue: '#1C1C1F',
+          mediumGray: '#31313C',
+          lighterGray: '#9e9eb1',
+        },
+        lightMode: {
+
+        }
       }
     },
   },
-  darkMode: 'selector',
+  darkMode: 'class',
   plugins: [],
 };
 

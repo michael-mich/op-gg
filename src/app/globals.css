@@ -4,7 +4,7 @@
 
 @layer base {
   html {
-    background-color: theme(colors.darkBlue);
+    background-color: theme(colors.darkMode.darkBlue);
   }
 }
 

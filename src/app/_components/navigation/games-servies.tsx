@@ -96,7 +96,7 @@ const GamesServies: FC = () => {
         </div>
       </button>
       <div className={`${displayService ? 'visible opacity-100' : 'invisible opacity-0'} 
-      absolute left-0 top-[3rem] z-10 flex justify-between gap-10 bg-mediumGray rounded
+      absolute left-0 top-[3rem] z-10 flex justify-between gap-10 bg-darkMode-mediumGray rounded
       border border-[#676678] min-w-[32rem] h-[210px] py-4 pl-4 pr-6 transition-all`}
       >
         <ul className='min-w-[180px]'>
