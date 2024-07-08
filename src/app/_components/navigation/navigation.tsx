@@ -37,11 +37,11 @@ const services = [
 const Navigation: FC = () => {
   return (
     <header>
-      <div className='flex items-center justify-between bg-darkBlue'>
+      <div className='flex items-center justify-between bg-darkMode-darkBlue'>
         <div className='flex items-center'>
           <Link href='/' className='px-6'>
             <Image
-              className='max-w-[4.75rem] size-auto'
+              className='max-w-[4.75rem]'
               src='/company-logo/logo-without-bg.svg'
               width={50}
               height={50}

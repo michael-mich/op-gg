@@ -16,11 +16,15 @@ const config: Config = {
         lightGreen: '#03f9de',
         darkMode: {
           darkBlue: '#1C1C1F',
+          darkGray: '#282830',
           mediumGray: '#31313C',
           lighterGray: '#9e9eb1',
         },
         lightMode: {
-
+          lightGray: '#f7f7f9'
+        },
+        icons: {
+          gray: '#9aa4af'
         }
       }
     },

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
-import Provider from './provider';
+import Provider from './_lib/providers/provider';
+import ReactQueryProvider from './_lib/providers/react-query-provider';
 import Navigation from './_components/navigation/navigation';
 import Footer from './_components/footer';
 import './globals.css';
@@ -23,10 +24,14 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang='en' className={`${roboto.className}`} suppressHydrationWarning>
-      <body>
+      <body className='bg-blue dark:bg-darkMode-darkBlue'>
         <Provider>
           <Navigation />
-          {children}
+          <ReactQueryProvider>
+            <main className='w-[1080px] m-auto'>
+              {children}
+            </main>
+          </ReactQueryProvider>
           <Footer />
         </Provider>
       </body>

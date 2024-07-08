@@ -124,7 +124,7 @@ const Footer: FC = () => {
       <div className='flex justify-between'>
         <Link href='/'>
           <Image
-            className='max-w-20 size-auto'
+            className='max-w-20'
             src='/company-logo/logo-without-bg.svg'
             width={50}
             height={50}
@@ -141,15 +141,15 @@ const Footer: FC = () => {
                   key={linkIndex}
                 >
                   <span className='text-[13px] text-white dark:text-darkMode-lighterGray 
-                  transition-colors group-hover:text-white'
+                    transition-colors group-hover:text-white'
                   >
                     {link.name}
                   </span>
                   {link.image
                     &&
                     <Image
-                      className='max-w-4 w-4 h-auto brightness-200 dark:brightness-100 
-                      transition-all group-hover:brightness-[2]'
+                      className='max-w-4 w-4 brightness-200 dark:brightness-100 
+                        transition-all group-hover:brightness-[2]'
                       src={link.image}
                       width={15}
                       height={15}
@@ -173,7 +173,7 @@ const Footer: FC = () => {
         <div className='flex items-center gap-3'>
           {socials.map((image, index) => (
             <Image
-              className='max-w-5 w-5 h-auto cursor-pointer transition-all hover:brightness-[2]'
+              className='max-w-5 w-5 cursor-pointer transition-all hover:brightness-[2]'
               src={image}
               width={25}
               height={25}

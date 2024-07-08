@@ -21,10 +21,10 @@ const ThemeSwitch: FC = () => {
 
   useEffect(() => {
     setMounted(true);
-  }, [])
+  }, []);
 
   if (!mounted) {
-    return <LuLoader className='max-w-6 size-auto text-[#9aa4af]' />
+    return <LuLoader className='max-w-6 text-icons-gray' />
   }
 
   return (
@@ -37,13 +37,13 @@ const ThemeSwitch: FC = () => {
       {darkTheme
         ?
         <FaMoon
-          className='max-w-6 size-auto text-[#9aa4af] transition-colors group-hover:text-white'
+          className='max-w-6 text-icons-gray transition-colors group-hover:text-white'
           width={25}
           height={25}
         />
         :
         <FaSun
-          className='max-w-6 size-auto text-[#9aa4af] transition-colors group-hover:text-white'
+          className='max-w-6 text-icons-gray transition-colors group-hover:text-white'
           width={25}
           height={25}
         />

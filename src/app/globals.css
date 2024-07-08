@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    background-color: theme(colors.darkMode.darkBlue);
+  img {
+    width: auto;
   }
 }
 

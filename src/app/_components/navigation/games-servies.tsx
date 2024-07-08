@@ -62,7 +62,7 @@ const GamesServies: FC = () => {
     <div className='relative flex items-center gap-2 ml-1 mr-4'>
       <div className='flex items-center gap-2'>
         <Image
-          className='max-w-6 size-auto'
+          className='max-w-6'
           src='/services/image-1.png'
           width={45}
           height={45}
@@ -77,7 +77,7 @@ const GamesServies: FC = () => {
       >
         <div className='flex items-center gap-1 bg-lightGrayBackground rounded-md py-2.5 px-2'>
           <Image
-            className='max-w-6 w-6 h-auto'
+            className='max-w-6 w-6'
             src='/services/image-2.png'
             width={45}
             height={45}
@@ -88,7 +88,7 @@ const GamesServies: FC = () => {
             League of Legends
           </span>
           <FaChevronDown
-            className={`max-w-3 w-3 h-auto text-[#9495a0] 
+            className={`max-w-3 w-3 text-[#9495a0] 
             ${displayService ? 'rotate-180' : 'rotate-0'} transition-transform`}
             width={20}
             height={20}
@@ -111,7 +111,7 @@ const GamesServies: FC = () => {
               key={index}
             >
               <Image
-                className='max-w-5 size-auto'
+                className='max-w-5'
                 src={game.logo}
                 width={25}
                 height={25}
@@ -128,7 +128,7 @@ const GamesServies: FC = () => {
             key={index}
           >
             <Image
-              className='max-h-[141px] size-full rounded-md'
+              className='max-h-[141px] rounded-md'
               src={game.gameImage}
               width={100}
               height={100}
@@ -141,7 +141,7 @@ const GamesServies: FC = () => {
                 {game.gameForDeivces.map((image, imageIndex) => (
                   <div className='bg-lightGrayBackground p-2 aspect-square rounded-full' key={imageIndex}>
                     <Image
-                      className='max-w-3 w-3 h-auto'
+                      className='max-w-3 w-3'
                       src={image}
                       width={15}
                       height={15}
