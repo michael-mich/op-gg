@@ -7,12 +7,12 @@ const desktopApp = [
     image: '/op-gg-desktop/image-1.png'
   },
   {
-    heading: 'Latest meta and recommendations',
-    image: '/op-gg-desktop/image-2.png'
-  },
-  {
     heading: 'OP champions, team comps, and more',
     image: '/op-gg-desktop/image-3.png'
+  },
+  {
+    heading: 'Latest meta and recommendations',
+    image: '/op-gg-desktop/image-2.png'
   },
   {
     heading: 'In-game overlay features to help dominate',
@@ -22,16 +22,24 @@ const desktopApp = [
 
 const DesktopApp: FC = () => {
   return (
-    <div>
-      <h2 className='font-bold text-black dark:text-white bg-white dark:bg-darkMode-mediumGray'>
+    <section>
+      <h2 className='text-sm font-bold bg-white dark:bg-darkMode-mediumGray rounded-t-md
+      pt-6 pb-4 px-6 borderm-bottom-theme'
+      >
         Experience the fast speed of OP.GG for Desktop!
       </h2>
-      <div className='grid grid-cols-2 bg-lightMode-lightGray dark:bg-darkMode-darkGray'>
+      <div className='flex flex-wrap items-end justify-between bg-lightMode-lightGray 
+      dark:bg-darkMode-darkGray pb-4 px-14'
+      >
         {desktopApp.map((app, index) => (
-          <div key={index}>
-            <h3 className='text-sm font-bold'>{app.heading}</h3>
+          <div className='w-[200px]' key={index}>
+            <h3 className='flex items-center justify-center text-sm font-bold text-center 
+            h-[40px] leading-4 mt-4 mb-3'
+            >
+              {app.heading}
+            </h3>
             <Image
-              className='max-w-32 size-auto'
+              className='max-w-full w-full h-[124px] m-auto rounded'
               src={app.image}
               width={100}
               height={100}
@@ -41,7 +49,7 @@ const DesktopApp: FC = () => {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
 

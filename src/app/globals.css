@@ -25,4 +25,8 @@
       width: theme(width.full);
     }
   }
+
+  .border-bottom-theme {
+    @apply border-b border-b-lightMode-lighterGray dark:border-b-darkMode-darkBlue;
+  }
 }

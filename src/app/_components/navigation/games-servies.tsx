@@ -88,7 +88,7 @@ const GamesServies: FC = () => {
             League of Legends
           </span>
           <FaChevronDown
-            className={`max-w-3 w-3 text-[#9495a0] 
+            className={`max-w-3 size-3 text-[#9495a0] 
             ${displayService ? 'rotate-180' : 'rotate-0'} transition-transform`}
             width={20}
             height={20}
@@ -128,7 +128,7 @@ const GamesServies: FC = () => {
             key={index}
           >
             <Image
-              className='max-h-[141px] rounded-md'
+              className='max-h-[141px] size-full rounded-md'
               src={game.gameImage}
               width={100}
               height={100}

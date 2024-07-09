@@ -10,7 +10,6 @@ const config: Config = {
     extend: {
       colors: {
         blue: '#5383E8',
-        lightBlue: '#2F436E',
         gray: '#c0c8ce',
         lightGrayBackground: '#424254',
         lightGreen: '#03f9de',
@@ -21,7 +20,8 @@ const config: Config = {
           lighterGray: '#9e9eb1',
         },
         lightMode: {
-          lightGray: '#f7f7f9'
+          lightGray: '#f7f7f9',
+          lighterGray: '#f1f2f5'
         },
         icons: {
           gray: '#9aa4af'
