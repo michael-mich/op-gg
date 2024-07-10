@@ -10,11 +10,11 @@ const Standings: FC = () => {
   const [displayStandingIndex, setDisplayStandingIndex] = useState(0);
 
   return (
-    <div>
-      <div className='bg-white dark:bg-darkMode-mediumGray border-bottom-theme pt-2 px-3'
+    <div className='w-full'>
+      <div className='flex flex-col justify-between h-[59px] border-bottom-theme pt-2 px-3'
       >
-        <h4 className='font-bold'>Standing</h4>
-        <div className='w-full text-right'>
+        <h4 className='text-sm font-bold'>Standing</h4>
+        <div className='flex justify-end'>
           {buttonsNames.map((name, index) => (
             <button
               onClick={() => setDisplayStandingIndex(index)}

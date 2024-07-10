@@ -1,12 +1,13 @@
 import { FC } from 'react';
 import Image from 'next/image';
 import Standings from './(standings)/standings';
+import Matches from './matches';
 
 const Esport: FC = () => {
   return (
-    <section>
-      <div className='flex items-center justify-between bg-white dark:bg-darkMode-mediumGray
-      border-bottom-theme rounded-t-md pt-2 pl-2 pr-6'
+    <section className='bg-white dark:bg-darkMode-mediumGray'>
+      <div className='flex items-center justify-between border-bottom-theme 
+      rounded-t-md pt-2 pl-2 pr-6'
       >
         <div>
           <Image
@@ -43,7 +44,10 @@ const Esport: FC = () => {
           alt='oner'
         />
       </div>
-      <Standings />
+      <div className='flex'>
+        <Standings />
+        <Matches />
+      </div>
     </section>
   );
 }

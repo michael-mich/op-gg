@@ -63,14 +63,14 @@ const Players: FC = () => {
   const { theme } = useTheme();
 
   return (
-    <div className='bg-white dark:bg-darkMode-mediumGray'>
+    <div>
       {playersData.map((data, index) => (
         <div
-          className='flex justify-between border-bottom-theme px-3 h-[57px] transition-colors 
+          className='flex justify-between border-bottom-theme px-3 h-[53px] transition-colors 
           hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray'
           key={index}
         >
-          <div className='flex gap-3'>
+          <div className='flex gap-2'>
             <div className='flex gap-4'>
               <span className='self-center text-xs font-bold'>
                 {data.rank}
@@ -99,7 +99,7 @@ const Players: FC = () => {
                 height={25}
                 alt=''
               />
-              <span className='text-xs font-bold'>
+              <span className={`text-xs ${index === 0 && 'font-bold'}`}>
                 {data.name}
               </span>
             </div>
