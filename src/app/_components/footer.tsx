@@ -120,7 +120,7 @@ const socials = [
 
 const Footer: FC = () => {
   return (
-    <footer className='w-[1080px] m-auto pb-10'>
+    <footer className='w-[1080px] m-auto pb-10 mt-20'>
       <div className='flex justify-between'>
         <Link href='/'>
           <Image

@@ -43,40 +43,73 @@ const Matches: FC = () => {
         </span>
       </div>
       <div className='grow flex flex-col'>
-        {(firstMatchData && secondMatchData)
+        {matchesData.length > 0
           ?
-          matchesData.map((match) => match!.games.map((_, gameIndex) => (
-            <div
-              className='grow flex items-center justify-center flex-col h-full first-of-type:border-bottom-theme'
-              key={gameIndex}
-            >
-              <div className='flex items-center justify-center gap-6'>
-                <Image
-                  className='max-w-12'
-                  src={match!.opponents[0].opponent.image_url}
-                  width={50}
-                  height={50}
-                  alt=''
-                />
-                <div className='flex items-center gap-2'>
-                  <strong className='text-2xl'>
-                    {match!.results[0].score}
-                  </strong>
-                  <span className='text-xs'>vs</span>
-                  <strong className='text-2xl'>
-                    {match!.results[1].score}
-                  </strong>
+          matchesData.map((match) => match!.games.map((_, gameIndex) => {
+            const matchSchedule = new Date(match!.original_scheduled_at);
+            const matchDay = matchSchedule.getDate();
+            const matchMonth = matchSchedule.getMonth() + 1;
+            const matchHour = matchSchedule.getHours();
+            const matchMinutes = matchSchedule.getMinutes();
+
+            return (
+              <div
+                className='grow flex place-content-center gap-4 flex-col h-full first-of-type:border-bottom-theme px-6
+                transition-colors hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray'
+                key={gameIndex}
+              >
+                <div className='flex items-center justify-between w-full'>
+                  <div className='grow'>
+                    <Image
+                      className='max-w-10 m-auto'
+                      src={match!.opponents[0].opponent.image_url}
+                      width={50}
+                      height={50}
+                      alt=''
+                    />
+                  </div>
+                  <div className='grow flex place-content-center gap-3'>
+                    <strong className='text-2xl'>
+                      {match!.results[0].score}
+                    </strong>
+                    <span className='self-center text-xs'>vs</span>
+                    <strong className='text-2xl'>
+                      {match!.results[1].score}
+                    </strong>
+                  </div>
+                  <div className='grow'>
+                    <Image
+                      className='max-w-10 m-auto'
+                      src={match!.opponents[1].opponent.image_url}
+                      width={50}
+                      height={50}
+                      alt=''
+                    />
+                  </div>
                 </div>
-                <Image
-                  className='max-w-12'
-                  src={match!.opponents[1].opponent.image_url}
-                  width={50}
-                  height={50}
-                  alt=''
-                />
+                <div className='flex items-center justify-between w-full'>
+                  <div className='grow basis-[40px] text-center'>
+                    <span className='font-bold'>
+                      {match!.opponents[0].opponent.acronym}
+                    </span>
+                  </div>
+                  <div className='flex flex-col text-center w-[88.79px]'>
+                    <span className='text-xs text-darkMode-lighterGray'>
+                      {`${matchDay}.${matchMonth}`}
+                    </span>
+                    <span className='text-sm leading-[.875rem]'>
+                      {`${matchHour}:${matchMinutes}0`}
+                    </span>
+                  </div>
+                  <div className='grow basis-[40px] text-center'>
+                    <span className='font-bold'>
+                      {match!.opponents[1].opponent.acronym}
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-          )))
+            );
+          }))
           :
           <p className='flex justify-center items-center text-center h-full'>
             Error to fetch data, try refresh page

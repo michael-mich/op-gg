@@ -5,6 +5,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'cdn.pandascore.co'
+      },
+      {
+        protocol: 'https',
+        hostname: 's-lol-web.op.gg'
       }
     ]
   }

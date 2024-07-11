@@ -12,6 +12,7 @@ export type TLecSpringSeason = {
 
 export type TEsportMatch = {
   games: Array<{}>;
+  original_scheduled_at: string;
   opponents: Array<{ opponent: TEsportTeam }>;
   results: Array<{ score: number }>
 }

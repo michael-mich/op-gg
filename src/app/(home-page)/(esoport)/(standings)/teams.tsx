@@ -20,12 +20,12 @@ const Teams: FC = () => {
   }
 
   return (
-    <div className='rounded-bl-md'>
+    <div className='grow flex flex-col rounded-bl-md'>
       {data !== undefined
         ?
         data.slice(0, 6).map((data, index) => (
           <div
-            className={`flex items-center justify-between ${index !== 5 && 'border-bottom-theme'} py-3.5 
+            className={`grow flex items-center justify-between ${index !== 5 ? 'border-bottom-theme' : 'border-b border-b-transparent'}
             px-3 transition-colors hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray`}
             key={index}
           >

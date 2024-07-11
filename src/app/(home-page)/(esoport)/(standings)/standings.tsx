@@ -10,7 +10,7 @@ const Standings: FC = () => {
   const [displayStandingIndex, setDisplayStandingIndex] = useState(0);
 
   return (
-    <div className='w-full'>
+    <div className='flex flex-col w-full'>
       <div className='flex flex-col justify-between h-[59px] border-bottom-theme pt-2 px-3'
       >
         <h4 className='text-sm font-bold'>Standing</h4>

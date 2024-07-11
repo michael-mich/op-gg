@@ -28,8 +28,8 @@ const DesktopApp: FC = () => {
       >
         Experience the fast speed of OP.GG for Desktop!
       </h2>
-      <div className='flex flex-wrap items-end justify-between bg-lightMode-lightGray 
-      dark:bg-darkMode-darkGray pb-4 px-14'
+      <div className='flex flex-wrap items-end justify-between rounded-b-md bg-lightMode-lightGray 
+      dark:bg-darkMode-darkGray pb-6 px-14'
       >
         {desktopApp.map((app, index) => (
           <div className='w-[200px]' key={index}>

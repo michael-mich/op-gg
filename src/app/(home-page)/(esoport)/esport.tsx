@@ -5,7 +5,7 @@ import Matches from './matches';
 
 const Esport: FC = () => {
   return (
-    <section className='bg-white dark:bg-darkMode-mediumGray'>
+    <section className='flex flex-col bg-white dark:bg-darkMode-mediumGray rounded-md'>
       <div className='flex items-center justify-between border-bottom-theme 
       rounded-t-md pt-2 pl-2 pr-6'
       >
@@ -44,7 +44,7 @@ const Esport: FC = () => {
           alt='oner'
         />
       </div>
-      <div className='flex'>
+      <div className='grow flex'>
         <Standings />
         <Matches />
       </div>

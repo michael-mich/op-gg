@@ -63,11 +63,11 @@ const Players: FC = () => {
   const { theme } = useTheme();
 
   return (
-    <div>
+    <div className='grow flex flex-col'>
       {playersData.map((data, index) => (
         <div
-          className='flex justify-between border-bottom-theme px-3 h-[53px] transition-colors 
-          hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray'
+          className={`grow flex justify-between ${index !== 5 && 'border-bottom-theme'} h-[54.16px] px-3
+          transition-colors hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray`}
           key={index}
         >
           <div className='flex gap-2'>
@@ -76,7 +76,7 @@ const Players: FC = () => {
                 {data.rank}
               </span>
               <Image
-                className='self-end max-w-12 h-[42px]'
+                className={`${index === 4 && 'relative top-[1px]'} self-end max-w-12 h-[42px]`}
                 src={data.player}
                 width={50}
                 height={50}
