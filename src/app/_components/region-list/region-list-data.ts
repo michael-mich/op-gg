@@ -1,14 +1,11 @@
-import { FC } from 'react';
-import Image from 'next/image';
-
-const regionsLinksAsContinents = [
+export const regionsLinksAsContinents = [
   'europe.api.riotgames.com',
   'americas.api.riotgames.com',
   'asia.api.riotgames.com',
   'sea.api.riotgames.com'
 ];
 
-const regionsLinks = [
+export const regionsLinks = [
   'na1.api.riotgames.com',
   'euw1.api.riotgames.com',
   'eun1.api.riotgames.com',
@@ -27,7 +24,7 @@ const regionsLinks = [
   'th2.api.riotgames.com'
 ];
 
-const regionsNames = [
+export const regionsNames = [
   { name: 'North America', shorthand: 'NA1', image: 'regions/usa.svg' },
   { name: 'Europe West', shorthand: 'EUW', image: 'regions/euw.svg' },
   { name: 'Europe Nordic & East', shorthand: 'EUNE', image: 'regions/eune.svg' },
@@ -45,27 +42,3 @@ const regionsNames = [
   { name: 'Vietnam', shorthand: 'VN2', image: 'regions/vietnam.svg' },
   { name: 'Thailand', shorthand: 'TH2', image: 'regions/thailand.svg' }
 ];
-
-const Regions: FC = () => {
-  return (
-    <div className='bg-white dark:bg-darkMode-mediumGray'>
-      {regionsNames.map((data, index) => (
-        <button
-          key={index}
-          type='button'
-        >
-          <Image
-            className=''
-            src={data.image}
-            width={20}
-            height={20}
-            alt={data.name}
-          />
-          <span>{data.name}</span>
-        </button>
-      ))}
-    </div>
-  );
-}
-
-export default Regions;

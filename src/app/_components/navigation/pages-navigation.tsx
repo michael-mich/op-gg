@@ -40,7 +40,7 @@ const PagesNavigation: FC = () => {
   const pathname = usePathname();
 
   return (
-    <div className='bg-blue'>
+    <div className='bg-blue border-b border-b-[#4171d6] dark:border-b-blue'>
       <nav className='flex items-cente justify-between w-[1080px] m-auto'>
         <ul className='flex items-center gap-6'>
           {pages.map((page, index) => {

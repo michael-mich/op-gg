@@ -11,6 +11,9 @@ const config: Config = {
       colors: {
         blue: '#5383E8',
         gray: '#c0c8ce',
+        secondGray: '#9aa4af',
+        mediumGrayText: '#7a798d',
+        lightGray: '#9a9aac',
         lightGrayBackground: '#424254',
         lightGreen: '#03f9de',
         darkMode: {
@@ -22,9 +25,6 @@ const config: Config = {
         lightMode: {
           lightGray: '#f7f7f9',
           lighterGray: '#f1f2f5'
-        },
-        icons: {
-          gray: '#9aa4af'
         }
       }
     },

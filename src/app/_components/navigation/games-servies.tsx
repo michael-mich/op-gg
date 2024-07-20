@@ -72,7 +72,7 @@ const GamesServies: FC = () => {
         <span className='text-sm text-white'>Stats</span>
       </div>
       <button
-        onClick={() => setDisplayService(prevState => !prevState)}
+        onClick={() => setDisplayService(!displayService)}
         type='button'
       >
         <div className='flex items-center gap-1 bg-lightGrayBackground rounded-md py-2.5 px-2'>

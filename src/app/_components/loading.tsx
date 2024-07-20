@@ -4,7 +4,7 @@ import { LuLoader } from 'react-icons/lu';
 const Loading: FC = () => {
   return (
     <div className='size-full flex items-center justify-center'>
-      <LuLoader className='text-icons-gray size-5' />
+      <LuLoader className='text-secondGray size-5' />
     </div>
   );
 }

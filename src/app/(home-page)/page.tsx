@@ -1,17 +1,29 @@
 import { FC } from 'react';
 import Image from 'next/image';
+import SearchSummoner from './(search-summoner)/search-summoner';
 import DesktopApp from './desktop-app';
 import Esport from './(esoport)/esport';
 
 const Home: FC = () => {
   return (
     <>
-      <div className='flex justify-center gap-8 h-[58px] w-fit bg-darkMode-darkGray bg-[url("https://s-lol-web.op.gg/images/premium/bg-opgg-premium-banner-home.png")] bg-no-repeat bg-[length:100%] rounded-full px-12 m-auto'>
+      <Image
+        className='size-full max-w-[23rem] my-12 m-auto'
+        src='/company-logo/custom-logo.png'
+        width={300}
+        height={300}
+        alt=''
+        aria-hidden='true'
+      />
+      <SearchSummoner />
+      <div className='flex justify-center gap-8 h-[60px] w-fit bg-darkMode-darkGray bg-[url("https://s-lol-web.op.gg/images/premium/bg-opgg-premium-banner-home.png")] 
+        bg-no-repeat bg-bottom bg-[length:100%] rounded-full px-12 mt-6 m-auto'
+      >
         <Image
-          className='self-end max-w-full h-fit'
+          className='self-end size-fit'
           src='https://s-lol-web.op.gg/images/premium/opgg-premium-web.png?v=1717557723274'
           width={125}
-          height={31}
+          height={51}
           alt=''
         />
         <div className='flex items-center gap-2'>
@@ -37,7 +49,7 @@ const Home: FC = () => {
           </div>
         </div>
       </div>
-      <section className='grid grid-cols-2 gap-2 mt-4'>
+      <section className='grid grid-cols-2 gap-2 mt-6'>
         <DesktopApp />
         <Esport />
       </section>

@@ -36,3 +36,14 @@ export const getMatchResultFnaticVsBds = async (): Promise<TEsportMatch | undefi
     console.error(error);
   }
 }
+
+export const lolApi = async (summonerName: string) => {
+  try {
+    const response = await fetch(`https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${summonerName}/euw?api_key=${process.env.RIOT_API_KEY}`);
+    const data = await response.json();
+    return data;
+  }
+  catch (error) {
+    console.error(error);
+  }
+}

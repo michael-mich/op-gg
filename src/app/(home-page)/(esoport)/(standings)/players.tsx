@@ -66,8 +66,8 @@ const Players: FC = () => {
     <div className='grow flex flex-col'>
       {playersData.map((data, index) => (
         <div
-          className={`grow flex justify-between ${index !== 5 && 'border-bottom-theme'} h-[54.16px] px-3
-          transition-colors hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray`}
+          className={`grow flex justify-between ${index !== 5 ? 'border-bottom-theme' : 'rounded-bl-md'} 
+          h-[54.16px] px-3 transition-colors hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray`}
           key={index}
         >
           <div className='flex gap-2'>

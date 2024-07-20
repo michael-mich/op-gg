@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 import Provider from './_lib/providers/provider';
 import ReactQueryProvider from './_lib/providers/react-query-provider';
+import StoreProvider from './_lib/providers/store-provider';
 import Navigation from './_components/navigation/navigation';
 import Footer from './_components/footer';
 import './globals.css';
@@ -27,11 +28,13 @@ const RootLayout = ({
       <body className='bg-blue dark:bg-darkMode-darkBlue'>
         <Provider>
           <Navigation />
-          <ReactQueryProvider>
-            <main className='w-[1080px] m-auto'>
-              {children}
-            </main>
-          </ReactQueryProvider>
+          <StoreProvider>
+            <ReactQueryProvider>
+              <main className='w-[1080px] m-auto'>
+                {children}
+              </main>
+            </ReactQueryProvider>
+          </StoreProvider>
           <Footer />
         </Provider>
       </body>

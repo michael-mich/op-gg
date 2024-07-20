@@ -54,8 +54,8 @@ const Matches: FC = () => {
 
             return (
               <div
-                className='grow flex place-content-center gap-4 flex-col h-full first-of-type:border-bottom-theme px-6
-                transition-colors hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray'
+                className='grow flex place-content-center gap-4 flex-col h-full [&:nth-child(2)]:rounded-br-md
+                first-of-type:border-bottom-theme px-6 transition-colors hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray'
                 key={gameIndex}
               >
                 <div className='flex items-center justify-between w-full'>

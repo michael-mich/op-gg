@@ -25,7 +25,7 @@ const Teams: FC = () => {
         ?
         data.slice(0, 6).map((data, index) => (
           <div
-            className={`grow flex items-center justify-between ${index !== 5 ? 'border-bottom-theme' : 'border-b border-b-transparent'}
+            className={`grow flex items-center justify-between ${index !== 5 ? 'border-bottom-theme' : 'border-b border-b-transparent rounded-bl-md'}
             px-3 transition-colors hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray`}
             key={index}
           >

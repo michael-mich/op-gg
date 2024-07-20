@@ -3,7 +3,7 @@
 import { FC, useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { FaMoon, FaSun } from 'react-icons/fa';
-import { LuLoader } from 'react-icons/lu';
+import Loading from '@/app/_components/loading';
 
 const ThemeSwitch: FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -24,7 +24,7 @@ const ThemeSwitch: FC = () => {
   }, []);
 
   if (!mounted) {
-    return <LuLoader className='max-w-6 text-icons-gray' />
+    return <Loading />
   }
 
   return (
@@ -37,13 +37,13 @@ const ThemeSwitch: FC = () => {
       {darkTheme
         ?
         <FaMoon
-          className='max-w-6 text-icons-gray transition-colors group-hover:text-white'
+          className='max-w-6 text-secondGray transition-colors group-hover:text-white'
           width={25}
           height={25}
         />
         :
         <FaSun
-          className='max-w-6 text-icons-gray transition-colors group-hover:text-white'
+          className='max-w-6 text-secondGray transition-colors group-hover:text-white'
           width={25}
           height={25}
         />
