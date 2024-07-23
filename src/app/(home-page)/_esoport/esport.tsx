@@ -1,9 +1,8 @@
-import { FC } from 'react';
 import Image from 'next/image';
-import Standings from './(standings)/standings';
+import Standings from './standings/standings';
 import Matches from './matches';
 
-const Esport: FC = () => {
+const Esport = () => {
   return (
     <section className='flex flex-col bg-white dark:bg-darkMode-mediumGray rounded-md'>
       <div className='flex items-center justify-between border-bottom-theme 

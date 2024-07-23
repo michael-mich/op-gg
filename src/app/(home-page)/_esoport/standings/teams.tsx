@@ -1,21 +1,20 @@
-import { FC } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getLecSpringSeason } from '../../../_lib/api';
-import Loading from '@/app/_components/loading';
+import { getLecSpringSeason } from '@/app/_lib/api/pandascore-api';
+import LoadingIcon from '@/app/_components/loading-icon';
 import ErrorMessage from '@/app/_components/error-message';
 
-const Teams: FC = () => {
-  const { data, error, isLoading } = useQuery({
+const Teams = () => {
+  const { data, isError, isLoading } = useQuery({
     queryKey: ['lec'],
     queryFn: () => getLecSpringSeason()
   });
 
   if (isLoading) {
-    return <Loading />
+    return <LoadingIcon />
   }
 
-  if (error) {
+  if (isError) {
     return <ErrorMessage />
   }
 

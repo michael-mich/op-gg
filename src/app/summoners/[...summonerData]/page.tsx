@@ -2,7 +2,7 @@
 
 const Page = () => {
   return (
-    <h1>Champions</h1>
+    <p>summoner account page</p>
   );
 }
 

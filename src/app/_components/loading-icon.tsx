@@ -1,7 +1,6 @@
-import { FC } from 'react';
 import { LuLoader } from 'react-icons/lu';
 
-const Loading: FC = () => {
+const LoadingIcon = () => {
   return (
     <div className='size-full flex items-center justify-center'>
       <LuLoader className='text-secondGray size-5' />
@@ -9,4 +8,4 @@ const Loading: FC = () => {
   );
 }
 
-export default Loading;
+export default LoadingIcon;

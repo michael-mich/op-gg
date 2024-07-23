@@ -1,10 +1,9 @@
-import { FC } from 'react';
 import Image from 'next/image';
-import SearchSummoner from './(search-summoner)/search-summoner';
-import DesktopApp from './desktop-app';
-import Esport from './(esoport)/esport';
+import SearchSummoner from './_search-summoner/search-summoner';
+import DesktopApp from './_desktop-app/desktop-app';
+import Esport from './_esoport/esport';
 
-const Home: FC = () => {
+const Home = () => {
   return (
     <>
       <Image
@@ -12,6 +11,7 @@ const Home: FC = () => {
         src='/company-logo/custom-logo.png'
         width={300}
         height={300}
+        priority
         alt=''
         aria-hidden='true'
       />

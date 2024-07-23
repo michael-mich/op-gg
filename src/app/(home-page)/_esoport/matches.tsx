@@ -1,33 +1,34 @@
 'use client';
 
-import { FC } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getMatchResultLionsVsFnatic, getMatchResultFnaticVsBds } from '@/app/_lib/api';
-import Loading from '@/app/_components/loading';
+import { getMatchResultLionsVsFnatic, getMatchResultFnaticVsBds } from '@/app/_lib/api/pandascore-api';
+import LoadingIcon from '@/app/_components/loading-icon';
 import ErrorMessage from '@/app/_components/error-message';
 
-const Matches: FC = () => {
+const Matches = () => {
   const {
     data: firstMatchData,
-    error: firstMatchError,
+    isError: firstMatchError,
     isLoading: firstMatchLoading
   } = useQuery({
     queryKey: ['lec-match', 1],
     queryFn: () => getMatchResultLionsVsFnatic()
   });
+
   const {
     data: secondMatchData,
-    error: secondMatchError,
+    isError: secondMatchError,
     isLoading: secondMatchLoading
   } = useQuery({
     queryKey: ['lec-match', 2],
     queryFn: () => getMatchResultFnaticVsBds()
   });
+
   const matchesData = [firstMatchData, secondMatchData];
 
   if (firstMatchLoading || secondMatchLoading) {
-    return <Loading />
+    return <LoadingIcon />
   }
 
   if (firstMatchError || secondMatchError) {

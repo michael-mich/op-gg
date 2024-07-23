@@ -1,9 +1,7 @@
-import { FC } from 'react';
-import Image from 'next/image';
 import Regions from './regions';
-import Search from './search';
+import Search from './search/search';
 
-const SearchSummoner: FC = () => {
+const SearchSummoner = () => {
   return (
     <div className='grid grid-cols-[30%_70%] items-center gap-4 max-w-[800px] h-[60px] bg-white 
     dark:bg-darkMode-mediumGray rounded-full m-auto'

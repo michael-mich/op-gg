@@ -1,40 +1,11 @@
-import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import GamesServies from './games-servies';
-import PagesNavigation from './pages-navigation';
+import GamesServies from './games-services/games-services';
+import PagesNavigation from './pages-navigation/pages-navigation';
 import ThemeSwitch from './theme-switch';
+import { services } from './navigation-data';
 
-const services = [
-  {
-    logo: '/services/image-7.png',
-    name: 'Desktop'
-  },
-  {
-    logo: '/services/image-8.png',
-    name: 'Duo'
-  },
-  {
-    logo: '/services/image-9.png',
-    name: 'TalkG'
-  },
-  {
-    logo: '/services/image-10.png',
-    name: 'Esports'
-  },
-  {
-    logo: '/services/image-11.png',
-    name: 'Games',
-    info: 'Beta'
-  },
-  {
-    logo: '/services/image-12.png',
-    name: 'Gigs',
-    info: 'New'
-  }
-];
-
-const Navigation: FC = () => {
+const Navigation = () => {
   return (
     <header>
       <div className='flex items-center justify-between bg-darkMode-darkBlue'>
@@ -80,7 +51,7 @@ const Navigation: FC = () => {
         </div>
         <div className='flex items-center gap-4 pr-6'>
           <ThemeSwitch />
-          <span className='text-sm rounded-md text-gray bg-lightGrayBackground p-2.5'>
+          <span className='w-[61.88px] text-sm rounded-md text-gray bg-lightGrayBackground p-2.5'>
             Sign in
           </span>
         </div>

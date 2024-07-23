@@ -1,124 +1,8 @@
-import { FC } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { footerData, socials } from './data';
 
-type Data = {
-  heading: string;
-  links: Array<{ name: string; image?: string }>
-}
-
-const data: Array<Data> = [
-  {
-    heading: 'OP.GG',
-    links: [
-      {
-        name: 'About OP.GG'
-      },
-      {
-        name: 'Company'
-      },
-      {
-        name: 'Blog'
-      },
-      {
-        name: 'Logo history'
-      }
-    ]
-  },
-  {
-    heading: 'Products',
-    links: [
-      {
-        name: 'League of Legends',
-        image: '/icons/gamepad.svg'
-      },
-      {
-        name: 'Teamfight Tactics',
-        image: '/icons/gamepad.svg'
-      },
-      {
-        name: 'Valorant',
-        image: '/icons/gamepad.svg'
-      },
-      {
-        name: 'Overwatch',
-        image: '/icons/gamepad.svg'
-      },
-      {
-        name: 'PUBG',
-        image: '/icons/gamepad.svg'
-      }
-    ]
-  },
-  {
-    heading: 'Apps',
-    links: [
-      {
-        name: 'OP.GG for Mobile Android',
-        image: '/icons/gamepad.svg'
-      },
-      {
-        name: 'OP.GG for Mobile iOS',
-        image: '/icons/gamepad.svg'
-      },
-      {
-        name: 'AIIT Android',
-        image: '/icons/gamepad.svg'
-      },
-      {
-        name: 'AIIT iOS',
-        image: '/icons/gamepad.svg'
-      },
-      {
-        name: 'Valorant Android',
-        image: '/icons/gamepad.svg'
-      }
-    ]
-  },
-  {
-    heading: 'Resources',
-    links: [
-      {
-        name: 'Privacy Policy'
-      },
-      {
-        name: 'Terms of Use'
-      },
-      {
-        name: 'Help'
-      },
-      {
-        name: 'Email inquiry'
-      },
-      {
-        name: 'Contact us'
-      }
-    ]
-  },
-  {
-    heading: 'More',
-    links: [
-      {
-        name: 'Business'
-      },
-      {
-        name: 'Advertise'
-      },
-      {
-        name: 'Recruit'
-      }
-    ]
-  }
-];
-
-const socials = [
-  '/socials/instagram.svg',
-  '/socials/facebook.svg',
-  '/socials/x-twitter.svg',
-  '/socials/youtube.svg'
-];
-
-const Footer: FC = () => {
+const Footer = () => {
   return (
     <footer className='w-[1080px] m-auto pb-10 mt-20'>
       <div className='flex justify-between'>
@@ -131,7 +15,7 @@ const Footer: FC = () => {
             alt='back to home page'
           />
         </Link>
-        {data.map((data, index) => (
+        {footerData.map((data, index) => (
           <div key={index}>
             <h5 className='text-sm font-bold text-white mb-4'>{data.heading}</h5>
             <ul className='grid gap-2'>

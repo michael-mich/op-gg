@@ -1,11 +1,11 @@
 'use client';
 
-import { FC, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { FaMoon, FaSun } from 'react-icons/fa';
-import Loading from '@/app/_components/loading';
+import { LuLoader } from 'react-icons/lu';
 
-const ThemeSwitch: FC = () => {
+const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const darkTheme = theme === 'dark';
@@ -24,7 +24,7 @@ const ThemeSwitch: FC = () => {
   }, []);
 
   if (!mounted) {
-    return <Loading />
+    return <LuLoader className='text-secondGray size-4' />
   }
 
   return (

@@ -9,6 +9,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 's-lol-web.op.gg'
+      },
+      {
+        protocol: 'https',
+        hostname: 'ddragon.leagueoflegends.com'
       }
     ]
   }

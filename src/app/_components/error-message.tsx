@@ -1,6 +1,4 @@
-import { FC } from 'react';
-
-const ErrorMessage: FC = () => {
+const ErrorMessage = () => {
   return (
     <p className='flex justify-center items-center text-center size-full'>
       Something went wrong

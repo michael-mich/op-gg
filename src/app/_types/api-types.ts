@@ -16,3 +16,14 @@ export type TEsportMatch = {
   opponents: Array<{ opponent: TEsportTeam }>;
   results: Array<{ score: number }>
 }
+
+export type TSummonerAccount = {
+  puuid: string;
+  gameName: string;
+  tagLine: string;
+}
+
+export type TSummonerLevelAndIconId = {
+  summonerLevel: number;
+  profileIconId: number;
+}

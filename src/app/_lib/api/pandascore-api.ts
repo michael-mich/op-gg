@@ -1,12 +1,14 @@
 'use server';
 
-import type { TLecSpringSeason, TEsportMatch } from './api-types';
+import { checkResponse } from '../utils';
+import type { TLecSpringSeason, TEsportMatch } from '@/app/_types/api-types';
 
 const pandascoreApiKey = process.env.PANDASCORE_API_KEY;
 
-export const getLecSpringSeason = async (): Promise<Array<TLecSpringSeason> | undefined> => {
+export const getLecSpringSeason = async (): Promise<Array<TLecSpringSeason> | void> => {
   try {
     const response = await fetch(`https://api.pandascore.co/tournaments/league-of-legends-lec-spring-2024-regular-season/standings?page=number=1&size=6&per_page=50&token=${pandascoreApiKey}`, { cache: 'force-cache' });
+    checkResponse(response);
     const data = await response.json();
     return data;
   }
@@ -15,9 +17,10 @@ export const getLecSpringSeason = async (): Promise<Array<TLecSpringSeason> | un
   }
 }
 
-export const getMatchResultLionsVsFnatic = async (): Promise<TEsportMatch | undefined> => {
+export const getMatchResultLionsVsFnatic = async (): Promise<TEsportMatch | void> => {
   try {
     const response = await fetch(`https://api.pandascore.co/matches/636351?token=${pandascoreApiKey}`, { cache: 'force-cache' });
+    checkResponse(response);
     const data = await response.json();
     return data;
   }
@@ -26,20 +29,10 @@ export const getMatchResultLionsVsFnatic = async (): Promise<TEsportMatch | unde
   }
 }
 
-export const getMatchResultFnaticVsBds = async (): Promise<TEsportMatch | undefined> => {
+export const getMatchResultFnaticVsBds = async (): Promise<TEsportMatch | void> => {
   try {
     const response = await fetch(`https://api.pandascore.co/matches/636358?token=${pandascoreApiKey}`, { cache: 'force-cache' });
-    const data = await response.json();
-    return data;
-  }
-  catch (error) {
-    console.error(error);
-  }
-}
-
-export const lolApi = async (summonerName: string) => {
-  try {
-    const response = await fetch(`https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${summonerName}/euw?api_key=${process.env.RIOT_API_KEY}`);
+    checkResponse(response);
     const data = await response.json();
     return data;
   }

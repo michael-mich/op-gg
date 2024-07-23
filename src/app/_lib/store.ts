@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import regionDataReducer from './features/region-data-slice';
 
 export const makeStore = () => {
   return configureStore({
-    reducer: {}
+    reducer: {
+      regionData: regionDataReducer
+    }
   })
 }
 

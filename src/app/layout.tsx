@@ -4,7 +4,7 @@ import Provider from './_lib/providers/provider';
 import ReactQueryProvider from './_lib/providers/react-query-provider';
 import StoreProvider from './_lib/providers/store-provider';
 import Navigation from './_components/navigation/navigation';
-import Footer from './_components/footer';
+import Footer from './_components/footer/footer';
 import './globals.css';
 
 const roboto = Roboto({

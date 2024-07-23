@@ -1,12 +1,12 @@
 'use client'
 
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import Teams from './teams';
-import Players from './players';
+import Players from './players/players';
 
 const buttonsNames = ['Team', 'Player'];
 
-const Standings: FC = () => {
+const Standings = () => {
   const [displayStandingIndex, setDisplayStandingIndex] = useState(0);
 
   return (
