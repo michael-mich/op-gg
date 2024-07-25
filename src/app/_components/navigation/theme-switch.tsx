@@ -7,16 +7,11 @@ import { LuLoader } from 'react-icons/lu';
 
 const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const darkTheme = theme === 'dark';
+  const { setTheme, resolvedTheme } = useTheme();
+  const darkTheme = resolvedTheme === 'dark';
 
   const handleTheme = (): void => {
-    if (darkTheme) {
-      setTheme('light');
-    }
-    else {
-      setTheme('dark');
-    }
+    setTheme(darkTheme ? 'light' : 'dark');
   }
 
   useEffect(() => {

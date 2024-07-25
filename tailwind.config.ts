@@ -24,7 +24,8 @@ const config: Config = {
         },
         lightMode: {
           lightGray: '#f7f7f9',
-          lighterGray: '#f1f2f5'
+          lighterGray: '#f1f2f5',
+          secondLighterGray: '#758592'
         }
       }
     },

@@ -10,7 +10,7 @@ type Prop = {
 
 const RegionsList = ({ displayRegionsList, setDisplayRegionList }: Prop) => {
   const dispatch = useAppDispatch();
-  console.log(regionListData)
+
   return (
     <div className={`${displayRegionsList ? 'block' : 'hidden'} absolute top-[1.95rem] w-full bg-white dark:bg-darkMode-mediumGray`}>
       {regionListData.map((data) => (

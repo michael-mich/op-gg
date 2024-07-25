@@ -6,13 +6,16 @@ import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerAccount } from '@/app/_lib/api/riot-games-api';
 import type { TSummonerAccount } from '@/app/_types/api-types';
+import type { TLocalStorageSummoner } from '@/app/_types/types';
 import SummonerLink from './summoner-link';
+import SummonerSections from './summoner-sections/summoner-sections';
 
 const Search = () => {
+  const [displaySummonerSections, setDisplaySummonerSections] = useState(false);
   const [summonerName, setSummonerName] = useState('');
   const regionData = useAppSelector((state) => state.regionData.regionData);
 
-  const { data, isError, isLoading, isSuccess, refetch } = useQuery({
+  const { data, isError, isSuccess, refetch } = useQuery({
     enabled: false,
     queryKey: ['summonerAccount'],
     queryFn: () => getSummonerAccount(summonerName, regionData)
@@ -28,11 +31,15 @@ const Search = () => {
     }
   }
 
+  const getLocalStorageData = (localeStorageKey: string): Array<TLocalStorageSummoner> => {
+    return JSON.parse(localStorage.getItem(localeStorageKey) || '[]');
+  }
+
   useEffect(() => {
     if (isError) {
       setSummonerName('');
     }
-  }, [isError])
+  }, [isError]);
 
   return (
     <div className='flex justify-between w-full h-[40px] pr-8'>
@@ -44,6 +51,8 @@ const Search = () => {
         </label>
         <div className='relative flex items-center'>
           <input
+            onClick={() => setDisplaySummonerSections(true)}
+            onFocus={() => setDisplaySummonerSections(true)}
             onChange={handleSummonerName}
             onKeyDown={handleKeyboardEvent}
             value={summonerName}
@@ -71,8 +80,14 @@ const Search = () => {
           <SummonerLink
             summonerAccountData={data as TSummonerAccount}
             summonerName={summonerName}
-            isLoading={isLoading}
+            getLocalStorageData={getLocalStorageData}
             isSuccess={isSuccess}
+          />
+        }
+        {summonerName === '' &&
+          <SummonerSections
+            displaySummonerSections={displaySummonerSections}
+            getLocalStorageData={getLocalStorageData}
           />
         }
       </div>

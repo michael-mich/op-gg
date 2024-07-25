@@ -4,3 +4,10 @@ export type TRegionData = {
   regionLink: string;
   continentLink: string;
 }
+
+export type TLocalStorageSummoner = {
+  regionShorthand: string;
+  summonerName: string;
+  tagLine: string;
+  summonerId: string | undefined;
+}

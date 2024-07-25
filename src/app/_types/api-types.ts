@@ -23,7 +23,8 @@ export type TSummonerAccount = {
   tagLine: string;
 }
 
-export type TSummonerLevelAndIconId = {
+export type TSummonerProfile = {
   summonerLevel: number;
   profileIconId: number;
+  id: string;
 }

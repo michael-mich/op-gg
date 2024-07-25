@@ -3,22 +3,50 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerLevelAndIconId } from '@/app/_lib/api/riot-games-api';
+import { getSummonerProfileData } from '@/app/_lib/api/riot-games-api';
 import type { TSummonerAccount } from '@/app/_types/api-types';
+import type { TLocalStorageSummoner } from '@/app/_types/types';
 
 type Props = {
   summonerAccountData: TSummonerAccount;
   summonerName: string;
-  isLoading: boolean;
+  getLocalStorageData: (localStorageKey: string) => Array<TLocalStorageSummoner>;
   isSuccess: boolean;
 }
-const SummonerLink = ({ summonerAccountData, summonerName, isSuccess }: Props) => {
+
+const SummonerLink = ({
+  summonerAccountData,
+  summonerName,
+  getLocalStorageData,
+  isSuccess,
+}: Props) => {
   const regionData = useAppSelector((state) => state.regionData.regionData);
+
   const { data, refetch } = useQuery({
     enabled: false,
     queryKey: ['summonerLevelAndIconId'],
-    queryFn: () => getSummonerLevelAndIconId(summonerAccountData, regionData)
+    queryFn: () => getSummonerProfileData(summonerAccountData, regionData)
   });
+
+  const searchHistoryData = {
+    regionShorthand: regionData.shorthand,
+    summonerName: summonerAccountData.gameName,
+    tagLine: summonerAccountData.tagLine,
+    summonerId: data?.id
+  }
+
+  const removeDuplicateObjects = (localeStorageArray: Array<TLocalStorageSummoner>): Array<TLocalStorageSummoner> => {
+    return localeStorageArray.filter((value, index, self) => index === self.findIndex((t) => (
+      t.summonerId === value.summonerId
+    )));
+  }
+
+  const addSearchHistoryDataToLocalStorage = (): void => {
+    const storageArray = getLocalStorageData('searchHistory');
+    storageArray.unshift(searchHistoryData);
+    const withoutDuplicates = removeDuplicateObjects(storageArray);
+    localStorage.setItem('searchHistory', JSON.stringify(withoutDuplicates));
+  }
 
   useEffect(() => {
     if (isSuccess) {
@@ -27,9 +55,12 @@ const SummonerLink = ({ summonerAccountData, summonerName, isSuccess }: Props) =
   }, [summonerAccountData.puuid]);
 
   return (
-    <div className={`${summonerName.length > 0 ? 'block' : 'hidden'} absolute top-[3.2rem] left-0 z-10 w-full bg-white dark:bg-darkMode-mediumGray`}>
+    <div className={`${summonerName.length > 0 ? 'block' : 'hidden'} absolute top-[3.2rem] left-0 z-10 
+    w-full bg-white dark:bg-darkMode-mediumGray rounded-b`}
+    >
       <Link
-        className='flex items-center gap-2 py-1.5 px-4 transition-colors hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray'
+        onClick={addSearchHistoryDataToLocalStorage}
+        className='flex items-center gap-2 py-1.5 px-4 transition-colors hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray rounded-b'
         href={`/summoners/${regionData.shorthand}/${summonerAccountData.gameName}-${summonerAccountData.tagLine}`}
       >
         <Image
@@ -43,9 +74,13 @@ const SummonerLink = ({ summonerAccountData, summonerName, isSuccess }: Props) =
         <div className='flex flex-col'>
           <div>
             <span className='text-sm mr-1'>{summonerAccountData.gameName}</span>
-            <span className='text-sm text-[#9e9eb1]'>#{summonerAccountData.tagLine}</span>
+            <span className='text-sm text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
+              #{summonerAccountData.tagLine}
+            </span>
           </div>
-          <span className='text-xs text-[#9e9eb1]'>Level {data?.summonerLevel}</span>
+          <span className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
+            Level {data?.summonerLevel}
+          </span>
         </div>
       </Link>
     </div>
