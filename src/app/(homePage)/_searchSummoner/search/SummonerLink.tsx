@@ -3,8 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerProfileData } from '@/app/_lib/api/riot-games-api';
-import type { TSummonerAccount } from '@/app/_types/api-types';
+import { getSummonerProfileData } from '@/app/_lib/api/riotGamesApi';
+import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 
 type Props = {

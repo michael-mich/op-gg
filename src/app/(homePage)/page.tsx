@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import SearchSummoner from './_search-summoner/search-summoner';
-import DesktopApp from './_desktop-app/desktop-app';
-import Esport from './_esoport/esport';
+import SearchSummoner from './_searchSummoner/SearchSummoner';
+import DesktopApp from './_desktopApp/DesktopApp';
+import Esport from './_esoport/Esport';
 
 const Home = () => {
   return (

@@ -4,18 +4,20 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerAccount } from '@/app/_lib/api/riot-games-api';
-import type { TSummonerAccount } from '@/app/_types/api-types';
+import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';
+import { getSummonerAccount } from '@/app/_lib/api/riotGamesApi';
+import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
-import SummonerLink from './summoner-link';
-import SummonerSections from './summoner-sections/summoner-sections';
+import SummonerLink from './SummonerLink';
+import SummonerSections from './summonerSections/SummonerSections';
 
 const Search = () => {
-  const [displaySummonerSections, setDisplaySummonerSections] = useState(false);
   const [summonerName, setSummonerName] = useState('');
+  const [displaySummonerSections, setDisplaySummonerSections] = useState(false);
+  const summonerSectionsRef = useOutsideClick(displaySummonerSections, setDisplaySummonerSections);
   const regionData = useAppSelector((state) => state.regionData.regionData);
 
-  const { data, isError, isSuccess, refetch } = useQuery({
+  const { data, isError, isSuccess, isFetching, refetch } = useQuery({
     enabled: false,
     queryKey: ['summonerAccount'],
     queryFn: () => getSummonerAccount(summonerName, regionData)
@@ -36,14 +38,14 @@ const Search = () => {
   }
 
   useEffect(() => {
-    if (isError) {
+    if (isError && !isFetching) {
       setSummonerName('');
     }
-  }, [isError]);
+  }, [isError, isFetching]);
 
   return (
     <div className='flex justify-between w-full h-[40px] pr-8'>
-      <div className='relative w-full'>
+      <div ref={summonerSectionsRef} className='relative w-full'>
         <label
           className='block w-full text-xs font-bold cursor-pointer mb-1'
           htmlFor='search-summoner'>

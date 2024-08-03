@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react';
-import Teams from './teams';
-import Players from './players/players';
+import Teams from './Teams';
+import Players from './players/Players';
 
 const buttonsNames = ['Team', 'Player'];
 

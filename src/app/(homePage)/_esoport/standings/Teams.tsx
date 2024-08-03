@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getLecSpringSeason } from '@/app/_lib/api/pandascore-api';
-import LoadingIcon from '@/app/_components/loading-icon';
-import ErrorMessage from '@/app/_components/error-message';
+import { getLecSpringSeason } from '@/app/_lib/api/pandascoreApi';
+import LoadingIcon from '@/app/_components/LoadingIcon';
+import ErrorMessage from '@/app/_components/ErrorMessage';
 
 const Teams = () => {
   const { data, isError, isLoading } = useQuery({

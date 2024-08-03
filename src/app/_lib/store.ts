@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import regionDataReducer from './features/region-data-slice';
+import regionDataReducer from './features/regionDataSlice';
 
 export const makeStore = () => {
   return configureStore({

@@ -1,7 +1,7 @@
 'use server';
 
 import { fetchApi } from '../utils';
-import type { TSummonerAccount, TSummonerProfile } from '@/app/_types/api-types';
+import type { TSummonerAccount, TSummonerProfile } from '@/app/_types/apiTypes';
 import type { TRegionData } from '@/app/_types/types';
 
 const riotGamesApiKey = process.env.RIOT_API_KEY;

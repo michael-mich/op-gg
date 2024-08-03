@@ -1,4 +1,4 @@
-export const desktopApp = [
+export const desktopAppData = [
   {
     heading: 'Real-time auto rune setting',
     image: '/op-gg-desktop/image-1.png'

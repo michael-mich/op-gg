@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
-import { getRegionData } from '@/app/_lib/features/region-data-slice';
-import { regionListData } from './data';
+import { getRegionData } from '@/app/_lib/features/regionDataSlice';
+import { regionData } from '../_data/regionData';
 
 type Prop = {
   displayRegionsList: boolean;
@@ -12,8 +12,10 @@ const RegionsList = ({ displayRegionsList, setDisplayRegionList }: Prop) => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className={`${displayRegionsList ? 'block' : 'hidden'} absolute top-[1.95rem] w-full bg-white dark:bg-darkMode-mediumGray`}>
-      {regionListData.map((data) => (
+    <div className={`${displayRegionsList ? 'block' : 'hidden'} absolute top-[1.95rem] w-full max-h-60 
+    overflow-scroll bg-white dark:bg-darkMode-mediumGray`}
+    >
+      {regionData.map((data) => (
         <button
           onClick={() => {
             dispatch(getRegionData({

@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import Standings from './standings/standings';
-import Matches from './matches';
+import Standings from './standings/Standings';
+import Matches from './Matches';
 
 const Esport = () => {
   return (

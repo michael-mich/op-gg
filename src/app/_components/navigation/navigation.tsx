@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import GamesServies from './games-services/games-services';
-import PagesNavigation from './pages-navigation/pages-navigation';
-import ThemeSwitch from './theme-switch';
-import { services } from './navigation-data';
+import GamesServies from './gamesServices/GamesServices';
+import PagesNavigation from './pagesNavigation/PagesNavigation';
+import ThemeSwitch from './ThemeSwitch';
+import { services } from './navigationData';
 
 const Navigation = () => {
   return (

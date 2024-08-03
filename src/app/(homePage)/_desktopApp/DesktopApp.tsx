@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { desktopApp } from './data';
+import { desktopAppData } from './desktopAppData';
 
 const DesktopApp = () => {
   return (
@@ -12,7 +12,7 @@ const DesktopApp = () => {
       <div className='flex flex-wrap items-end justify-between rounded-b-md bg-lightMode-lightGray 
       dark:bg-darkMode-darkGray pb-6 px-14'
       >
-        {desktopApp.map((app, index) => (
+        {desktopAppData.map((app, index) => (
           <div className='w-[200px]' key={index}>
             <h3 className='flex items-center justify-center text-sm font-bold text-center 
             h-[40px] leading-4 mt-4 mb-3'

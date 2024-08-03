@@ -1,5 +1,5 @@
-import Regions from './regions';
-import Search from './search/search';
+import Regions from './Regions';
+import Search from './search/Search';
 
 const SearchSummoner = () => {
   return (

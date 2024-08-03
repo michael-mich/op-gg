@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TLocalStorageSummonerSetState } from '@/app/_types/unions';
-import SearchHistory from './search-history';
-import FavoriteSummoners from './favorite-summoners';
+import SearchHistory from './SearchHistory';
+import FavoriteSummoners from './FavoriteSummoners';
 
 type Props = {
   displaySummonerSections: boolean;

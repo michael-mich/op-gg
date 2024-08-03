@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getMatchResultLionsVsFnatic, getMatchResultFnaticVsBds } from '@/app/_lib/api/pandascore-api';
-import LoadingIcon from '@/app/_components/loading-icon';
-import ErrorMessage from '@/app/_components/error-message';
+import { getMatchResultLionsVsFnatic, getMatchResultFnaticVsBds } from '@/app/_lib/api/pandascoreApi';
+import LoadingIcon from '@/app/_components/LoadingIcon';
+import ErrorMessage from '@/app/_components/ErrorMessage';
 
 const Matches = () => {
   const {

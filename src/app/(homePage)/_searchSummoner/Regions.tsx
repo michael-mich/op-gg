@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';
 import { MdArrowDropDown } from 'react-icons/md';
-import RegionsList from '@/app/_components/region-list/regions-list';
+import RegionsList from '@/app/_components/RegionsList';
 
 const Regions = () => {
   const [displayRegionsList, setDisplayRegionsList] = useState(false);
+  const regionListRef = useOutsideClick(displayRegionsList, setDisplayRegionsList);
   const regionData = useAppSelector((state) => state.regionData.regionData);
 
   return (
@@ -16,7 +18,7 @@ const Regions = () => {
       <span className='block text-xs font-bold mb-1'>
         Region
       </span>
-      <div className='relative'>
+      <div ref={regionListRef} className='relative'>
         <button
           onClick={() => setDisplayRegionsList(!displayRegionsList)}
           className='flex items-center justify-between w-full'

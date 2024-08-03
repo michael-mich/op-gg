@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { footerData, socials } from './data';
+import { footerData, socials } from './footerData';
 
 const Footer = () => {
   return (

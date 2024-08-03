@@ -1,6 +1,6 @@
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
-import { playersData } from './data';
+import { playersData } from './playersData';
 
 const Players = () => {
   const { theme } = useTheme();
