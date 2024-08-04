@@ -1,7 +1,7 @@
-export const fetchApi = async (
+export const fetchApi = async <T>(
   url: string,
   cacheValue?: { cache: 'force-cache' }
-): Promise<any | void> => {
+): Promise<T | void> => {
   try {
     const response = await fetch(url, cacheValue);
     if (!response.ok) {

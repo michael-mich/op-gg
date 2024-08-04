@@ -1,4 +1,4 @@
-import SummonerHeader from './SummonerHeader'
+import SummonerHeader from './_summonerHeader/SummonerHeader';
 
 const Layout = ({
   children
@@ -6,10 +6,10 @@ const Layout = ({
   children: React.ReactNode
 }>) => {
   return (
-    <>
+    <main>
       <SummonerHeader />
       {children}
-    </>
+    </main>
   );
 }
 

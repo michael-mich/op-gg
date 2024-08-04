@@ -3,6 +3,7 @@ import { Roboto } from 'next/font/google';
 import Provider from './_lib/providers/Provider';
 import ReactQueryProvider from './_lib/providers/ReactQueryProvider';
 import StoreProvider from './_lib/providers/StoreProvider';
+import NextUiProvider from './_lib/providers/NextUiProvider';
 import Navigation from './_components/navigation/Navigation';
 import Footer from './_components/footer/Footer';
 import './globals.css';
@@ -30,9 +31,9 @@ const RootLayout = ({
           <Navigation />
           <StoreProvider>
             <ReactQueryProvider>
-              <main className='w-[1080px] m-auto'>
+              <NextUiProvider>
                 {children}
-              </main>
+              </NextUiProvider>
             </ReactQueryProvider>
           </StoreProvider>
           <Footer />

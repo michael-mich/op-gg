@@ -35,7 +35,7 @@ const FavoriteSummoners = ({
           <Link
             className='flex items-center justify-between py-2 px-3 last-of-type:rounded-b transition-colors 
             hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray'
-            href={`/summoners/${data.regionShorthand.toLowerCase()}/${data.summonerName}/${data.tagLine}`}
+            href={`/summoners/${data.regionShorthand.toLowerCase()}/${data.summonerName}-${data.tagLine}`}
             key={data.summonerId}
           >
             <div>

@@ -5,7 +5,7 @@ import Esport from './_esoport/Esport';
 
 const Home = () => {
   return (
-    <>
+    <main className='w-[1080px] m-auto'>
       <Image
         className='size-full max-w-[23rem] my-12 m-auto'
         src='/company-logo/custom-logo.png'
@@ -53,7 +53,7 @@ const Home = () => {
         <DesktopApp />
         <Esport />
       </section>
-    </>
+    </main>
   );
 }
 

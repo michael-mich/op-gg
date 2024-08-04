@@ -61,7 +61,7 @@ const SummonerLink = ({
       <Link
         onClick={addSearchHistoryDataToLocalStorage}
         className='flex items-center gap-2 py-1.5 px-4 transition-colors hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray rounded-b'
-        href={`/summoners/${regionData.shorthand}/${summonerAccountData.gameName}-${summonerAccountData.tagLine}`}
+        href={`/summoners/${regionData.shorthand.toLowerCase()}/${summonerAccountData.gameName}-${summonerAccountData.tagLine}`}
       >
         <Image
           className='w-9 rounded-full aspect-square'
