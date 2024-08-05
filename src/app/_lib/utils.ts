@@ -1,3 +1,9 @@
+import type { TLocalStorageSummoner } from '../_types/types';
+
+export const getLocalStorageData = (localeStorageKey: string): Array<TLocalStorageSummoner> => {
+  return JSON.parse(localStorage.getItem(localeStorageKey) || '[]');
+}
+
 export const fetchApi = async <T>(
   url: string,
   cacheValue?: { cache: 'force-cache' }

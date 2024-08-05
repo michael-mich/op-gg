@@ -4,20 +4,19 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerProfileData } from '@/app/_lib/api/riotGamesApi';
+import { getLocalStorageData } from '@/app/_lib/utils';
 import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 
 type Props = {
   summonerAccountData: TSummonerAccount;
   summonerName: string;
-  getLocalStorageData: (localStorageKey: string) => Array<TLocalStorageSummoner>;
   isSuccess: boolean;
 }
 
 const SummonerLink = ({
   summonerAccountData,
   summonerName,
-  getLocalStorageData,
   isSuccess,
 }: Props) => {
   const regionData = useAppSelector((state) => state.regionData.regionData);
@@ -28,7 +27,7 @@ const SummonerLink = ({
     queryFn: () => getSummonerProfileData(summonerAccountData, regionData)
   });
 
-  const searchHistoryData = {
+  const searchHistoryData: TLocalStorageSummoner = {
     regionShorthand: regionData.shorthand,
     summonerName: summonerAccountData.gameName,
     tagLine: summonerAccountData.tagLine,

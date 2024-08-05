@@ -1,29 +1,30 @@
 import { useEffect, useState } from 'react';
+import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
+import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStorageFavoriteSummonersSlice';
+import { getLocalStorageData } from '@/app/_lib/utils';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
-import type { TLocalStorageSummonerSetState } from '@/app/_types/unions';
 import SearchHistory from './SearchHistory';
 import FavoriteSummoners from './FavoriteSummoners';
 
 type Props = {
   displaySummonerSections: boolean;
-  getLocalStorageData: (localeStorageKey: string) => Array<TLocalStorageSummoner>;
 }
 
-const SummonerSections = ({ displaySummonerSections, getLocalStorageData }: Props) => {
+const SummonerSections = ({ displaySummonerSections }: Props) => {
+  const dispatch = useAppDispatch();
   const [localStorageSearchHistory, setLocalStorageSearchHistory] = useState<Array<TLocalStorageSummoner>>([]);
-  const [localStorageFavoriteSummoners, setLocalStorageFavoriteSummoners] = useState<Array<TLocalStorageSummoner>>([]);
   const [displaySection, setDisplaySection] = useState(0);
 
-  const removeSummoner = (index: number, localeStorageKey: string, setState: TLocalStorageSummonerSetState): void => {
-    const storageData = getLocalStorageData(localeStorageKey);
+  const removeSummonerFromLocalStorage = (index: number, localStorageKey: string): Array<TLocalStorageSummoner> => {
+    const storageData = getLocalStorageData(localStorageKey);
     storageData.splice(index, 1);
-    localStorage.setItem(localeStorageKey, JSON.stringify(storageData));
-    setState(storageData);
+    localStorage.setItem(localStorageKey, JSON.stringify(storageData));
+    return storageData;
   }
 
   useEffect(() => {
     setLocalStorageSearchHistory(getLocalStorageData('searchHistory'));
-    setLocalStorageFavoriteSummoners(getLocalStorageData('favoriteSummoners'));
+    dispatch(setLocalStorageFavoriteSummoners(getLocalStorageData('favoriteSummoners')));
   }, []);
 
   return (
@@ -51,16 +52,11 @@ const SummonerSections = ({ displaySummonerSections, getLocalStorageData }: Prop
       <SearchHistory
         localStorageSearchHistory={localStorageSearchHistory}
         setLocalStorageSearchHistory={setLocalStorageSearchHistory}
-        localStorageFavoriteSummoners={localStorageFavoriteSummoners}
-        setLocalStorageFavoriteSummoners={setLocalStorageFavoriteSummoners}
-        getLocalStorageData={getLocalStorageData}
-        removeSummoner={removeSummoner}
+        removeSummonerFromLocalStorage={removeSummonerFromLocalStorage}
         displaySection={displaySection}
       />
       <FavoriteSummoners
-        localStorageFavoriteSummoners={localStorageFavoriteSummoners}
-        setLocalStorageFavoriteSummoners={setLocalStorageFavoriteSummoners}
-        removeSummoner={removeSummoner}
+        removeSummonerFromLocalStorage={removeSummonerFromLocalStorage}
         displaySection={displaySection}
       />
     </div>

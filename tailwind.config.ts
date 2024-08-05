@@ -18,6 +18,7 @@ const config: Config = {
         lightGray: '#9a9aac',
         lightGrayBackground: '#424254',
         lightGreen: '#03f9de',
+        yellow: '#ffb900',
         darkMode: {
           darkBlue: '#1C1C1F',
           darkGray: '#282830',

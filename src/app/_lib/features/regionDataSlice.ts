@@ -1,14 +1,15 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { TRegionData } from '@/app/_types/types';
 
-type RegionState = {
+type TRegionState = {
   regionData: TRegionData
 }
 
-const initialState: RegionState = {
+const initialState: TRegionState = {
   regionData: {
     name: 'Europe West',
     shorthand: 'EUW',
+    image: '/regions/euw.svg',
     regionLink: 'euw1.api.riotgames.com',
     continentLink: 'europe.api.riotgames.com',
   }

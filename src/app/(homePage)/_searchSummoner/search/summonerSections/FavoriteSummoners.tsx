@@ -1,22 +1,19 @@
 import Link from 'next/link';
+import { useAppDispatch, useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStorageFavoriteSummonersSlice';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
-import type { TLocalStorageSummonerSetState } from '@/app/_types/unions';
 import { FaStar } from 'react-icons/fa';
 import { TiDeleteOutline } from 'react-icons/ti';
 
 type Props = {
-  localStorageFavoriteSummoners: Array<TLocalStorageSummoner>;
-  setLocalStorageFavoriteSummoners: TLocalStorageSummonerSetState;
-  removeSummoner: (index: number, localeStorageKey: string, setState: TLocalStorageSummonerSetState) => void;
+  removeSummonerFromLocalStorage: (index: number, localeStorageKey: string) => Array<TLocalStorageSummoner>;
   displaySection: number;
 }
 
-const FavoriteSummoners = ({
-  localStorageFavoriteSummoners,
-  setLocalStorageFavoriteSummoners,
-  removeSummoner,
-  displaySection
-}: Props) => {
+const FavoriteSummoners = ({ removeSummonerFromLocalStorage, displaySection }: Props) => {
+  const localStorageFavoriteSummoners = useAppSelector((state) => state.localStorageFavoriteSummoners.localStorageFavoriteSummoners);
+  const dispatch = useAppDispatch();
+
   return (
     <div className={`${displaySection == 1 ? 'block max-h-[260px] overflow-scroll' : 'hidden'}`}>
       {localStorageFavoriteSummoners.length === 0
@@ -53,7 +50,7 @@ const FavoriteSummoners = ({
               <button
                 onClick={(e) => {
                   e.preventDefault();
-                  removeSummoner(index, 'favoriteSummoners', setLocalStorageFavoriteSummoners);
+                  dispatch(setLocalStorageFavoriteSummoners(removeSummonerFromLocalStorage(index, 'favoriteSummoners')));
                 }}
                 type='button'
               >

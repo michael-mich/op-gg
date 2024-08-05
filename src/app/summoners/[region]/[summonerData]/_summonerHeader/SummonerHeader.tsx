@@ -2,32 +2,20 @@
 
 import Image from 'next/image';
 import { usePathname, notFound } from 'next/navigation';
-import Link from 'next/link';
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { regionData } from '@/app/_data/regionData';
 import { getSummonerProfileData, getSummonerAccount } from '@/app/_lib/api/riotGamesApi';
 import type { TSummonerAccount } from '@/app/_types/apiTypes';
-import type { TRegionData } from '@/app/_types/types';
-import { FaStar, FaRegStar } from 'react-icons/fa';
+import type { TRegionData, TLocalStorageSummoner } from '@/app/_types/types';
 import SummonerHeaderSkeleton from './Skeleton';
-
-const pageNavigationData = ['Sumary', 'Champions', 'Mastery', 'Live Game'];
+import FavoriteSummonerButton from './FavoriteSummonerButton';
+import PageNavigation from './PageNavigation';
 
 const SummonerHeader = () => {
   const pathname = usePathname();
   const summonerTagLine = pathname.replaceAll('/', ' ').split(' ')[2];
   const summonerName = pathname.replaceAll('/', ' ').split(' ')[3].replace('-', ' ').split(' ')[0].replaceAll('%20', ' ');
-  const summonerPageUrl = `/summoners/${summonerTagLine}/${summonerName}-${summonerTagLine.toUpperCase()}`;
-
-  const generatePageUrl = (pageName: string): string => {
-    if (pageName === 'Sumary') {
-      return summonerPageUrl;
-    }
-    else {
-      return `${summonerPageUrl}/${pageName.toLowerCase()}`;
-    }
-  }
 
   const getCurrentRegionData = (): TRegionData | undefined => {
     return regionData.find((region) => (region.shorthand.toLowerCase() === summonerTagLine));
@@ -50,6 +38,13 @@ const SummonerHeader = () => {
     queryKey: ['summonerProfile', 'summonersPage'],
     queryFn: () => getSummonerProfileData(summonerAccountData as TSummonerAccount, currentRegionData)
   });
+
+  const favoriteSummonerData: TLocalStorageSummoner = {
+    regionShorthand: currentRegionData!.shorthand,
+    summonerName: summonerAccountData?.gameName,
+    tagLine: summonerAccountData?.tagLine,
+    summonerId: summonerProfileData?.id
+  }
 
   if (!currentRegionData || summonerAccountDataError) {
     notFound();
@@ -86,9 +81,11 @@ const SummonerHeader = () => {
               <div>
                 <span className='text-2xl font-bold'>{summonerAccountData?.gameName} </span>
                 <span className='text-2xl text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>#{summonerAccountData?.tagLine} </span>
-                <button className='rounded-md border border-[#edeff1] dark:border-[#393948] p-1' type='button'>
-                  <FaRegStar className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray' />
-                </button>
+                <FavoriteSummonerButton
+                  favoriteSummonerData={favoriteSummonerData}
+                  fetchedSummonerAccountData={fetchedSummonerAccountData}
+                  summonerProfileData={summonerProfileData}
+                />
               </div>
               <div className='mt-1.5'>
                 <div className='flex items-center gap-1'>
@@ -108,20 +105,10 @@ const SummonerHeader = () => {
           </div>
         }
       </div>
-      <div className='border-t border-lightMode-lighterGray dark:border-t-black'>
-        <div className='flex items-center gap-1 max-w-[1080px] py-1 m-auto'>
-          {pageNavigationData.map((pageName, index) => (
-            <Link
-              href={`${generatePageUrl(pageName)}`}
-              className={`${(generatePageUrl(pageName.toLowerCase()) === pathname || (summonerPageUrl === pathname && index === 0)) ? 'font-bold text-blue dark:text-white bg-[#ecf2ff] dark:bg-[#515163]' : 'opacity-75'} 
-                block text-sm rounded py-2 px-4 transition-all`}
-              key={index}
-            >
-              {pageName}
-            </Link>
-          ))}
-        </div>
-      </div>
+      <PageNavigation
+        summonerTagLine={summonerTagLine}
+        summonerName={summonerName}
+      />
     </section >
   );
 }

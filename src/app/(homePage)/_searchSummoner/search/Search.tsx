@@ -7,7 +7,6 @@ import { useQuery } from '@tanstack/react-query';
 import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';
 import { getSummonerAccount } from '@/app/_lib/api/riotGamesApi';
 import type { TSummonerAccount } from '@/app/_types/apiTypes';
-import type { TLocalStorageSummoner } from '@/app/_types/types';
 import SummonerLink from './SummonerLink';
 import SummonerSections from './summonerSections/SummonerSections';
 
@@ -31,10 +30,6 @@ const Search = () => {
     if (e.key === 'Enter') {
       refetch();
     }
-  }
-
-  const getLocalStorageData = (localeStorageKey: string): Array<TLocalStorageSummoner> => {
-    return JSON.parse(localStorage.getItem(localeStorageKey) || '[]');
   }
 
   useEffect(() => {
@@ -82,15 +77,11 @@ const Search = () => {
           <SummonerLink
             summonerAccountData={data as TSummonerAccount}
             summonerName={summonerName}
-            getLocalStorageData={getLocalStorageData}
             isSuccess={isSuccess}
           />
         }
         {summonerName === '' &&
-          <SummonerSections
-            displaySummonerSections={displaySummonerSections}
-            getLocalStorageData={getLocalStorageData}
-          />
+          <SummonerSections displaySummonerSections={displaySummonerSections} />
         }
       </div>
       <button

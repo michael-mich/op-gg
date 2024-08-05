@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const useOutsideClick = <T extends HTMLDivElement & HTMLButtonElement>(
+const useOutsideClick = <T extends HTMLDivElement>(
   state: boolean,
   setState: React.Dispatch<React.SetStateAction<boolean>>
 ): React.RefObject<T> => {

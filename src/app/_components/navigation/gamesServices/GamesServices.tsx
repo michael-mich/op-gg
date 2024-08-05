@@ -12,7 +12,7 @@ const GamesServices = () => {
   const [hoveredGameIndex, setHoveredGameIndex] = useState(0);
 
   return (
-    <div className='relative flex items-center gap-2 ml-1 mr-4'>
+    <div ref={serviceRef} className='relative flex items-center gap-2 ml-1 mr-4'>
       <div className='flex items-center gap-2'>
         <Image
           className='max-w-6'
@@ -25,7 +25,6 @@ const GamesServices = () => {
         <span className='text-sm text-white'>Stats</span>
       </div>
       <button
-        ref={serviceRef}
         onClick={() => setDisplayService(!displayService)}
         type='button'
       >
@@ -50,7 +49,6 @@ const GamesServices = () => {
         </div>
       </button>
       <div
-        ref={serviceRef}
         className={`${displayService ? 'visible opacity-100' : 'invisible opacity-0'} 
         absolute left-0 top-[3rem] z-10 flex justify-between gap-10 bg-darkMode-mediumGray rounded
         border border-[#676678] min-w-[32rem] h-[210px] py-4 pl-4 pr-6 transition-all`}

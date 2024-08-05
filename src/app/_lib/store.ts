@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import regionDataReducer from './features/regionDataSlice';
+import localStorageFavoriteSummonersReducer from './features/localStorageFavoriteSummonersSlice';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      regionData: regionDataReducer
+      regionData: regionDataReducer,
+      localStorageFavoriteSummoners: localStorageFavoriteSummonersReducer
     }
   })
 }

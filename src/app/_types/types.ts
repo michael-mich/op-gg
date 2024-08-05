@@ -8,7 +8,7 @@ export type TRegionData = {
 
 export type TLocalStorageSummoner = {
   regionShorthand: string;
-  summonerName: string;
-  tagLine: string;
+  summonerName: string | undefined;
+  tagLine: string | undefined;
   summonerId: string | undefined;
 }
