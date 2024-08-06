@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import Image from 'next/image';
 import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';

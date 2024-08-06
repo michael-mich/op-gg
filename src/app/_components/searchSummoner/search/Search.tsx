@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
@@ -10,7 +8,11 @@ import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import SummonerLink from './SummonerLink';
 import SummonerSections from './summonerSections/SummonerSections';
 
-const Search = () => {
+type TProps = {
+  pageOtherThanHomePage: boolean;
+}
+
+const Search = ({ pageOtherThanHomePage }: TProps) => {
   const [summonerName, setSummonerName] = useState('');
   const [displaySummonerSections, setDisplaySummonerSections] = useState(false);
   const summonerSectionsRef = useOutsideClick(displaySummonerSections, setDisplaySummonerSections);
@@ -39,10 +41,10 @@ const Search = () => {
   }, [isError, isFetching]);
 
   return (
-    <div className='flex justify-between w-full h-[40px] pr-8'>
-      <div ref={summonerSectionsRef} className='relative w-full'>
+    <div className={`${pageOtherThanHomePage ? 'h-8 rounded-r bg-white pr-3' : 'flex items-center h-[60px] rounded-r-full bg-white dark:bg-darkMode-mediumGray pl-4 pr-8'} flex justify-between w-full`}>
+      <div ref={summonerSectionsRef} className={`${pageOtherThanHomePage && 'pl-3'} relative w-full`}>
         <label
-          className='block w-full text-xs font-bold cursor-pointer mb-1'
+          className={`${pageOtherThanHomePage ? 'hidden' : 'block'} w-full text-xs font-bold cursor-pointer mb-1`}
           htmlFor='search-summoner'>
           Search
         </label>
@@ -53,20 +55,20 @@ const Search = () => {
             onChange={handleSummonerName}
             onKeyDown={handleKeyboardEvent}
             value={summonerName}
-            className='relative w-full text-sm outline-none bg-white dark:bg-darkMode-mediumGray'
+            className={`${pageOtherThanHomePage ? 'h-8 text-xs bg-white text-black' : 'h-auto text-sm bg-white dark:bg-darkMode-mediumGray'} relative w-full outline-none`}
             type='text'
             id='search-summoner'
           />
           <label
-            className={`${(summonerName.length > 0 || isError) ? 'hidden' : 'block'} absolute top-1/2 left-0
-            translate-y-[-50%] h-[20px] text-sm text-secondGray dark:text-mediumGrayText cursor-text`}
+            className={`${(summonerName.length > 0 || isError) ? 'hidden' : 'block'} ${pageOtherThanHomePage ? 'h-5 text-xs leading-5 text-secondGray' : 'h-auto text-sm text-secondGray dark:text-mediumGrayText'} 
+            absolute top-1/2 left-0 translate-y-[-50%] h-[20px] cursor-text`}
             htmlFor='search-summoner'
           >
-            Game Name + <span className='bg-lightMode-lightGray dark:bg-darkMode-darkGray rounded py-0.5 px-1'>#{regionData.shorthand}</span>
+            Game Name + <span className={`${pageOtherThanHomePage ? 'bg-lightMode-lightGray' : 'bg-lightMode-lightGray dark:bg-darkMode-darkGray'} rounded py-0.5 px-1`}>#{regionData.shorthand}</span>
           </label>
           {isError &&
             <label
-              className={`${summonerName.length > 0 && 'hidden'} absolute top-1/2 translate-y-[-50%] left-0 text-red-500 cursor-text`}
+              className={`${summonerName.length > 0 && 'hidden'} ${pageOtherThanHomePage ? 'text-xs' : 'text-base'} absolute top-1/2 translate-y-[-50%] left-0 text-red-500 cursor-text`}
               htmlFor='search-summoner'
             >
               Invalid summoner name
@@ -75,13 +77,18 @@ const Search = () => {
         </div>
         {isSuccess &&
           <SummonerLink
+            setDisplaySummonerSections={setDisplaySummonerSections}
+            pageOtherThanHomePage={pageOtherThanHomePage}
             summonerAccountData={data as TSummonerAccount}
             summonerName={summonerName}
             isSuccess={isSuccess}
           />
         }
         {summonerName === '' &&
-          <SummonerSections displaySummonerSections={displaySummonerSections} />
+          <SummonerSections
+            pageOtherThanHomePage={pageOtherThanHomePage}
+            displaySummonerSections={displaySummonerSections}
+          />
         }
       </div>
       <button
@@ -89,7 +96,7 @@ const Search = () => {
         type='button'
       >
         <Image
-          className='w-16'
+          className={`${pageOtherThanHomePage ? 'w-12 max-h-8' : 'w-16'}`}
           src='/company-logo/blue-logo.svg'
           width={50}
           height={50}

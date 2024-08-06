@@ -1,11 +1,17 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import GamesServies from './gamesServices/GamesServices';
+import SearchSummoner from '../searchSummoner/SearchSummoner';
 import PagesNavigation from './pagesNavigation/PagesNavigation';
 import ThemeSwitch from './ThemeSwitch';
 import { services } from './navigationData';
 
 const Navigation = () => {
+  const pathname = usePathname();
+
   return (
     <header>
       <div className='flex items-center justify-between bg-darkMode-darkBlue'>
@@ -56,6 +62,7 @@ const Navigation = () => {
           </span>
         </div>
       </div>
+      {pathname !== '/' && <SearchSummoner />}
       <PagesNavigation />
     </header>
   );

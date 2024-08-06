@@ -6,11 +6,12 @@ import type { TLocalStorageSummoner } from '@/app/_types/types';
 import SearchHistory from './SearchHistory';
 import FavoriteSummoners from './FavoriteSummoners';
 
-type Props = {
+type TProps = {
+  pageOtherThanHomePage: boolean;
   displaySummonerSections: boolean;
 }
 
-const SummonerSections = ({ displaySummonerSections }: Props) => {
+const SummonerSections = ({ pageOtherThanHomePage, displaySummonerSections }: TProps) => {
   const dispatch = useAppDispatch();
   const [localStorageSearchHistory, setLocalStorageSearchHistory] = useState<Array<TLocalStorageSummoner>>([]);
   const [displaySection, setDisplaySection] = useState(0);
@@ -28,8 +29,8 @@ const SummonerSections = ({ displaySummonerSections }: Props) => {
   }, []);
 
   return (
-    <div className={`${displaySummonerSections ? 'block' : 'hidden'} absolute top-[3.2rem] 
-    left-0 z-10 w-full bg-white dark:bg-darkMode-mediumGray rounded-b`}
+    <div className={`${displaySummonerSections ? 'block' : 'hidden'} ${pageOtherThanHomePage ? 'top-8 max-w-[472px] left-0' : 'top-[3.2rem]'} 
+    absolute left-0 z-50 w-full bg-white dark:bg-darkMode-mediumGray rounded-b`}
     >
       <div className='flex items-center'>
         <button

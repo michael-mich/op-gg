@@ -73,7 +73,9 @@ const SummonerHeader = () => {
                 alt=''
                 aria-hidden='true'
               />
-              <span className='absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 z-10 text-xs bg-[#202d37] rounded-xl py-[.1rem] px-2'>
+              <span className='absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 z-10 text-xs 
+              text-white bg-[#202d37] rounded-xl py-[.1rem] px-2'
+              >
                 {summonerProfileData?.summonerLevel}
               </span>
             </div>

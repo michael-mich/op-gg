@@ -28,15 +28,15 @@ const RootLayout = ({
     <html lang='en' className={`${roboto.className}`} suppressHydrationWarning>
       <body className='bg-blue dark:bg-darkMode-darkBlue'>
         <Provider>
-          <Navigation />
           <StoreProvider>
             <ReactQueryProvider>
               <NextUiProvider>
+                <Navigation />
                 {children}
+                <Footer />
               </NextUiProvider>
             </ReactQueryProvider>
           </StoreProvider>
-          <Footer />
         </Provider>
       </body>
     </html>

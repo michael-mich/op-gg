@@ -8,17 +8,20 @@ import { getLocalStorageData } from '@/app/_lib/utils';
 import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 
-type Props = {
+type TProps = {
+  setDisplaySummonerSections: React.Dispatch<React.SetStateAction<boolean>>
+  pageOtherThanHomePage: boolean;
   summonerAccountData: TSummonerAccount;
   summonerName: string;
   isSuccess: boolean;
 }
 
 const SummonerLink = ({
+  pageOtherThanHomePage,
   summonerAccountData,
   summonerName,
   isSuccess,
-}: Props) => {
+}: TProps) => {
   const regionData = useAppSelector((state) => state.regionData.regionData);
 
   const { data, refetch } = useQuery({
@@ -54,7 +57,7 @@ const SummonerLink = ({
   }, [summonerAccountData.puuid]);
 
   return (
-    <div className={`${summonerName.length > 0 ? 'block' : 'hidden'} absolute top-[3.2rem] left-0 z-10 
+    <div className={`${summonerName.length > 0 ? 'block' : 'hidden'} ${pageOtherThanHomePage ? 'top-8 max-w-[472px]' : 'top-[3.2rem]'} absolute left-0 z-50 
     w-full bg-white dark:bg-darkMode-mediumGray rounded-b`}
     >
       <Link

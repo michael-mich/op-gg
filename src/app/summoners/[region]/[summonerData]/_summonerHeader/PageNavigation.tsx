@@ -27,7 +27,7 @@ const PageNavigation = ({ summonerTagLine, summonerName }: TProps) => {
         {pageNavigationData.map((pageName, index) => (
           <Link
             href={`${generatePageUrl(pageName)}`}
-            className={`${(generatePageUrl(pageName.toLowerCase()) === pathname || (summonerPageUrl === pathname && index === 0)) ? 'font-bold text-blue dark:text-white bg-[#ecf2ff] dark:bg-[#515163]' : 'opacity-75'} 
+            className={`${(generatePageUrl(pageName.toLowerCase()) === pathname || (summonerPageUrl === pathname && index === 0)) ? 'font-bold text-blue dark:text-white bg-lightBlue dark:bg-[#515163]' : 'opacity-75'} 
             block text-sm rounded py-2 px-4 transition-all`}
             key={index}
           >

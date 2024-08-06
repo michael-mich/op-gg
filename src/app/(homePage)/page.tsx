@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import SearchSummoner from './_searchSummoner/SearchSummoner';
+import SearchSummoner from '../_components/searchSummoner/SearchSummoner';
 import DesktopApp from './_desktopApp/DesktopApp';
 import Esport from './_esoport/Esport';
 
