@@ -8,7 +8,9 @@ const Layout = ({
   return (
     <main>
       <SummonerHeader />
-      {children}
+      <div className='w-[1080px] mt-2 m-auto'>
+        {children}
+      </div>
     </main>
   );
 }

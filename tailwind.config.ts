@@ -11,6 +11,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        almostWhite: '#ebeef1',
         blue: '#5383E8',
         lightBlue: '#ecf2ff',
         gray: '#c0c8ce',
@@ -27,10 +28,14 @@ const config: Config = {
           lighterGray: '#9e9eb1',
         },
         lightMode: {
+          mediumGray: '#758592',
           lightGray: '#f7f7f9',
           lighterGray: '#f1f2f5',
           secondLighterGray: '#758592'
         }
+      },
+      boxShadow: {
+        'custom-shadow': 'rgba(0, 0, 0, 0.3) 0px 8px 12px 0px'
       }
     },
   },

@@ -26,7 +26,7 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang='en' className={`${roboto.className}`} suppressHydrationWarning>
-      <body className='bg-blue dark:bg-darkMode-darkBlue'>
+      <body>
         <Provider>
           <StoreProvider>
             <ReactQueryProvider>

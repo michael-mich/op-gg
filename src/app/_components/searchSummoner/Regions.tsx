@@ -4,11 +4,11 @@ import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';
 import { MdArrowDropDown } from 'react-icons/md';
 import RegionsList from '@/app/_components/RegionsList';
 
-type TProps = {
+type Props = {
   pageOtherThanHomePage: boolean;
 }
 
-const Regions = ({ pageOtherThanHomePage }: TProps) => {
+const Regions = ({ pageOtherThanHomePage }: Props) => {
   const [displayRegionsList, setDisplayRegionsList] = useState(false);
   const regionListRef = useOutsideClick(displayRegionsList, setDisplayRegionsList);
   const regionData = useAppSelector((state) => state.regionData.regionData);

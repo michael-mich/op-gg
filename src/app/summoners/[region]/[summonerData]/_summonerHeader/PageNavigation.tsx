@@ -1,14 +1,14 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-type TProps = {
+type Props = {
   summonerTagLine: string;
   summonerName: string;
 }
 
 const pageNavigationData = ['Sumary', 'Champions', 'Mastery', 'Live Game'];
 
-const PageNavigation = ({ summonerTagLine, summonerName }: TProps) => {
+const PageNavigation = ({ summonerTagLine, summonerName }: Props) => {
   const pathname = usePathname();
   const summonerPageUrl = `/summoners/${summonerTagLine}/${summonerName}-${summonerTagLine.toUpperCase()}`;
 

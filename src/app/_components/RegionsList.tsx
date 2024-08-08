@@ -3,18 +3,22 @@ import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
 import { getRegionData } from '@/app/_lib/features/regionDataSlice';
 import { regionData } from '../_data/regionData';
 
-type TProps = {
+type Props = {
   pageOtherThanHomePage?: boolean;
   displayRegionsList: boolean;
   setDisplayRegionList: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const RegionsList = ({ pageOtherThanHomePage, displayRegionsList, setDisplayRegionList }: TProps) => {
+const RegionsList = ({
+  pageOtherThanHomePage,
+  displayRegionsList,
+  setDisplayRegionList
+}: Props) => {
   const dispatch = useAppDispatch();
 
   return (
     <div className={`${displayRegionsList ? 'block' : 'hidden'} ${pageOtherThanHomePage ? 'right-[-6px] min-w-[200px] top-[1.64rem]' : 'top-[1.95rem]'} 
-    absolute z-50 w-full max-h-60 overflow-scroll bg-white dark:bg-darkMode-mediumGray`}
+    absolute z-50 w-full max-h-60 overflow-scroll bg-white dark:bg-darkMode-mediumGray shadow-custom-shadow`}
     >
       {regionData.map((data) => (
         <button

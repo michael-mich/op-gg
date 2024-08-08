@@ -6,11 +6,16 @@ import { FaStar } from 'react-icons/fa';
 import { TiDeleteOutline } from 'react-icons/ti';
 
 type Props = {
+  setDisplaySummonerSections: React.Dispatch<React.SetStateAction<boolean>>;
   removeSummonerFromLocalStorage: (index: number, localeStorageKey: string) => Array<TLocalStorageSummoner>;
   displaySection: number;
 }
 
-const FavoriteSummoners = ({ removeSummonerFromLocalStorage, displaySection }: Props) => {
+const FavoriteSummoners = ({
+  removeSummonerFromLocalStorage,
+  setDisplaySummonerSections,
+  displaySection
+}: Props) => {
   const localStorageFavoriteSummoners = useAppSelector((state) => state.localStorageFavoriteSummoners.localStorageFavoriteSummoners);
   const dispatch = useAppDispatch();
 
@@ -30,6 +35,7 @@ const FavoriteSummoners = ({ removeSummonerFromLocalStorage, displaySection }: P
         :
         localStorageFavoriteSummoners.map((data, index) => (
           <Link
+            onClick={() => setDisplaySummonerSections(false)}
             className='flex items-center justify-between py-2 px-3 last-of-type:rounded-b transition-colors 
             hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray'
             href={`/summoners/${data.regionShorthand.toLowerCase()}/${data.summonerName}-${data.tagLine}`}

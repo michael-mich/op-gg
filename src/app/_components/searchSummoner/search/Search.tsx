@@ -8,13 +8,15 @@ import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import SummonerLink from './SummonerLink';
 import SummonerSections from './summonerSections/SummonerSections';
 
-type TProps = {
+type Props = {
   pageOtherThanHomePage: boolean;
 }
 
-const Search = ({ pageOtherThanHomePage }: TProps) => {
+const Search = ({ pageOtherThanHomePage }: Props) => {
   const [summonerName, setSummonerName] = useState('');
   const [displaySummonerSections, setDisplaySummonerSections] = useState(false);
+  const [displaySummonerLink, setDisplaySummonerLink] = useState(false);
+
   const summonerSectionsRef = useOutsideClick(displaySummonerSections, setDisplaySummonerSections);
   const regionData = useAppSelector((state) => state.regionData.regionData);
 
@@ -38,7 +40,11 @@ const Search = ({ pageOtherThanHomePage }: TProps) => {
     if (isError && !isFetching) {
       setSummonerName('');
     }
-  }, [isError, isFetching]);
+
+    if (!isFetching && isSuccess) {
+      setDisplaySummonerLink(true);
+    }
+  }, [isError, isFetching, isSuccess]);
 
   return (
     <div className={`${pageOtherThanHomePage ? 'h-8 rounded-r bg-white pr-3' : 'flex items-center h-[60px] rounded-r-full bg-white dark:bg-darkMode-mediumGray pl-4 pr-8'} flex justify-between w-full`}>
@@ -75,9 +81,9 @@ const Search = ({ pageOtherThanHomePage }: TProps) => {
             </label>
           }
         </div>
-        {isSuccess &&
+        {(isSuccess && displaySummonerLink) &&
           <SummonerLink
-            setDisplaySummonerSections={setDisplaySummonerSections}
+            setDisplaySummonerLink={setDisplaySummonerLink}
             pageOtherThanHomePage={pageOtherThanHomePage}
             summonerAccountData={data as TSummonerAccount}
             summonerName={summonerName}
@@ -87,6 +93,7 @@ const Search = ({ pageOtherThanHomePage }: TProps) => {
         {summonerName === '' &&
           <SummonerSections
             pageOtherThanHomePage={pageOtherThanHomePage}
+            setDisplaySummonerSections={setDisplaySummonerSections}
             displaySummonerSections={displaySummonerSections}
           />
         }

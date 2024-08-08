@@ -8,6 +8,7 @@ import { TiDeleteOutline } from 'react-icons/ti';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
 type Props = {
+  setDisplaySummonerSections: React.Dispatch<React.SetStateAction<boolean>>;
   localStorageSearchHistory: Array<TLocalStorageSummoner>;
   setLocalStorageSearchHistory: React.Dispatch<React.SetStateAction<Array<TLocalStorageSummoner>>>;
   removeSummonerFromLocalStorage: (index: number, localeStorageKey: string) => Array<TLocalStorageSummoner>;
@@ -15,6 +16,7 @@ type Props = {
 }
 
 const SearchHistory = ({
+  setDisplaySummonerSections,
   localStorageSearchHistory,
   setLocalStorageSearchHistory,
   removeSummonerFromLocalStorage,
@@ -62,6 +64,7 @@ const SearchHistory = ({
 
           return (
             <Link
+              onClick={() => setDisplaySummonerSections(false)}
               className='flex items-center justify-between py-2 px-3 last-of-type:rounded-b transition-colors 
             hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray'
               href={`/summoners/${data.regionShorthand.toLowerCase()}/${data.summonerName}-${data.tagLine}`}

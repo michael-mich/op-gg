@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+  html.dark {
+    background-color: theme(colors.darkMode.darkBlue);
+  }
+
+  html.light {
+    background-color: theme(colors.blue);
+  }
+
   img {
     width: auto;
   }

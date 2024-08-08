@@ -8,8 +8,8 @@ import { getLocalStorageData } from '@/app/_lib/utils';
 import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 
-type TProps = {
-  setDisplaySummonerSections: React.Dispatch<React.SetStateAction<boolean>>
+type Props = {
+  setDisplaySummonerLink: React.Dispatch<React.SetStateAction<boolean>>;
   pageOtherThanHomePage: boolean;
   summonerAccountData: TSummonerAccount;
   summonerName: string;
@@ -17,11 +17,12 @@ type TProps = {
 }
 
 const SummonerLink = ({
+  setDisplaySummonerLink,
   pageOtherThanHomePage,
   summonerAccountData,
   summonerName,
   isSuccess,
-}: TProps) => {
+}: Props) => {
   const regionData = useAppSelector((state) => state.regionData.regionData);
 
   const { data, refetch } = useQuery({
@@ -58,10 +59,13 @@ const SummonerLink = ({
 
   return (
     <div className={`${summonerName.length > 0 ? 'block' : 'hidden'} ${pageOtherThanHomePage ? 'top-8 max-w-[472px]' : 'top-[3.2rem]'} absolute left-0 z-50 
-    w-full bg-white dark:bg-darkMode-mediumGray rounded-b`}
+    w-full bg-white dark:bg-darkMode-mediumGray rounded-b shadow-custom-shadow`}
     >
       <Link
-        onClick={addSearchHistoryDataToLocalStorage}
+        onClick={() => {
+          addSearchHistoryDataToLocalStorage();
+          setDisplaySummonerLink(false);
+        }}
         className='flex items-center gap-2 py-1.5 px-4 transition-colors hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray rounded-b'
         href={`/summoners/${regionData.shorthand.toLowerCase()}/${summonerAccountData.gameName}-${summonerAccountData.tagLine}`}
       >

@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import { usePathname, notFound } from 'next/navigation';
 import { useEffect } from 'react';
+import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
+import { setSummonerId } from '@/app/_lib/features/summonerIdSlice';
 import { useQuery } from '@tanstack/react-query';
 import { regionData } from '@/app/_data/regionData';
 import { getSummonerProfileData, getSummonerAccount } from '@/app/_lib/api/riotGamesApi';
@@ -14,6 +16,8 @@ import PageNavigation from './PageNavigation';
 
 const SummonerHeader = () => {
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
+
   const summonerTagLine = pathname.replaceAll('/', ' ').split(' ')[2];
   const summonerName = pathname.replaceAll('/', ' ').split(' ')[3].replace('-', ' ').split(' ')[0].replaceAll('%20', ' ');
 
@@ -27,13 +31,17 @@ const SummonerHeader = () => {
     data: summonerAccountData,
     isFetched: fetchedSummonerAccountData,
     isError: summonerAccountDataError,
-    isLoading,
+    isLoading: summonerAccountDataLoading
   } = useQuery({
     queryKey: ['summonerAccount', 'summonersPage'],
     queryFn: () => getSummonerAccount(summonerName, currentRegionData)
   });
 
-  const { data: summonerProfileData, refetch: refetchSummonerProfileData } = useQuery({
+  const {
+    data: summonerProfileData,
+    refetch: refetchSummonerProfileData,
+    isFetched: fetchedSummonerProfileData
+  } = useQuery({
     enabled: false,
     queryKey: ['summonerProfile', 'summonersPage'],
     queryFn: () => getSummonerProfileData(summonerAccountData as TSummonerAccount, currentRegionData)
@@ -56,10 +64,16 @@ const SummonerHeader = () => {
     }
   }, [fetchedSummonerAccountData, summonerAccountData?.puuid]);
 
+  useEffect(() => {
+    if (fetchedSummonerProfileData) {
+      dispatch(setSummonerId(summonerProfileData?.id));
+    }
+  }, [fetchedSummonerProfileData, summonerProfileData?.id]);
+
   return (
     <section className='bg-white dark:bg-darkMode-mediumGray pt-12'>
       <div className='w-[1080px] m-auto'>
-        {isLoading
+        {summonerAccountDataLoading
           ?
           <SummonerHeaderSkeleton />
           :
@@ -86,7 +100,6 @@ const SummonerHeader = () => {
                 <FavoriteSummonerButton
                   favoriteSummonerData={favoriteSummonerData}
                   fetchedSummonerAccountData={fetchedSummonerAccountData}
-                  summonerProfileData={summonerProfileData}
                 />
               </div>
               <div className='mt-1.5'>
