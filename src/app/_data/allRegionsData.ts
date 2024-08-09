@@ -1,4 +1,4 @@
-export const regionData = [
+export const allRegionsData = [
   {
     name: 'North America',
     shorthand: 'NA1',

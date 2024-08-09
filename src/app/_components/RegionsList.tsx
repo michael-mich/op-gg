@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
-import { getRegionData } from '@/app/_lib/features/regionDataSlice';
-import { regionData } from '../_data/regionData';
+import { setMarkedRegionData } from '../_lib/features/markedRegionDataSlice';
+import { allRegionsData } from '../_data/allRegionsData';
 
 type Props = {
   pageOtherThanHomePage?: boolean;
@@ -20,10 +20,10 @@ const RegionsList = ({
     <div className={`${displayRegionsList ? 'block' : 'hidden'} ${pageOtherThanHomePage ? 'right-[-6px] min-w-[200px] top-[1.64rem]' : 'top-[1.95rem]'} 
     absolute z-50 w-full max-h-60 overflow-scroll bg-white dark:bg-darkMode-mediumGray shadow-custom-shadow`}
     >
-      {regionData.map((data) => (
+      {allRegionsData.map((data) => (
         <button
           onClick={() => {
-            dispatch(getRegionData({
+            dispatch(setMarkedRegionData({
               name: data.name,
               shorthand: data.shorthand,
               image: data.image,

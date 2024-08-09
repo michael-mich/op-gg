@@ -28,6 +28,11 @@ const SummonerSections = ({
     return storageData;
   }
 
+  const handleMouseInteraction = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
   useEffect(() => {
     setLocalStorageSearchHistory(getLocalStorageData('searchHistory'));
     dispatch(setLocalStorageFavoriteSummoners(getLocalStorageData('favoriteSummoners')));
@@ -56,6 +61,7 @@ const SummonerSections = ({
         </button>
       </div>
       <SearchHistory
+        handleMouseInteraction={handleMouseInteraction}
         setDisplaySummonerSections={setDisplaySummonerSections}
         localStorageSearchHistory={localStorageSearchHistory}
         setLocalStorageSearchHistory={setLocalStorageSearchHistory}
@@ -63,6 +69,7 @@ const SummonerSections = ({
         displaySection={displaySection}
       />
       <FavoriteSummoners
+        handleMouseInteraction={handleMouseInteraction}
         setDisplaySummonerSections={setDisplaySummonerSections}
         removeSummonerFromLocalStorage={removeSummonerFromLocalStorage}
         displaySection={displaySection}

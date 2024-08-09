@@ -21,7 +21,7 @@ const FavoriteSummonerButton = ({
     localStorage.setItem('favoriteSummoners', JSON.stringify(favoriteSummonersArray));
     dispatch(setLocalStorageFavoriteSummoners(favoriteSummonersArray));
   }
-  console.log('re re');
+
   const toggleFavoriteSummoner = (): void => {
     const favoriteSummonersArray = getLocalStorageData('favoriteSummoners');
     const favoriteSummonerIndex = favoriteSummonersArray.findIndex((data) => (data.summonerId === summonerId));

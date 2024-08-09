@@ -7,8 +7,13 @@ export type TRegionData = {
 }
 
 export type TLocalStorageSummoner = {
-  regionShorthand: string;
+  regionShorthand: string | undefined;
   summonerName: string | undefined;
   tagLine: string | undefined;
   summonerId: string | undefined;
+}
+
+export type TSummonerPageParams = {
+  region: string;
+  summonerData: string;
 }

@@ -28,6 +28,7 @@ const NotFound: FC = () => {
         src='/not-found-page/image.png'
         width={380}
         height={200}
+        priority
         alt=''
         aria-hidden='true'
       />

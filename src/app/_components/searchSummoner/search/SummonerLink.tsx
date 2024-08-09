@@ -23,16 +23,16 @@ const SummonerLink = ({
   summonerName,
   isSuccess,
 }: Props) => {
-  const regionData = useAppSelector((state) => state.regionData.regionData);
+  const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);
 
   const { data, refetch } = useQuery({
     enabled: false,
     queryKey: ['summonerLevelAndIconId'],
-    queryFn: () => getSummonerProfileData(summonerAccountData, regionData)
+    queryFn: () => getSummonerProfileData(summonerAccountData, markedRegionData)
   });
 
   const searchHistoryData: TLocalStorageSummoner = {
-    regionShorthand: regionData.shorthand,
+    regionShorthand: markedRegionData.shorthand,
     summonerName: summonerAccountData.gameName,
     tagLine: summonerAccountData.tagLine,
     summonerId: data?.id
@@ -67,7 +67,7 @@ const SummonerLink = ({
           setDisplaySummonerLink(false);
         }}
         className='flex items-center gap-2 py-1.5 px-4 transition-colors hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray rounded-b'
-        href={`/summoners/${regionData.shorthand.toLowerCase()}/${summonerAccountData.gameName}-${summonerAccountData.tagLine}`}
+        href={`/summoners/${markedRegionData.shorthand.toLowerCase()}/${summonerAccountData.gameName}-${summonerAccountData.tagLine}`}
       >
         <Image
           className='w-9 rounded-full aspect-square'

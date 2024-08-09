@@ -11,7 +11,7 @@ type Props = {
 const Regions = ({ pageOtherThanHomePage }: Props) => {
   const [displayRegionsList, setDisplayRegionsList] = useState(false);
   const regionListRef = useOutsideClick(displayRegionsList, setDisplayRegionsList);
-  const regionData = useAppSelector((state) => state.regionData.regionData);
+  const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);
 
   return (
     <div className={`${pageOtherThanHomePage ? 'items-center h-8 bg-lightBlue rounded-l pl-3 px-[6px] after:hidden' : 'flex-col justify-center h-[60px] rounded-l-full bg-white dark:bg-darkMode-mediumGray pl-8 pr-2 after:block'} 
@@ -27,7 +27,7 @@ const Regions = ({ pageOtherThanHomePage }: Props) => {
           type='button'
         >
           <span className={`${pageOtherThanHomePage ? 'text-xs text-blue' : 'text-sm text-secondGray dark:text-mediumGrayText'}`}>
-            {pageOtherThanHomePage ? regionData.shorthand : regionData.name}
+            {pageOtherThanHomePage ? markedRegionData.shorthand : markedRegionData.name}
           </span>
           <MdArrowDropDown
             className={`relative ${pageOtherThanHomePage ? 'right-0 text-blue' : 'right-2 text-[#7b7a8e]'} size-5 transition-transform ${displayRegionsList && 'rotate-180'}`}

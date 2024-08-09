@@ -18,12 +18,12 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
   const [displaySummonerLink, setDisplaySummonerLink] = useState(false);
 
   const summonerSectionsRef = useOutsideClick(displaySummonerSections, setDisplaySummonerSections);
-  const regionData = useAppSelector((state) => state.regionData.regionData);
+  const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);
 
   const { data, isError, isSuccess, isFetching, refetch } = useQuery({
     enabled: false,
     queryKey: ['summonerAccount'],
-    queryFn: () => getSummonerAccount(summonerName, regionData)
+    queryFn: () => getSummonerAccount(summonerName, markedRegionData)
   });
 
   const handleSummonerName = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -70,7 +70,7 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
             absolute top-1/2 left-0 translate-y-[-50%] h-[20px] cursor-text`}
             htmlFor='search-summoner'
           >
-            Game Name + <span className={`${pageOtherThanHomePage ? 'bg-lightMode-lightGray' : 'bg-lightMode-lightGray dark:bg-darkMode-darkGray'} rounded py-0.5 px-1`}>#{regionData.shorthand}</span>
+            Game Name + <span className={`${pageOtherThanHomePage ? 'bg-lightMode-lightGray' : 'bg-lightMode-lightGray dark:bg-darkMode-darkGray'} rounded py-0.5 px-1`}>#{markedRegionData?.shorthand}</span>
           </label>
           {isError &&
             <label

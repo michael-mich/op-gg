@@ -6,12 +6,14 @@ import { FaStar } from 'react-icons/fa';
 import { TiDeleteOutline } from 'react-icons/ti';
 
 type Props = {
+  handleMouseInteraction: (e: React.MouseEvent<HTMLButtonElement>) => void;
   setDisplaySummonerSections: React.Dispatch<React.SetStateAction<boolean>>;
   removeSummonerFromLocalStorage: (index: number, localeStorageKey: string) => Array<TLocalStorageSummoner>;
   displaySection: number;
 }
 
 const FavoriteSummoners = ({
+  handleMouseInteraction,
   removeSummonerFromLocalStorage,
   setDisplaySummonerSections,
   displaySection
@@ -38,8 +40,8 @@ const FavoriteSummoners = ({
             onClick={() => setDisplaySummonerSections(false)}
             className='flex items-center justify-between py-2 px-3 last-of-type:rounded-b transition-colors 
             hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray'
-            href={`/summoners/${data.regionShorthand.toLowerCase()}/${data.summonerName}-${data.tagLine}`}
-            key={data.summonerId}
+            href={`/summoners/${data.regionShorthand?.toLowerCase()}/${data.summonerName}-${data.tagLine}`}
+            key={`${data.summonerId}-${data.regionShorthand}`}
           >
             <div>
               <span className='bg-blue text-[11px] font-bold text-white rounded-sm py-[3px] px-1'>
@@ -55,7 +57,7 @@ const FavoriteSummoners = ({
             <div>
               <button
                 onClick={(e) => {
-                  e.preventDefault();
+                  handleMouseInteraction(e);
                   dispatch(setLocalStorageFavoriteSummoners(removeSummonerFromLocalStorage(index, 'favoriteSummoners')));
                 }}
                 type='button'

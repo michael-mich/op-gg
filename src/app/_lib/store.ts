@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import regionDataReducer from './features/regionDataSlice';
+import markedRegionDataReducer from './features/markedRegionDataSlice';
 import localStorageFavoriteSummonersReducer from './features/localStorageFavoriteSummonersSlice';
 import summonerIdReducer from './features/summonerIdSlice';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      regionData: regionDataReducer,
+      markedRegionData: markedRegionDataReducer,
       localStorageFavoriteSummoners: localStorageFavoriteSummonersReducer,
       summonerId: summonerIdReducer
     }

@@ -2,11 +2,11 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { TRegionData } from '@/app/_types/types';
 
 type TRegionState = {
-  regionData: TRegionData
+  markedRegionData: TRegionData
 }
 
 const initialState: TRegionState = {
-  regionData: {
+  markedRegionData: {
     name: 'Europe West',
     shorthand: 'EUW',
     image: '/regions/euw.svg',
@@ -15,16 +15,16 @@ const initialState: TRegionState = {
   }
 }
 
-const regionDataSlice = createSlice({
+const markedRegionDataSlice = createSlice({
   name: 'region',
   initialState,
   reducers: {
-    getRegionData: (state, action: PayloadAction<TRegionData>) => {
-      state.regionData = action.payload;
+    setMarkedRegionData: (state, action: PayloadAction<TRegionData>) => {
+      state.markedRegionData = action.payload;
     }
   }
 })
 
-export const { getRegionData } = regionDataSlice.actions;
+export const { setMarkedRegionData } = markedRegionDataSlice.actions;
 
-export default regionDataSlice.reducer;
+export default markedRegionDataSlice.reducer;

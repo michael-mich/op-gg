@@ -1,7 +1,12 @@
-import type { TLocalStorageSummoner } from '../_types/types';
+import type { TLocalStorageSummoner, TRegionData } from '../_types/types';
+import { allRegionsData } from '../_data/allRegionsData';
 
 export const getLocalStorageData = (localeStorageKey: string): Array<TLocalStorageSummoner> => {
   return JSON.parse(localStorage.getItem(localeStorageKey) || '[]');
+}
+
+export const getRegionDataFromParams = (regionShorthand: string): TRegionData | undefined => {
+  return allRegionsData.find((region) => (region.shorthand.toLowerCase() === regionShorthand));
 }
 
 export const fetchApi = async <T>(

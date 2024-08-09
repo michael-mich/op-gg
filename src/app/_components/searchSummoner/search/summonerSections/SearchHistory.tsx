@@ -8,6 +8,7 @@ import { TiDeleteOutline } from 'react-icons/ti';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
 type Props = {
+  handleMouseInteraction: (e: React.MouseEvent<HTMLButtonElement>) => void;
   setDisplaySummonerSections: React.Dispatch<React.SetStateAction<boolean>>;
   localStorageSearchHistory: Array<TLocalStorageSummoner>;
   setLocalStorageSearchHistory: React.Dispatch<React.SetStateAction<Array<TLocalStorageSummoner>>>;
@@ -16,6 +17,7 @@ type Props = {
 }
 
 const SearchHistory = ({
+  handleMouseInteraction,
   setDisplaySummonerSections,
   localStorageSearchHistory,
   setLocalStorageSearchHistory,
@@ -67,8 +69,8 @@ const SearchHistory = ({
               onClick={() => setDisplaySummonerSections(false)}
               className='flex items-center justify-between py-2 px-3 last-of-type:rounded-b transition-colors 
             hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray'
-              href={`/summoners/${data.regionShorthand.toLowerCase()}/${data.summonerName}-${data.tagLine}`}
-              key={data.summonerId}
+              href={`/summoners/${data.regionShorthand?.toLowerCase()}/${data.summonerName}-${data.tagLine}`}
+              key={`${data.summonerId}-${data.regionShorthand}`}
             >
               <div>
                 <span className='bg-blue text-[11px] font-bold text-white rounded-sm py-[3px] px-1'>
@@ -83,7 +85,10 @@ const SearchHistory = ({
               </div>
               <div>
                 <button
-                  onClick={(e) => { e.preventDefault(); toggleFavoriteSummoner(index); }}
+                  onClick={(e) => {
+                    handleMouseInteraction(e);
+                    toggleFavoriteSummoner(index);
+                  }}
                   className='mr-3'
                   type='button'
                 >
@@ -96,7 +101,7 @@ const SearchHistory = ({
                 </button>
                 <button
                   onClick={(e) => {
-                    e.preventDefault();
+                    handleMouseInteraction(e);
                     setLocalStorageSearchHistory(removeSummonerFromLocalStorage(index, 'searchHistory'));
                   }}
                   type='button'
