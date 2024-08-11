@@ -25,6 +25,7 @@ const config: Config = {
           darkBlue: '#1C1C1F',
           darkGray: '#282830',
           mediumGray: '#31313C',
+          secondMediumGray: '#79788b',
           lighterGray: '#9e9eb1',
         },
         lightMode: {

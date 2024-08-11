@@ -15,7 +15,7 @@ const additionalQueueTypes = [
   'Featured'
 ];
 
-const SummonerQueueTypes = () => {
+const QueueTypes = () => {
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded px-[12px]'>
       <ul className='flex items-center'>
@@ -49,4 +49,4 @@ const SummonerQueueTypes = () => {
   );
 }
 
-export default SummonerQueueTypes;
+export default QueueTypes;

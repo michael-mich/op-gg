@@ -37,4 +37,5 @@ export type TSummonerRank = {
   leaguePoints: number;
   wins: number;
   losses: number;
+  queueType: string;
 }
