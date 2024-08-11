@@ -23,7 +23,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
 
   const currentRegionData = getRegionDataFromParams(params.region);
 
-  const { data: fetchedSummonerRanksData, refetch, isLoading, isError } = useQuery({
+  const { data: fetchedSummonerRanksData, refetch, isLoading } = useQuery({
     enabled: false,
     queryKey: ['summonerRank'],
     queryFn: () => getSummonerRank(currentRegionData, summonerId)
@@ -60,16 +60,12 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
   const winRate = calculateWinRate();
   const rankedEmblem = getRankedEmblem();
 
-  if (isError) {
-    return <p>Error happend</p>
-  }
-
   useEffect(() => {
     if (summonerId) {
       refetch();
     }
   }, [summonerId]);
-  console.log(smallDataStyle)
+
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded mt-2'>
       {(isLoading || summonerId === '')
@@ -97,7 +93,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
                 </div>
                 <div>
                   <span className={`${smallDataStyle ? 'text-sm' : 'text-xl'} block font-bold`}>
-                    {tierName} {!tierName.includes('Grandmaster' || 'Master' || 'Challanger') && rankedData!.rank}
+                    {tierName} {!['Grandmaster', 'Master', 'Challanger'].includes(tierName) && rankedData?.rank}
                   </span>
                   <span className='block text-xs text-lightMode-mediumGray dark:text-darkMode-lighterGray'>
                     {rankedData!.leaguePoints} LP

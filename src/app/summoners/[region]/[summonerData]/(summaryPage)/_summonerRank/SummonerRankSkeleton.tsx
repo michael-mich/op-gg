@@ -8,7 +8,7 @@ const SummonerRankSkeleton = ({ smallDataStyle }: Props) => {
   return (
     <div className={`w-[332px] ${smallDataStyle ? 'h-[99px]' : 'h-[131px]'} px-3`}>
       <div className='flex items-center h-[35px]'>
-        <Skeleton className='h-3 w-3/5 rounded-lg' />
+        <Skeleton className='h-2 w-3/5 rounded-lg' />
       </div>
       <div className={`flex items-center ${smallDataStyle ? 'gap-2' : 'gap-4'} py-3`}>
         <div>
