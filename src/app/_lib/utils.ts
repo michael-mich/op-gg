@@ -12,13 +12,13 @@ export const getRegionDataFromParams = (regionShorthand: string): TRegionData | 
 export const fetchApi = async <T>(
   url: string,
   cacheValue?: { cache: 'force-cache' }
-): Promise<T | void> => {
+): Promise<T | void | undefined> => {
   try {
     const response = await fetch(url, cacheValue);
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    const data = response.json();
+    const data = await response.json() as T;
     return data;
   }
   catch (error) {
