@@ -30,21 +30,20 @@ const Teams = () => {
           >
             <div className='flex items-center gap-2'>
               <span className='text-xs font-bold'>
-                {data.rank}
+                {data?.rank}
               </span>
               <Image
                 className='max-w-6'
-                src={data.team.image_url}
+                src={data?.team.image_url || ''}
                 width={25}
                 height={25}
-                alt={data.team.acronym}
+                alt={data?.team.acronym || ''}
               />
               <span className='text-xs font-bold'>
-                {data.team.acronym
-                }</span>
+                {data?.team.acronym}</span>
             </div>
             <p className='text-xs font-bold'>
-              {data.wins}W {data.losses}L
+              {data?.wins}W {data?.losses}L
             </p>
           </div>
         ))
