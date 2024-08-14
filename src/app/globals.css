@@ -37,4 +37,12 @@
   .border-bottom-theme {
     @apply border-b border-b-lightMode-lighterGray dark:border-b-darkMode-darkBlue;
   }
+
+  .level {
+    font-size: theme(fontSize.xs);
+    color: theme(colors.white);
+    background-color: #202d37;
+    border-radius: theme(borderRadius.xl);
+    padding: 0.1rem theme(padding.2);
+  }
 }

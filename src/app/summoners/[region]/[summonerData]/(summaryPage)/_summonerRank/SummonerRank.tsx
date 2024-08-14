@@ -76,7 +76,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
           <div className='flex items-center justify-between h-[35px] border-bottom-theme px-3'>
             <span className='text-sm'>{queueType === 'RANKED_SOLO_5x5' ? 'Ranked Solo' : 'Ranked Flex'}</span>
             {!rankedData &&
-              <span className='text-sm'>Unranked</span>
+              <span className='text-sm text-[#c3cbd1] dark:text-[#515163]'>Unranked</span>
             }
           </div>
           {rankedData &&

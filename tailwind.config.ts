@@ -12,6 +12,7 @@ const config: Config = {
     extend: {
       colors: {
         almostWhite: '#ebeef1',
+        darkSlateGray: '#34414d',
         blue: '#5383E8',
         lightBlue: '#ecf2ff',
         gray: '#c0c8ce',

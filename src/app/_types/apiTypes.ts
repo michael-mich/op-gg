@@ -39,3 +39,22 @@ export type TSummonerRank = {
   losses: number;
   queueType: string;
 }
+
+export type TChampionMastery<T extends string = string> = {
+  championId: number;
+  championLevel: number;
+  championPoints: number;
+  championPointsSinceLastLevel: number;
+  championPointsUntilNextLevel: number;
+  championSeasonMilestone: number;
+  lastPlayTime: number;
+  nextSeasonMilestone: {
+    requireGradeCounts: Record<T, number>;
+  }
+}
+
+export type TChampion = {
+  name: string;
+  image: { full: string };
+  key: string;
+}

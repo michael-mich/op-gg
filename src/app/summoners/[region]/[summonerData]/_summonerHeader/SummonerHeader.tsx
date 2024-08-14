@@ -5,6 +5,7 @@ import { notFound, useParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
 import { setSummonerId } from '@/app/_lib/features/summonerIdSlice';
+import { setSummonerPuuid } from '@/app/_lib/features/summonerPuuidSlice';
 import { useQuery } from '@tanstack/react-query';
 import { getRegionDataFromParams } from '@/app/_lib/utils';
 import { getSummonerProfileData, getSummonerAccount } from '@/app/_lib/api/riotGamesApi';
@@ -62,6 +63,7 @@ const SummonerHeader = () => {
   useEffect(() => {
     if (fetchedSummonerProfileData) {
       dispatch(setSummonerId(summonerProfileData?.id));
+      dispatch(setSummonerPuuid(summonerAccountData?.puuid));
     }
   }, [fetchedSummonerProfileData, summonerProfileData?.id]);
 
@@ -74,7 +76,7 @@ const SummonerHeader = () => {
             <SummonerHeaderSkeleton />
             :
             <div className='flex gap-6 pb-8'>
-              <div className='relative'>
+              <div className='flex flex-col'>
                 <Image
                   className='w-24 aspect-square object-contain rounded-2xl'
                   src={`https://ddragon.leagueoflegends.com/cdn/14.14.1/img/profileicon/${summonerProfileData?.profileIconId}.png`}
@@ -83,9 +85,7 @@ const SummonerHeader = () => {
                   alt=''
                   aria-hidden='true'
                 />
-                <span className='absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 z-10 text-xs 
-                text-white bg-[#202d37] rounded-xl py-[.1rem] px-2'
-                >
+                <span className='level mt-[-11px] m-auto'>
                   {summonerProfileData?.summonerLevel}
                 </span>
               </div>

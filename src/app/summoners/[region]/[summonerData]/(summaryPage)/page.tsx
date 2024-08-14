@@ -1,5 +1,6 @@
 import QueueTypes from './QueueTypes';
 import SummonerRank from './_summonerRank/SummonerRank';
+import SummonerChampionsMastery from './_summonerChampionsMastery/SummonerChampionsMastery';
 
 const Page = () => {
   return (
@@ -15,6 +16,7 @@ const Page = () => {
             queueType={'RANKED_FLEX_SR'}
             smallDataStyle
           />
+          <SummonerChampionsMastery />
         </div>
       </div>
     </>
