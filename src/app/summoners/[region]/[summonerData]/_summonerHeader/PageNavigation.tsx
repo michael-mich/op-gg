@@ -1,16 +1,13 @@
-import { usePathname } from 'next/navigation';
+import { usePathname, useParams } from 'next/navigation';
 import Link from 'next/link';
-
-type Props = {
-  summonerTagLine: string;
-  summonerName: string;
-}
+import type { TSummonerPageParams } from '@/app/_types/types';
 
 const pageNavigationData = ['Sumary', 'Champions', 'Mastery', 'Live Game'];
 
-const PageNavigation = ({ summonerTagLine, summonerName }: Props) => {
+const PageNavigation = () => {
+  const params = useParams<TSummonerPageParams>();
   const pathname = usePathname();
-  const summonerPageUrl = `/summoners/${summonerTagLine}/${summonerName}-${summonerTagLine.toUpperCase()}`;
+  const summonerPageUrl = `/summoners/${params.region}/${params.summonerData}`;
 
   const generatePageUrl = (pageName: string): string => {
     if (pageName === 'Sumary') {

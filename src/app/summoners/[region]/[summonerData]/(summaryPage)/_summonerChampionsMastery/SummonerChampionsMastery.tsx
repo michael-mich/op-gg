@@ -23,7 +23,7 @@ const SummonerChampionsMastery = () => {
   const {
     data: topFourChampionsMasteryData,
     refetch: refetchTopFourChampionsMastery,
-    isFetched: fetchedTopFourChampionsMastery,
+    isFetched: isTopFourChampionsMasteryFetched,
     isRefetching: isTopFourChampionsMasteryRefetching,
     isLoading: isTopFourChampionsMasteryLoading,
     isError: isTopFourChampionsMasteryError
@@ -58,7 +58,7 @@ const SummonerChampionsMastery = () => {
     if (topFourChampionsMasteryData) {
       refetchFilteredChampions();
     }
-  }, [fetchedTopFourChampionsMastery, isTopFourChampionsMasteryRefetching]);
+  }, [isTopFourChampionsMasteryFetched, isTopFourChampionsMasteryRefetching]);
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded mt-2'>

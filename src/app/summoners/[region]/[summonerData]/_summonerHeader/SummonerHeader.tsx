@@ -25,9 +25,10 @@ const SummonerHeader = () => {
 
   const {
     data: summonerAccountData,
-    isFetched: fetchedSummonerAccountData,
+    isFetched: isSummonerAccountDataFetched,
     isError: summonerAccountDataError,
-    isLoading: summonerAccountDataLoading
+    isLoading: isSummonerAccountDataLoading,
+    isRefetching: isSummonerAccountDataRefetching
   } = useQuery({
     queryKey: ['summonerAccount', 'summonersPage'],
     queryFn: () => getSummonerAccount(summonerName, currentRegionData)
@@ -55,10 +56,10 @@ const SummonerHeader = () => {
   }
 
   useEffect(() => {
-    if (fetchedSummonerAccountData) {
+    if (isSummonerAccountDataFetched) {
       refetchSummonerProfileData();
     }
-  }, [fetchedSummonerAccountData, summonerAccountData?.puuid]);
+  }, [isSummonerAccountDataFetched, summonerAccountData?.puuid]);
 
   useEffect(() => {
     if (fetchedSummonerProfileData) {
@@ -71,7 +72,7 @@ const SummonerHeader = () => {
     <section className='bg-white dark:bg-darkMode-mediumGray pt-12'>
       <div className='border-bottom-theme'>
         <div className='w-[1080px] m-auto'>
-          {summonerAccountDataLoading
+          {(isSummonerAccountDataLoading || isSummonerAccountDataRefetching)
             ?
             <SummonerHeaderSkeleton />
             :
@@ -95,7 +96,7 @@ const SummonerHeader = () => {
                   <span className='text-2xl text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>#{summonerAccountData?.tagLine} </span>
                   <FavoriteSummonerButton
                     favoriteSummonerData={favoriteSummonerData}
-                    fetchedSummonerAccountData={fetchedSummonerAccountData}
+                    isSummonerAccountDataFetched={isSummonerAccountDataFetched}
                   />
                 </div>
                 <div className='mt-1.5'>
@@ -117,10 +118,7 @@ const SummonerHeader = () => {
           }
         </div>
       </div>
-      <PageNavigation
-        summonerTagLine={summonerTagLine}
-        summonerName={summonerName}
-      />
+      <PageNavigation />
     </section >
   );
 }

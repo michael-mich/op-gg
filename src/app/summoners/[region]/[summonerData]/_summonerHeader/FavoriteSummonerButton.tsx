@@ -6,12 +6,12 @@ import { FaStar, FaRegStar } from 'react-icons/fa';
 
 type Props = {
   favoriteSummonerData: TLocalStorageSummoner;
-  fetchedSummonerAccountData: boolean;
+  isSummonerAccountDataFetched: boolean;
 }
 
 const FavoriteSummonerButton = ({
   favoriteSummonerData,
-  fetchedSummonerAccountData,
+  isSummonerAccountDataFetched,
 }: Props) => {
   const summonerId = useAppSelector((state) => state.summonerId.summonerId);
   const localStorageFavoriteSummoners = useAppSelector((state) => state.localStorageFavoriteSummoners.localStorageFavoriteSummoners);
@@ -26,7 +26,7 @@ const FavoriteSummonerButton = ({
     const favoriteSummonersArray = getLocalStorageData('favoriteSummoners');
     const favoriteSummonerIndex = favoriteSummonersArray.findIndex((data) => (data.summonerId === summonerId));
 
-    if (fetchedSummonerAccountData) {
+    if (isSummonerAccountDataFetched) {
       if (favoriteSummonerIndex === -1) {
         favoriteSummonersArray.unshift(favoriteSummonerData);
         updateFavoriteSummoners(favoriteSummonersArray);

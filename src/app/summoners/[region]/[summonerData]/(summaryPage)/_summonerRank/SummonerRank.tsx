@@ -23,7 +23,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
 
   const currentRegionData = getRegionDataFromParams(params.region);
 
-  const { data: fetchedSummonerRanksData, refetch, isLoading } = useQuery({
+  const { data: fetchedSummonerRanksData, refetch, isLoading, isRefetching } = useQuery({
     enabled: false,
     queryKey: ['summonerRank'],
     queryFn: () => getSummonerRank(currentRegionData, summonerId)
@@ -68,7 +68,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded mt-2'>
-      {(isLoading || summonerId === '')
+      {(isLoading || summonerId === '' || isRefetching)
         ?
         <SummonerRankSkeleton smallDataStyle={smallDataStyle} />
         :
