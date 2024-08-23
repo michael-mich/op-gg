@@ -58,3 +58,51 @@ export type TChampion = {
   image: { full: string };
   key: string;
 }
+
+type TChampionStats = {
+  championName: string;
+  doubleKills: number;
+  tripleKills: number;
+  quadraKills: number;
+  pentaKills: number;
+}
+
+export interface TMatchParticipantStats extends TChampionStats {
+  puuid: string;
+  assists: number;
+  deaths: number;
+  kills: number;
+  win: boolean;
+  totalMinionsKilled: number;
+  gameDuration: number;
+  goldEarned: number;
+  totalDamageDealtToChampions: number;
+}
+
+export type TMatchData = {
+  info: {
+    gameDuration: number;
+    participants: Array<Omit<TMatchParticipantStats, 'gameDuration'>>;
+  }
+}
+export interface TSummonerChampionStats extends TChampionStats {
+  kda: {
+    kda: string,
+    averageKills: string,
+    averageAssists: string,
+    averageDeaths: string
+  };
+  played: {
+    winRatio: number,
+    wonMatches: number,
+    lostMatches: number
+  };
+  minions: {
+    averageKilledMinions: string,
+    minionsPerMinute: string
+  };
+  totalGold: string;
+  maxKills: number;
+  maxDeaths: number;
+  averageDamageDealt: string;
+}

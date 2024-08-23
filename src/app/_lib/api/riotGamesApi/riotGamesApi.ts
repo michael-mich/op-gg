@@ -1,6 +1,6 @@
 'use server';
 
-import { fetchApi } from '../utils';
+import { fetchApi } from '../../utils';
 import type {
   TSummonerAccount,
   TSummonerProfile,

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';
-import { getSummonerAccount } from '@/app/_lib/api/riotGamesApi';
+import { getSummonerAccount } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
 import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import SummonerLink from './SummonerLink';
 import SummonerSections from './summonerSections/SummonerSections';
@@ -61,6 +61,7 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
             onChange={handleSummonerName}
             onKeyDown={handleKeyboardEvent}
             value={summonerName}
+            autoComplete='off'
             className={`${pageOtherThanHomePage ? 'h-8 text-xs bg-white text-black' : 'h-auto text-sm bg-white dark:bg-darkMode-mediumGray'} relative w-full outline-none`}
             type='text'
             id='search-summoner'

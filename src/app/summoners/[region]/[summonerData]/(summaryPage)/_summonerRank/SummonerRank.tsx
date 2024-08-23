@@ -1,27 +1,23 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerRank } from '@/app/_lib/api/riotGamesApi';
-import { getRegionDataFromParams } from '@/app/_lib/utils';
+import { getSummonerRank } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
 import type { TSummonerRank } from '@/app/_types/apiTypes';
-import type { TSummonerPageParams } from '@/app/_types/types';
+import type { TRegionData } from '@/app/_types/types';
 import { rankedEmblems } from './rankedEmblemsData';
 import SummonerRankSkeleton from './SummonerRankSkeleton';
 
 type Props = {
+  currentRegionData: TRegionData | undefined;
   queueType: string;
   smallDataStyle: boolean;
 }
 
-const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
-  const params = useParams<TSummonerPageParams>();
+const SummonerRank = ({ currentRegionData, queueType, smallDataStyle }: Props) => {
   const summonerId = useAppSelector((state) => state.summonerId.summonerId);
-
-  const currentRegionData = getRegionDataFromParams(params.region);
 
   const { data: fetchedSummonerRanksData, refetch, isLoading, isRefetching } = useQuery({
     enabled: false,

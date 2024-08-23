@@ -8,7 +8,7 @@ import { setSummonerId } from '@/app/_lib/features/summonerIdSlice';
 import { setSummonerPuuid } from '@/app/_lib/features/summonerPuuidSlice';
 import { useQuery } from '@tanstack/react-query';
 import { getRegionDataFromParams } from '@/app/_lib/utils';
-import { getSummonerProfileData, getSummonerAccount } from '@/app/_lib/api/riotGamesApi';
+import { getSummonerProfileData, getSummonerAccount } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
 import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import type { TLocalStorageSummoner, TSummonerPageParams } from '@/app/_types/types';
 import SummonerHeaderSkeleton from './Skeleton';
@@ -26,21 +26,23 @@ const SummonerHeader = () => {
   const {
     data: summonerAccountData,
     isFetched: isSummonerAccountDataFetched,
-    isError: summonerAccountDataError,
+    isError: isSummonerAccountDataError,
     isLoading: isSummonerAccountDataLoading,
-    isRefetching: isSummonerAccountDataRefetching
+    isRefetching: isSummonerAccountDataRefetching,
+    isSuccess: isSuccessAccount
   } = useQuery({
-    queryKey: ['summonerAccount', 'summonersPage'],
+    queryKey: ['summonerAccount', 'summonerPage'],
     queryFn: () => getSummonerAccount(summonerName, currentRegionData)
   });
 
   const {
     data: summonerProfileData,
     refetch: refetchSummonerProfileData,
-    isFetched: fetchedSummonerProfileData
+    isError: isSummonerProfileError,
+    isSuccess: isSuccessProfile
   } = useQuery({
     enabled: false,
-    queryKey: ['summonerProfile', 'summonersPage'],
+    queryKey: ['summonerProfile', 'summonerPage'],
     queryFn: () => getSummonerProfileData(summonerAccountData as TSummonerAccount, currentRegionData)
   });
 
@@ -51,22 +53,26 @@ const SummonerHeader = () => {
     summonerId: summonerProfileData?.id
   }
 
-  if (!currentRegionData || summonerAccountDataError) {
-    notFound();
-  }
-
   useEffect(() => {
-    if (isSummonerAccountDataFetched) {
+    if (isSuccessAccount) {
       refetchSummonerProfileData();
     }
-  }, [isSummonerAccountDataFetched, summonerAccountData?.puuid]);
+  }, [isSuccessAccount, summonerAccountData?.puuid]);
 
   useEffect(() => {
-    if (fetchedSummonerProfileData) {
+    if (isSuccessProfile) {
       dispatch(setSummonerId(summonerProfileData?.id));
       dispatch(setSummonerPuuid(summonerAccountData?.puuid));
     }
-  }, [fetchedSummonerProfileData, summonerProfileData?.id]);
+  }, [isSuccessProfile, summonerProfileData?.id]);
+
+  if (isSummonerAccountDataError || isSummonerProfileError) {
+    return <p>Error</p>
+  }
+
+  if (!currentRegionData) {
+    notFound();
+  }
 
   return (
     <section className='bg-white dark:bg-darkMode-mediumGray pt-12'>

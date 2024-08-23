@@ -1,8 +1,8 @@
-
+import SummonerChampionStats from './SummonerChampionStats';
 
 const Page = () => {
   return (
-    <h1>Champions of summoner</h1>
+    <SummonerChampionStats />
   );
 }
 
