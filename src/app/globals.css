@@ -14,6 +14,59 @@
   img {
     width: auto;
   }
+
+  .custom-table-wrapper > div > div {
+    overflow: visible !important;    
+    padding: 0;
+  }
+
+  .dark .custom-table-wrapper > div > div {
+    background-color: theme(colors.darkMode.mediumGray);    
+  }
+
+  .light .custom-table-wrapper > div > div {
+    background-color: theme(colors.white);    
+  }
+
+  .custom-table-wrapper > div > div > table > thead > tr:last-of-type {
+    display: none;
+  }
+
+  .dark .custom-table-wrapper > div > div > table > thead > tr:first-of-type > th {
+    background-color: theme(colors.darkMode.darkGray);
+  }
+
+  .light .custom-table-wrapper > div > div > table > thead > tr:first-of-type > th {
+    background-color: theme(colors.lightMode.lightGray);
+  }
+
+  .custom-table-wrapper > div > div > table > thead > tr:first-of-type > th:hover > div:last-child {    
+    display: block;    
+  }
+
+  .custom-table-wrapper > div > div > table > thead > tr > th:first-of-type {
+    border-bottom-left-radius: 0;
+  }
+
+  .custom-table-wrapper > div > div > table > thead > tr > th:last-of-type {
+    border-bottom-right-radius: 0;
+  }
+
+  .dark .custom-table-wrapper > div > div > table > tbody > tr:nth-child(even) td {
+    background-color: theme(colors.darkMode.darkGray);
+  }
+
+  .light .custom-table-wrapper > div > div > table > tbody > tr:nth-child(even) td {
+    background-color: theme(colors.lightMode.lightGray);
+  }
+
+  .custom-table-wrapper > div > div > table > tbody > tr:last-of-type td:first-of-type {
+    border-bottom-left-radius: 14px;        
+  }
+
+  .custom-table-wrapper > div > div > table > tbody > tr:last-of-type td:last-of-type {
+    border-bottom-right-radius: 14px;
+  }
 }
 
 @layer components {
@@ -35,7 +88,15 @@
   }
 
   .border-bottom-theme {
-    @apply border-b border-b-lightMode-lighterGray dark:border-b-darkMode-darkBlue;
+    border-bottom: 1px solid;
+  }
+
+  .dark .border-bottom-theme {
+    border-bottom-color: theme(colors.darkMode.darkBlue);
+  }
+
+  .light .border-bottom-theme {
+    border-bottom-color: theme(colors.lightMode.lighterGray);
   }
 
   .level {
@@ -44,5 +105,28 @@
     background-color: #202d37;
     border-radius: theme(borderRadius.xl);
     padding: 0.1rem theme(padding.2);
+  }
+
+  .table-cell {
+    text-align: center !important;
+    font-size: theme(fontSize.xs) !important;        
+  }
+
+  .dark .table-cell {
+    color: theme(colors.darkMode.lighterGray);
+  }
+
+  .light .table-cell {
+    color: theme(colors.lightMode.secondMediumGray);
+  }
+
+  .table-cell-hover-bg {
+    @apply transition-colors group-hover:bg-lightMode-lightGray dark:group-hover:bg-darkMode-darkGray;  
+  }
+}
+
+@layer utilities {
+  .text-xss {
+    font-size: 0.6875rem !important; /* 11px */
   }
 }

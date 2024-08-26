@@ -51,7 +51,7 @@ export const getSummonerChampionStats = async (
       matchStats.push(matchData);
     };
 
-    const summonerMatchStats = matchStats.flatMap((stats) => stats?.info.participants.filter((participant) => participant.puuid === summonerPuuid))
+    const summonerMatchStats = matchStats.flatMap((stats) => stats?.info.participants.filter((participant) => participant.puuid === summonerPuuid));
     const gameDurations = matchStats.map((stats) => stats?.info.gameDuration);
 
     const groupedChampionStats: TGroupedChampionStats = Object.entries(

@@ -59,7 +59,7 @@ export type TChampion = {
   key: string;
 }
 
-type TChampionStats = {
+export type TChampionStats = {
   championName: string;
   doubleKills: number;
   tripleKills: number;
