@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getTopFourSummonerChampionsMastery, getFilteredChampionsByMastery } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
+import { getTopFourSummonerChampionsMastery, getFilteredChampions } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
 import type { TChampion } from '@/app/_types/apiTypes';
 import type { TSummonerPageParams, TRegionData } from '@/app/_types/types';
 import { IoIosArrowForward } from "react-icons/io";
@@ -37,7 +37,7 @@ const SummonerChampionsMastery = ({ currentRegionData }: Props) => {
   const { data: filteredChampionsData, refetch: refetchFilteredChampions } = useQuery({
     enabled: false,
     queryKey: ['filteredChampions'],
-    queryFn: () => getFilteredChampionsByMastery(topFourChampionsMasteryData)
+    queryFn: () => getFilteredChampions(topFourChampionsMasteryData)
   });
 
   const sortedChampionsData = (): Array<TChampion> | undefined => {

@@ -51,8 +51,8 @@ export const getTopFourSummonerChampionsMastery = async (
   return topFourChampions;
 }
 
-export const getFilteredChampionsByMastery = async (
-  championsMasteryData: Array<TChampionMastery> | undefined | void
+export const getFilteredChampions = async <T extends { championId: number }>(
+  championsData: Array<T> | undefined | void
 ): Promise<TPromiseResult<Array<TChampion>>> => {
   try {
     const response = await fetch('https://ddragon.leagueoflegends.com/cdn/14.15.1/data/en_US/champion.json');
@@ -62,8 +62,9 @@ export const getFilteredChampionsByMastery = async (
 
     const data = await response.json();
     const champions = Object.values(data.data as Array<TChampion>);
-    const filteredChampions = champions.filter((champion) => championsMasteryData?.some((championMastery) =>
-      champion.key === championMastery.championId.toString()));
+
+    const filteredChampions = champions.filter((champion) => championsData?.find((championData) =>
+      champion.key === championData.championId.toString()));
     return filteredChampions;
   }
   catch (error) {

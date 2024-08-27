@@ -55,7 +55,7 @@ export const getSummonerChampionStats = async (
     const gameDurations = matchStats.map((stats) => stats?.info.gameDuration);
 
     const groupedChampionStats: TGroupedChampionStats = Object.entries(
-      (summonerMatchStats as Array<TMatchParticipantStats>).reduce((accumulator: TGroupedChampionStatAccumulator, { championName, assists, deaths, kills, win, totalMinionsKilled, goldEarned, totalDamageDealtToChampions, doubleKills, tripleKills, quadraKills, pentaKills }, index) => {
+      (summonerMatchStats as Array<TMatchParticipantStats>).reduce((accumulator: TGroupedChampionStatAccumulator, { championName, assists, deaths, kills, win, totalMinionsKilled, goldEarned, totalDamageDealtToChampions, doubleKills, tripleKills, quadraKills, pentaKills, championId }, index) => {
         if (!accumulator[championName]) {
           accumulator[championName] = [];
         }
@@ -72,12 +72,15 @@ export const getSummonerChampionStats = async (
           doubleKills,
           tripleKills,
           quadraKills,
-          pentaKills
+          pentaKills,
+          championId
         });
 
         return accumulator;
       }, {})
     );
+
+    const championsId = groupedChampionStats.map(([_, championStats]) => championStats[0].championId);
 
     const maxKillsPerChampion = getMaxNumber(groupedChampionStats, 'kills');
     const maxDeathsPerChampion = getMaxNumber(groupedChampionStats, 'deaths');
@@ -149,9 +152,8 @@ export const getSummonerChampionStats = async (
       }
     });
 
-    const championStats: Array<TSummonerChampionStats> = groupedChampionStats.map(([championName, _], index) => {
+    const championStats: Array<TSummonerChampionStats> = groupedChampionStats.map((_, index) => {
       return {
-        championName,
         kda: championKdaStats[index],
         played: championPlayedStats[index],
         minions: minionStatsPerChampion[index],
@@ -162,7 +164,8 @@ export const getSummonerChampionStats = async (
         doubleKills: totalDoubleKillsPerChampion[index],
         tripleKills: totalTripleKillsPerChampion[index],
         quadraKills: totalQuadraKillsPerChampion[index],
-        pentaKills: totalPentaKillsPerChampion[index]
+        pentaKills: totalPentaKillsPerChampion[index],
+        championId: championsId[index]
       }
     });
 

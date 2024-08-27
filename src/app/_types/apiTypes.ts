@@ -60,7 +60,7 @@ export type TChampion = {
 }
 
 export type TChampionStats = {
-  championName: string;
+  championId: number;
   doubleKills: number;
   tripleKills: number;
   quadraKills: number;
@@ -68,6 +68,7 @@ export type TChampionStats = {
 }
 
 export interface TMatchParticipantStats extends TChampionStats {
+  championName: string;
   puuid: string;
   assists: number;
   deaths: number;
