@@ -3,14 +3,15 @@
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { getMatchResultLionsVsFnatic, getMatchResultFnaticVsBds } from '@/app/_lib/api/pandascoreApi';
-import LoadingIcon from '@/app/_components/LoadingIcon';
 import ErrorMessage from '@/app/_components/ErrorMessage';
+import { CircularProgress } from '@nextui-org/react';
+import { LuLoader } from 'react-icons/lu';
 
 const Matches = () => {
   const {
     data: firstMatchData,
     isError: firstMatchError,
-    isLoading: firstMatchLoading
+    isLoading: isFirstMatchLoading
   } = useQuery({
     queryKey: ['lec-match', 1],
     queryFn: () => getMatchResultLionsVsFnatic()
@@ -19,17 +20,13 @@ const Matches = () => {
   const {
     data: secondMatchData,
     isError: secondMatchError,
-    isLoading: secondMatchLoading
+    isLoading: isSecondMatchLoading
   } = useQuery({
     queryKey: ['lec-match', 2],
     queryFn: () => getMatchResultFnaticVsBds()
   });
 
   const matchesData = [firstMatchData, secondMatchData];
-
-  if (firstMatchLoading || secondMatchLoading) {
-    return <LoadingIcon />
-  }
 
   if (firstMatchError || secondMatchError) {
     return <ErrorMessage />
@@ -43,78 +40,82 @@ const Matches = () => {
           2024.07.09 TUE
         </span>
       </div>
-      <div className='grow flex flex-col'>
-        {matchesData.length > 0
+      <div className={`grow flex flex-col ${(isFirstMatchLoading || isSecondMatchLoading) && 'justify-center items-center'}`}>
+        {(isFirstMatchLoading || isSecondMatchLoading)
           ?
-          matchesData.map((match) => match!.games.map((_, gameIndex) => {
-            const matchSchedule = new Date(match!.original_scheduled_at);
-            const matchDay = matchSchedule.getDate();
-            const matchMonth = matchSchedule.getMonth() + 1;
-            const matchHour = matchSchedule.getHours();
-            const matchMinutes = matchSchedule.getMinutes();
-
-            return (
-              <div
-                className='grow flex place-content-center gap-4 flex-col h-full [&:nth-child(2)]:rounded-br-md
-                first-of-type:border-bottom-theme px-6 transition-colors hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray'
-                key={gameIndex}
-              >
-                <div className='flex items-center justify-between w-full'>
-                  <div className='grow'>
-                    <Image
-                      className='max-w-10 m-auto'
-                      src={match!.opponents[0].opponent.image_url}
-                      width={50}
-                      height={50}
-                      alt=''
-                    />
-                  </div>
-                  <div className='grow flex place-content-center gap-3'>
-                    <strong className='text-2xl'>
-                      {match!.results[0].score}
-                    </strong>
-                    <span className='self-center text-xs'>vs</span>
-                    <strong className='text-2xl'>
-                      {match!.results[1].score}
-                    </strong>
-                  </div>
-                  <div className='grow'>
-                    <Image
-                      className='max-w-10 m-auto'
-                      src={match!.opponents[1].opponent.image_url}
-                      width={50}
-                      height={50}
-                      alt=''
-                    />
-                  </div>
-                </div>
-                <div className='flex items-center justify-between w-full'>
-                  <div className='grow basis-[40px] text-center'>
-                    <span className='font-bold'>
-                      {match!.opponents[0].opponent.acronym}
-                    </span>
-                  </div>
-                  <div className='flex flex-col text-center w-[88.79px]'>
-                    <span className='text-xs text-darkMode-lighterGray'>
-                      {`${matchDay}.${matchMonth}`}
-                    </span>
-                    <span className='text-sm leading-[.875rem]'>
-                      {`${matchHour}:${matchMinutes}0`}
-                    </span>
-                  </div>
-                  <div className='grow basis-[40px] text-center'>
-                    <span className='font-bold'>
-                      {match!.opponents[1].opponent.acronym}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          }))
+          <LuLoader className='size-5 text-secondGray' />
           :
-          <p className='flex justify-center items-center text-center h-full'>
-            Error to fetch data, try refresh page
-          </p>
+          matchesData.length > 0
+            ?
+            matchesData.map((match) => match!.games.map((_, gameIndex) => {
+              const matchSchedule = new Date(match!.original_scheduled_at);
+              const matchDay = matchSchedule.getDate();
+              const matchMonth = matchSchedule.getMonth() + 1;
+              const matchHour = matchSchedule.getHours();
+              const matchMinutes = matchSchedule.getMinutes();
+
+              return (
+                <div
+                  className='grow flex place-content-center gap-4 flex-col h-full [&:nth-child(2)]:rounded-br-md
+                first-of-type:border-bottom-theme px-6 transition-colors hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray'
+                  key={gameIndex}
+                >
+                  <div className='flex items-center justify-between w-full'>
+                    <div className='grow'>
+                      <Image
+                        className='max-w-10 m-auto'
+                        src={match!.opponents[0].opponent.image_url}
+                        width={50}
+                        height={50}
+                        alt=''
+                      />
+                    </div>
+                    <div className='grow flex place-content-center gap-3'>
+                      <strong className='text-2xl'>
+                        {match!.results[0].score}
+                      </strong>
+                      <span className='self-center text-xs'>vs</span>
+                      <strong className='text-2xl'>
+                        {match!.results[1].score}
+                      </strong>
+                    </div>
+                    <div className='grow'>
+                      <Image
+                        className='max-w-10 m-auto'
+                        src={match!.opponents[1].opponent.image_url}
+                        width={50}
+                        height={50}
+                        alt=''
+                      />
+                    </div>
+                  </div>
+                  <div className='flex items-center justify-between w-full'>
+                    <div className='grow basis-[40px] text-center'>
+                      <span className='font-bold'>
+                        {match!.opponents[0].opponent.acronym}
+                      </span>
+                    </div>
+                    <div className='flex flex-col text-center w-[88.79px]'>
+                      <span className='text-xs text-darkMode-lighterGray'>
+                        {`${matchDay}.${matchMonth}`}
+                      </span>
+                      <span className='text-sm leading-[.875rem]'>
+                        {`${matchHour}:${matchMinutes}0`}
+                      </span>
+                    </div>
+                    <div className='grow basis-[40px] text-center'>
+                      <span className='font-bold'>
+                        {match!.opponents[1].opponent.acronym}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            }))
+            :
+            <p className='flex justify-center items-center text-center h-full'>
+              Error to fetch data, try refresh page
+            </p>
         }
       </div>
     </div>
