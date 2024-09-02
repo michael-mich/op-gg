@@ -20,9 +20,12 @@
     padding: 0;
   }
 
+  .custom-table-wrapper > div > div {
+    border-radius: 0;
+  }
+
   .dark .custom-table-wrapper > div > div {
     background-color: theme(colors.darkMode.mediumGray);
-    border-radius: 0;   
   }
 
   .light .custom-table-wrapper > div > div {
