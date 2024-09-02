@@ -12,7 +12,7 @@ import type { TSummonerPageParams } from '@/app/_types/types';
 import type { TDetailedChampionStats, TNumericStatKeyPath } from './types';
 import { TableColumns, SortOrder } from './enums';
 import { columns } from './data';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Avatar } from '@nextui-org/react';
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Avatar, CircularProgress } from '@nextui-org/react';
 
 const Page = () => {
   const [detailedChampionStats, setDetailedChampionStats] = useState<Array<TDetailedChampionStats> | undefined>([]);
@@ -23,17 +23,30 @@ const Page = () => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const currentRegionData = useMemo(() => getRegionDataFromParams(params.region), [params.region]);
 
-  const { data: championStats, refetch: refetchChapionStats, isError, isSuccess: isChampionStatsSuccess } = useQuery({
+  const {
+    data: championStats,
+    refetch: refetchChapionStats,
+    isError: isChampionStatsError,
+    isSuccess: isChampionStatsSuccess
+  } = useQuery({
     enabled: false,
     queryKey: ['matchStats', 'summonerPage'],
     queryFn: () => getSummonerChampionStats(currentRegionData, summonerPuuid)
   });
 
-  const { data: championsData, refetch: refetchChampionsData, isSuccess: isChampionsDataSuccess } = useQuery({
+  const {
+    data: championsData,
+    refetch: refetchChampionsData,
+    isSuccess: isChampionsDataSuccess,
+    isError: isChampionDataError,
+    isFetched: isChampionDataFetched
+  } = useQuery({
     enabled: false,
     queryKey: ['championData', 'summoner champions page'],
     queryFn: () => getFilteredChampions(championStats)
   });
+
+  const loadingCondition = (!summonerPuuid || !isChampionDataFetched);
 
   const formatKillStat = (stat: TSummonerChampionStats, key: keyof Omit<TChampionStats, 'championId'>): number | string => {
     return stat[key] === 0 ? '' : stat[key];
@@ -211,89 +224,94 @@ const Page = () => {
     }
   }, [isChampionStatsSuccess, isChampionsDataSuccess]);
 
-  if (isError) {
+  if (isChampionStatsError || isChampionDataError) {
     return <p>error</p>
   }
 
   return (
-    <div className='custom-table-wrapper'>
-      <Table aria-label='table with champion stats'>
-        <TableHeader>
-          {columns.map((column, index) =>
-            <TableColumn
-              onClick={() => { handleSortActions(index), setSortOptionIndex(index) }}
-              className={`${(index >= 2) && 'text-center'} ${(!isChampionStatsSuccess && !isChampionStatsSuccess) ? 'pointer-events-none' : 'pointer-events-auto'} cursor-pointer
-              relative after:absolute after:left-0 after:-z[1] after:w-full after:bg-blue ${(sortOptionIndex === index && sortOrderDescending) ? 'after:bottom-0 after:h-[2px]' : (sortOptionIndex === index && !sortOrderDescending) ? 'after:top-0 after:h-[2px]' : ''}`}
-              key={column}
-            >
-              <div className={`${index >= 8 && 'w-10 overflow-hidden text-ellipsis'} ${sortOptionIndex === index ? 'text-blue' : 'text-secondGray dark:text-mediumGrayText'}`}>
-                {column}
-              </div>
-              <div className='hidden absolute -top-full left-1/2 -translate-x-1/2 z-[2] bg-black py-2 px-2.5'>
-                <span className='text-xs text-white font-normal'>{column}</span>
-                <div className='absolute top-6 left-1/2 -translate-x-1/2 rotate-45 z-[1] size-4 bg-black'></div>
-              </div>
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody emptyContent={'No champion stats to display'}>
-          {detailedChampionStats
-            ?
-            detailedChampionStats?.map((stats) => (
-              <TableRow
-                className='group even:bg-lightMode-lightGray dark:even:bg-darkMode-darkGray'
-                key={stats.championId}
+    <div className={`custom-table-wrapper ${loadingCondition && 'loading'}`}>
+      {loadingCondition
+        ?
+        <CircularProgress aria-label='champion stats loading' />
+        :
+        <Table aria-label='table with champion stats'>
+          <TableHeader>
+            {columns.map((column, index) =>
+              <TableColumn
+                onClick={() => { handleSortActions(index), setSortOptionIndex(index) }}
+                className={`${(index >= 2) && 'text-center'} ${(!isChampionStatsSuccess && !isChampionStatsSuccess) ? 'pointer-events-none' : 'pointer-events-auto'} cursor-pointer
+                  relative after:absolute after:left-0 after:-z[1] after:w-full after:bg-blue ${(sortOptionIndex === index && sortOrderDescending) ? 'after:bottom-0 after:h-[2px]' : (sortOptionIndex === index && !sortOrderDescending) ? 'after:top-0 after:h-[2px]' : ''}`}
+                key={column}
               >
-                <TableCell className='table-cell-hover-bg'>{stats.championRank}</TableCell>
-                <TableCell className='table-cell-hover-bg'>
-                  <div className='flex items-center gap-2'>
-                    <Avatar
-                      src={`https://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/${stats.championImage}`}
-                      size='sm'
-                    />
-                    <span className='text-xs font-bold'>{stats.championName}</span>
-                  </div>
-                </TableCell>
-                <TableCell className='flex items-center gap-2 h-[61.5px] table-cell-hover-bg '>
-                  <div className='relative flex items-center justify-end w-[90px] h-5 bg-red-500 rounded'>
-                    <div
-                      className={`${stats.played.wonMatches === 0 && 'hidden'} absolute left-0 top-1/2 -translate-y-1/2 z-[1] w-[${stats.played.winRatio}%] ${stats.played.lostMatches === 0 ? 'rounded' : 'rounded-l'} h-full bg-blue`}
-                      style={{ width: `${stats.played.winRatio}%` }}
-                    >
-                      <span className='absolute top-1/2 -translate-y-1/2 text-xs text-white pl-1'>
-                        {stats.played.wonMatches}W
+                <div className={`${index >= 8 && 'w-10 overflow-hidden text-ellipsis'} ${sortOptionIndex === index ? 'text-blue' : 'text-secondGray dark:text-mediumGrayText'}`}>
+                  {column}
+                </div>
+                <div className='hidden absolute -top-full left-1/2 -translate-x-1/2 z-[2] bg-black py-2 px-2.5'>
+                  <span className='text-xs text-white font-normal'>{column}</span>
+                  <div className='absolute top-6 left-1/2 -translate-x-1/2 rotate-45 z-[1] size-4 bg-black'></div>
+                </div>
+              </TableColumn>
+            )}
+          </TableHeader>
+          <TableBody emptyContent={'No champion stats to display'}>
+            {detailedChampionStats
+              ?
+              detailedChampionStats?.map((stats) => (
+                <TableRow
+                  className='group even:bg-lightMode-lightGray dark:even:bg-darkMode-darkGray'
+                  key={stats.championId}
+                >
+                  <TableCell className='table-cell-hover-bg'>{stats.championRank}</TableCell>
+                  <TableCell className='table-cell-hover-bg'>
+                    <div className='flex items-center gap-2'>
+                      <Avatar
+                        src={`https://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/${stats.championImage}`}
+                        size='sm'
+                      />
+                      <span className='text-xs font-bold'>{stats.championName}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className='flex items-center gap-2 h-[61.5px] table-cell-hover-bg '>
+                    <div className='relative flex items-center justify-end w-[90px] h-5 bg-red-500 rounded'>
+                      <div
+                        className={`${stats.played.wonMatches === 0 && 'hidden'} absolute left-0 top-1/2 -translate-y-1/2 z-[1] w-[${stats.played.winRatio}%] ${stats.played.lostMatches === 0 ? 'rounded' : 'rounded-l'} h-full bg-blue`}
+                        style={{ width: `${stats.played.winRatio}%` }}
+                      >
+                        <span className='absolute top-1/2 -translate-y-1/2 text-xs text-white pl-1'>
+                          {stats.played.wonMatches}W
+                        </span>
+                      </div>
+                      <span className={`${stats.played.lostMatches === 0 && 'hidden'} text-xs text-white pr-1`}>
+                        {stats.played.lostMatches}L
                       </span>
                     </div>
-                    <span className={`${stats.played.lostMatches === 0 && 'hidden'} text-xs text-white pr-1`}>
-                      {stats.played.lostMatches}L
+                    <span className={`${stats.played.winRatio >= 60 ? 'text-red-500' : 'text-[#57646F] dark:text-darkMode-lighterGray'} text-xs`}>
+                      {stats.played.winRatio}%
                     </span>
-                  </div>
-                  <span className={`${stats.played.winRatio >= 60 ? 'text-red-500' : 'text-[#57646F] dark:text-darkMode-lighterGray'} text-xs`}>
-                    {stats.played.winRatio}%
-                  </span>
-                </TableCell>
-                <TableCell className='table-cell-hover-bg'>
-                  <span className={`${stats.kda.kda >= 6.0 ? 'text-[#ff8200]' : stats.kda.kda >= 4.0 ? 'text-[#0090fb]' : stats.kda.kda >= 3.0 ? 'text-[#00bba3]' : 'text-lightMode-secondMediumGray dark:text-darkMode-lighterGray'} block text-center text-xs font-bold`}>
-                    {stats.kda.kda.toFixed(2)}
-                  </span>
-                  <span className='w-[85px] table-cell text-xss'>{stats.kda.averageKills} / {stats.kda.averageAssists} / {stats.kda.averageDeaths}</span>
-                </TableCell>
-                <TableCell className='table-cell table-cell-hover-bg'>{stats.totalGold.toLocaleString()}</TableCell>
-                <TableCell className='table-cell table-cell-hover-bg'>{stats.minions.averageKilledMinions.toFixed(1)} ({stats.minions.minionsPerMinute})</TableCell>
-                <TableCell className='table-cell table-cell-hover-bg'>{stats.maxKills}</TableCell>
-                <TableCell className='table-cell table-cell-hover-bg'>{stats.maxDeaths}</TableCell>
-                <TableCell className='table-cell table-cell-hover-bg'>{stats.averageDamageDealt.toLocaleString()}</TableCell>
-                <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'doubleKills')}</TableCell>
-                <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'tripleKills')}</TableCell>
-                <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'quadraKills')}</TableCell>
-                <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'pentaKills')}</TableCell>
-              </TableRow>
-            ))
-            :
-            []
-          }
-        </TableBody>
-      </Table>
+                  </TableCell>
+                  <TableCell className='table-cell-hover-bg'>
+                    <span className={`${stats.kda.kda >= 6.0 ? 'text-[#ff8200]' : stats.kda.kda >= 4.0 ? 'text-[#0090fb]' : stats.kda.kda >= 3.0 ? 'text-[#00bba3]' : 'text-lightMode-secondMediumGray dark:text-darkMode-lighterGray'} block text-center text-xs font-bold`}>
+                      {stats.kda.kda.toFixed(2)}
+                    </span>
+                    <span className='w-[85px] table-cell text-xss'>{stats.kda.averageKills} / {stats.kda.averageAssists} / {stats.kda.averageDeaths}</span>
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>{stats.totalGold.toLocaleString()}</TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>{stats.minions.averageKilledMinions.toFixed(1)} ({stats.minions.minionsPerMinute})</TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>{stats.maxKills}</TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>{stats.maxDeaths}</TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>{stats.averageDamageDealt.toLocaleString()}</TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'doubleKills')}</TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'tripleKills')}</TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'quadraKills')}</TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'pentaKills')}</TableCell>
+                </TableRow>
+              ))
+              :
+              []
+            }
+          </TableBody>
+        </Table>
+      }
     </div>
   );
 }
