@@ -95,8 +95,7 @@ export const getSummonerChampionStats = async (
     const totalPentaKillsPerChampion = calculateTotalChampionStat(groupedChampionStats, 'pentaKills');
 
     const averageDamageDealtToChampions = groupedChampionStats.map(([_, championStats], index) => {
-      const calculateAverageDamge = Math.round((totalChampionDamageDealt[index] / championStats.length));
-      return calculateAverageDamge.toLocaleString();
+      return Math.round((totalChampionDamageDealt[index] / championStats.length));      
     });
 
     const minionStatsPerChampion = groupedChampionStats.map(([_, championStats], index) => {
@@ -104,7 +103,7 @@ export const getSummonerChampionStats = async (
       const averageGameDuration = totalGameDurationSum[index] / championStats.length;
 
       return {
-        averageKilledMinions: averageKilledMinions.toFixed(1),
+        averageKilledMinions: averageKilledMinions,
         minionsPerMinute: (averageKilledMinions / (averageGameDuration / 60)).toFixed(2)
       }
     });
@@ -145,7 +144,7 @@ export const getSummonerChampionStats = async (
       const kda = totalDeaths === 0 ? totalAssists + totalKills : (totalAssists + totalKills) / totalDeaths;
 
       return {
-        kda: kda.toFixed(2),
+        kda: kda,
         averageKills: (totalKills / championStats.length).toFixed(1),
         averageAssists: (totalAssists / championStats.length).toFixed(1),
         averageDeaths: (totalDeaths / championStats.length).toFixed(1)
@@ -157,7 +156,7 @@ export const getSummonerChampionStats = async (
         kda: championKdaStats[index],
         played: championPlayedStats[index],
         minions: minionStatsPerChampion[index],
-        totalGold: totalGoldPerChampion[index].toLocaleString(),
+        totalGold: totalGoldPerChampion[index],
         maxKills: maxKillsPerChampion[index],
         maxDeaths: maxDeathsPerChampion[index],
         averageDamageDealt: averageDamageDealtToChampions[index],

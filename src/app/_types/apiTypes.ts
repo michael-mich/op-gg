@@ -88,7 +88,7 @@ export type TMatchData = {
 }
 export interface TSummonerChampionStats extends TChampionStats {
   kda: {
-    kda: string,
+    kda: number,
     averageKills: string,
     averageAssists: string,
     averageDeaths: string
@@ -99,11 +99,11 @@ export interface TSummonerChampionStats extends TChampionStats {
     lostMatches: number
   };
   minions: {
-    averageKilledMinions: string,
+    averageKilledMinions: number,
     minionsPerMinute: string
   };
-  totalGold: string;
+  totalGold: number;
   maxKills: number;
   maxDeaths: number;
-  averageDamageDealt: string;
+  averageDamageDealt: number;
 }
