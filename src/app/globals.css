@@ -21,7 +21,8 @@
   }
 
   .dark .custom-table-wrapper > div > div {
-    background-color: theme(colors.darkMode.mediumGray);    
+    background-color: theme(colors.darkMode.mediumGray);
+    border-radius: 0;   
   }
 
   .light .custom-table-wrapper > div > div {
@@ -39,33 +40,17 @@
   .light .custom-table-wrapper > div > div > table > thead > tr:first-of-type > th {
     background-color: theme(colors.lightMode.lightGray);
   }
+  
+  .custom-table-wrapper > div > div > table > thead > tr:first-of-type > th:first-of-type {
+    border-radius: 0;
+  }
 
+  .custom-table-wrapper > div > div > table > thead > tr:first-of-type > th:last-of-type {
+    border-radius: 0;
+  }
+  
   .custom-table-wrapper > div > div > table > thead > tr:first-of-type > th:hover > div:last-child {    
     display: block;    
-  }
-
-  .custom-table-wrapper > div > div > table > thead > tr > th:first-of-type {
-    border-bottom-left-radius: 0;
-  }
-
-  .custom-table-wrapper > div > div > table > thead > tr > th:last-of-type {
-    border-bottom-right-radius: 0;
-  }
-
-  .dark .custom-table-wrapper > div > div > table > tbody > tr:nth-child(even) td {
-    background-color: theme(colors.darkMode.darkGray);
-  }
-
-  .light .custom-table-wrapper > div > div > table > tbody > tr:nth-child(even) td {
-    background-color: theme(colors.lightMode.lightGray);
-  }
-
-  .custom-table-wrapper > div > div > table > tbody > tr:last-of-type td:first-of-type {
-    border-bottom-left-radius: 14px;        
-  }
-
-  .custom-table-wrapper > div > div > table > tbody > tr:last-of-type td:last-of-type {
-    border-bottom-right-radius: 14px;
   }
 }
 
