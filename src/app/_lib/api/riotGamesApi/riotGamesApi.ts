@@ -72,20 +72,11 @@ export const getSummonerChampionsMasterySummary = async (
 export const getFilteredChampions = async <T extends { championId: number }>(
   championsData: Array<T> | undefined | void
 ): Promise<TPromiseResult<Array<TChampion>>> => {
-  try {
-    const response = await fetch('https://ddragon.leagueoflegends.com/cdn/14.15.1/data/en_US/champion.json');
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
 
-    const data = await response.json();
-    const champions = Object.values(data.data as Array<TChampion>);
+  const data: TPromiseResult<{ data: Record<string, TChampion> }> = await fetchApi('https://ddragon.leagueoflegends.com/cdn/14.15.1/data/en_US/champion.json');
+  const champions = Object.values(data?.data || []);
 
-    const filteredChampions = champions.filter((champion) => championsData?.find((championData) =>
-      champion.key === championData.championId.toString()));
-    return filteredChampions;
-  }
-  catch (error) {
-    console.error(error)
-  }
+  const filteredChampions = champions.filter((champion) => championsData?.find((championData) =>
+    champion.key === championData.championId.toString()));
+  return filteredChampions;
 }
