@@ -5,7 +5,7 @@ import { getRegionDataFromParams } from '@/app/_lib/utils';
 import type { TSummonerPageParams } from '@/app/_types/types';
 import QueueTypes from './QueueTypes';
 import SummonerRank from './_summonerRank/SummonerRank';
-import SummonerChampionsMastery from './_summonerChampionsMastery/SummonerChampionsMastery';
+import SummonerChampionsMastery from '@/app/_components/summonerChampionsMastery/SummonerChampionsMastery';
 
 const Page = () => {
   const params = useParams<TSummonerPageParams>();

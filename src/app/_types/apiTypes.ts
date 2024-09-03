@@ -107,3 +107,9 @@ export interface TSummonerChampionStats extends TChampionStats {
   maxDeaths: number;
   averageDamageDealt: number;
 }
+
+export type TChampionMasterySummary = {
+  masteryChampionsAmount: number | undefined;
+  totalChampionPoints: string | undefined;
+  totalMasteryScore: number | undefined;
+}

@@ -1,14 +1,15 @@
 import Image from 'next/image';
-import type { TChampionMastery } from '@/app/_types/apiTypes';
-import type { TChampion } from '@/app/_types/apiTypes';
+import type { TChampionMastery, TChampion } from '@/app/_types/apiTypes';
+
 import { Progress } from '@nextui-org/react';
 
 type Props = {
   championData: TChampion | undefined;
   championMastery: TChampionMastery;
+  getTopChampions: boolean;
 }
 
-const MasteryInformations = ({ championData, championMastery }: Props) => {
+const MasteryInformations = ({ championData, championMastery, getTopChampions }: Props) => {
   const championLastPlayTimeDate = new Date(championMastery.lastPlayTime);
   const lastPlayTimeDay = championLastPlayTimeDate.getDate().toString().padStart(2, '0');
   const lastPlayTimeMonth = (championLastPlayTimeDate.getMonth() + 1).toString().padStart(2, '0');
@@ -27,8 +28,8 @@ const MasteryInformations = ({ championData, championMastery }: Props) => {
   }
 
   return (
-    <div className='opacity-0 invisible pointer-events-none absolute -top-[9.2rem] left-1/2 -translate-x-1/2 group-first-of-type:left-0 
-    group-first-of-type:translate-x-0 z-10 w-[230px] bg-black py-2 px-2.5 transition-all group-hover:opacity-100 group-hover:visible'
+    <div className={`${getTopChampions ? 'group-first-of-type:left-0 group-first-of-type:translate-x-0' : 'left-1/2 -translate-x-1/2'} 
+    opacity-0 invisible pointer-events-none absolute -top-[9.2rem] z-10 w-[230px] bg-black py-2 px-2.5 transition-all group-hover:opacity-100 group-hover:visible`}
     >
       <div className='border-b border-b-darkSlateGray pb-2'>
         <div className='flex items-center gap-2'>
@@ -102,8 +103,8 @@ const MasteryInformations = ({ championData, championMastery }: Props) => {
           </span>
         </div>
       </div>
-      <div className='absolute top-[99.5%] left-1/2 -translate-x-1/2 group-first-of-type:left-[11%] group-first-of-type:translate-x-0 
-      z-10 size-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-black'></div>
+      <div className={`${getTopChampions ? 'group-first-of-type:left-[11%] group-first-of-type:translate-x-0' : 'left-1/2 -translate-x-1/2'} absolute top-[99.5%] 
+      z-10 size-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-black`}></div>
     </div>
   );
 }

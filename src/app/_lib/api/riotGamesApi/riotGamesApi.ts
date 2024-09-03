@@ -7,7 +7,8 @@ import type {
   TSummonerRank,
   TPromiseResult,
   TChampionMastery,
-  TChampion
+  TChampion,
+  TChampionMasterySummary
 } from '@/app/_types/apiTypes';
 import type { TRegionData } from '@/app/_types/types';
 
@@ -37,18 +38,35 @@ export const getSummonerRank = async (
   return await fetchApi(url);
 }
 
-export const getTopFourSummonerChampionsMastery = async (
+export const getSummonerChampionsMastery = async (
+  regionData: TRegionData | undefined,
+  summonerPuuid: string | undefined,
+  getTopChampions: boolean
+): Promise<TPromiseResult<Array<TChampionMastery>>> => {
+  const url = `https://${regionData?.regionLink}/lol/champion-mastery/v4/champion-masteries/by-puuid/${summonerPuuid}?api_key=${riotGamesApiKey}`;
+  const data: TPromiseResult<Array<TChampionMastery>> = await fetchApi(url);
+
+  const topFourChampions = data?.slice(0, 4);
+  return getTopChampions ? topFourChampions : data;
+}
+
+export const getSummonerChampionsMasterySummary = async (
   regionData: TRegionData | undefined,
   summonerPuuid: string | undefined
-): Promise<TPromiseResult<Array<TChampionMastery>>> => {
-  const response = await fetch(`https://${regionData?.regionLink}/lol/champion-mastery/v4/champion-masteries/by-puuid/${summonerPuuid}?api_key=${riotGamesApiKey}`);
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
+): Promise<TPromiseResult<TChampionMasterySummary>> => {
+  const url = `https://${regionData?.regionLink}/lol/champion-mastery/v4/champion-masteries/by-puuid/${summonerPuuid}?api_key=${riotGamesApiKey}`;
+  const data: TPromiseResult<Array<TChampionMastery>> = await fetchApi(url);
 
-  const data = await response.json();
-  const topFourChampions = await data.slice(0, 4);
-  return topFourChampions;
+  const totalChampionPoints = data?.reduce((acc, cur) => acc + cur.championPoints, 0).toLocaleString();
+  const totalMasteryScore = data?.reduce((acc, cur) => acc + cur.championLevel, 0);
+
+  const championMasterySummary: TChampionMasterySummary = {
+    masteryChampionsAmount: data?.length,
+    totalChampionPoints,
+    totalMasteryScore
+  };
+
+  return championMasterySummary;
 }
 
 export const getFilteredChampions = async <T extends { championId: number }>(

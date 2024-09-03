@@ -42,7 +42,7 @@ const Page = () => {
     isFetched: isChampionDataFetched
   } = useQuery({
     enabled: false,
-    queryKey: ['championData', 'summoner champions page'],
+    queryKey: ['championData', 'summonerChampionsPage'],
     queryFn: () => getFilteredChampions(championStats)
   });
 
