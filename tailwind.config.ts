@@ -30,7 +30,6 @@ const config: Config = {
           lighterGray: '#9e9eb1',
         },
         lightMode: {
-          mediumGray: '#758592',
           secondMediumGray: '#57646F',
           lightGray: '#f7f7f9',
           lighterGray: '#f1f2f5',
