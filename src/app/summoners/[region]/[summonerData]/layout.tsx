@@ -1,4 +1,5 @@
 import SummonerHeader from './_summonerHeader/SummonerHeader';
+import ScrollToTopButton from '@/app/_components/ScrollToTopButton';
 
 const Layout = ({
   children
@@ -6,12 +7,15 @@ const Layout = ({
   children: React.ReactNode
 }>) => {
   return (
-    <main>
-      <SummonerHeader />
-      <div className='w-[1080px] mt-2 m-auto'>
-        {children}
-      </div>
-    </main>
+    <>
+      <ScrollToTopButton />
+      <main>
+        <SummonerHeader />
+        <div className='w-[1080px] mt-2 m-auto'>
+          {children}
+        </div>
+      </main>
+    </>
   );
 }
 
