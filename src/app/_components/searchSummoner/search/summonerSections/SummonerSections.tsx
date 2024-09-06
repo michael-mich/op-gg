@@ -3,12 +3,13 @@ import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
 import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStorageFavoriteSummonersSlice';
 import { getLocalStorageData } from '@/app/_lib/utils';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
+import type { TSetState } from '@/app/_types/tuples';
 import SearchHistory from './SearchHistory';
 import FavoriteSummoners from './FavoriteSummoners';
 
 type Props = {
   pageOtherThanHomePage: boolean;
-  setDisplaySummonerSections: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplaySummonerSections: TSetState<boolean>;
 }
 
 const SummonerSections = ({ pageOtherThanHomePage, setDisplaySummonerSections }: Props) => {

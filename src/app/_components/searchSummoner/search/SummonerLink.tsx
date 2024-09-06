@@ -7,14 +7,15 @@ import { getSummonerProfileData } from '@/app/_lib/api/riotGamesApi/riotGamesApi
 import { getLocalStorageData } from '@/app/_lib/utils';
 import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
+import type { TSetState } from '@/app/_types/tuples';
 
 type Props = {
-  setDisplaySummonerLink: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplaySummonerLink: TSetState<boolean>;
   pageOtherThanHomePage: boolean;
   summonerAccountData: TSummonerAccount;
   summonerName: string;
-  setSummonerName: React.Dispatch<React.SetStateAction<string>>;
-  setDisplaySummonerSections: React.Dispatch<React.SetStateAction<boolean>>;
+  setSummonerName: TSetState<string>;
+  setDisplaySummonerSections: TSetState<boolean>;
   isSuccess: boolean;
 }
 

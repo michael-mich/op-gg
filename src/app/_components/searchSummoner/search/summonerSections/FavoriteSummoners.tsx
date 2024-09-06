@@ -2,12 +2,13 @@ import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStorageFavoriteSummonersSlice';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
+import type { TSetState } from '@/app/_types/tuples';
 import { FaStar } from 'react-icons/fa';
 import { TiDeleteOutline } from 'react-icons/ti';
 
 type Props = {
   handleMouseInteraction: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  setDisplaySummonerSections: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplaySummonerSections: TSetState<boolean>;
   removeSummonerFromLocalStorage: (index: number, localeStorageKey: string) => Array<TLocalStorageSummoner>;
   displaySection: number;
 }
