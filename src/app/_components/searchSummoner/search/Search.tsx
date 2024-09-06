@@ -88,14 +88,15 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
             pageOtherThanHomePage={pageOtherThanHomePage}
             summonerAccountData={data as TSummonerAccount}
             summonerName={summonerName}
+            setSummonerName={setSummonerName}
+            setDisplaySummonerSections={setDisplaySummonerSections}
             isSuccess={isSuccess}
           />
         }
-        {summonerName === '' &&
+        {(summonerName === '' && displaySummonerSections) &&
           <SummonerSections
             pageOtherThanHomePage={pageOtherThanHomePage}
             setDisplaySummonerSections={setDisplaySummonerSections}
-            displaySummonerSections={displaySummonerSections}
           />
         }
       </div>

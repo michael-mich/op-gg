@@ -9,14 +9,9 @@ import FavoriteSummoners from './FavoriteSummoners';
 type Props = {
   pageOtherThanHomePage: boolean;
   setDisplaySummonerSections: React.Dispatch<React.SetStateAction<boolean>>;
-  displaySummonerSections: boolean;
 }
 
-const SummonerSections = ({
-  pageOtherThanHomePage,
-  setDisplaySummonerSections,
-  displaySummonerSections
-}: Props) => {
+const SummonerSections = ({ pageOtherThanHomePage, setDisplaySummonerSections }: Props) => {
   const dispatch = useAppDispatch();
   const [localStorageSearchHistory, setLocalStorageSearchHistory] = useState<Array<TLocalStorageSummoner>>([]);
   const [displaySection, setDisplaySection] = useState(0);
@@ -39,7 +34,7 @@ const SummonerSections = ({
   }, []);
 
   return (
-    <div className={`${displaySummonerSections ? 'block' : 'hidden'} ${pageOtherThanHomePage ? 'top-8 max-w-[472px] left-0' : 'top-[3.2rem]'} 
+    <div className={`${pageOtherThanHomePage ? 'top-8 max-w-[472px] left-0' : 'top-[3.2rem]'} 
     absolute left-0 z-50 w-full bg-white dark:bg-darkMode-mediumGray rounded-b shadow-custom-shadow`}
     >
       <div className='flex items-center'>

@@ -13,6 +13,8 @@ type Props = {
   pageOtherThanHomePage: boolean;
   summonerAccountData: TSummonerAccount;
   summonerName: string;
+  setSummonerName: React.Dispatch<React.SetStateAction<string>>;
+  setDisplaySummonerSections: React.Dispatch<React.SetStateAction<boolean>>;
   isSuccess: boolean;
 }
 
@@ -22,6 +24,8 @@ const SummonerLink = ({
   summonerAccountData,
   summonerName,
   isSuccess,
+  setSummonerName,
+  setDisplaySummonerSections
 }: Props) => {
   const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);
 
@@ -64,7 +68,9 @@ const SummonerLink = ({
       <Link
         onClick={() => {
           addSearchHistoryDataToLocalStorage();
+          setSummonerName('');
           setDisplaySummonerLink(false);
+          setDisplaySummonerSections(false);
         }}
         className='flex items-center gap-2 py-1.5 px-4 transition-colors hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray rounded-b'
         href={`/summoners/${markedRegionData.shorthand.toLowerCase()}/${summonerAccountData.gameName}-${summonerAccountData.tagLine}`}
