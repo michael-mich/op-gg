@@ -27,7 +27,8 @@ const Page = () => {
     data: championStats,
     refetch: refetchChapionStats,
     isError: isChampionStatsError,
-    isSuccess: isChampionStatsSuccess
+    isSuccess: isChampionStatsSuccess,
+    isRefetching: isChampionStatsRefetching
   } = useQuery({
     enabled: false,
     queryKey: ['matchStats', 'summonerPage', summonerPuuid],
@@ -39,14 +40,15 @@ const Page = () => {
     refetch: refetchChampionsData,
     isSuccess: isChampionsDataSuccess,
     isError: isChampionDataError,
-    isFetched: isChampionDataFetched
+    isFetched: isChampionDataFetched,
+    isRefetching: isChampionDataRefetching
   } = useQuery({
     enabled: false,
     queryKey: ['championData', 'summonerChampionsPage', summonerPuuid],
     queryFn: () => getFilteredChampions(championStats)
   });
 
-  const loadingCondition = (!summonerPuuid || !isChampionDataFetched);
+  const loadingCondition = (!summonerPuuid || !isChampionDataFetched || isChampionStatsRefetching || isChampionDataRefetching);
 
   const formatKillStat = (stat: TSummonerChampionStats, key: keyof Omit<TChampionStats, 'championId'>): number | string => {
     return stat[key] === 0 ? '' : stat[key];
