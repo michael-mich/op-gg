@@ -25,7 +25,7 @@ const Page = () => {
 
   const {
     data: championStats,
-    refetch: refetchChapionStats,
+    refetch: refetchChampionStats,
     isError: isChampionStatsError,
     isSuccess: isChampionStatsSuccess,
     isRefetching: isChampionStatsRefetching
@@ -36,9 +36,9 @@ const Page = () => {
   });
 
   const {
-    data: championsData,
-    refetch: refetchChampionsData,
-    isSuccess: isChampionsDataSuccess,
+    data: championData,
+    refetch: refetchChampionData,
+    isSuccess: isChampionDataSuccess,
     isError: isChampionDataError,
     isFetched: isChampionDataFetched,
     isRefetching: isChampionDataRefetching
@@ -106,7 +106,7 @@ const Page = () => {
 
   const updateChampionStats = (): void => {
     const updatedStats: Array<TDetailedChampionStats> | undefined = championStats?.map((stats) => {
-      const matchingChampion = championsData?.find((data) => (
+      const matchingChampion = championData?.find((data) => (
         data.key === stats.championId.toString()
       ));
 
@@ -210,21 +210,21 @@ const Page = () => {
 
   useEffect(() => {
     if (summonerPuuid) {
-      refetchChapionStats();
+      refetchChampionStats();
     }
   }, [summonerPuuid]);
 
   useEffect(() => {
     if (isChampionStatsSuccess) {
-      refetchChampionsData();
+      refetchChampionData();
     }
   }, [isChampionStatsSuccess]);
 
   useEffect(() => {
-    if (isChampionStatsSuccess && isChampionsDataSuccess) {
+    if (isChampionStatsSuccess && isChampionDataSuccess) {
       updateChampionStats();
     }
-  }, [isChampionStatsSuccess, isChampionsDataSuccess]);
+  }, [isChampionStatsSuccess, isChampionDataSuccess]);
 
   if (isChampionStatsError || isChampionDataError) {
     return <p>error</p>
