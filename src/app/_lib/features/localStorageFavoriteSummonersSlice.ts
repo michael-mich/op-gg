@@ -1,12 +1,14 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { getLocalStorageData } from '../utils';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
+import { LocalStorageKeys } from '@/app/_enums/enums';
 
 type TLocalStorageState = {
   localStorageFavoriteSummoners: Array<TLocalStorageSummoner>;
 }
 
 const initialState: TLocalStorageState = {
-  localStorageFavoriteSummoners: []
+  localStorageFavoriteSummoners: getLocalStorageData(LocalStorageKeys.FavoriteSummoners)
 }
 
 const localStorageFavoriteSummonersSlice = createSlice({
