@@ -127,7 +127,7 @@ const SummonerChampionsMastery = ({ currentRegionData, getTopChampions = true }:
                       <div className='w-8 h-[1px] bg-lightMode-lighterGray dark:bg-darkMode-darkBlue mt-2'></div>
                       <div className='flex flex-col items-center mt-2'>
                         <span className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
-                          {championMastery.championPoints.toLocaleString()}
+                          {championMastery.championPoints.toLocaleString('en')}
                         </span>
                         <span className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
                           Points
