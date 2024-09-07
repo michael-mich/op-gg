@@ -8,6 +8,7 @@ import { getLocalStorageData } from '@/app/_lib/utils';
 import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';
+import { LocalStorageKeys } from '@/app/_enums/enums';
 
 type Props = {
   setDisplaySummonerLink: TSetState<boolean>;
@@ -50,7 +51,7 @@ const SummonerLink = ({
   }
 
   const addSearchHistoryDataToLocalStorage = (): void => {
-    const storageArray = getLocalStorageData('searchHistory');
+    const storageArray = getLocalStorageData(LocalStorageKeys.SearchHistory);
     storageArray.unshift(searchHistoryData);
     const withoutDuplicates = removeDuplicateObjects(storageArray);
     localStorage.setItem('searchHistory', JSON.stringify(withoutDuplicates));

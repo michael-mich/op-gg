@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStorageFavoriteSummonersSlice';
 import { getLocalStorageData } from '@/app/_lib/utils';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
+import { LocalStorageKeys } from '@/app/_enums/enums';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
 type Props = {
@@ -23,7 +24,7 @@ const FavoriteSummonerButton = ({
   }
 
   const toggleFavoriteSummoner = (): void => {
-    const favoriteSummonersArray = getLocalStorageData('favoriteSummoners');
+    const favoriteSummonersArray = getLocalStorageData(LocalStorageKeys.FavoriteSummoners);
     const favoriteSummonerIndex = favoriteSummonersArray.findIndex((data) => (data.summonerId === summonerId));
 
     if (isSummonerAccountDataFetched) {

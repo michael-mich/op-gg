@@ -4,6 +4,7 @@ import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStora
 import { getLocalStorageData } from '@/app/_lib/utils';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';
+import { LocalStorageKeys } from '@/app/_enums/enums';
 import SearchHistory from './SearchHistory';
 import FavoriteSummoners from './FavoriteSummoners';
 
@@ -17,7 +18,7 @@ const SummonerSections = ({ pageOtherThanHomePage, setDisplaySummonerSections }:
   const [localStorageSearchHistory, setLocalStorageSearchHistory] = useState<Array<TLocalStorageSummoner>>([]);
   const [displaySection, setDisplaySection] = useState(0);
 
-  const removeSummonerFromLocalStorage = (index: number, localStorageKey: string): Array<TLocalStorageSummoner> => {
+  const removeSummonerFromLocalStorage = (index: number, localStorageKey: LocalStorageKeys): Array<TLocalStorageSummoner> => {
     const storageData = getLocalStorageData(localStorageKey);
     storageData.splice(index, 1);
     localStorage.setItem(localStorageKey, JSON.stringify(storageData));
@@ -30,8 +31,8 @@ const SummonerSections = ({ pageOtherThanHomePage, setDisplaySummonerSections }:
   }
 
   useEffect(() => {
-    setLocalStorageSearchHistory(getLocalStorageData('searchHistory'));
-    dispatch(setLocalStorageFavoriteSummoners(getLocalStorageData('favoriteSummoners')));
+    setLocalStorageSearchHistory(getLocalStorageData(LocalStorageKeys.SearchHistory));
+    dispatch(setLocalStorageFavoriteSummoners(getLocalStorageData(LocalStorageKeys.FavoriteSummoners)));
   }, []);
 
   return (

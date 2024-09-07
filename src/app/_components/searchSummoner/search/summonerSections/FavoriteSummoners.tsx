@@ -3,13 +3,14 @@ import { useAppDispatch, useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStorageFavoriteSummonersSlice';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';
+import { LocalStorageKeys } from '@/app/_enums/enums';
 import { FaStar } from 'react-icons/fa';
 import { TiDeleteOutline } from 'react-icons/ti';
 
 type Props = {
   handleMouseInteraction: (e: React.MouseEvent<HTMLButtonElement>) => void;
   setDisplaySummonerSections: TSetState<boolean>;
-  removeSummonerFromLocalStorage: (index: number, localeStorageKey: string) => Array<TLocalStorageSummoner>;
+  removeSummonerFromLocalStorage: (index: number, localeStorageKey: LocalStorageKeys) => Array<TLocalStorageSummoner>;
   displaySection: number;
 }
 
@@ -59,7 +60,7 @@ const FavoriteSummoners = ({
               <button
                 onClick={(e) => {
                   handleMouseInteraction(e);
-                  dispatch(setLocalStorageFavoriteSummoners(removeSummonerFromLocalStorage(index, 'favoriteSummoners')));
+                  dispatch(setLocalStorageFavoriteSummoners(removeSummonerFromLocalStorage(index, LocalStorageKeys.FavoriteSummoners)));
                 }}
                 type='button'
               >

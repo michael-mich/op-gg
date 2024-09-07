@@ -1,6 +1,7 @@
 import type { TLocalStorageSummoner } from '../_types/types';
+import { LocalStorageKeys } from '../_enums/enums';
 
-export const getLocalStorageData = (localeStorageKey: string): Array<TLocalStorageSummoner> => {
+export const getLocalStorageData = (localeStorageKey: LocalStorageKeys): Array<TLocalStorageSummoner> => {
   return JSON.parse(localStorage.getItem(localeStorageKey) || '[]');
 }
 

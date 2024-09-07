@@ -4,6 +4,7 @@ import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStora
 import { getLocalStorageData } from '@/app/_lib/utils';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';
+import { LocalStorageKeys } from '@/app/_enums/enums';
 import { CiWarning } from 'react-icons/ci';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { FaStar, FaRegStar } from 'react-icons/fa';
@@ -13,7 +14,7 @@ type Props = {
   setDisplaySummonerSections: TSetState<boolean>;
   localStorageSearchHistory: Array<TLocalStorageSummoner>;
   setLocalStorageSearchHistory: TSetState<Array<TLocalStorageSummoner>>;
-  removeSummonerFromLocalStorage: (index: number, localeStorageKey: string) => Array<TLocalStorageSummoner>;
+  removeSummonerFromLocalStorage: (index: number, localeStorageKey: LocalStorageKeys) => Array<TLocalStorageSummoner>;
   displaySection: number;
 }
 
@@ -29,15 +30,15 @@ const SearchHistory = ({
   const dispatch = useAppDispatch();
 
   const addFavoriteSummoner = (index: number): void => {
-    const favoriteSummonersArray = getLocalStorageData('favoriteSummoners');
-    favoriteSummonersArray.unshift(getLocalStorageData('searchHistory')[index]);
+    const favoriteSummonersArray = getLocalStorageData(LocalStorageKeys.FavoriteSummoners);
+    favoriteSummonersArray.unshift(getLocalStorageData(LocalStorageKeys.SearchHistory)[index]);
     localStorage.setItem('favoriteSummoners', JSON.stringify(favoriteSummonersArray));
     dispatch(setLocalStorageFavoriteSummoners(favoriteSummonersArray));
   }
 
   const toggleFavoriteSummoner = (index: number): void => {
-    const searchHistoryData = getLocalStorageData('searchHistory')[index];
-    const favoriteSummonersArray = getLocalStorageData('favoriteSummoners');
+    const searchHistoryData = getLocalStorageData(LocalStorageKeys.SearchHistory)[index];
+    const favoriteSummonersArray = getLocalStorageData(LocalStorageKeys.FavoriteSummoners);
     const sameSummonerIndex = favoriteSummonersArray.findIndex(
       (el) => el.summonerId === searchHistoryData.summonerId
     );
@@ -46,7 +47,7 @@ const SearchHistory = ({
       addFavoriteSummoner(index);
     }
     else {
-      dispatch(setLocalStorageFavoriteSummoners(removeSummonerFromLocalStorage(sameSummonerIndex, 'favoriteSummoners')));
+      dispatch(setLocalStorageFavoriteSummoners(removeSummonerFromLocalStorage(sameSummonerIndex, LocalStorageKeys.FavoriteSummoners)));
     }
   }
 
@@ -103,7 +104,7 @@ const SearchHistory = ({
                 <button
                   onClick={(e) => {
                     handleMouseInteraction(e);
-                    setLocalStorageSearchHistory(removeSummonerFromLocalStorage(index, 'searchHistory'));
+                    setLocalStorageSearchHistory(removeSummonerFromLocalStorage(index, LocalStorageKeys.SearchHistory));
                   }}
                   type='button'
                 >
