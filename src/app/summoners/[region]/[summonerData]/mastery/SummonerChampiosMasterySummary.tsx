@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';

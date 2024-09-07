@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import type { TChampionMastery, TChampion } from '@/app/_types/apiTypes';
-
 import { Progress } from '@nextui-org/react';
 
 type Props = {
@@ -9,7 +8,7 @@ type Props = {
   getTopChampions: boolean;
 }
 
-const MasteryInformations = ({ championData, championMastery, getTopChampions }: Props) => {
+const MasteryInformations = ({ championData, championMastery, getTopChampions = true }: Props) => {
   const championLastPlayTimeDate = new Date(championMastery.lastPlayTime);
   const lastPlayTimeDay = championLastPlayTimeDate.getDate().toString().padStart(2, '0');
   const lastPlayTimeMonth = (championLastPlayTimeDate.getMonth() + 1).toString().padStart(2, '0');
@@ -103,7 +102,7 @@ const MasteryInformations = ({ championData, championMastery, getTopChampions }:
           </span>
         </div>
       </div>
-      <div className={`${getTopChampions ? 'group-first-of-type:left-[11%] group-first-of-type:translate-x-0' : 'left-1/2 -translate-x-1/2'} absolute top-[99.5%] 
+      <div className={`${getTopChampions ? 'group-first-of-type:left-[11%] group-first-of-type:translate-x-0 left-1/2 -translate-x-1/2' : 'left-1/2 -translate-x-1/2'} absolute top-[99.5%] 
       z-10 size-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-black`}></div>
     </div>
   );
