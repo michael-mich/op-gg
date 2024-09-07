@@ -1,22 +1,22 @@
 'use client';
 
 import { useEffect } from 'react';
+import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerRank } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
 import type { TSummonerRank } from '@/app/_types/apiTypes';
-import type { TRegionData } from '@/app/_types/types';
 import { rankedEmblems } from './rankedEmblemsData';
 import SummonerRankSkeleton from './SummonerRankSkeleton';
 
 type Props = {
-  currentRegionData: TRegionData | undefined;
   queueType: string;
   smallDataStyle: boolean;
 }
 
-const SummonerRank = ({ currentRegionData, queueType, smallDataStyle }: Props) => {
+const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
+  const currentRegionData = useCurrentRegion();
   const summonerId = useAppSelector((state) => state.summonerId.summonerId);
 
   const { data: fetchedSummonerRanksData, refetch, isLoading, isRefetching } = useQuery({

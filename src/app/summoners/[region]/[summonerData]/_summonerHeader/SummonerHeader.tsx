@@ -3,11 +3,11 @@
 import Image from 'next/image';
 import { notFound, useParams } from 'next/navigation';
 import { useEffect } from 'react';
+import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
 import { setSummonerId } from '@/app/_lib/features/summonerIdSlice';
 import { setSummonerPuuid } from '@/app/_lib/features/summonerPuuidSlice';
 import { useQuery } from '@tanstack/react-query';
-import { getRegionDataFromParams } from '@/app/_lib/utils';
 import { getSummonerProfileData, getSummonerAccount } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
 import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import type { TLocalStorageSummoner, TSummonerPageParams } from '@/app/_types/types';
@@ -18,10 +18,9 @@ import PageNavigation from './PageNavigation';
 const SummonerHeader = () => {
   const params = useParams<TSummonerPageParams>();
   const dispatch = useAppDispatch();
+  const currentRegionData = useCurrentRegion();
 
-  const summonerTagLine = params.region;
   const summonerName = params.summonerData.replace('-', ' ').split(' ')[0];
-  const currentRegionData = getRegionDataFromParams(summonerTagLine);
 
   const {
     data: summonerAccountData,

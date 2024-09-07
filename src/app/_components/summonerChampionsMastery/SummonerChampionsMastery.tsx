@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -8,19 +9,19 @@ import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerChampionsMastery, getFilteredChampions } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
 import type { TChampion } from '@/app/_types/apiTypes';
-import type { TRegionData, TSummonerPageParams } from '@/app/_types/types';
+import type { TSummonerPageParams } from '@/app/_types/types';
 import { IoIosArrowForward } from "react-icons/io";
 import MasteryInformations from './MasteryInformations';
 import ChampionMasterySkeleton from './ChampionMasterySkeleton';
 
 type Props = {
-  currentRegionData: TRegionData | undefined;
   getTopChampions?: boolean;
 }
 
-const SummonerChampionsMastery = ({ currentRegionData, getTopChampions = true }: Props) => {
+const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
   const params = useParams<TSummonerPageParams>();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
+  const currentRegionData = useCurrentRegion();
 
   const {
     data: championsMasteryData,

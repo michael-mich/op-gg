@@ -1,16 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
+import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerChampionsMasterySummary } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
-import type { TRegionData } from '@/app/_types/types';
 import { CircularProgress } from '@nextui-org/react';
-
-type Props = {
-  currentRegionData: TRegionData | undefined;
-}
 
 const championMasteryDetails = [
   {
@@ -27,8 +23,9 @@ const championMasteryDetails = [
   }
 ];
 
-const SummonerChampionsMasterySummary = ({ currentRegionData }: Props) => {
+const SummonerChampionsMasterySummary = () => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
+  const currentRegionData = useCurrentRegion();
 
   const { data: championSummaryData, refetch: refetchChampionSummaryData, isLoading, isFetched } = useQuery({
     queryKey: ['summonerMasteryTotalData'],

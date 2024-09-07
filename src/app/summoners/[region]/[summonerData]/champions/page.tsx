@@ -1,14 +1,12 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerChampionStats } from '@/app/_lib/api/riotGamesApi/summonerChampionStats';
 import { getFilteredChampions } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
-import { getRegionDataFromParams } from '@/app/_lib/utils';
 import type { TSummonerChampionStats, TChampionStats } from '@/app/_types/apiTypes';
-import type { TSummonerPageParams } from '@/app/_types/types';
 import type { TDetailedChampionStats, TNumericStatKeyPath } from './types';
 import { TableColumns, SortOrder } from './enums';
 import { columns } from './data';
@@ -19,9 +17,9 @@ const Page = () => {
   const [sortOptionIndex, setSortOptionIndex] = useState<TableColumns>(TableColumns.TotalGames);
   const [sortOrderDescending, setSortOrderDescending] = useState(true);
 
-  const params = useParams<TSummonerPageParams>();
+  const currentRegionData = useCurrentRegion();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const currentRegionData = useMemo(() => getRegionDataFromParams(params.region), [params.region]);
+
 
   const {
     data: championStats,
