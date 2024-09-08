@@ -78,7 +78,7 @@ export const getSummonerChampionStats = async (
 
         return accumulator;
       }, {})
-    );
+    ).filter(([championName, _]) => !championName.includes('Strawberry'));
 
     const championsId = groupedChampionStats.map(([_, championStats]) => championStats[0].championId);
 
@@ -95,7 +95,7 @@ export const getSummonerChampionStats = async (
     const totalPentaKillsPerChampion = calculateTotalChampionStat(groupedChampionStats, 'pentaKills');
 
     const averageDamageDealtToChampions = groupedChampionStats.map(([_, championStats], index) => {
-      return Math.round((totalChampionDamageDealt[index] / championStats.length));      
+      return Math.round((totalChampionDamageDealt[index] / championStats.length));
     });
 
     const minionStatsPerChampion = groupedChampionStats.map(([_, championStats], index) => {
