@@ -4,7 +4,7 @@ import Provider from './_lib/providers/provider';
 import ReactQueryProvider from './_lib/providers/ReactQueryProvider';
 import StoreProvider from './_lib/providers/StoreProvider';
 import NextUiProvider from './_lib/providers/NextUiProvider';
-import Navigation from './_components/navigation/navigation';
+import Navigation from './_components/navigation/Navigation';
 import Footer from './_components/footer/footer';
 import './globals.css';
 
