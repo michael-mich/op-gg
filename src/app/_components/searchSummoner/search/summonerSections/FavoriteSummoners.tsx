@@ -25,8 +25,7 @@ const FavoriteSummoners = ({
 
   return (
     <div className={`${displaySection == 1 ? 'block max-h-[260px] overflow-scroll' : 'hidden'}`}>
-      {localStorageFavoriteSummoners.length === 0
-        ?
+      {localStorageFavoriteSummoners.length === 0 ? (
         <div className='flex justify-center items-center flex-col gap-2 h-[260px] rounded-b'>
           <FaStar className='size-6 text-[#ffb900]' />
           <div>
@@ -36,7 +35,7 @@ const FavoriteSummoners = ({
             </p>
           </div>
         </div>
-        :
+      ) : (
         localStorageFavoriteSummoners.map((data, index) => (
           <Link
             onClick={() => setDisplaySummonerSections(false)}
@@ -69,7 +68,7 @@ const FavoriteSummoners = ({
             </div>
           </Link>
         ))
-      }
+      )}
     </div>
   );
 };

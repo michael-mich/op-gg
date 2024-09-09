@@ -20,7 +20,7 @@ const Home = () => {
         />
         <SearchSummoner />
         <div className='flex justify-center gap-8 h-[60px] w-fit bg-darkMode-darkGray bg-[url("https://s-lol-web.op.gg/images/premium/bg-opgg-premium-banner-home.png")] 
-            bg-no-repeat bg-bottom bg-[length:100%] rounded-full px-12 mt-6 m-auto'
+        bg-no-repeat bg-bottom bg-[length:100%] rounded-full px-12 mt-6 m-auto'
         >
           <Image
             className='self-end size-fit'

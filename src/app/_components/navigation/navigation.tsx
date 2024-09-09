@@ -46,12 +46,11 @@ const Navigation = () => {
               <span className='text-sm text-white opacity-50 transition-opacity group-hover:opacity-100'>
                 {service.name}
               </span>
-              {service.info
-                &&
+              {service.info && (
                 <span className={`text-[.55rem] text-black rounded-xl py-px px-1 ${service.info === 'Beta' ? 'bg-lightGreen' : 'bg-[#eb9c00]'}`}>
                   {service.info}
                 </span>
-              }
+              )}
             </div>
           ))}
         </div>

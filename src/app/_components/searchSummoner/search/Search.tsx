@@ -79,16 +79,16 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
           >
             Game Name + <span className={`${pageOtherThanHomePage ? 'bg-lightMode-lightGray' : 'bg-lightMode-lightGray dark:bg-darkMode-darkGray'} rounded py-0.5 px-1`}>#{markedRegionData?.shorthand}</span>
           </label>
-          {isSummonerAccountError &&
+          {isSummonerAccountError && (
             <label
               className={`${summonerName.length > 0 && 'hidden'} ${pageOtherThanHomePage ? 'text-xs' : 'text-base'} absolute top-1/2 translate-y-[-50%] left-0 text-red-500 cursor-text`}
               htmlFor='search-summoner'
             >
               Invalid summoner name
             </label>
-          }
+          )}
         </div>
-        {(isSummonerAccountSuccess && displaySummonerLink) &&
+        {(isSummonerAccountSuccess && displaySummonerLink) && (
           <SummonerLink
             setDisplaySummonerLink={setDisplaySummonerLink}
             pageOtherThanHomePage={pageOtherThanHomePage}
@@ -98,13 +98,13 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
             setDisplaySummonerSections={setDisplaySummonerSections}
             isSummonerAccountSuccess={isSummonerAccountSuccess}
           />
-        }
-        {(summonerName === '' && displaySummonerSections) &&
+        )}
+        {(summonerName === '' && displaySummonerSections) && (
           <SummonerSections
             pageOtherThanHomePage={pageOtherThanHomePage}
             setDisplaySummonerSections={setDisplaySummonerSections}
           />
-        }
+        )}
       </div>
       <button
         onClick={() => refetchSummonerAccountData()}

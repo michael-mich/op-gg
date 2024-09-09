@@ -49,8 +49,7 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded mt-2'>
-      {(championsMasteryData?.length === 0 || isChampionsMasteryError)
-        ?
+      {(championsMasteryData?.length === 0 || isChampionsMasteryError) ? (
         <div className='flex flex-col items-center justify-center gap-1 p-3'>
           <Image
             className='size-16'
@@ -63,17 +62,16 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
             Not found data about champion mastery
           </p>
         </div>
-        :
+      ) : (
         <>
-          {getTopChampions &&
+          {getTopChampions && (
             <div className='flex items-center h-[35px] border-bottom-theme px-3'>
               <span className='text-sm'>Mastery</span>
             </div>
-          }
-          {(isChampionsMasteryLoading || summonerPuuid === '' || isChampionsMasteryRefetching)
-            ?
+          )}
+          {(isChampionsMasteryLoading || summonerPuuid === '' || isChampionsMasteryRefetching) ? (
             <ChampionMasterySkeleton getTopChampions={getTopChampions} />
-            :
+          ) : (
             <>
               <div className={`flex flex-wrap ${getTopChampions ? 'gap-2' : 'gap-y-4'} p-3`}>
                 {championsMasteryData?.map((championMastery, championMasteryIndex) => {
@@ -127,7 +125,7 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
                   );
                 })}
               </div>
-              {getTopChampions &&
+              {getTopChampions && (
                 <Link
                   className='group flex items-center justify-center gap-1 text-xs text-lightMode-secondLighterGray
                 dark:text-secondGray bg-lightMode-lightGray dark:bg-darkMode-darkGray rounded-b py-3'
@@ -140,11 +138,11 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
                     className='transition-colors group-hover:text-black dark:group-hover:text-white'
                   />
                 </Link>
-              }
+              )}
             </>
-          }
+          )}
         </>
-      }
+      )}
     </div>
   );
 }

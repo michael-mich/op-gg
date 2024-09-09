@@ -27,20 +27,19 @@ const ThemeSwitch = () => {
       type='button'
       aria-label='change color theme'
     >
-      {darkTheme
-        ?
+      {darkTheme ? (
         <FaMoon
           className='max-w-6 text-secondGray transition-colors group-hover:text-white'
           width={25}
           height={25}
         />
-        :
+      ) : (
         <FaSun
           className='max-w-6 text-secondGray transition-colors group-hover:text-white'
           width={25}
           height={25}
         />
-      }
+      )}
     </button>
   );
 }

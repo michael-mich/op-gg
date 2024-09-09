@@ -35,16 +35,13 @@ const Matches = () => {
         </span>
       </div>
       <div className={`grow flex flex-col ${(isFirstMatchLoading || isSecondMatchLoading || isFirstMatchError || isSecondMatchError) && 'justify-center items-center'}`}>
-        {(isFirstMatchLoading || isSecondMatchLoading)
-          ?
+        {(isFirstMatchLoading || isSecondMatchLoading) ? (
           <LuLoader className='size-5 text-secondGray' />
-          :
-          (isFirstMatchError || isSecondMatchError)
-            ?
+        ) : (
+          (isFirstMatchError || isSecondMatchError) ? (
             <p>Something went wrong</p>
-            :
-            matchesData.length > 0
-              ?
+          ) : (
+            matchesData.length > 0 ? (
               matchesData.map((match) => match!.games.map((_, gameIndex) => {
                 const matchSchedule = new Date(match!.original_scheduled_at);
                 const matchDay = matchSchedule.getDate();
@@ -110,11 +107,13 @@ const Matches = () => {
                   </div>
                 );
               }))
-              :
+            ) : (
               <p className='flex justify-center items-center text-center h-full'>
                 Error to fetch data, try refresh page
               </p>
-        }
+            )
+          )
+        )}
       </div>
     </div>
   );

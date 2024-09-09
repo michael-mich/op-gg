@@ -50,12 +50,11 @@ const FavoriteSummonerButton = ({
       className={`${checkSummonerFavoriteStatus() && 'bg-[#e28400]'} rounded-md border border-[#edeff1] dark:border-[#393948] p-1`}
       type='button'
     >
-      {checkSummonerFavoriteStatus()
-        ?
+      {checkSummonerFavoriteStatus() ? (
         <FaStar className='text-white' />
-        :
+      ) : (
         <FaRegStar className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray' />
-      }
+      )}
     </button>
   );
 }

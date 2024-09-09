@@ -33,12 +33,10 @@ const SummonerChampionsMasterySummary = () => {
 
   return (
     <div className='flex justify-center items-center rounded bg-white dark:bg-darkMode-mediumGray p-3'>
-      {(isLoading || !isFetched)
-        ?
+      {(isLoading || !isFetched) ? (
         <CircularProgress aria-label='loading mastery summary data' />
-        :
-        championSummaryData
-          ?
+      ) : (
+        championSummaryData ? (
           championMasteryDetails.map((data, index) => (
             <div
               className={`flex-1 flex flex-col items-center gap-0.5 ${index !== 2 && 'border-r border-r-almostWhite dark:border-r-darkMode-darkBlue'}`}
@@ -59,9 +57,10 @@ const SummonerChampionsMasterySummary = () => {
               </span>
             </div>
           ))
-          :
+        ) : (
           <p>error</p>
-      }
+        )
+      )}
     </div>
   );
 }

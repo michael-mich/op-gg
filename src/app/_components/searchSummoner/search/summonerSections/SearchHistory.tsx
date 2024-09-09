@@ -53,18 +53,18 @@ const SearchHistory = ({
 
   return (
     <div className={`${displaySection === 0 ? 'block max-h-[260px] overflow-scroll' : 'hidden'}`}>
-      {localStorageSearchHistory.length === 0
-        ?
+      {localStorageSearchHistory.length === 0 ? (
         <div className='flex justify-center items-center flex-col gap-2 h-[260px] rounded-b'>
           <CiWarning className='size-6 text-[#c3cbd1] dark:text-darkMode-lighterGray' />
           <p className='text-xs text-[#aab2bc] dark:text-[#79788c]'>
             There is no summoner you seen recently
           </p>
         </div>
-        :
+      ) : (
         localStorageSearchHistory.map((data, index) => {
           const favoriteSummoner = localStorageFavoriteSummoners.some((favSummoner) =>
-            favSummoner.summonerId === data.summonerId);
+            favSummoner.summonerId === data.summonerId
+          );
 
           return (
             <Link
@@ -94,12 +94,11 @@ const SearchHistory = ({
                   className='mr-3'
                   type='button'
                 >
-                  {favoriteSummoner
-                    ?
+                  {favoriteSummoner ? (
                     <FaStar className='size-5 text-yellow' />
-                    :
+                  ) : (
                     <FaRegStar className='size-5 text-[#767d88]' />
-                  }
+                  )}
                 </button>
                 <button
                   onClick={(e) => {
@@ -114,7 +113,7 @@ const SearchHistory = ({
             </Link>
           )
         })
-      }
+      )}
     </div>
   );
 }

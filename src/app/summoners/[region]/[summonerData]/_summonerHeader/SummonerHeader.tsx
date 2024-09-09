@@ -69,10 +69,9 @@ const SummonerHeader = () => {
     <section className='bg-white dark:bg-darkMode-mediumGray pt-12'>
       <div className='border-bottom-theme'>
         <div className='w-[1080px] m-auto'>
-          {(isSummonerAccountDataLoading || isSummonerAccountDataRefetching)
-            ?
+          {(isSummonerAccountDataLoading || isSummonerAccountDataRefetching) ? (
             <SummonerHeaderSkeleton />
-            :
+          ) : (
             <div className='flex gap-6 pb-8'>
               <div className='flex flex-col'>
                 <Image
@@ -112,7 +111,7 @@ const SummonerHeader = () => {
                 </div>
               </div>
             </div>
-          }
+          )}
         </div>
       </div>
       <PageNavigation />

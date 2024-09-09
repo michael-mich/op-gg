@@ -11,20 +11,17 @@ const Teams = () => {
 
   return (
     <div className={`grow flex flex-col ${(isLoading || isError) && 'justify-center items-center'} rounded-bl-md`}>
-      {isLoading
-        ?
+      {isLoading ? (
         <LuLoader className='size-5 text-secondGray' />
-        :
-        isError
-          ?
+      ) : (
+        isError ? (
           <p>Something went wrong</p>
-          :
-          data !== undefined
-            ?
+        ) : (
+          data ? (
             data.slice(0, 6).map((data, index) => (
               <div
                 className={`grow flex items-center justify-between ${index !== 5 ? 'border-bottom-theme' : 'border-b border-b-transparent rounded-bl-md'}
-            px-3 transition-colors hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray`}
+                px-3 transition-colors hover:bg-lightMode-lighterGray dark:hover:bg-darkMode-darkGray`}
                 key={index}
               >
                 <div className='flex items-center gap-2'>
@@ -46,11 +43,13 @@ const Teams = () => {
                 </p>
               </div>
             ))
-            :
+          ) : (
             <p className='flex justify-center items-center text-center h-full'>
               Error to fetch data, try refresh page
             </p>
-      }
+          )
+        )
+      )}
     </div>
   );
 }

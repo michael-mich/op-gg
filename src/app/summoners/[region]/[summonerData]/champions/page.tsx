@@ -213,10 +213,9 @@ const Page = () => {
 
   return (
     <div className={`custom-table-wrapper ${loadingCondition && 'loading'}`}>
-      {loadingCondition
-        ?
+      {loadingCondition ? (
         <CircularProgress aria-label='champion stats loading' />
-        :
+      ) : (
         <Table aria-label='table with champion stats'>
           <TableHeader>
             {columns.map((column, index) =>
@@ -237,8 +236,7 @@ const Page = () => {
             )}
           </TableHeader>
           <TableBody emptyContent={'No champion stats to display'}>
-            {detailedChampionStats
-              ?
+            {detailedChampionStats ? (
               detailedChampionStats?.map((stats) => (
                 <TableRow
                   className='group even:bg-lightMode-lightGray dark:even:bg-darkMode-darkGray'
@@ -289,12 +287,12 @@ const Page = () => {
                   <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'pentaKills')}</TableCell>
                 </TableRow>
               ))
-              :
+            ) : (
               []
-            }
+            )}
           </TableBody>
         </Table>
-      }
+      )}
     </div>
   );
 }

@@ -113,3 +113,8 @@ export type TChampionMasterySummary = {
   totalChampionPoints: string | undefined;
   totalMasteryScore: number | undefined;
 }
+
+export type TLiveGame = {
+  gameMode: string;
+  gameLength: number;
+}

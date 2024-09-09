@@ -53,26 +53,25 @@ const GamesServices = () => {
       >
         <ul className='min-w-[180px]'>
           {games.map((game, index) => (
-            game.logo
-            &&
-            <li
-              onMouseEnter={() => setHoveredGameIndex(index)}
-              onMouseLeave={() => setHoveredGameIndex(0)}
-              className='flex items-center gap-1 w-full group cursor-pointer 
+            game.logo && (
+              <li
+                onMouseEnter={() => setHoveredGameIndex(index)}
+                onMouseLeave={() => setHoveredGameIndex(0)}
+                className='flex items-center gap-1 w-full group cursor-pointer 
               rounded p-1.5 transition-colors hover:bg-lightGrayBackground'
-              key={index}
-            >
-              <Image
-                className='max-w-5'
-                src={game.logo}
-                width={25}
-                height={25}
-                alt=''
-                aria-hidden='true'
-              />
-              <span className='text-sm text-white'>{game.name}</span>
-            </li>
-          ))}
+                key={index}
+              >
+                <Image
+                  className='max-w-5'
+                  src={game.logo}
+                  width={25}
+                  height={25}
+                  alt=''
+                  aria-hidden='true'
+                />
+                <span className='text-sm text-white'>{game.name}</span>
+              </li>
+            )))}
         </ul>
         {games.map((game, index) => (
           <div
@@ -87,8 +86,7 @@ const GamesServices = () => {
               alt=''
               aria-hidden='true'
             />
-            {game.gameForDeivces
-              &&
+            {game.gameForDeivces && (
               <div className='flex items-center gap-1 mt-2'>
                 {game.gameForDeivces.map((image, imageIndex) => (
                   <div className='bg-lightGrayBackground p-2 aspect-square rounded-full' key={imageIndex}>
@@ -103,11 +101,10 @@ const GamesServices = () => {
                   </div>
                 ))}
               </div>
-            }
-            {game.text
-              &&
+            )}
+            {game.text && (
               <p className='text-xs text-white mt-2'>{game.text}</p>
-            }
+            )}
           </div>
         ))}
       </div>
