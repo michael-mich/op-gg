@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
@@ -25,20 +24,17 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
 
   const {
     data: championsMasteryData,
-    refetch: refetchTopFourChampionsMastery,
-    isFetched: isChampionsMasteryFetched,
+    isSuccess: isChampionsMasterySuccess,
     isRefetching: isChampionsMasteryRefetching,
     isLoading: isChampionsMasteryLoading,
     isError: isChampionsMasteryError
   } = useQuery({
-    enabled: false,
-    queryKey: ['topFourChampionsMastery'],
+    queryKey: ['topFourChampionsMastery', summonerPuuid],
     queryFn: () => getSummonerChampionsMastery(currentRegionData, summonerPuuid, getTopChampions)
   });
 
-  const { data: filteredChampionsData, refetch: refetchFilteredChampions } = useQuery({
-    enabled: false,
-    queryKey: ['filteredChampions'],
+  const { data: filteredChampionsData } = useQuery({
+    queryKey: ['filteredChampions', isChampionsMasterySuccess, isChampionsMasteryRefetching],
     queryFn: () => getFilteredChampions(championsMasteryData)
   });
 
@@ -50,18 +46,6 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
       return bPoints - aPoints;
     })
   }
-
-  useEffect(() => {
-    if (summonerPuuid) {
-      refetchTopFourChampionsMastery();
-    }
-  }, [summonerPuuid]);
-
-  useEffect(() => {
-    if (championsMasteryData) {
-      refetchFilteredChampions();
-    }
-  }, [isChampionsMasteryFetched, isChampionsMasteryRefetching]);
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded mt-2'>

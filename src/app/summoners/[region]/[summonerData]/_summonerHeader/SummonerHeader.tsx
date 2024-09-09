@@ -36,12 +36,10 @@ const SummonerHeader = () => {
 
   const {
     data: summonerProfileData,
-    refetch: refetchSummonerProfileData,
     isError: isSummonerProfileError,
     isSuccess: isSuccessProfile
   } = useQuery({
-    enabled: false,
-    queryKey: ['summonerProfile', 'summonerPage'],
+    queryKey: ['summonerProfile', 'summonerPage', isSuccessAccount, summonerAccountData?.puuid],
     queryFn: () => getSummonerProfileData(summonerAccountData as TSummonerAccount, currentRegionData)
   });
 
@@ -51,12 +49,6 @@ const SummonerHeader = () => {
     tagLine: summonerAccountData?.tagLine,
     summonerId: summonerProfileData?.id
   }
-
-  useEffect(() => {
-    if (isSuccessAccount) {
-      refetchSummonerProfileData();
-    }
-  }, [isSuccessAccount, summonerAccountData?.puuid]);
 
   useEffect(() => {
     if (isSuccessProfile) {

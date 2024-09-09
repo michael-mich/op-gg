@@ -1,10 +1,12 @@
 import QueueTypes from './QueueTypes';
 import SummonerRank from './_summonerRank/SummonerRank';
 import SummonerChampionsMastery from '@/app/_components/summonerChampionsMastery/SummonerChampionsMastery';
+import SummonerLiveGame from '@/app/_components/liveGame/summonerLiveGame/SummonerLiveGame';
 
 const Page = () => {
   return (
     <>
+      <SummonerLiveGame />
       <QueueTypes />
       <div className='mt-2'>
         <div className='w-[332px]'>

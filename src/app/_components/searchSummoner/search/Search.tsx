@@ -20,7 +20,13 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
   const summonerSectionsRef = useOutsideClick(displaySummonerSections, setDisplaySummonerSections);
   const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);
 
-  const { data, isError, isSuccess, isFetching, refetch } = useQuery({
+  const {
+    data: summonerAccountData,
+    isError: isSummonerAccountError,
+    isSuccess: isSummonerAccountSuccess,
+    isFetching: isSummonerAccountFetching,
+    refetch: refetchSummonerAccountData
+  } = useQuery({
     enabled: false,
     queryKey: ['summonerAccount'],
     queryFn: () => getSummonerAccount(summonerName, markedRegionData)
@@ -32,19 +38,19 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
 
   const handleKeyboardEvent = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
-      refetch();
+      refetchSummonerAccountData();
     }
   }
 
   useEffect(() => {
-    if (isError && !isFetching) {
+    if (isSummonerAccountError && !isSummonerAccountFetching) {
       setSummonerName('');
     }
 
-    if (!isFetching && isSuccess) {
+    if (!isSummonerAccountFetching && isSummonerAccountSuccess) {
       setDisplaySummonerLink(true);
     }
-  }, [isError, isFetching, isSuccess]);
+  }, [isSummonerAccountError, isSummonerAccountFetching, isSummonerAccountSuccess]);
 
   return (
     <div className={`${pageOtherThanHomePage ? 'h-8 rounded-r bg-white pr-3' : 'flex items-center h-[60px] rounded-r-full bg-white dark:bg-darkMode-mediumGray pl-4 pr-8'} flex justify-between w-full`}>
@@ -67,13 +73,13 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
             id='search-summoner'
           />
           <label
-            className={`${(summonerName.length > 0 || isError) ? 'hidden' : 'block'} ${pageOtherThanHomePage ? 'h-5 text-xs leading-5 text-secondGray' : 'h-auto text-sm text-secondGray dark:text-mediumGrayText'} 
+            className={`${(summonerName.length > 0 || isSummonerAccountError) ? 'hidden' : 'block'} ${pageOtherThanHomePage ? 'h-5 text-xs leading-5 text-secondGray' : 'h-auto text-sm text-secondGray dark:text-mediumGrayText'} 
             absolute top-1/2 left-0 translate-y-[-50%] h-[20px] cursor-text`}
             htmlFor='search-summoner'
           >
             Game Name + <span className={`${pageOtherThanHomePage ? 'bg-lightMode-lightGray' : 'bg-lightMode-lightGray dark:bg-darkMode-darkGray'} rounded py-0.5 px-1`}>#{markedRegionData?.shorthand}</span>
           </label>
-          {isError &&
+          {isSummonerAccountError &&
             <label
               className={`${summonerName.length > 0 && 'hidden'} ${pageOtherThanHomePage ? 'text-xs' : 'text-base'} absolute top-1/2 translate-y-[-50%] left-0 text-red-500 cursor-text`}
               htmlFor='search-summoner'
@@ -82,15 +88,15 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
             </label>
           }
         </div>
-        {(isSuccess && displaySummonerLink) &&
+        {(isSummonerAccountSuccess && displaySummonerLink) &&
           <SummonerLink
             setDisplaySummonerLink={setDisplaySummonerLink}
             pageOtherThanHomePage={pageOtherThanHomePage}
-            summonerAccountData={data as TSummonerAccount}
+            summonerAccountData={summonerAccountData as TSummonerAccount}
             summonerName={summonerName}
             setSummonerName={setSummonerName}
             setDisplaySummonerSections={setDisplaySummonerSections}
-            isSuccess={isSuccess}
+            isSummonerAccountSuccess={isSummonerAccountSuccess}
           />
         }
         {(summonerName === '' && displaySummonerSections) &&
@@ -101,7 +107,7 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
         }
       </div>
       <button
-        onClick={() => refetch()}
+        onClick={() => refetchSummonerAccountData()}
         type='button'
       >
         <Image

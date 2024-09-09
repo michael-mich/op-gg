@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
@@ -17,7 +16,7 @@ type Props = {
   summonerName: string;
   setSummonerName: TSetState<string>;
   setDisplaySummonerSections: TSetState<boolean>;
-  isSuccess: boolean;
+  isSummonerAccountSuccess: boolean;
 }
 
 const SummonerLink = ({
@@ -25,15 +24,14 @@ const SummonerLink = ({
   pageOtherThanHomePage,
   summonerAccountData,
   summonerName,
-  isSuccess,
+  isSummonerAccountSuccess,
   setSummonerName,
   setDisplaySummonerSections
 }: Props) => {
   const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);
 
-  const { data, refetch } = useQuery({
-    enabled: false,
-    queryKey: ['summonerLevelAndIconId'],
+  const { data: summonerLevelAndIconIdData } = useQuery({
+    queryKey: ['summonerLevelAndIconId', isSummonerAccountSuccess],
     queryFn: () => getSummonerProfileData(summonerAccountData, markedRegionData)
   });
 
@@ -41,7 +39,7 @@ const SummonerLink = ({
     regionShorthand: markedRegionData.shorthand,
     summonerName: summonerAccountData.gameName,
     tagLine: summonerAccountData.tagLine,
-    summonerId: data?.id
+    summonerId: summonerLevelAndIconIdData?.id
   }
 
   const removeDuplicateObjects = (localeStorageArray: Array<TLocalStorageSummoner>): Array<TLocalStorageSummoner> => {
@@ -56,12 +54,6 @@ const SummonerLink = ({
     const withoutDuplicates = removeDuplicateObjects(storageArray);
     localStorage.setItem('searchHistory', JSON.stringify(withoutDuplicates));
   }
-
-  useEffect(() => {
-    if (isSuccess) {
-      refetch();
-    }
-  }, [summonerAccountData.puuid]);
 
   return (
     <div className={`${summonerName.length > 0 ? 'block' : 'hidden'} ${pageOtherThanHomePage ? 'top-8 max-w-[472px]' : 'top-[3.2rem]'} absolute left-0 z-50 
@@ -79,7 +71,7 @@ const SummonerLink = ({
       >
         <Image
           className='w-9 rounded-full aspect-square'
-          src={`https://ddragon.leagueoflegends.com/cdn/14.14.1/img/profileicon/${data?.profileIconId}.png`}
+          src={`https://ddragon.leagueoflegends.com/cdn/14.14.1/img/profileicon/${summonerLevelAndIconIdData?.profileIconId}.png`}
           width={30}
           height={30}
           alt=""
@@ -93,7 +85,7 @@ const SummonerLink = ({
             </span>
           </div>
           <span className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
-            Level {data?.summonerLevel}
+            Level {summonerLevelAndIconIdData?.summonerLevel}
           </span>
         </div>
       </Link>

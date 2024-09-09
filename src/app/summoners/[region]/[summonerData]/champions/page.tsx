@@ -20,29 +20,24 @@ const Page = () => {
   const currentRegionData = useCurrentRegion();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
 
-
   const {
     data: championStats,
-    refetch: refetchChampionStats,
     isError: isChampionStatsError,
     isSuccess: isChampionStatsSuccess,
     isRefetching: isChampionStatsRefetching
   } = useQuery({
-    enabled: false,
     queryKey: ['matchStats', 'summonerPage', summonerPuuid],
     queryFn: () => getSummonerChampionStats(currentRegionData, summonerPuuid)
   });
 
   const {
     data: championData,
-    refetch: refetchChampionData,
     isSuccess: isChampionDataSuccess,
     isError: isChampionDataError,
     isFetched: isChampionDataFetched,
     isRefetching: isChampionDataRefetching
   } = useQuery({
-    enabled: false,
-    queryKey: ['championData', 'summonerChampionsPage', summonerPuuid],
+    queryKey: ['championData', 'summonerChampionsPage', isChampionStatsSuccess, summonerPuuid],
     queryFn: () => getFilteredChampions(championStats)
   });
 
@@ -205,18 +200,6 @@ const Page = () => {
         console.log('error');
     }
   }
-
-  useEffect(() => {
-    if (summonerPuuid) {
-      refetchChampionStats();
-    }
-  }, [summonerPuuid]);
-
-  useEffect(() => {
-    if (isChampionStatsSuccess) {
-      refetchChampionData();
-    }
-  }, [isChampionStatsSuccess]);
 
   useEffect(() => {
     if (isChampionStatsSuccess && isChampionDataSuccess) {

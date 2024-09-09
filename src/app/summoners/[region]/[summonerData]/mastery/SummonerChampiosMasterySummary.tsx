@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
@@ -27,16 +26,10 @@ const SummonerChampionsMasterySummary = () => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const currentRegionData = useCurrentRegion();
 
-  const { data: championSummaryData, refetch: refetchChampionSummaryData, isLoading, isFetched } = useQuery({
-    queryKey: ['summonerMasteryTotalData'],
+  const { data: championSummaryData, isLoading, isFetched } = useQuery({
+    queryKey: ['summonerMasteryTotalData', summonerPuuid],
     queryFn: () => getSummonerChampionsMasterySummary(currentRegionData, summonerPuuid)
   });
-
-  useEffect(() => {
-    if (summonerPuuid) {
-      refetchChampionSummaryData();
-    }
-  }, [summonerPuuid]);
 
   return (
     <div className='flex justify-center items-center rounded bg-white dark:bg-darkMode-mediumGray p-3'>

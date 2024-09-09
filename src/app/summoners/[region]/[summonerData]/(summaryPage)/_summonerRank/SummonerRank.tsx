@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
@@ -19,9 +18,8 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
   const currentRegionData = useCurrentRegion();
   const summonerId = useAppSelector((state) => state.summonerId.summonerId);
 
-  const { data: fetchedSummonerRanksData, refetch, isLoading, isRefetching } = useQuery({
-    enabled: false,
-    queryKey: ['summonerRank'],
+  const { data: fetchedSummonerRanksData, isLoading, isRefetching } = useQuery({
+    queryKey: ['summonerRank', summonerId],
     queryFn: () => getSummonerRank(currentRegionData, summonerId)
   });
 
@@ -55,12 +53,6 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
   const tierName = formatTierName();
   const winRate = calculateWinRate();
   const rankedEmblem = getRankedEmblem();
-
-  useEffect(() => {
-    if (summonerId) {
-      refetch();
-    }
-  }, [summonerId]);
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded mt-2'>
