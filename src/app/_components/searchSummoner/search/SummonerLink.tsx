@@ -52,7 +52,7 @@ const SummonerLink = ({
     const storageArray = getLocalStorageData(LocalStorageKeys.SearchHistory);
     storageArray.unshift(searchHistoryData);
     const withoutDuplicates = removeDuplicateObjects(storageArray);
-    localStorage.setItem('searchHistory', JSON.stringify(withoutDuplicates));
+    localStorage.setItem(LocalStorageKeys.SearchHistory, JSON.stringify(withoutDuplicates));
   }
 
   return (
