@@ -31,8 +31,10 @@ const SummonerLink = ({
   const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);
 
   const { data: summonerLevelAndIconIdData } = useQuery({
-    queryKey: ['summonerLevelAndIconId', isSummonerAccountSuccess],
-    queryFn: () => getSummonerProfileData(summonerAccountData, markedRegionData)
+    enabled: !!summonerAccountData,
+    queryKey: ['summonerLevelAndIconId', isSummonerAccountSuccess, summonerAccountData.puuid],
+    queryFn: () => getSummonerProfileData(summonerAccountData.puuid, markedRegionData),
+    refetchOnWindowFocus: false
   });
 
   const searchHistoryData: TLocalStorageSummoner = {
