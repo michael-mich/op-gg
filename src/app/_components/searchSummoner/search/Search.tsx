@@ -28,8 +28,9 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
     refetch: refetchSummonerAccountData
   } = useQuery({
     enabled: false,
-    queryKey: ['summonerAccount'],
-    queryFn: () => getSummonerAccount(summonerName, markedRegionData)
+    queryKey: ['searchSummoner'],
+    queryFn: () => getSummonerAccount(summonerName, markedRegionData),
+    refetchOnWindowFocus: false
   });
 
   const handleSummonerName = (e: React.ChangeEvent<HTMLInputElement>): void => {

@@ -6,7 +6,9 @@ import { LuLoader } from 'react-icons/lu';
 const Teams = () => {
   const { data, isError, isLoading } = useQuery({
     queryKey: ['lec'],
-    queryFn: () => getLecSpringSeason()
+    queryFn: () => getLecSpringSeason(),
+    refetchOnWindowFocus: false,
+    staleTime: Infinity
   });
 
   return (

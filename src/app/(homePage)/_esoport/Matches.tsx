@@ -12,7 +12,9 @@ const Matches = () => {
     isLoading: isFirstMatchLoading
   } = useQuery({
     queryKey: ['lec-match', 1],
-    queryFn: () => getMatchResultLionsVsFnatic()
+    queryFn: () => getMatchResultLionsVsFnatic(),
+    refetchOnWindowFocus: false,
+    staleTime: Infinity
   });
 
   const {
@@ -21,7 +23,9 @@ const Matches = () => {
     isLoading: isSecondMatchLoading
   } = useQuery({
     queryKey: ['lec-match', 2],
-    queryFn: () => getMatchResultFnaticVsBds()
+    queryFn: () => getMatchResultFnaticVsBds(),
+    refetchOnWindowFocus: false,
+    staleTime: Infinity
   });
 
   const matchesData = [firstMatchData, secondMatchData];
