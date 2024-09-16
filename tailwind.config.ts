@@ -10,6 +10,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        small: '0.6875rem' // 11px
+      },
       colors: {
         almostWhite: '#ebeef1',
         darkSlateGray: '#34414d',
@@ -22,6 +25,7 @@ const config: Config = {
         lightGrayBackground: '#424254',
         lightGreen: '#03f9de',
         yellow: '#ffb900',
+        red: '#e84057',
         darkMode: {
           darkBlue: '#1C1C1F',
           darkGray: '#282830',
