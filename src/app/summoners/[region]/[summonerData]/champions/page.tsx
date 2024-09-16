@@ -24,10 +24,12 @@ const Page = () => {
     data: championStats,
     isError: isChampionStatsError,
     isSuccess: isChampionStatsSuccess,
-    isRefetching: isChampionStatsRefetching
+    isFetched: isChampionStatsFetched
   } = useQuery({
+    enabled: !!summonerPuuid,
     queryKey: ['matchStats', 'summonerPage', summonerPuuid],
-    queryFn: () => getSummonerChampionStats(currentRegionData, summonerPuuid)
+    queryFn: () => getSummonerChampionStats(currentRegionData, summonerPuuid),
+    refetchOnWindowFocus: false
   });
 
   const {
@@ -35,13 +37,14 @@ const Page = () => {
     isSuccess: isChampionDataSuccess,
     isError: isChampionDataError,
     isFetched: isChampionDataFetched,
-    isRefetching: isChampionDataRefetching
   } = useQuery({
+    enabled: isChampionStatsSuccess,
     queryKey: ['championData', 'summonerChampionsPage', isChampionStatsSuccess, summonerPuuid],
-    queryFn: () => getFilteredChampions(championStats)
+    queryFn: () => getFilteredChampions(championStats),
+    refetchOnWindowFocus: false
   });
 
-  const loadingCondition = (!summonerPuuid || !isChampionDataFetched || isChampionStatsRefetching || isChampionDataRefetching);
+  const loadingCondition = (!summonerPuuid || !isChampionDataFetched || !isChampionStatsFetched);
 
   const formatKillStat = (stat: TSummonerChampionStats, key: keyof Omit<TChampionStats, 'championId'>): number | string => {
     return stat[key] === 0 ? '' : stat[key];
@@ -253,7 +256,7 @@ const Page = () => {
                     </div>
                   </TableCell>
                   <TableCell className='flex items-center gap-2 h-[61.5px] table-cell-hover-bg '>
-                    <div className='relative flex items-center justify-end w-[90px] h-5 bg-red-500 rounded'>
+                    <div className='relative flex items-center justify-end w-[90px] h-5 bg-red rounded'>
                       <div
                         className={`${stats.played.wonMatches === 0 && 'hidden'} absolute left-0 top-1/2 -translate-y-1/2 z-[1] w-[${stats.played.winRatio}%] ${stats.played.lostMatches === 0 ? 'rounded' : 'rounded-l'} h-full bg-blue`}
                         style={{ width: `${stats.played.winRatio}%` }}

@@ -1,21 +1,20 @@
 import QueueTypes from './QueueTypes';
 import SummonerRank from './_summonerRank/SummonerRank';
 import SummonerChampionsMastery from '@/app/_components/summonerChampionsMastery/SummonerChampionsMastery';
-import SummonerLiveGame from '@/app/_components/liveGame/summonerLiveGame/SummonerLiveGame';
+import { QueueType } from '@/app/_enums/enums';
 
 const Page = () => {
   return (
     <>
-      <SummonerLiveGame />
       <QueueTypes />
       <div className='mt-2'>
         <div className='w-[332px]'>
           <SummonerRank
-            queueType={'RANKED_SOLO_5x5'}
+            queueType={QueueType.RankedSolo}
             smallDataStyle={false}
           />
           <SummonerRank
-            queueType={'RANKED_FLEX_SR'}
+            queueType={QueueType.RankedFlex}
             smallDataStyle
           />
           <SummonerChampionsMastery />

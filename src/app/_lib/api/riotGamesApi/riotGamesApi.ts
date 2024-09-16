@@ -8,7 +8,8 @@ import type {
   TPromiseResult,
   TChampionMastery,
   TChampion,
-  TChampionMasterySummary
+  TChampionMasterySummary,
+  TLiveGame
 } from '@/app/_types/apiTypes';
 import type { TRegionData } from '@/app/_types/types';
 
@@ -23,10 +24,10 @@ export const getSummonerAccount = async (
 }
 
 export const getSummonerProfileData = async (
-  summonerAccountData: TSummonerAccount,
+  puuid: string | undefined,
   regionData: TRegionData | undefined
 ): Promise<TPromiseResult<TSummonerProfile>> => {
-  const url = `https://${regionData?.regionLink}/lol/summoner/v4/summoners/by-puuid/${summonerAccountData.puuid}?api_key=${riotGamesApiKey}`;
+  const url = `https://${regionData?.regionLink}/lol/summoner/v4/summoners/by-puuid/${puuid}?api_key=${riotGamesApiKey}`;
   return await fetchApi(url);
 }
 
@@ -72,11 +73,18 @@ export const getSummonerChampionsMasterySummary = async (
 export const getFilteredChampions = async <T extends { championId: number }>(
   championsData: Array<T> | undefined | void
 ): Promise<TPromiseResult<Array<TChampion>>> => {
-
   const data: TPromiseResult<{ data: Record<string, TChampion> }> = await fetchApi('https://ddragon.leagueoflegends.com/cdn/14.15.1/data/en_US/champion.json');
   const champions = Object.values(data?.data || []);
 
   const filteredChampions = champions.filter((champion) => championsData?.find((championData) =>
-    champion.key === championData.championId.toString()));
+    champion.key === championData.championId.toString())
+  );
   return filteredChampions;
+}
+
+export const getSpectatorData = async (
+  regionData: TRegionData | undefined,
+  summonerPuuid: string | undefined
+): Promise<TPromiseResult<TLiveGame>> => {
+  return await fetchApi(`https://${regionData?.regionLink}/lol/spectator/v5/active-games/by-summoner/${summonerPuuid}?api_key=${riotGamesApiKey}`);
 }

@@ -27,8 +27,10 @@ const SummonerChampionsMasterySummary = () => {
   const currentRegionData = useCurrentRegion();
 
   const { data: championSummaryData, isLoading, isFetched } = useQuery({
+    enabled: !!summonerPuuid,
     queryKey: ['summonerMasteryTotalData', summonerPuuid],
-    queryFn: () => getSummonerChampionsMasterySummary(currentRegionData, summonerPuuid)
+    queryFn: () => getSummonerChampionsMasterySummary(currentRegionData, summonerPuuid),
+    refetchOnWindowFocus: false
   });
 
   return (

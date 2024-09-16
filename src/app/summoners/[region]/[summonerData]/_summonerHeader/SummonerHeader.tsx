@@ -9,7 +9,6 @@ import { setSummonerId } from '@/app/_lib/features/summonerIdSlice';
 import { setSummonerPuuid } from '@/app/_lib/features/summonerPuuidSlice';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerProfileData, getSummonerAccount } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
-import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import type { TLocalStorageSummoner, TSummonerPageParams } from '@/app/_types/types';
 import SummonerHeaderSkeleton from './Skeleton';
 import FavoriteSummonerButton from './FavoriteSummonerButton';
@@ -27,11 +26,12 @@ const SummonerHeader = () => {
     isFetched: isSummonerAccountDataFetched,
     isError: isSummonerAccountDataError,
     isLoading: isSummonerAccountDataLoading,
-    isRefetching: isSummonerAccountDataRefetching,
     isSuccess: isSuccessAccount
   } = useQuery({
+    enabled: !!summonerName,
     queryKey: ['summonerAccount', 'summonerPage'],
-    queryFn: () => getSummonerAccount(summonerName, currentRegionData)
+    queryFn: () => getSummonerAccount(summonerName, currentRegionData),
+    refetchOnWindowFocus: false
   });
 
   const {
@@ -39,8 +39,10 @@ const SummonerHeader = () => {
     isError: isSummonerProfileError,
     isSuccess: isSuccessProfile
   } = useQuery({
+    enabled: isSuccessAccount,
     queryKey: ['summonerProfile', 'summonerPage', isSuccessAccount, summonerAccountData?.puuid],
-    queryFn: () => getSummonerProfileData(summonerAccountData as TSummonerAccount, currentRegionData)
+    queryFn: () => getSummonerProfileData(summonerAccountData?.puuid, currentRegionData),
+    refetchOnWindowFocus: false
   });
 
   const favoriteSummonerData: TLocalStorageSummoner = {
@@ -69,7 +71,7 @@ const SummonerHeader = () => {
     <section className='bg-white dark:bg-darkMode-mediumGray pt-12'>
       <div className='border-bottom-theme'>
         <div className='w-[1080px] m-auto'>
-          {(isSummonerAccountDataLoading || isSummonerAccountDataRefetching) ? (
+          {(isSummonerAccountDataLoading || !isSummonerAccountDataFetched) ? (
             <SummonerHeaderSkeleton />
           ) : (
             <div className='flex gap-6 pb-8'>

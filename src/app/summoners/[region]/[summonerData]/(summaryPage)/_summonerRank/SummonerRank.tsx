@@ -5,12 +5,13 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerRank } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
-import type { TSummonerRank } from '@/app/_types/apiTypes';
+import { findQueueTypeData } from '@/app/_lib/utils';
 import { rankedEmblems } from './rankedEmblemsData';
 import SummonerRankSkeleton from './SummonerRankSkeleton';
+import { QueueType } from '@/app/_enums/enums';
 
 type Props = {
-  queueType: string;
+  queueType: QueueType;
   smallDataStyle: boolean;
 }
 
@@ -18,12 +19,14 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
   const currentRegionData = useCurrentRegion();
   const summonerId = useAppSelector((state) => state.summonerId.summonerId);
 
-  const { data: fetchedSummonerRanksData, isLoading, isRefetching } = useQuery({
+  const { data: fetchedSummonerRanksData, isLoading, isFetched } = useQuery({
+    enabled: !!summonerId,
     queryKey: ['summonerRank', summonerId],
-    queryFn: () => getSummonerRank(currentRegionData, summonerId)
+    queryFn: () => getSummonerRank(currentRegionData, summonerId),
+    refetchOnWindowFocus: false
   });
 
-  const rankedData: TSummonerRank | undefined = fetchedSummonerRanksData?.find((data) => data.queueType === queueType);
+  const rankedData = findQueueTypeData(fetchedSummonerRanksData, queueType);
 
   const calculateWinRate = (): number => {
     const wins = rankedData?.wins || 0;
@@ -56,7 +59,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded mt-2'>
-      {(isLoading || summonerId === '' || isRefetching) ? (
+      {(isLoading || summonerId === '' || !isFetched) ? (
         <SummonerRankSkeleton smallDataStyle={smallDataStyle} />
       ) : (
         <>

@@ -29,13 +29,17 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
     isLoading: isChampionsMasteryLoading,
     isError: isChampionsMasteryError
   } = useQuery({
+    enabled: !!summonerPuuid,
     queryKey: ['topFourChampionsMastery', summonerPuuid],
-    queryFn: () => getSummonerChampionsMastery(currentRegionData, summonerPuuid, getTopChampions)
+    queryFn: () => getSummonerChampionsMastery(currentRegionData, summonerPuuid, getTopChampions),
+    refetchOnWindowFocus: false
   });
 
   const { data: filteredChampionsData } = useQuery({
+    enabled: isChampionsMasterySuccess,
     queryKey: ['filteredChampions', isChampionsMasterySuccess, isChampionsMasteryRefetching],
-    queryFn: () => getFilteredChampions(championsMasteryData)
+    queryFn: () => getFilteredChampions(championsMasteryData),
+    refetchOnWindowFocus: false,
   });
 
   const sortedChampionsData = (): Array<TChampion> | undefined => {

@@ -1,3 +1,5 @@
+import { RuneType } from "../_enums/enums";
+
 export type TPromiseResult<T> = T | void | undefined;
 
 type TEsportTeam = {
@@ -114,7 +116,73 @@ export type TChampionMasterySummary = {
   totalMasteryScore: number | undefined;
 }
 
+export interface TLiveGameParticipants extends Pick<TSummonerAccount, 'puuid'>, Pick<TChampionMastery, 'championId'>, Pick<TSummonerProfile, 'profileIconId'> {
+  spell1Id: number;
+  spell2Id: number;
+  perks: {
+    perkIds: Array<number>;
+    perkStyle: number;
+    perkSubStyle: number;
+  };
+  summonerId: string;
+  teamId: number;
+}
+
 export type TLiveGame = {
   gameMode: string;
   gameLength: number;
+  participants: Array<TLiveGameParticipants>;
+  bannedChampions: Array<Pick<TLiveGameParticipants, 'teamId' | 'championId'>>;
+}
+
+export interface TSummonerSpellContent extends Pick<TChampion, 'key'> {
+  name: string;
+}
+
+export type TSummonerSpell = {
+  data: Record<string, TSummonerSpellContent>
+}
+
+export type TRune = {
+  id: number;
+  icon: string;
+  name: string;
+  key: string;
+  type: RuneType;
+  slots: Array<{
+    runes: Array<{
+      id: number;
+      icon: string
+      name: string
+      key: string;
+      longDesc: string;
+      shortDesc: string;
+    }>;
+  }>;
+};
+
+export interface TUpdatedLiveGameParticipants extends Pick<TLiveGameParticipants, 'teamId'> {
+  championData: {
+    name: string;
+    image: string;
+  } | undefined;
+  summonerName: string | undefined;
+  summonerLevel: number | undefined;
+  runes: Array<TRune | undefined>;
+  rank: TSummonerRank | undefined,
+  spells: Array<TSummonerSpellContent> | undefined,
+  bannedChampion: {
+    championName: string | undefined;
+    championId: number;
+    teamId: number;
+  } | undefined;
+}
+
+export type TTeams = {
+  blueTeam: Array<TUpdatedLiveGameParticipants>;
+  redTeam: Array<TUpdatedLiveGameParticipants>;
+}
+
+export interface TSegregateTeams extends Pick<TLiveGame, 'gameLength'> {
+  teams: Array<TTeams>;
 }
