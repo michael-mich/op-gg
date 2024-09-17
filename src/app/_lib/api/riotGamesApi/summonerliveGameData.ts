@@ -76,7 +76,7 @@ export const getSummonerLiveGameData = async (
     const spellData = await fetchApi<TSummonerSpell>('https://ddragon.leagueoflegends.com/cdn/14.17.1/data/en_US/summoner.json');
 
     if (spellData) {
-      Object.values(spellData.data);
+      return Object.values(spellData.data);
     }
   }
   const awaitedSummonerSpells = await allSummonerSpells();
@@ -159,5 +159,5 @@ export const getSummonerLiveGameData = async (
     }
   }
 
-  return segregateTeams();
+  return awaitedSummonerSpells;
 }
