@@ -159,5 +159,5 @@ export const getSummonerLiveGameData = async (
     }
   }
 
-  return awaitedSummonerSpells;
+  return segregateTeams();
 }
