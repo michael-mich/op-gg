@@ -69,7 +69,7 @@
     border-radius: 0;
   }
   
-  .custom-table-wrapper > div > div > table > thead > tr:first-of-type > th:hover > div:last-child {    
+  .custom-table-wrapper > div > div > table > thead > tr:first-of-type > th:hover > .stats-info {    
     display: block;    
   }
 }
@@ -133,5 +133,6 @@
 @layer utilities {
   .text-xss {
     font-size: 0.6875rem !important; /* 11px */
+    line-height: 10px;
   }
 }

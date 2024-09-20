@@ -225,13 +225,13 @@ const Page = () => {
               <TableColumn
                 onClick={() => { handleSortActions(index), setSortOptionIndex(index) }}
                 className={`${(index >= 2) && 'text-center'} ${(!isChampionStatsSuccess && !isChampionStatsSuccess) ? 'pointer-events-none' : 'pointer-events-auto'} cursor-pointer
-                  relative after:absolute after:left-0 after:-z[1] after:w-full after:bg-blue ${(sortOptionIndex === index && sortOrderDescending) ? 'after:bottom-0 after:h-[2px]' : (sortOptionIndex === index && !sortOrderDescending) ? 'after:top-0 after:h-[2px]' : ''}`}
+                relative after:absolute after:left-0 after:-z[1] after:w-full after:bg-blue ${(sortOptionIndex === index && sortOrderDescending) ? 'after:bottom-0 after:h-[2px]' : (sortOptionIndex === index && !sortOrderDescending) ? 'after:top-0 after:h-[2px]' : ''}`}
                 key={column}
               >
                 <div className={`${index >= 8 && 'w-10 overflow-hidden text-ellipsis'} ${sortOptionIndex === index ? 'text-blue' : 'text-secondGray dark:text-mediumGrayText'}`}>
                   {column}
                 </div>
-                <div className='hidden absolute -top-full left-1/2 -translate-x-1/2 z-[2] bg-black py-2 px-2.5'>
+                <div className='stats-info hidden absolute -top-full left-1/2 -translate-x-1/2 z-[2] bg-black py-2 px-2.5'>
                   <span className='text-xs text-white font-normal'>{column}</span>
                   <div className='absolute top-6 left-1/2 -translate-x-1/2 rotate-45 z-[1] size-4 bg-black'></div>
                 </div>
@@ -259,7 +259,7 @@ const Page = () => {
                     <div className='relative flex items-center justify-end w-[90px] h-5 bg-red rounded'>
                       <div
                         className={`${stats.played.wonMatches === 0 && 'hidden'} absolute left-0 top-1/2 -translate-y-1/2 z-[1] w-[${stats.played.winRatio}%] ${stats.played.lostMatches === 0 ? 'rounded' : 'rounded-l'} h-full bg-blue`}
-                        style={{ width: `${stats.played.winRatio}%` }}
+                        style={{ width: `${stats.played.winRatio}%`, maxWidth: `${stats.played.lostMatches > 0 ? '80%' : 'auto'}` }}
                       >
                         <span className='absolute top-1/2 -translate-y-1/2 text-xs text-white pl-1'>
                           {stats.played.wonMatches}W
