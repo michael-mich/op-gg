@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { getLocalStorageData } from '../utils';
+import { getLocalStorageData } from '../utils/utils';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import { LocalStorageKeys } from '@/app/_enums/enums';
 

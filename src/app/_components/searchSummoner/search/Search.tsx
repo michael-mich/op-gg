@@ -82,7 +82,7 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
           </label>
           {isSummonerAccountError && (
             <label
-              className={`${summonerName.length > 0 && 'hidden'} ${pageOtherThanHomePage ? 'text-xs' : 'text-base'} absolute top-1/2 translate-y-[-50%] left-0 text-red-500 cursor-text`}
+              className={`${summonerName.length > 0 && 'hidden'} ${pageOtherThanHomePage ? 'text-xs' : 'text-base'} absolute top-1/2 translate-y-[-50%] left-0 text-red cursor-text`}
               htmlFor='search-summoner'
             >
               Invalid summoner name

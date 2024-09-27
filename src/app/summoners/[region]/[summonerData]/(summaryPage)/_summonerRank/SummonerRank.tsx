@@ -5,9 +5,10 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerRank } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
-import { findQueueTypeData } from '@/app/_lib/utils';
-import { rankedEmblems } from './rankedEmblemsData';
+import { findQueueTypeData } from '@/app/_lib/utils/utils';
+import { calculateWinRate, formatTierName, getRankedEmblem } from '@/app/_lib/utils/rank';
 import SummonerRankSkeleton from './SummonerRankSkeleton';
+import type { TSummonerRank } from '@/app/_types/apiTypes';
 import { QueueType } from '@/app/_enums/enums';
 
 type Props = {
@@ -26,36 +27,11 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
     refetchOnWindowFocus: false
   });
 
-  const rankedData = findQueueTypeData(fetchedSummonerRanksData, queueType);
+  const rankedData: TSummonerRank | undefined = findQueueTypeData(fetchedSummonerRanksData, queueType);
 
-  const calculateWinRate = (): number => {
-    const wins = rankedData?.wins || 0;
-    const losses = rankedData?.losses || 0;
-    const winRate = (wins / (wins + losses) * 100);
-
-    return Math.round(winRate);
-  }
-
-  const formatTierName = (): string => {
-    if (rankedData) {
-      const tierName = rankedData.tier;
-      return `${tierName[0]}${tierName.slice(1).toLowerCase()}`;
-    }
-    else {
-      return '';
-    }
-  }
-
-  const getRankedEmblem = (): string | undefined => {
-    return rankedEmblems.find((emblem) => {
-      const tierName = emblem.replaceAll('/', ' ').replace('.', ' ').split(' ')[2];
-      return tierName === formatTierName();
-    });
-  }
-
-  const tierName = formatTierName();
-  const winRate = calculateWinRate();
-  const rankedEmblem = getRankedEmblem();
+  const tierName = formatTierName(rankedData);
+  const winRate = calculateWinRate(rankedData);
+  const rankedEmblem = getRankedEmblem(rankedData);
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded mt-2'>

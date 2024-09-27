@@ -274,7 +274,8 @@ const Page = () => {
                     </span>
                   </TableCell>
                   <TableCell className='table-cell-hover-bg'>
-                    <span className={`${stats.kda.kda >= 6.0 ? 'text-[#ff8200]' : stats.kda.kda >= 4.0 ? 'text-[#0090fb]' : stats.kda.kda >= 3.0 ? 'text-[#00bba3]' : 'text-lightMode-secondMediumGray dark:text-darkMode-lighterGray'} block text-center text-xs font-bold`}>
+                    <span className={`${stats.kda.kda >= 6.0 ? 'text-orange' : stats.kda.kda >= 4.0 ? 'text-secondLightBlue' : stats.kda.kda >= 3.0 ? 'text-mediumGreen' : 'text-lightMode-secondMediumGray dark:text-darkMode-lighterGray'} 
+                    block text-center text-xs font-bold`}>
                       {stats.kda.kda.toFixed(2)}
                     </span>
                     <span className='w-[85px] table-cell text-xss'>{stats.kda.averageKills} / {stats.kda.averageAssists} / {stats.kda.averageDeaths}</span>

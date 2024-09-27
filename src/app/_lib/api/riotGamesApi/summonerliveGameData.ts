@@ -6,7 +6,7 @@ import {
   getSummonerProfileData,
   getSpectatorData
 } from './riotGamesApi';
-import { fetchApi, findQueueTypeData } from '../../utils';
+import { fetchApi, findQueueTypeData } from '../../utils/utils';
 import type {
   TPromiseResult,
   TSummonerAccount,
@@ -16,14 +16,26 @@ import type {
   TRune,
   TSegregateTeams,
   TUpdatedLiveGameParticipants,
-  TTeams
+  TTeams,
+  TUpdatedRune,
+  TBannedChampion
 } from '@/app/_types/apiTypes';
 import type { TRegionData } from '@/app/_types/types';
 import { QueueType, RuneType } from '@/app/_enums/enums';
 
+type TSingleTeam = { blueTeam: Array<TUpdatedLiveGameParticipants> } | { redTeam: Array<TUpdatedLiveGameParticipants> };
+
 const riotGamesApiKey = process.env.RIOT_API_KEY;
 
-type TSingleTeam = { blueTeam: Array<TUpdatedLiveGameParticipants> } | { redTeam: Array<TUpdatedLiveGameParticipants> };
+const getChampionNameAndImage = async <T extends { championId: number }>(data: T) => {
+  const championData = await getFilteredChampions([data]);
+  return championData?.map((champion) => {
+    return {
+      name: champion.name,
+      image: champion.image.full
+    }
+  })[0]
+}
 
 export const getSummonerLiveGameData = async (
   regionData: TRegionData | undefined,
@@ -39,22 +51,11 @@ export const getSummonerLiveGameData = async (
   }
 
   const bannedChampionsWithNames = liveGameData && await Promise.all(liveGameData.bannedChampions.map(async (champion) => {
-    const data = await getFilteredChampions([champion]);
-
-    return {
-      ...champion,
-      championName: data?.map((d) => d.name)[0]
-    };
+    return await getChampionNameAndImage(champion);
   }));
 
-  const championNames = await processGameParticipants(async (participantData) => {
-    const data = await getFilteredChampions([participantData]);
-    return data?.map((d) => {
-      return {
-        name: d.name,
-        image: d.image.full
-      }
-    })[0];
+  const championData = await processGameParticipants(async (participantData) => {
+    return await getChampionNameAndImage(participantData);
   });
 
   const summonerRanks = await processGameParticipants(async (participantData) => {
@@ -62,9 +63,13 @@ export const getSummonerLiveGameData = async (
     return findQueueTypeData(rankData, QueueType.RankedSolo);
   });
 
-  const summonerNames = await processGameParticipants(async (participantData) => {
+  const summonerNameAndTagLine = await processGameParticipants(async (participantData) => {
     const summonerData = await fetchApi<TSummonerAccount>(`https://${regionData?.continentLink}/riot/account/v1/accounts/by-puuid/${participantData.puuid}?api_key=${riotGamesApiKey}`);
-    return summonerData?.gameName;
+
+    return {
+      name: summonerData?.gameName,
+      tagLine: summonerData?.tagLine
+    }
   });
 
   const summonerLevels = await processGameParticipants(async (participantData) => {
@@ -87,7 +92,7 @@ export const getSummonerLiveGameData = async (
 
   const allRunes = await fetchApi<Array<TRune>>('https://ddragon.leagueoflegends.com/cdn/14.15.1/data/en_US/runesReforged.json');
   const summonerRunes = await processGameParticipants(async (participantData) => {
-    return allRunes?.map((rune) => {
+    const filteredRunes = allRunes?.map((rune) => {
       const filterRunes = (runeType: RuneType) => {
         return {
           ...rune,
@@ -105,6 +110,15 @@ export const getSummonerLiveGameData = async (
         return filterRunes(RuneType.SubRune);
       }
     }).filter(Boolean);
+
+    if (filteredRunes) {
+      if (filteredRunes[0]?.type === RuneType.MainRune) {
+        return filteredRunes;
+      }
+      else {
+        return [filteredRunes[1], filteredRunes[0]];
+      }
+    }
   });
 
   const updateSummonersData = () => {
@@ -118,13 +132,13 @@ export const getSummonerLiveGameData = async (
 
           const updatedData: TUpdatedLiveGameParticipants = {
             ...summonerData,
-            championData: championNames?.[index],
-            summonerName: summonerNames?.[index],
+            championData: championData?.[index],
+            summonerNameAndTagLine: summonerNameAndTagLine?.[index],
             summonerLevel: summonerLevels?.[index],
             spells: summonerSpells?.[index],
-            runes: summonerRunes?.[index] as Array<TRune | undefined>,
+            runes: summonerRunes?.[index] as Array<TUpdatedRune | undefined>,
             rank: summonerRanks?.[index],
-            bannedChampion: bannedChampionsWithNames?.[index]
+            bannedChampion: bannedChampionsWithNames?.[index] as TBannedChampion | undefined
           };
 
           return updatedData;

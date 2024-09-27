@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStorageFavoriteSummonersSlice';
-import { getLocalStorageData } from '@/app/_lib/utils';
+import { getLocalStorageData } from '@/app/_lib/utils/utils';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import { LocalStorageKeys } from '@/app/_enums/enums';
 import { FaStar, FaRegStar } from 'react-icons/fa';

@@ -1,6 +1,6 @@
-import type { TPromiseResult, TSummonerRank } from '../_types/apiTypes';
-import type { TLocalStorageSummoner } from '../_types/types';
-import { LocalStorageKeys, QueueType } from '../_enums/enums';
+import type { TPromiseResult, TSummonerRank } from '../../_types/apiTypes';
+import type { TLocalStorageSummoner } from '../../_types/types';
+import { LocalStorageKeys, QueueType } from '../../_enums/enums';
 
 export const getLocalStorageData = (localeStorageKey: LocalStorageKeys): Array<TLocalStorageSummoner> => {
   return JSON.parse(localStorage.getItem(localeStorageKey) || '[]');

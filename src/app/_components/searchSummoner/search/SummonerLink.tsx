@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerProfileData } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
-import { getLocalStorageData } from '@/app/_lib/utils';
+import { getLocalStorageData } from '@/app/_lib/utils/utils';
 import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';

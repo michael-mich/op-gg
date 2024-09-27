@@ -135,47 +135,51 @@ export type TLiveGame = {
   bannedChampions: Array<Pick<TLiveGameParticipants, 'teamId' | 'championId'>>;
 }
 
-export interface TSummonerSpellContent extends Pick<TChampion, 'key'> {
-  name: string;
-}
+export type TSummonerSpellContent = TChampion;
 
 export type TSummonerSpell = {
   data: Record<string, TSummonerSpellContent>
 }
 
-export type TRune = {
+interface TRuneSlots extends Pick<TChampion, 'name'> {
   id: number;
-  icon: string;
-  name: string;
+  icon: string
   key: string;
+  longDesc: string;
+  shortDesc: string;
+}
+
+export interface TRune extends Omit<TRuneSlots, 'longDesc' | 'shortDesc'> {
   type: RuneType;
   slots: Array<{
-    runes: Array<{
-      id: number;
-      icon: string
-      name: string
-      key: string;
-      longDesc: string;
-      shortDesc: string;
-    }>;
+    runes: Array<TRuneSlots>;
   }>;
 };
 
+export interface TUpdatedRune extends Omit<TRune, 'slots'> {
+  slots: Array<TRuneSlots>;
+}
+
+export type TBannedChampion = {
+  name: string;
+  image: string;
+  championId: number;
+  teamId: number;
+}
+
 export interface TUpdatedLiveGameParticipants extends Pick<TLiveGameParticipants, 'teamId'> {
-  championData: {
-    name: string;
+  championData: Pick<TChampion, 'name'> & {
     image: string;
   } | undefined;
-  summonerName: string | undefined;
+  summonerNameAndTagLine: {
+    name: string | undefined;
+    tagLine: string | undefined;
+  } | undefined;
   summonerLevel: number | undefined;
-  runes: Array<TRune | undefined>;
+  runes: Array<TUpdatedRune | undefined>;
   rank: TSummonerRank | undefined,
   spells: Array<TSummonerSpellContent> | undefined,
-  bannedChampion: {
-    championName: string | undefined;
-    championId: number;
-    teamId: number;
-  } | undefined;
+  bannedChampion: TBannedChampion | undefined;
 }
 
 export type TTeams = {
