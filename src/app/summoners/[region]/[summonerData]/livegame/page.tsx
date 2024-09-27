@@ -32,7 +32,7 @@ const Page = () => {
     queryFn: () => getSummonerLiveGameData(currentRegionData, summonerPuuid),
     refetchOnWindowFocus: false
   });
-  console.log(liveGameData && liveGameData);
+
   const teams = liveGameData?.teams.map((team) => Object.entries(team));
 
   const getColorBasedOnWinRatio = (winRatio: number, useageType: 'bg' | 'text'): string => {
@@ -49,7 +49,7 @@ const Page = () => {
       return `${useageType}-lightMode-secondLighterGray dark:${useageType}-darkMode-lighterGray`
     };
   }
-  console.log(teams);
+
   return (
     isLiveGameSuccess && (
       <div className='bg-white dark:bg-darkMode-mediumGray rounded py-2 mb-2'>
