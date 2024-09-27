@@ -1,5 +1,6 @@
 'use server';
 
+import { riotGamesApiKey } from './apiKey';
 import type {
   TPromiseResult,
   TSummonerChampionStats,
@@ -13,8 +14,6 @@ type TGroupedChampionStatAccumulator = {
 }
 
 type TGroupedChampionStats = Array<[string, Array<Omit<TMatchParticipantStats, "championName" | "puuid">>]>
-
-const riotGamesApiKey = process.env.RIOT_API_KEY;
 
 const getMaxNumber = (groupedChampionStats: TGroupedChampionStats, key: 'kills' | 'deaths'): Array<number> => {
   return groupedChampionStats.map(([_, championStats]) => (

@@ -1,5 +1,6 @@
 'use server';
 
+import { riotGamesApiKey } from './apiKey';
 import {
   getFilteredChampions,
   getSummonerRank,
@@ -24,8 +25,6 @@ import type { TRegionData } from '@/app/_types/types';
 import { QueueType, RuneType } from '@/app/_enums/enums';
 
 type TSingleTeam = { blueTeam: Array<TUpdatedLiveGameParticipants> } | { redTeam: Array<TUpdatedLiveGameParticipants> };
-
-const riotGamesApiKey = process.env.RIOT_API_KEY;
 
 const getChampionNameAndImage = async <T extends { championId: number }>(data: T) => {
   const championData = await getFilteredChampions([data]);

@@ -1,5 +1,6 @@
 'use server';
 
+import { riotGamesApiKey } from './apiKey';
 import { fetchApi } from '../../utils/utils';
 import type {
   TSummonerAccount,
@@ -12,8 +13,6 @@ import type {
   TLiveGame
 } from '@/app/_types/apiTypes';
 import type { TRegionData } from '@/app/_types/types';
-
-const riotGamesApiKey = process.env.RIOT_API_KEY;
 
 export const getSummonerAccount = async (
   summonerName: string,
