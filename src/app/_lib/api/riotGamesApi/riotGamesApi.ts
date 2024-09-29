@@ -18,33 +18,29 @@ export const getSummonerAccount = async (
   summonerName: string,
   regionData: TRegionData | undefined
 ): Promise<TPromiseResult<TSummonerAccount>> => {
-  const url = `https://${regionData?.continentLink}/riot/account/v1/accounts/by-riot-id/${summonerName}/${regionData?.shorthand}?api_key=${riotGamesApiKey}`;
-  return await fetchApi(url);
+  return await fetchApi(`https://${regionData?.continentLink}/riot/account/v1/accounts/by-riot-id/${summonerName}/${regionData?.shorthand}?api_key=${riotGamesApiKey}`);
 }
 
 export const getSummonerProfileData = async (
   puuid: string | undefined,
   regionData: TRegionData | undefined
-): Promise<TPromiseResult<TSummonerProfile>> => {
-  const url = `https://${regionData?.regionLink}/lol/summoner/v4/summoners/by-puuid/${puuid}?api_key=${riotGamesApiKey}`;
-  return await fetchApi(url);
+): Promise<TPromiseResult<TSummonerProfile>> => {  
+  return await fetchApi(`https://${regionData?.regionLink}/lol/summoner/v4/summoners/by-puuid/${puuid}?api_key=${riotGamesApiKey}`);
 }
 
 export const getSummonerRank = async (
   regionData: TRegionData | undefined,
   summonerId: string | undefined
 ): Promise<TPromiseResult<Array<TSummonerRank>>> => {
-  const url = `https://${regionData?.regionLink}/lol/league/v4/entries/by-summoner/${summonerId}?api_key=${riotGamesApiKey}`;
-  return await fetchApi(url);
+  return await fetchApi(`https://${regionData?.regionLink}/lol/league/v4/entries/by-summoner/${summonerId}?api_key=${riotGamesApiKey}`);
 }
 
 export const getSummonerChampionsMastery = async (
   regionData: TRegionData | undefined,
   summonerPuuid: string | undefined,
   getTopChampions: boolean
-): Promise<TPromiseResult<Array<TChampionMastery>>> => {
-  const url = `https://${regionData?.regionLink}/lol/champion-mastery/v4/champion-masteries/by-puuid/${summonerPuuid}?api_key=${riotGamesApiKey}`;
-  const data: TPromiseResult<Array<TChampionMastery>> = await fetchApi(url);
+): Promise<TPromiseResult<Array<TChampionMastery>>> => {  
+  const data: TPromiseResult<Array<TChampionMastery>> = await fetchApi(`https://${regionData?.regionLink}/lol/champion-mastery/v4/champion-masteries/by-puuid/${summonerPuuid}?api_key=${riotGamesApiKey}`);
 
   const topFourChampions = data?.slice(0, 4);
   return getTopChampions ? topFourChampions : data;
@@ -53,9 +49,8 @@ export const getSummonerChampionsMastery = async (
 export const getSummonerChampionsMasterySummary = async (
   regionData: TRegionData | undefined,
   summonerPuuid: string | undefined
-): Promise<TPromiseResult<TChampionMasterySummary>> => {
-  const url = `https://${regionData?.regionLink}/lol/champion-mastery/v4/champion-masteries/by-puuid/${summonerPuuid}?api_key=${riotGamesApiKey}`;
-  const data: TPromiseResult<Array<TChampionMastery>> = await fetchApi(url);
+): Promise<TPromiseResult<TChampionMasterySummary>> => {  
+  const data: TPromiseResult<Array<TChampionMastery>> = await fetchApi(`https://${regionData?.regionLink}/lol/champion-mastery/v4/champion-masteries/by-puuid/${summonerPuuid}?api_key=${riotGamesApiKey}`);
 
   const totalChampionPoints = data?.reduce((acc, cur) => acc + cur.championPoints, 0).toLocaleString();
   const totalMasteryScore = data?.reduce((acc, cur) => acc + cur.championLevel, 0);
