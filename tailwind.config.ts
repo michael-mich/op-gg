@@ -32,6 +32,7 @@ const config: Config = {
         darkMode: {
           darkBlue: '#1C1C1F',
           darkGray: '#282830',
+          secondDarkGray: '#222227',
           mediumGray: '#31313C',
           secondMediumGray: '#79788b',
           lighterGray: '#9e9eb1',
@@ -40,7 +41,8 @@ const config: Config = {
           secondMediumGray: '#57646F',
           lightGray: '#f7f7f9',
           lighterGray: '#f1f2f5',
-          secondLighterGray: '#758592'
+          secondLighterGray: '#758592',
+          thirdLighterGray: '#dbe0e4'
         }
       },
       boxShadow: {
