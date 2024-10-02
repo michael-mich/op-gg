@@ -10,7 +10,8 @@ import type {
   TChampionMastery,
   TChampion,
   TChampionMasterySummary,
-  TLiveGame
+  TLiveGame,
+  TRune
 } from '@/app/_types/apiTypes';
 import type { TRegionData } from '@/app/_types/types';
 
@@ -24,7 +25,7 @@ export const getSummonerAccount = async (
 export const getSummonerProfileData = async (
   puuid: string | undefined,
   regionData: TRegionData | undefined
-): Promise<TPromiseResult<TSummonerProfile>> => {  
+): Promise<TPromiseResult<TSummonerProfile>> => {
   return await fetchApi(`https://${regionData?.regionLink}/lol/summoner/v4/summoners/by-puuid/${puuid}?api_key=${riotGamesApiKey}`);
 }
 
@@ -39,7 +40,7 @@ export const getSummonerChampionsMastery = async (
   regionData: TRegionData | undefined,
   summonerPuuid: string | undefined,
   getTopChampions: boolean
-): Promise<TPromiseResult<Array<TChampionMastery>>> => {  
+): Promise<TPromiseResult<Array<TChampionMastery>>> => {
   const data: TPromiseResult<Array<TChampionMastery>> = await fetchApi(`https://${regionData?.regionLink}/lol/champion-mastery/v4/champion-masteries/by-puuid/${summonerPuuid}?api_key=${riotGamesApiKey}`);
 
   const topFourChampions = data?.slice(0, 4);
@@ -49,7 +50,7 @@ export const getSummonerChampionsMastery = async (
 export const getSummonerChampionsMasterySummary = async (
   regionData: TRegionData | undefined,
   summonerPuuid: string | undefined
-): Promise<TPromiseResult<TChampionMasterySummary>> => {  
+): Promise<TPromiseResult<TChampionMasterySummary>> => {
   const data: TPromiseResult<Array<TChampionMastery>> = await fetchApi(`https://${regionData?.regionLink}/lol/champion-mastery/v4/champion-masteries/by-puuid/${summonerPuuid}?api_key=${riotGamesApiKey}`);
 
   const totalChampionPoints = data?.reduce((acc, cur) => acc + cur.championPoints, 0).toLocaleString();
@@ -81,4 +82,8 @@ export const getSpectatorData = async (
   summonerPuuid: string | undefined
 ): Promise<TPromiseResult<TLiveGame>> => {
   return await fetchApi(`https://${regionData?.regionLink}/lol/spectator/v5/active-games/by-summoner/${summonerPuuid}?api_key=${riotGamesApiKey}`);
+}
+
+export const getRunesData = async (): Promise<TPromiseResult<Array<TRune>>> => {
+  return await fetchApi('https://ddragon.leagueoflegends.com/cdn/14.19.1/data/en_US/runesReforged.json');
 }

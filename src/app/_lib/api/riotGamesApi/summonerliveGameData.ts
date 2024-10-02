@@ -5,7 +5,8 @@ import {
   getFilteredChampions,
   getSummonerRank,
   getSummonerProfileData,
-  getSpectatorData
+  getSpectatorData,
+  getRunesData
 } from './riotGamesApi';
 import { fetchApi, findQueueTypeData } from '../../utils/utils';
 import type {
@@ -14,7 +15,6 @@ import type {
   TLiveGameParticipants,
   TSummonerSpell,
   TSummonerSpellContent,
-  TRune,
   TSegregateTeams,
   TUpdatedLiveGameParticipants,
   TTeams,
@@ -57,6 +57,10 @@ export const getSummonerLiveGameData = async (
     return await getChampionNameAndImage(participantData);
   });
 
+  const shardIds = await processGameParticipants(async (participantData) => {
+    return participantData.perks.perkIds.slice(-3);
+  });
+
   const summonerRanks = await processGameParticipants(async (participantData) => {
     const rankData = await getSummonerRank(regionData, participantData.summonerId);
     return findQueueTypeData(rankData, QueueType.RankedSolo);
@@ -89,7 +93,7 @@ export const getSummonerLiveGameData = async (
     return awaitedSummonerSpells?.filter((spell) => spell.key === participantData.spell1Id.toString() || spell.key === participantData.spell2Id.toString());
   });
 
-  const allRunes = await fetchApi<Array<TRune>>('https://ddragon.leagueoflegends.com/cdn/14.15.1/data/en_US/runesReforged.json');
+  const allRunes = await getRunesData();
   const summonerRunes = await processGameParticipants(async (participantData) => {
     const filteredRunes = allRunes?.map((rune) => {
       const filterRunes = (runeType: RuneType) => {
@@ -137,7 +141,8 @@ export const getSummonerLiveGameData = async (
             spells: summonerSpells?.[index],
             runes: summonerRunes?.[index] as Array<TUpdatedRune | undefined>,
             rank: summonerRanks?.[index],
-            bannedChampion: bannedChampionsWithNames?.[index] as TBannedChampion | undefined
+            bannedChampion: bannedChampionsWithNames?.[index] as TBannedChampion | undefined,
+            shardIds: shardIds?.[index]
           };
 
           return updatedData;

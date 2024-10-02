@@ -78,7 +78,7 @@ const SummonerHeader = () => {
               <div className='flex flex-col'>
                 <Image
                   className='w-24 aspect-square object-contain rounded-2xl'
-                  src={`https://ddragon.leagueoflegends.com/cdn/14.14.1/img/profileicon/${summonerProfileData?.profileIconId}.png`}
+                  src={`https://ddragon.leagueoflegends.com/cdn/14.19.1/img/profileicon/${summonerProfileData?.profileIconId}.png`}
                   width={20}
                   height={20}
                   alt=''

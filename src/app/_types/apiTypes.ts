@@ -150,7 +150,6 @@ interface TRuneSlots extends Pick<TChampion, 'name'> {
 }
 
 export interface TRune extends Omit<TRuneSlots, 'longDesc' | 'shortDesc'> {
-  type: RuneType;
   slots: Array<{
     runes: Array<TRuneSlots>;
   }>;
@@ -158,6 +157,7 @@ export interface TRune extends Omit<TRuneSlots, 'longDesc' | 'shortDesc'> {
 
 export interface TUpdatedRune extends Omit<TRune, 'slots'> {
   slots: Array<TRuneSlots>;
+  type: RuneType;
 }
 
 export type TBannedChampion = {
@@ -180,6 +180,7 @@ export interface TUpdatedLiveGameParticipants extends Pick<TLiveGameParticipants
   rank: TSummonerRank | undefined,
   spells: Array<TSummonerSpellContent> | undefined,
   bannedChampion: TBannedChampion | undefined;
+  shardIds: Array<number> | undefined;
 }
 
 export type TTeams = {
