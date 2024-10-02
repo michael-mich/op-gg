@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Image from 'next/image';
 import { calculateWinRate, getRankedEmblem, formatTierName } from '@/app/_lib/utils/rank';
 import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes';
@@ -76,4 +77,4 @@ const SummonerRank = ({ summoner }: Props) => {
   );
 }
 
-export default SummonerRank;
+export default memo(SummonerRank);

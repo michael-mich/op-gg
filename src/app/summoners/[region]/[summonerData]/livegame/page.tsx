@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerLiveGameData } from '@/app/_lib/api/riotGamesApi/summonerLiveGameData';
@@ -40,7 +40,7 @@ const Page = () => {
     refetchOnWindowFocus: false
   });
 
-  const teams = liveGameData?.teams.map((team) => Object.entries(team));
+  const teams = useMemo(() => liveGameData?.teams.map((team) => Object.entries(team)), [isLiveGameSuccess, summonerPuuid]);
 
   return (
     isLiveGameSuccess && (

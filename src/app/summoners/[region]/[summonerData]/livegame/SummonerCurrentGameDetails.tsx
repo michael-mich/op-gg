@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes';
@@ -59,4 +60,4 @@ const SummonerCurrentGameDetails = ({ summoner }: Props) => {
   );
 }
 
-export default SummonerCurrentGameDetails;
+export default memo(SummonerCurrentGameDetails);
