@@ -54,7 +54,21 @@ export const getSummonerChampionStats = async (
     const gameDurations = matchStats.map((stats) => stats?.info.gameDuration);
 
     const groupedChampionStats: TGroupedChampionStats = Object.entries(
-      (summonerMatchStats as Array<TMatchParticipantStats>).reduce((accumulator: TGroupedChampionStatAccumulator, { championName, assists, deaths, kills, win, totalMinionsKilled, goldEarned, totalDamageDealtToChampions, doubleKills, tripleKills, quadraKills, pentaKills, championId }, index) => {
+      (summonerMatchStats as Array<TMatchParticipantStats>).reduce((accumulator: TGroupedChampionStatAccumulator, {
+        championName,
+        assists,
+        deaths,
+        kills,
+        win,
+        totalMinionsKilled,
+        goldEarned,
+        totalDamageDealtToChampions,
+        doubleKills,
+        tripleKills,
+        quadraKills,
+        pentaKills,
+        championId
+      }, index) => {
         if (!accumulator[championName]) {
           accumulator[championName] = [];
         }
