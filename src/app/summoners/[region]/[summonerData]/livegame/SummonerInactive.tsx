@@ -6,7 +6,7 @@ const SummonerInactive = () => {
   const formattedSummonerData = params.summonerData.split('-').join('#');
 
   return (
-    <div className='bg-white dark:bg-darkMode-mediumGray rounded py-5'>
+    <>
       <h3 className='font-bold text-xl text-center'>
         `{formattedSummonerData}` is not in an active game.
       </h3>
@@ -16,7 +16,7 @@ const SummonerInactive = () => {
       <p className='text-sm text-center dark:text-darkMode-lighterGray'>
         (Live Game data for 'Bot' cannot be retrieved from Riot's official API.)
       </p>
-    </div>
+    </>
   );
 }
 
