@@ -45,7 +45,7 @@ const GameTimer = ({ gameLength }: Props) => {
   }, []);
 
   return (
-    <span className='text-sm pl-2'>
+    <span className='text-xs pl-2'>
       {timer.minutes}:{timer.seconds < 10 ? `0${timer.seconds}` : timer.seconds}
     </span>
   );
