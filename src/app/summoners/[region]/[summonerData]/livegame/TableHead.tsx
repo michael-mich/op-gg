@@ -13,7 +13,7 @@ type Props = {
 
 const TableHead = ({ blueTeam }: Props) => {
   const blueText = blueTeam ? 'text-blue' : 'text-red';
-  console.log('rere')
+
   return (
     <thead>
       <tr>
