@@ -135,7 +135,9 @@ export type TLiveGame = {
   bannedChampions: Array<Pick<TLiveGameParticipants, 'teamId' | 'championId'>>;
 }
 
-export type TSummonerSpellContent = TChampion;
+export interface TSummonerSpellContent extends TChampion {
+  description: string;
+}
 
 export type TSummonerSpell = {
   data: Record<string, TSummonerSpellContent>
