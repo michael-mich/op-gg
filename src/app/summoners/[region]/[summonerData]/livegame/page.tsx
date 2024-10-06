@@ -12,6 +12,7 @@ import SummonerCurrentGameDetails from './SummonerCurrentGameDetails';
 import SummonerRank from './SummonerRank';
 import ToggleRunesButton from './ToggleRunesButton';
 import SummonerRunes from './summonerRunes/SummonerRunes';
+import SummonerInactive from './SummonerInactive';
 
 export type TActiveRuneDisplay = {
   clicked: boolean;
@@ -41,13 +42,13 @@ const Page = () => {
   const teams = useMemo(() => liveGameData?.teams.map((team) => Object.entries(team)), [isLiveGameSuccess, summonerPuuid]);
 
   return (
-    isLiveGameSuccess && (
-      <div className='bg-white dark:bg-darkMode-mediumGray rounded shadow-[0_0_5px_0_white] dark:shadow-none py-2 mb-2'>
+    isLiveGameSuccess ? (
+      <div className='bg-white dark:bg-darkMode-mediumGray rounded shadow-[0_0_5px_0_white] dark:shadow-none pt-2 mb-2'>
         <div className='flex items-center px-2 mb-2'>
           <span className='text-sm font-bold border-r border-r-black dark:border-r-[#393948] pr-2'>
             Ranked Solo/Duo
           </span>
-          <span className='text-sm px-2 border-r border-r-black dark:border-r-[#393948]'>
+          <span className='text-xs px-2 border-r border-r-black dark:border-r-[#393948]'>
             Summoner's Rift
           </span>
           <GameTimer gameLength={liveGameData?.gameLength} />
@@ -103,6 +104,8 @@ const Page = () => {
           )
         }))}
       </div >
+    ) : (
+      <SummonerInactive />
     )
   );
 }
