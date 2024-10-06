@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import React, { memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes';
@@ -42,7 +42,7 @@ const SummonerCurrentGameDetails = ({ summoner }: Props) => {
                   alt={(firstElement ? rune?.slots[0].name : rune?.name) || ''}
                   key={index}
                 />
-              )
+              );
             })}
           </div>
         </div>
