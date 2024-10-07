@@ -11,7 +11,8 @@ import type {
   TChampion,
   TChampionMasterySummary,
   TLiveGame,
-  TRune
+  TRune,
+  TMatchData
 } from '@/app/_types/apiTypes';
 import type { TRegionData } from '@/app/_types/types';
 
@@ -86,4 +87,21 @@ export const getSpectatorData = async (
 
 export const getRunesData = async (): Promise<TPromiseResult<Array<TRune>>> => {
   return await fetchApi('https://ddragon.leagueoflegends.com/cdn/14.19.1/data/en_US/runesReforged.json');
+}
+
+export const getSummonerLastMatchesData = async (
+  regionData: TRegionData | undefined,
+  summonerPuuid: string | undefined
+): Promise<TPromiseResult<Array<TMatchData>>> => {
+  const matchIds = await fetchApi<Array<string>>(`https://${regionData?.continentLink}/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=0&count=20&api_key=${riotGamesApiKey}`);
+  const matchStats = [] as Array<TMatchData>;
+
+  if (matchIds) {
+    for (const id of matchIds) {
+      const matchData = await fetchApi<TMatchData>(`https://${regionData?.continentLink}/lol/match/v5/matches/${id}?api_key=${riotGamesApiKey}`);
+      matchData && matchStats.push(matchData);
+    };
+  }
+
+  return matchStats;
 }

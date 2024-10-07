@@ -1,6 +1,7 @@
 'use server';
 
 import { fetchApi } from '../../utils/utils';
+import { getSummonerLastMatchesData } from './riotGamesApi';
 import { riotGamesApiKey } from './apiKey';
 import type {
   TPromiseResult,
@@ -32,18 +33,10 @@ export const getSummonerChampionStats = async (
   regionData: TRegionData | undefined,
   summonerPuuid: string | undefined
 ): Promise<TPromiseResult<Array<TSummonerChampionStats>>> => {
-  const matchIds = await fetchApi<Array<string>>(`https://${regionData?.continentLink}/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=0&count=20&api_key=${riotGamesApiKey}`);
-  const matchStats = [] as Array<TMatchData>;
+  const matchStats = await getSummonerLastMatchesData(regionData, summonerPuuid);
 
-  if (matchIds) {
-    for (const id of matchIds) {
-      const matchData = await fetchApi<TMatchData>(`https://${regionData?.continentLink}/lol/match/v5/matches/${id}?api_key=${riotGamesApiKey}`);
-      matchData && matchStats.push(matchData);
-    };
-  }
-
-  const summonerMatchStats = matchStats.flatMap((stats) => stats?.info.participants.filter((participant) => participant.puuid === summonerPuuid));
-  const gameDurations = matchStats.map((stats) => stats?.info.gameDuration);
+  const summonerMatchStats = matchStats?.flatMap((stats) => stats?.info.participants.filter((participant) => participant.puuid === summonerPuuid));
+  const gameDurations = matchStats?.map((stats) => stats?.info.gameDuration);
 
   const groupedChampionStats: TGroupedChampionStats = Object.entries(
     (summonerMatchStats as Array<TMatchParticipantStats>).reduce((accumulator: TGroupedChampionStatAccumulator, {
@@ -72,7 +65,7 @@ export const getSummonerChampionStats = async (
         win,
         totalMinionsKilled,
         goldEarned,
-        gameDuration: gameDurations[index] ?? 0,
+        gameDuration: gameDurations?.[index] ?? 0,
         totalDamageDealtToChampions,
         doubleKills,
         tripleKills,
