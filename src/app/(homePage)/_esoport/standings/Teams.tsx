@@ -4,7 +4,7 @@ import { getLecSpringSeason } from '@/app/_lib/api/pandascoreApi';
 import { LuLoader } from 'react-icons/lu';
 
 const Teams = () => {
-  const { data, isError, isLoading } = useQuery({
+  const { data, isError, isPending } = useQuery({
     queryKey: ['lec'],
     queryFn: () => getLecSpringSeason(),
     refetchOnWindowFocus: false,
@@ -12,8 +12,8 @@ const Teams = () => {
   });
 
   return (
-    <div className={`grow flex flex-col ${(isLoading || isError) && 'justify-center items-center'} rounded-bl-md`}>
-      {isLoading ? (
+    <div className={`grow flex flex-col ${(isPending || isError) && 'justify-center items-center'} rounded-bl-md`}>
+      {isPending ? (
         <LuLoader className='size-5 text-secondGray' />
       ) : (
         isError ? (

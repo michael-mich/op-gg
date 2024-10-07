@@ -25,7 +25,7 @@ const SummonerHeader = () => {
     data: summonerAccountData,
     isFetched: isSummonerAccountDataFetched,
     isError: isSummonerAccountDataError,
-    isLoading: isSummonerAccountDataLoading,
+    isPending: isSummonerAccountDataPending,
     isSuccess: isSuccessAccount
   } = useQuery({
     enabled: !!summonerName,
@@ -37,7 +37,8 @@ const SummonerHeader = () => {
   const {
     data: summonerProfileData,
     isError: isSummonerProfileError,
-    isSuccess: isSuccessProfile
+    isSuccess: isSuccessProfile,
+    isPending: isSummonerProfilePending,
   } = useQuery({
     enabled: isSuccessAccount,
     queryKey: ['summonerProfile', 'summonerPage', isSuccessAccount, summonerAccountData?.puuid],
@@ -71,7 +72,7 @@ const SummonerHeader = () => {
     <section className='bg-white dark:bg-darkMode-mediumGray pt-12'>
       <div className='border-bottom-theme'>
         <div className='w-[1080px] m-auto'>
-          {(isSummonerAccountDataLoading || !isSummonerAccountDataFetched) ? (
+          {(isSummonerAccountDataPending || isSummonerProfilePending) ? (
             <SummonerHeaderSkeleton />
           ) : (
             <div className='flex gap-6 pb-8'>

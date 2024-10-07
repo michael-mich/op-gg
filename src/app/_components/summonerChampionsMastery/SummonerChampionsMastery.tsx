@@ -26,7 +26,7 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
     data: championsMasteryData,
     isSuccess: isChampionsMasterySuccess,
     isRefetching: isChampionsMasteryRefetching,
-    isLoading: isChampionsMasteryLoading,
+    isPending: isChampionsMasteryPending,
     isError: isChampionsMasteryError
   } = useQuery({
     enabled: !!summonerPuuid,
@@ -35,7 +35,7 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
     refetchOnWindowFocus: false
   });
 
-  const { data: filteredChampionsData } = useQuery({
+  const { data: filteredChampionsData, isPending: isFilteredChampionsPending } = useQuery({
     enabled: isChampionsMasterySuccess,
     queryKey: ['filteredChampions', isChampionsMasterySuccess, isChampionsMasteryRefetching],
     queryFn: () => getFilteredChampions(championsMasteryData),
@@ -73,7 +73,7 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
               <span className='text-sm'>Mastery</span>
             </div>
           )}
-          {(isChampionsMasteryLoading || summonerPuuid === '' || isChampionsMasteryRefetching) ? (
+          {(isChampionsMasteryPending || isFilteredChampionsPending || isChampionsMasteryRefetching) ? (
             <ChampionMasterySkeleton getTopChampions={getTopChampions} />
           ) : (
             <>

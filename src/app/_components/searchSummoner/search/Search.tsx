@@ -24,8 +24,8 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
     data: summonerAccountData,
     isError: isSummonerAccountError,
     isSuccess: isSummonerAccountSuccess,
-    isFetching: isSummonerAccountFetching,
-    refetch: refetchSummonerAccountData
+    refetch: refetchSummonerAccountData,
+    isPending: isSummonerAccountPending,
   } = useQuery({
     enabled: false,
     queryKey: ['searchSummoner'],
@@ -44,14 +44,14 @@ const Search = ({ pageOtherThanHomePage }: Props) => {
   }
 
   useEffect(() => {
-    if (isSummonerAccountError && !isSummonerAccountFetching) {
+    if (isSummonerAccountError && !isSummonerAccountPending) {
       setSummonerName('');
     }
 
-    if (!isSummonerAccountFetching && isSummonerAccountSuccess) {
+    if (!isSummonerAccountPending && isSummonerAccountSuccess) {
       setDisplaySummonerLink(true);
     }
-  }, [isSummonerAccountError, isSummonerAccountFetching, isSummonerAccountSuccess]);
+  }, [isSummonerAccountError, isSummonerAccountPending, isSummonerAccountSuccess]);
 
   return (
     <div className={`${pageOtherThanHomePage ? 'h-8 rounded-r bg-white pr-3' : 'flex items-center h-[60px] rounded-r-full bg-white dark:bg-darkMode-mediumGray pl-4 pr-8'} flex justify-between w-full`}>

@@ -28,7 +28,7 @@ const Page = () => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const currentRegionData = useCurrentRegion();
 
-  const { data: championSummaryData, isLoading, isFetched } = useQuery({
+  const { data: championSummaryData, isPending } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['summonerMasteryTotalData', summonerPuuid],
     queryFn: () => getSummonerChampionsMasterySummary(currentRegionData, summonerPuuid),
@@ -38,7 +38,7 @@ const Page = () => {
   return (
     <>
       <div className='flex justify-center items-center rounded bg-white dark:bg-darkMode-mediumGray p-3'>
-        {(isLoading || !isFetched) ? (
+        {isPending ? (
           <CircularProgress aria-label='loading mastery summary data' />
         ) : (
           championSummaryData ? (

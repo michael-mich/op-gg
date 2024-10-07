@@ -9,7 +9,7 @@ const Matches = () => {
   const {
     data: firstMatchData,
     isError: isFirstMatchError,
-    isLoading: isFirstMatchLoading
+    isPending: isFirstMatchPending,
   } = useQuery({
     queryKey: ['lec-match', 1],
     queryFn: () => getMatchResultLionsVsFnatic(),
@@ -20,7 +20,7 @@ const Matches = () => {
   const {
     data: secondMatchData,
     isError: isSecondMatchError,
-    isLoading: isSecondMatchLoading
+    isPending: isSecondMatchPending,
   } = useQuery({
     queryKey: ['lec-match', 2],
     queryFn: () => getMatchResultFnaticVsBds(),
@@ -38,8 +38,8 @@ const Matches = () => {
           2024.07.09 TUE
         </span>
       </div>
-      <div className={`grow flex flex-col ${(isFirstMatchLoading || isSecondMatchLoading || isFirstMatchError || isSecondMatchError) && 'justify-center items-center'}`}>
-        {(isFirstMatchLoading || isSecondMatchLoading) ? (
+      <div className={`grow flex flex-col ${(isFirstMatchPending || isSecondMatchPending || isFirstMatchError || isSecondMatchError) && 'justify-center items-center'}`}>
+        {(isFirstMatchPending || isSecondMatchPending) ? (
           <LuLoader className='size-5 text-secondGray' />
         ) : (
           (isFirstMatchError || isSecondMatchError) ? (

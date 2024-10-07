@@ -6,7 +6,7 @@ const makeQueryClient = () => {
   return new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 500
+        staleTime: 100
       }
     }
   });

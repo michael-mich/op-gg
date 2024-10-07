@@ -20,7 +20,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
   const currentRegionData = useCurrentRegion();
   const summonerId = useAppSelector((state) => state.summonerId.summonerId);
 
-  const { data: fetchedSummonerRanksData, isLoading, isFetched } = useQuery({
+  const { data: fetchedSummonerRanksData, isPending } = useQuery({
     enabled: !!summonerId,
     queryKey: ['summonerRank', summonerId],
     queryFn: () => getSummonerRank(currentRegionData, summonerId),
@@ -35,7 +35,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded mt-2'>
-      {(isLoading || summonerId === '' || !isFetched) ? (
+      {isPending ? (
         <SummonerRankSkeleton smallDataStyle={smallDataStyle} />
       ) : (
         <>

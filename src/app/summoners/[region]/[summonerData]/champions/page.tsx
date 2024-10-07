@@ -24,7 +24,7 @@ const Page = () => {
     data: championStats,
     isError: isChampionStatsError,
     isSuccess: isChampionStatsSuccess,
-    isFetched: isChampionStatsFetched
+    isPending: isChampionStatsPending,
   } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['matchStats', 'summonerPage', summonerPuuid],
@@ -36,7 +36,7 @@ const Page = () => {
     data: championData,
     isSuccess: isChampionDataSuccess,
     isError: isChampionDataError,
-    isFetched: isChampionDataFetched,
+    isPending: isChampionDataPending
   } = useQuery({
     enabled: isChampionStatsSuccess,
     queryKey: ['championData', 'summonerChampionsPage', isChampionStatsSuccess, summonerPuuid],
@@ -44,7 +44,7 @@ const Page = () => {
     refetchOnWindowFocus: false
   });
 
-  const loadingCondition = (!summonerPuuid || !isChampionDataFetched || !isChampionStatsFetched);
+  const loadingCondition = (isChampionStatsPending || isChampionDataPending);
 
   const formatKillStat = (stat: TSummonerChampionStats, key: keyof Omit<TChampionStats, 'championId'>): number | string => {
     return stat[key] === 0 ? '' : stat[key];
@@ -269,7 +269,7 @@ const Page = () => {
                         {stats.played.lostMatches}L
                       </span>
                     </div>
-                    <span className={`${stats.played.winRatio >= 60 ? 'text-red-500' : 'text-[#57646F] dark:text-darkMode-lighterGray'} text-xs`}>
+                    <span className={`${stats.played.winRatio >= 60 ? 'text-red' : 'text-[#57646F] dark:text-darkMode-lighterGray'} text-xs`}>
                       {stats.played.winRatio}%
                     </span>
                   </TableCell>

@@ -11,7 +11,7 @@ import TableHead from './TableHead';
 import SummonerCurrentGameDetails from './SummonerCurrentGameDetails';
 import SummonerRank from './SummonerRank';
 import ToggleRunesButton from './ToggleRunesButton';
-import SummonerRunes from './summonerRunes/SummonerRunes';
+import SummonerRunes from './_summonerRunes/SummonerRunes';
 import SummonerInactive from './SummonerInactive';
 import { CircularProgress } from '@nextui-org/react';
 
@@ -34,7 +34,6 @@ const Page = () => {
     data: liveGameData,
     isSuccess: isLiveGameSuccess,
     isPending: isLiveGamePending,
-    isLoading: isLiveGameLoading,
   } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['liveGame', summonerPuuid],
@@ -46,7 +45,7 @@ const Page = () => {
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded shadow-[0_0_5px_0_white] dark:shadow-none pt-2 mb-2'>
-      {(isLiveGameLoading || isLiveGamePending) ? (
+      {isLiveGamePending ? (
         <CircularProgress
           className='pb-[1.625rem] pt-4 m-auto'
           aria-label='loading to display summoners live game data'
@@ -77,7 +76,7 @@ const Page = () => {
                     const isActiveRuneDisplayed = activeRuneDisplay.clicked && activeRuneDisplay.summonerIndex === summonerIndex && activeRuneDisplay.teamName === teamName;
 
                     return (
-                      <React.Fragment key={`${summoner.teamId}-${summoner.summonerNameAndTagLine?.name}`}>
+                      <React.Fragment key={`${summoner.teamId}-${summoner.summonerNameAndTagLine?.name}-${summonerIndex}`}>
                         <tr className={`${blueTeam ? 'after:bg-blue' : 'after:bg-red'} border-t border-t-almostWhite                       
                         dark:border-t-darkMode-darkBlue relative after:absolute after:left-0 after:z-10 after:w-1 after:h-full`}
                         >
