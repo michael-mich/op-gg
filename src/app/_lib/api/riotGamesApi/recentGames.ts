@@ -18,7 +18,7 @@ type TChampionPerformanceKey = {
   [key: string]: TChampionPerformance;
 }
 
-type TCheck = {
+type TPositionPlayAmount = {
   [key: string]: Pick<TChampionPerformance, 'playAmount'>;
 }
 
@@ -36,17 +36,17 @@ export const getRecentGamesData = async (
   const summonerPositionPlayAmount = currentSummonerMatchData?.reduce((championStats, match) => {
     const { individualPosition } = match;
     const position = individualPosition.toLowerCase();
-    let championData = championStats[position];
+    let positionData = championStats[position];
 
-    if (!championData) {
-      championData = championStats[position] = {
+    if (!positionData) {
+      positionData = championStats[position] = {
         playAmount: 0
       };
     }
-    championData.playAmount += 1;
+    positionData.playAmount += 1;
 
     return championStats;
-  }, {} as TCheck);
+  }, {} as TPositionPlayAmount);
 
   const summonerPositionPlayPercentage = Object.entries(summonerPositionPlayAmount || {}).map(([position, data]) => ({
     position,
