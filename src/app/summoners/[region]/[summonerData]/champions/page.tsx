@@ -6,7 +6,7 @@ import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerChampionStats } from '@/app/_lib/api/riotGamesApi/summonerChampionStats';
 import { getFilteredChampions } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
-import type { TSummonerChampionStats, TChampionStats } from '@/app/_types/apiTypes';
+import type { TSummonerChampionStats, TChampionStats } from '@/app/_types/apiTypes/championStatsTypes';
 import type { TDetailedChampionStats, TNumericStatKeyPath } from './types';
 import { TableColumns, SortOrder } from './enums';
 import { columns } from './data';

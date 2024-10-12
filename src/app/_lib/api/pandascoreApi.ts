@@ -1,7 +1,7 @@
 'use server';
 
-import { fetchApi } from '../utils/utils';
-import type { TLecSpringSeason, TEsportMatch, TPromiseResult } from '@/app/_types/apiTypes';
+import { fetchApi } from '../utils/fetchApi';
+import type { TLecSpringSeason, TEsportMatch, TPromiseResult } from '@/app/_types/apiTypes/apiTypes';
 
 const pandascoreApiKey = process.env.PANDASCORE_API_KEY;
 

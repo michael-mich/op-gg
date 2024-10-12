@@ -18,14 +18,14 @@ import { CircularProgress } from '@nextui-org/react';
 export type TActiveRuneDisplay = {
   clicked: boolean;
   summonerIndex: number;
-  teamName: string;
+  teamType: string;
 }
 
 const Page = () => {
   const [activeRuneDisplay, setActiveRuneDisplay] = useState<TActiveRuneDisplay>({
     clicked: false,
     summonerIndex: 0,
-    teamName: ''
+    teamType: ''
   });
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const currentRegion = useCurrentRegion();
@@ -41,7 +41,7 @@ const Page = () => {
     refetchOnWindowFocus: false
   });
 
-  const teams = useMemo(() => liveGameData?.teams.map((team) => Object.entries(team)), [isLiveGameSuccess, summonerPuuid]);
+  const gameData = useMemo(() => liveGameData, [summonerPuuid, isLiveGameSuccess]);
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded shadow-[0_0_5px_0_white] dark:shadow-none pt-2 mb-2'>
@@ -61,19 +61,19 @@ const Page = () => {
             </span>
             <GameTimer gameLength={liveGameData?.gameLength} />
           </div>
-          {teams?.map((team) => team.map(([teamName, teamData]) => {
-            const blueTeam = teamName === 'blueTeam';
+          {gameData?.teams?.map((team) => {
+            const blueTeam = team.teamType === 'blue';
 
             return (
               <table
                 className='w-full'
                 aria-label={`live data of ${blueTeam ? 'blue' : 'red'} team`}
-                key={teamName}
+                key={team.teamType}
               >
                 <TableHead blueTeam={blueTeam} />
                 <tbody>
-                  {teamData.map((summoner, summonerIndex) => {
-                    const isActiveRuneDisplayed = activeRuneDisplay.clicked && activeRuneDisplay.summonerIndex === summonerIndex && activeRuneDisplay.teamName === teamName;
+                  {team.teamParticipants.map((summoner, summonerIndex) => {
+                    const isActiveRuneDisplayed = activeRuneDisplay.clicked && activeRuneDisplay.summonerIndex === summonerIndex && activeRuneDisplay.teamType === team.teamType;
 
                     return (
                       <React.Fragment key={`${summoner.teamId}-${summoner.summonerNameAndTagLine?.name}-${summonerIndex}`}>
@@ -87,7 +87,7 @@ const Page = () => {
                             setActiveRuneDisplay={setActiveRuneDisplay}
                             isActiveRuneDisplayed={isActiveRuneDisplayed}
                             summonerIndex={summonerIndex}
-                            teamName={teamName}
+                            teamType={team.teamType}
                           />
                           <td className='py-2 px-3'>
                             {summoner.bannedChampion && (
@@ -110,7 +110,7 @@ const Page = () => {
                 </tbody>
               </table>
             );
-          }))}
+          })}
         </>
       ) : (
         <SummonerInactive />

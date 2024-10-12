@@ -1,21 +1,21 @@
 'use server';
 
-import { fetchApi } from '../../utils/utils';
-import { getSummonerLastMatchesData } from './riotGamesApi';
-import { riotGamesApiKey } from './apiKey';
-import type {
-  TPromiseResult,
-  TSummonerChampionStats,
-  TMatchData,
-  TMatchParticipantStats
-} from '@/app/_types/apiTypes';
-import type { TRegionData } from '@/app/_types/types';
+import { getSummonerMatchHistoryData } from './riotGamesApi';
+import { calculateWinLossStats, calculateKdaStats } from '../../utils/matchStats';
+import type { TPromiseResult } from '@/app/_types/apiTypes/apiTypes';
+import {
+  TMatchParticipantStats,
+  TSummonerChampionStats
+} from '@/app/_types/apiTypes/championStatsTypes';
+import type { TChampionWinLostRatio, TRegionData } from '@/app/_types/types';
+
+type OmitMatchParticipantStats = 'championName' | 'puuid' | 'teamId';
 
 type TGroupedChampionStatAccumulator = {
-  [key: string]: Array<Omit<TMatchParticipantStats, 'championName' | 'puuid'>>;
+  [key: string]: Array<Omit<TMatchParticipantStats, OmitMatchParticipantStats>>;
 }
 
-type TGroupedChampionStats = Array<[string, Array<Omit<TMatchParticipantStats, "championName" | "puuid">>]>
+type TGroupedChampionStats = Array<[string, Array<Omit<TMatchParticipantStats, OmitMatchParticipantStats>>]>
 
 const getMaxNumber = (groupedChampionStats: TGroupedChampionStats, key: 'kills' | 'deaths'): Array<number> => {
   return groupedChampionStats.map(([_, championStats]) => (
@@ -23,7 +23,7 @@ const getMaxNumber = (groupedChampionStats: TGroupedChampionStats, key: 'kills' 
   ))
 }
 
-const calculateTotalChampionStat = (groupedChampionStats: TGroupedChampionStats, key: keyof Omit<TMatchParticipantStats, 'championName' | 'puuid' | 'win'>): Array<number> => {
+const calculateTotalChampionStat = (groupedChampionStats: TGroupedChampionStats, key: keyof Omit<TMatchParticipantStats, OmitMatchParticipantStats | 'win'>): Array<number> => {
   return groupedChampionStats.map(([_, championStats]) => (
     championStats.reduce((acumulator, object) => acumulator + object[key], 0)
   ))
@@ -33,7 +33,7 @@ export const getSummonerChampionStats = async (
   regionData: TRegionData | undefined,
   summonerPuuid: string | undefined
 ): Promise<TPromiseResult<Array<TSummonerChampionStats>>> => {
-  const matchStats = await getSummonerLastMatchesData(regionData, summonerPuuid);
+  const matchStats = await getSummonerMatchHistoryData(regionData, summonerPuuid);
 
   const summonerMatchStats = matchStats?.flatMap((stats) => stats?.info.participants.filter((participant) => participant.puuid === summonerPuuid));
   const gameDurations = matchStats?.map((stats) => stats?.info.gameDuration);
@@ -106,47 +106,12 @@ export const getSummonerChampionStats = async (
     }
   });
 
-  const championPlayedStats = groupedChampionStats.map(([_, championStats]) => {
-    let wonMatches = 0;
-    let lostMatches = 0;
-
-    championStats.forEach((data) => {
-      if (data.win) {
-        wonMatches++;
-      }
-      else {
-        lostMatches++;
-      }
-    });
-
-    const winRatio = Math.round((wonMatches / championStats.length) * 100);
-
-    return {
-      winRatio,
-      wonMatches,
-      lostMatches
-    }
+  const championPlayedStats = groupedChampionStats.map(([_, championStats]): TChampionWinLostRatio => {
+    return calculateWinLossStats(championStats);
   });
 
   const championKdaStats = groupedChampionStats.map(([_, championStats]) => {
-    const { assists: totalAssists, deaths: totalDeaths, kills: totalKills } = championStats.reduce(
-      (accumulator, { assists, deaths, kills }) => {
-        return {
-          assists: accumulator.assists + assists,
-          deaths: accumulator.deaths + deaths,
-          kills: accumulator.kills + kills,
-        }
-      }, { assists: 0, deaths: 0, kills: 0 }
-    );
-
-    const kda = totalDeaths === 0 ? totalAssists + totalKills : (totalAssists + totalKills) / totalDeaths;
-
-    return {
-      kda: kda,
-      averageKills: (totalKills / championStats.length).toFixed(1),
-      averageAssists: (totalAssists / championStats.length).toFixed(1),
-      averageDeaths: (totalDeaths / championStats.length).toFixed(1)
-    }
+    return calculateKdaStats(championStats);
   });
 
   const championStats: Array<TSummonerChampionStats> = groupedChampionStats.map((_, index) => {

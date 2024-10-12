@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerChampionsMastery, getFilteredChampions } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
-import type { TChampion } from '@/app/_types/apiTypes';
+import type { TChampion } from '@/app/_types/apiTypes/apiTypes';
 import type { TSummonerPageParams } from '@/app/_types/types';
 import { IoIosArrowForward } from "react-icons/io";
 import MasteryInformations from './MasteryInformations';
@@ -52,7 +52,7 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
   }
 
   return (
-    <div className='bg-white dark:bg-darkMode-mediumGray rounded mt-2'>
+    <div className='bg-white dark:bg-darkMode-mediumGray rounded'>
       {(championsMasteryData?.length === 0 || isChampionsMasteryError) ? (
         <div className='flex flex-col items-center justify-center gap-1 p-3'>
           <Image

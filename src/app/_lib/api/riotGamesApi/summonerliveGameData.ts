@@ -8,23 +8,24 @@ import {
   getSpectatorData,
   getRunesData
 } from './riotGamesApi';
-import { fetchApi, findQueueTypeData } from '../../utils/utils';
+import { fetchApi } from '../../utils/fetchApi';
+import { findQueueTypeData } from '../../utils/utils';
+import { segregateSummonersToTeams } from '../../utils/matchStats';
 import type {
-  TPromiseResult,
-  TSummonerAccount,
   TLiveGameParticipants,
   TSummonerSpell,
   TSummonerSpellContent,
-  TSegregateTeams,
+  TSummonerLiveGameData,
   TUpdatedLiveGameParticipants,
-  TTeams,
   TUpdatedRune,
   TBannedChampion
-} from '@/app/_types/apiTypes';
+} from '@/app/_types/apiTypes/liveGameTypes';
+import type {
+  TPromiseResult,
+  TSummonerAccount,
+} from '@/app/_types/apiTypes/apiTypes';
 import type { TRegionData } from '@/app/_types/types';
 import { QueueType, RuneType } from '@/app/_enums/enums';
-
-type TSingleTeam = { blueTeam: Array<TUpdatedLiveGameParticipants> } | { redTeam: Array<TUpdatedLiveGameParticipants> };
 
 const getChampionNameAndImage = async <T extends { championId: number }>(data: T) => {
   const championData = await getFilteredChampions([data]);
@@ -39,7 +40,7 @@ const getChampionNameAndImage = async <T extends { championId: number }>(data: T
 export const getSummonerLiveGameData = async (
   regionData: TRegionData | undefined,
   summonerPuuid: string | undefined
-): Promise<TPromiseResult<TSegregateTeams>> => {
+): Promise<TPromiseResult<TSummonerLiveGameData>> => {
   const liveGameData = await getSpectatorData(regionData, summonerPuuid);
   const gameParticipants = liveGameData?.participants;
 
@@ -151,31 +152,18 @@ export const getSummonerLiveGameData = async (
     }
   }
 
-  const segregateTeams = (): TSegregateTeams | undefined => {
+  const updateAndSegregateTeams = () => {
     if (liveGameData) {
-      const teams: Array<TSingleTeam> = [{ blueTeam: [] }, { redTeam: [] }];
       const gameData = updateSummonersData();
       const { participants, ...data } = gameData!;
-
-      for (let summoner of participants || []) {
-        if (summoner.teamId === 100) {
-          if ('blueTeam' in teams[0]) {
-            teams[0].blueTeam.push(summoner);
-          }
-        }
-        else {
-          if ('redTeam' in teams[1]) {
-            teams[1].redTeam.push(summoner);
-          }
-        }
-      }
+      const teams = segregateSummonersToTeams(participants)
 
       return {
         ...data,
-        teams: teams as Array<TTeams>
+        teams
       };
     }
   }
 
-  return segregateTeams();
+  return updateAndSegregateTeams();
 }

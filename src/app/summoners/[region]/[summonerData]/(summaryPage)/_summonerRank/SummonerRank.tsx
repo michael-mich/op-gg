@@ -8,7 +8,7 @@ import { getSummonerRank } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
 import { findQueueTypeData } from '@/app/_lib/utils/utils';
 import { calculateWinRate, formatTierName, getRankedEmblem } from '@/app/_lib/utils/rank';
 import SummonerRankSkeleton from './SummonerRankSkeleton';
-import type { TSummonerRank } from '@/app/_types/apiTypes';
+import type { TSummonerRank } from '@/app/_types/apiTypes/apiTypes';
 import { QueueType } from '@/app/_enums/enums';
 
 type Props = {
@@ -34,7 +34,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
   const rankedEmblem = getRankedEmblem(rankedData);
 
   return (
-    <div className='bg-white dark:bg-darkMode-mediumGray rounded mt-2'>
+    <div className='bg-white dark:bg-darkMode-mediumGray rounded'>
       {isPending ? (
         <SummonerRankSkeleton smallDataStyle={smallDataStyle} />
       ) : (

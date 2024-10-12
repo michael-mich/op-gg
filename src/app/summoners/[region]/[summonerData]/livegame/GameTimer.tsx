@@ -1,26 +1,14 @@
 import { useEffect, useState } from 'react';
+import { calculateTimeUnit } from '@/app/_lib/utils/utils';
+import { TimeUnit } from '@/app/_enums/enums';
 
 type Props = {
   gameLength: number | undefined;
 }
 
-enum TimeUnit {
-  Minutes = 'minutes',
-  Seconds = 'seconds'
-}
-
 const GameTimer = ({ gameLength }: Props) => {
-  const calculateTimeUnit = (timeUnit: TimeUnit): number => {
-    if (gameLength && gameLength > 0) {
-      return timeUnit === TimeUnit.Minutes ? Math.floor(gameLength / 60) : Math.floor(gameLength % 60);
-    }
-    else {
-      return 0;
-    }
-  }
-
-  const initialMinutes = calculateTimeUnit(TimeUnit.Minutes);
-  const initialSeconds = calculateTimeUnit(TimeUnit.Seconds);
+  const initialMinutes = calculateTimeUnit(gameLength, TimeUnit.Minutes);
+  const initialSeconds = calculateTimeUnit(gameLength, TimeUnit.Seconds);
   const [timer, setTimer] = useState({ minutes: initialMinutes, seconds: initialSeconds });
 
   useEffect(() => {

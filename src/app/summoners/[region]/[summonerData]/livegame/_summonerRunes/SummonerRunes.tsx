@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { getRunesData } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
-import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes';
+import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/liveGameTypes';
 import { shardData } from './summonerRunesData';
 
 type Props = {

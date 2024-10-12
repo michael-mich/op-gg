@@ -1,7 +1,7 @@
 'use server';
 
 import { riotGamesApiKey } from './apiKey';
-import { fetchApi } from '../../utils/utils';
+import { fetchApi } from '../../utils/fetchApi';
 import type {
   TSummonerAccount,
   TSummonerProfile,
@@ -10,10 +10,9 @@ import type {
   TChampionMastery,
   TChampion,
   TChampionMasterySummary,
-  TLiveGame,
-  TRune,
-  TMatchData
-} from '@/app/_types/apiTypes';
+  TMatchHistory
+} from '@/app/_types/apiTypes/apiTypes';
+import type { TLiveGame, TRune } from '@/app/_types/apiTypes/liveGameTypes';
 import type { TRegionData } from '@/app/_types/types';
 
 export const getSummonerAccount = async (
@@ -89,19 +88,20 @@ export const getRunesData = async (): Promise<TPromiseResult<Array<TRune>>> => {
   return await fetchApi('https://ddragon.leagueoflegends.com/cdn/14.19.1/data/en_US/runesReforged.json');
 }
 
-export const getSummonerLastMatchesData = async (
+export const getSummonerMatchHistoryData = async (
   regionData: TRegionData | undefined,
   summonerPuuid: string | undefined
-): Promise<TPromiseResult<Array<TMatchData>>> => {
+): Promise<TPromiseResult<Array<TMatchHistory>>> => {
   const matchIds = await fetchApi<Array<string>>(`https://${regionData?.continentLink}/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=0&count=20&api_key=${riotGamesApiKey}`);
-  const matchStats = [] as Array<TMatchData>;
+  const matchHistoryData = [] as Array<TMatchHistory>;
 
+  // for loop is used to sequentially fetch detailed match data
   if (matchIds) {
     for (const id of matchIds) {
-      const matchData = await fetchApi<TMatchData>(`https://${regionData?.continentLink}/lol/match/v5/matches/${id}?api_key=${riotGamesApiKey}`);
-      matchData && matchStats.push(matchData);
+      const matchData = await fetchApi<TMatchHistory>(`https://${regionData?.continentLink}/lol/match/v5/matches/${id}?api_key=${riotGamesApiKey}`);
+      matchData && matchHistoryData.push(matchData);
     };
   }
 
-  return matchStats;
+  return matchHistoryData;
 }

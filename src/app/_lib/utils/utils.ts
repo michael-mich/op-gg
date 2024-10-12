@@ -1,6 +1,6 @@
-import type { TPromiseResult, TSummonerRank } from '../../_types/apiTypes';
+import type { TPromiseResult, TSummonerRank } from '../../_types/apiTypes/apiTypes';
 import type { TLocalStorageSummoner } from '../../_types/types';
-import { LocalStorageKeys, QueueType } from '../../_enums/enums';
+import { LocalStorageKeys, QueueType, TimeUnit } from '../../_enums/enums';
 
 export const getLocalStorageData = (localeStorageKey: LocalStorageKeys): Array<TLocalStorageSummoner> => {
   return JSON.parse(localStorage.getItem(localeStorageKey) || '[]');
@@ -10,19 +10,11 @@ export const findQueueTypeData = (queueData: TPromiseResult<Array<TSummonerRank>
   return queueData?.find((data) => data.queueType === queueType);
 }
 
-export const fetchApi = async <T>(
-  url: string,
-  cacheValue?: { cache: 'force-cache' }
-): Promise<TPromiseResult<T>> => {
-  try {
-    const response = await fetch(url, cacheValue);
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-    const data = await response.json() as T;
-    return data;
+export const calculateTimeUnit = (gameDuration: number | undefined, timeUnit: TimeUnit): number => {
+  if (gameDuration && gameDuration > 0) {
+    return timeUnit === TimeUnit.Minutes ? Math.floor(gameDuration / 60) : Math.floor(gameDuration % 60);
   }
-  catch (error) {
-    console.error(error);
+  else {
+    return 0;
   }
 }

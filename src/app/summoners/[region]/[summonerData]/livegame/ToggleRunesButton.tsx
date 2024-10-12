@@ -1,7 +1,7 @@
 import type { TActiveRuneDisplay } from './page';
 import { IoIosArrowDown } from 'react-icons/io';
 
-interface Props extends Pick<TActiveRuneDisplay, 'summonerIndex' | 'teamName'> {
+interface Props extends Pick<TActiveRuneDisplay, 'summonerIndex' | 'teamType'> {
   activeRuneDisplay: TActiveRuneDisplay;
   setActiveRuneDisplay: React.Dispatch<React.SetStateAction<TActiveRuneDisplay>>;
   isActiveRuneDisplayed: boolean;
@@ -12,7 +12,7 @@ const ToggleRunesButton = ({
   setActiveRuneDisplay,
   isActiveRuneDisplayed,
   summonerIndex,
-  teamName
+  teamType
 }: Props) => {
   return (
     <td className='text-xs py-2 px-3'>
@@ -21,13 +21,13 @@ const ToggleRunesButton = ({
           setActiveRuneDisplay((prev) => {
             const clickedSameButton = (
               prev.summonerIndex === summonerIndex
-              && prev.teamName === teamName && activeRuneDisplay.clicked
+              && prev.teamType === teamType && activeRuneDisplay.clicked
             ) ? false : true;
 
             return {
               clicked: clickedSameButton,
               summonerIndex,
-              teamName,
+              teamType,
             }
           })
         }}

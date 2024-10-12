@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import Image from 'next/image';
 import { calculateWinRate, getRankedEmblem, formatTierName } from '@/app/_lib/utils/rank';
-import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes';
+import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/liveGameTypes';
 
 type Props = {
   summoner: TUpdatedLiveGameParticipants;

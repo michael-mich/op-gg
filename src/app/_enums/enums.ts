@@ -12,3 +12,8 @@ export enum RuneType {
   MainRune = 'mainRune',
   SubRune = 'subRune'
 }
+
+export enum TimeUnit {
+  Minutes = 'minutes',
+  Seconds = 'seconds'
+}

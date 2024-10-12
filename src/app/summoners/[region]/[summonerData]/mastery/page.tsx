@@ -28,7 +28,7 @@ const Page = () => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const currentRegionData = useCurrentRegion();
 
-  const { data: championSummaryData, isPending } = useQuery({
+  const { data: championSummaryData, isPending, isSuccess } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['summonerMasteryTotalData', summonerPuuid],
     queryFn: () => getSummonerChampionsMasterySummary(currentRegionData, summonerPuuid),
@@ -37,14 +37,15 @@ const Page = () => {
 
   return (
     <>
-      <div className='flex justify-center items-center rounded bg-white dark:bg-darkMode-mediumGray p-3'>
+      <div className='flex justify-center items-center rounded bg-white dark:bg-darkMode-mediumGray p-3 mb-2'>
         {isPending ? (
           <CircularProgress aria-label='loading mastery summary data' />
         ) : (
-          championSummaryData ? (
+          isSuccess ? (
             championMasteryDetails.map((data, index) => (
               <div
-                className={`flex-1 flex flex-col items-center gap-0.5 ${index !== 2 && 'border-r border-r-almostWhite dark:border-r-darkMode-darkBlue'}`}
+                className={`flex-1 flex flex-col items-center gap-0.5 
+                ${index !== 2 && 'border-r border-r-almostWhite dark:border-r-darkMode-darkBlue'}`}
                 key={index}
               >
                 <Image
@@ -55,7 +56,7 @@ const Page = () => {
                   alt='Total mastery score'
                 />
                 <span className='font-bold text-sm'>
-                  {index === 0 ? championSummaryData.totalMasteryScore : index === 1 ? championSummaryData.totalChampionPoints : `${championSummaryData.masteryChampionsAmount} / 168`}
+                  {index === 0 ? championSummaryData?.totalMasteryScore : index === 1 ? championSummaryData?.totalChampionPoints : `${championSummaryData?.masteryChampionsAmount} / 168`}
                 </span>
                 <span className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
                   {data.text}

@@ -1,5 +1,4 @@
-import { TSummonerChampionStats } from '@/app/_types/apiTypes';
-
+import { TSummonerChampionStats } from '@/app/_types/apiTypes/championStatsTypes';
 export interface TDetailedChampionStats extends TSummonerChampionStats {
   championName: string | undefined;
   championImage: string | undefined;
