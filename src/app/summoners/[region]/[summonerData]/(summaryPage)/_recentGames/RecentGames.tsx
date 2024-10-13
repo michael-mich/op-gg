@@ -27,7 +27,7 @@ const RecentGames = () => {
   });
 
   return (
-    <div className='w-full h-fit bg-white dark:bg-darkMode-mediumGray rounded'>
+    <div className={`${isRecentGamesPending && 'flex items-center justify-center py-12'} w-full h-fit bg-white dark:bg-darkMode-mediumGray rounded`}>
       {isRecentGamesPending ? (
         <CircularProgress aria-label='loading summoner summary of 20 recent games' />
       ) : isRecentGamesSucces ? (
