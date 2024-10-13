@@ -10,10 +10,10 @@ const Summary = ({ recentGamesData }: Props) => {
 
   return (
     <div>
-      <span className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
+      <div className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
         {totalGames}G {wonMatches}W {lostMatches}L
-      </span>
-      <div className='flex items-center'>
+      </div>
+      <div className='flex items-center gap-8 mt-3'>
         <div className='relative size-[88px]'>
           <svg width='88' height='88' viewBox='0 0 88 88'>
             <g>
@@ -29,7 +29,9 @@ const Summary = ({ recentGamesData }: Props) => {
               />
             </g>
           </svg>
-          <span className={`${winRatio! >= 50 ? 'text-blue' : 'text-red'} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}>
+          <span className={`${winRatio! >= 50 ? 'text-blue' : 'text-red'} absolute top-1/2 left-1/2
+          -translate-x-1/2 -translate-y-1/2 text-sm font-bold`}
+          >
             {winRatio}%
           </span>
         </div>
@@ -37,7 +39,7 @@ const Summary = ({ recentGamesData }: Props) => {
           <div className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
             {averageKills} / <span className='text-red'>{averageDeaths}</span> / {averageAssists}
           </div>
-          <span className='text-xl font-bold'>{kda?.toFixed(2)}</span>
+          <span className='text-xl font-bold'>{`${kda?.toFixed(2)}:1`}</span>
           <span className='text-xs text-red'>
             P/Kill {recentGamesData?.averageKillParticipation}%
           </span>

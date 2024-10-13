@@ -6,6 +6,7 @@ import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { getSummonerChampionStats } from '@/app/_lib/api/riotGamesApi/summonerChampionStats';
 import { getFilteredChampions } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
+import { handleKdaTextColor } from '@/app/_lib/utils/utils';
 import type { TSummonerChampionStats, TChampionStats } from '@/app/_types/apiTypes/championStatsTypes';
 import type { TDetailedChampionStats, TNumericStatKeyPath } from './types';
 import { TableColumns, SortOrder } from './enums';
@@ -274,8 +275,7 @@ const Page = () => {
                     </span>
                   </TableCell>
                   <TableCell className='table-cell-hover-bg'>
-                    <span className={`${stats.kda.kda >= 6.0 ? 'text-orange' : stats.kda.kda >= 4.0 ? 'text-secondLightBlue' : stats.kda.kda >= 3.0 ? 'text-mediumGreen' : 'text-lightMode-secondMediumGray dark:text-darkMode-lighterGray'} 
-                    block text-center text-xs font-bold`}>
+                    <span className={`${handleKdaTextColor(stats.kda.kda)} block text-center text-xs font-bold`}>
                       {stats.kda.kda.toFixed(2)}
                     </span>
                     <span className='w-[85px] table-cell text-xss'>{stats.kda.averageKills} / {stats.kda.averageAssists} / {stats.kda.averageDeaths}</span>

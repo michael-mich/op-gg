@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { handleKdaTextColor } from '@/app/_lib/utils/utils';
 import type { TRecetGames, TPromiseResult } from '@/app/_types/apiTypes/apiTypes';
 
 type Props = {
@@ -8,10 +9,10 @@ type Props = {
 const TopThreeChampions = ({ recentGamesData }: Props) => {
   return (
     <div>
-      <span className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
+      <div className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
         Recent {recentGamesData?.gameAmounts.totalGames} Games Played Champions
-      </span>
-      <div className='flex flex-col gap-1'>
+      </div>
+      <div className='flex flex-col gap-2 mt-3'>
         {recentGamesData?.topPlayedChampions.map((championData) => (
           <div className='flex items-center' key={championData.championName}>
             <Image
@@ -21,11 +22,15 @@ const TopThreeChampions = ({ recentGamesData }: Props) => {
               height={24}
               alt={championData.championName}
             />
-            <span className='text-xss mr-0.5'>{championData.winRatio}%</span>
-            <span className='text-xss dark:text-darkMode-secondMediumGray'>
+            <span className={`${championData.winRatio > 50 ? 'text-red' : 'text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'} text-xss mr-0.5`}>
+              {championData.winRatio}%
+            </span>
+            <span className='text-xss text-secondGray dark:text-darkMode-secondMediumGray'>
               ({championData.wonMatches}W {championData.lostMatches}L)
             </span>
-            <span className='text-xss ml-1'>{championData.kda.toFixed(2)} KDA</span>
+            <span className={`text-xss ml-1 ${handleKdaTextColor(championData.kda)}`}>
+              {championData.kda.toFixed(2)} KDA
+            </span>
           </div>
         ))}
       </div>
