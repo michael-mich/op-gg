@@ -8,7 +8,7 @@ type TLocalStorageState = {
 }
 
 const initialState: TLocalStorageState = {
-  localStorageFavoriteSummoners: getLocalStorageData(LocalStorageKeys.FavoriteSummoners)
+  localStorageFavoriteSummoners: getLocalStorageData(LocalStorageKeys.FavoriteSummoners) || []
 }
 
 const localStorageFavoriteSummonersSlice = createSlice({

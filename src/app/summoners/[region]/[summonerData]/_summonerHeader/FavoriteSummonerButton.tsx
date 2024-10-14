@@ -24,7 +24,7 @@ const FavoriteSummonerButton = ({
   }
 
   const toggleFavoriteSummoner = (): void => {
-    const favoriteSummonersArray = getLocalStorageData(LocalStorageKeys.FavoriteSummoners);
+    const favoriteSummonersArray = getLocalStorageData(LocalStorageKeys.FavoriteSummoners) || [];
     const favoriteSummonerIndex = favoriteSummonersArray.findIndex((data) => (data.summonerId === summonerId));
 
     if (isSummonerAccountDataFetched) {

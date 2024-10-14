@@ -29,17 +29,20 @@ const SearchHistory = ({
   const localStorageFavoriteSummoners = useAppSelector((state) => state.localStorageFavoriteSummoners.localStorageFavoriteSummoners);
   const dispatch = useAppDispatch();
 
+  const favoriteSummonersArray = getLocalStorageData(LocalStorageKeys.FavoriteSummoners) || [];
+  const searchHistoryArray = getLocalStorageData(LocalStorageKeys.SearchHistory) || [];
+
   const addFavoriteSummoner = (index: number): void => {
-    const favoriteSummonersArray = getLocalStorageData(LocalStorageKeys.FavoriteSummoners);
-    favoriteSummonersArray.unshift(getLocalStorageData(LocalStorageKeys.SearchHistory)[index]);
+    favoriteSummonersArray.unshift(searchHistoryArray[index]);
     localStorage.setItem('favoriteSummoners', JSON.stringify(favoriteSummonersArray));
     dispatch(setLocalStorageFavoriteSummoners(favoriteSummonersArray));
   }
 
   const toggleFavoriteSummoner = (index: number): void => {
-    const searchHistoryData = getLocalStorageData(LocalStorageKeys.SearchHistory)[index];
+    const b = getLocalStorageData(LocalStorageKeys.SearchHistory) || [];
+    const searchHistoryData = b[index];
     const favoriteSummonersArray = getLocalStorageData(LocalStorageKeys.FavoriteSummoners);
-    const sameSummonerIndex = favoriteSummonersArray.findIndex(
+    const sameSummonerIndex = favoriteSummonersArray?.findIndex(
       (el) => el.summonerId === searchHistoryData.summonerId
     );
 
@@ -47,7 +50,7 @@ const SearchHistory = ({
       addFavoriteSummoner(index);
     }
     else {
-      dispatch(setLocalStorageFavoriteSummoners(removeSummonerFromLocalStorage(sameSummonerIndex, LocalStorageKeys.FavoriteSummoners)));
+      dispatch(setLocalStorageFavoriteSummoners(removeSummonerFromLocalStorage(sameSummonerIndex!, LocalStorageKeys.FavoriteSummoners)));
     }
   }
 

@@ -51,7 +51,7 @@ const SummonerLink = ({
   }
 
   const addSearchHistoryDataToLocalStorage = (): void => {
-    const storageArray = getLocalStorageData(LocalStorageKeys.SearchHistory);
+    const storageArray = getLocalStorageData(LocalStorageKeys.SearchHistory) || [];
     storageArray.unshift(searchHistoryData);
     const withoutDuplicates = removeDuplicateObjects(storageArray);
     localStorage.setItem(LocalStorageKeys.SearchHistory, JSON.stringify(withoutDuplicates));

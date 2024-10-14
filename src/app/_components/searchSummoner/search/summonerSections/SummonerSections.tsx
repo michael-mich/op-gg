@@ -19,7 +19,7 @@ const SummonerSections = ({ pageOtherThanHomePage, setDisplaySummonerSections }:
   const [displaySection, setDisplaySection] = useState(0);
 
   const removeSummonerFromLocalStorage = (index: number, localStorageKey: LocalStorageKeys): Array<TLocalStorageSummoner> => {
-    const storageData = getLocalStorageData(localStorageKey);
+    const storageData = getLocalStorageData(localStorageKey) || [];
     storageData.splice(index, 1);
     localStorage.setItem(localStorageKey, JSON.stringify(storageData));
     return storageData;
@@ -31,8 +31,8 @@ const SummonerSections = ({ pageOtherThanHomePage, setDisplaySummonerSections }:
   }
 
   useEffect(() => {
-    setLocalStorageSearchHistory(getLocalStorageData(LocalStorageKeys.SearchHistory));
-    dispatch(setLocalStorageFavoriteSummoners(getLocalStorageData(LocalStorageKeys.FavoriteSummoners)));
+    setLocalStorageSearchHistory(getLocalStorageData(LocalStorageKeys.SearchHistory)!);
+    dispatch(setLocalStorageFavoriteSummoners(getLocalStorageData(LocalStorageKeys.FavoriteSummoners)!));
   }, []);
 
   return (
