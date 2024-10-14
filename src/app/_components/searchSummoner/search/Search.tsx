@@ -7,12 +7,9 @@ import { getSummonerAccount } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
 import type { TSummonerAccount } from '@/app/_types/apiTypes/apiTypes';
 import SummonerLink from './SummonerLink';
 import SummonerSections from './summonerSections/SummonerSections';
+import type { TBooleanProp } from '../SearchSummoner';
 
-type Props = {
-  pageOtherThanHomePage: boolean;
-}
-
-const Search = ({ pageOtherThanHomePage }: Props) => {
+const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
   const [summonerName, setSummonerName] = useState('');
   const [displaySummonerSections, setDisplaySummonerSections] = useState(false);
   const [displaySummonerLink, setDisplaySummonerLink] = useState(false);

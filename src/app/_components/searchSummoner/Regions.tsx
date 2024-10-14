@@ -3,12 +3,9 @@ import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';
 import { MdArrowDropDown } from 'react-icons/md';
 import RegionsList from '@/app/_components/RegionsList';
+import type { TBooleanProp } from './SearchSummoner';
 
-type Props = {
-  pageOtherThanHomePage: boolean;
-}
-
-const Regions = ({ pageOtherThanHomePage }: Props) => {
+const Regions = ({ pageOtherThanHomePage }: TBooleanProp) => {
   const [displayRegionsList, setDisplayRegionsList] = useState(false);
   const regionListRef = useOutsideClick(displayRegionsList, setDisplayRegionsList);
   const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);

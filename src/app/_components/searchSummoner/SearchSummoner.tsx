@@ -5,6 +5,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Regions from './Regions';
 import Search from './search/Search';
+import SummonerSearchHelp from './SummonerSearchHelp';
+
+export type TBooleanProp = {
+  pageOtherThanHomePage: boolean;
+}
 
 const SearchSummoner = () => {
   const pathname = usePathname();
@@ -30,6 +35,7 @@ const SearchSummoner = () => {
           <Regions pageOtherThanHomePage={pageOtherThanHomePage} />
           <Search pageOtherThanHomePage={pageOtherThanHomePage} />
         </div>
+        <SummonerSearchHelp pageOtherThanHomePage={pageOtherThanHomePage} />
       </div>
     </div>
   );
