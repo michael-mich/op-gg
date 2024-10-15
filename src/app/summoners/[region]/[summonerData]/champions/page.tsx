@@ -53,7 +53,7 @@ const Page = () => {
 
   const sortChampionsByNumericPath = (order: SortOrder, keyPath: TNumericStatKeyPath): Array<TDetailedChampionStats> | undefined => {
     const getNestedValue = (obj: TDetailedChampionStats): number => {
-      return keyPath.split('.').reduce((acc, key) => (acc as any)[key], obj) as unknown as number;
+      return keyPath.split('.').reduce((acc, key) => (acc as any)[key], obj) as unknown as number;     
     }
 
     if (order === SortOrder.Descending) {

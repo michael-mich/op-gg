@@ -10,7 +10,7 @@ const ScrollToTopButton = () => {
     window.scrollTo(0, 0);
   }
 
-  const handleDisplayButton = (): void => {
+  const handleDisplayButton = () => {
     setDisplayButton(window.scrollY > 150);
   }
 
@@ -20,7 +20,7 @@ const ScrollToTopButton = () => {
     return () => {
       window.removeEventListener('scroll', handleDisplayButton);
     }
-  }, [window.screenY]);
+  }, []);
 
   return (
     <button

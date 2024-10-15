@@ -57,7 +57,7 @@ const Page = () => {
               Ranked Solo/Duo
             </span>
             <span className='text-xs px-2 border-r border-r-black dark:border-r-[#393948]'>
-              Summoner's Rift
+              Summoner&apos;s Rift
             </span>
             <GameTimer gameLength={liveGameData?.gameLength} />
           </div>

@@ -61,7 +61,7 @@ export const segregateSummonersToTeams = <T extends { teamId: number }>(matchPar
     { teamType: 'red', teamParticipants: [] }
   ];
 
-  for (let summoner of matchParticipants || []) {
+  for (const summoner of matchParticipants || []) {
     if (summoner.teamId === 100) {
       teams[0].teamParticipants.push(summoner);
     }
