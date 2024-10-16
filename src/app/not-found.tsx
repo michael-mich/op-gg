@@ -1,11 +1,10 @@
 'use client';
 
-import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-const NotFound: FC = () => {
+const NotFound = () => {
   const router = useRouter();
 
   return (
