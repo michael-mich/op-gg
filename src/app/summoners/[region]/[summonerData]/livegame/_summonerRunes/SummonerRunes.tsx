@@ -116,6 +116,7 @@ const SummonerRunes = ({ summoner }: Props) => {
                       width={24}
                       height={24}
                       alt={`${shard.type} shard`}
+                      unoptimized
                       key={shardIndex}
                     />
                   ))}
