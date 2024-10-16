@@ -92,6 +92,7 @@ const SummonerRunes = ({ summoner }: Props) => {
                           src={`https:ddragon.leagueoflegends.com/cdn/img/${rune?.icon}`}
                           width={28}
                           height={28}
+                          unoptimized
                           alt={rune.name}
                         />
                       </div>
@@ -116,7 +117,6 @@ const SummonerRunes = ({ summoner }: Props) => {
                       width={24}
                       height={24}
                       alt={`${shard.type} shard`}
-                      unoptimized
                       key={shardIndex}
                     />
                   ))}
