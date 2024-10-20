@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import { TRecetGames, TPromiseResult } from '@/app/_types/apiTypes/apiTypes';
+import type { TRecetGames } from '@/app/_types/serverActions/serverActions';
 
 type Props = {
-  recentGamesData: TPromiseResult<TRecetGames>;
+  recentGamesData: TRecetGames | undefined;
 }
 
 const positionData = [
@@ -29,7 +29,6 @@ const positionData = [
 ];
 
 const PreferredPosition = ({ recentGamesData }: Props) => {
-
   return (
     <div className='flex flex-col'>
       <div className='text-xs text-center text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>

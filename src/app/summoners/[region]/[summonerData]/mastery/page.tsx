@@ -4,7 +4,7 @@ import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerChampionsMasterySummary } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
+import { getSummonerChampionsMasterySummary } from '@/app/_lib/services/riotGamesApi';
 import SummonerChampionsMastery from '@/app/_components/summonerChampionsMastery/SummonerChampionsMastery';
 import { CircularProgress } from '@nextui-org/react';
 

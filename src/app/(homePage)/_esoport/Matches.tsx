@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getMatchResultLionsVsFnatic, getMatchResultFnaticVsBds } from '@/app/_lib/api/pandascoreApi';
+import { getMatchResultLionsVsFnatic, getMatchResultFnaticVsBds } from '@/app/_lib/services/pandascoreApi';
 import { LuLoader } from 'react-icons/lu';
 
 const Matches = () => {

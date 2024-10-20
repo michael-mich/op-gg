@@ -8,7 +8,7 @@ import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
 import { setSummonerId } from '@/app/_lib/features/summonerIdSlice';
 import { setSummonerPuuid } from '@/app/_lib/features/summonerPuuidSlice';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerProfileData, getSummonerAccount } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
+import { getSummonerProfileData, getSummonerAccount } from '@/app/_lib/services/riotGamesApi';
 import type { TLocalStorageSummoner, TSummonerPageParams } from '@/app/_types/types';
 import SummonerHeaderSkeleton from './Skeleton';
 import FavoriteSummonerButton from './FavoriteSummonerButton';

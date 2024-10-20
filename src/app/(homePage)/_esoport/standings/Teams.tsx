@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getLecSpringSeason } from '@/app/_lib/api/pandascoreApi';
+import { getLecSpringSeason } from '@/app/_lib/services/pandascoreApi';
 import { LuLoader } from 'react-icons/lu';
 
 const Teams = () => {

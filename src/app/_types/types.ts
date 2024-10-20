@@ -18,21 +18,7 @@ export type TSummonerPageParams = {
   summonerData: string;
 }
 
-export type TKda = {
-  assists: number;
-  deaths: number;
-  kills: number;
-}
-
-export type TAverageKdaStats = {
-  kda: number,
-  averageKills: string,
-  averageAssists: string,
-  averageDeaths: string
-}
-
-export type TChampionWinLostRatio = {
-  wonMatches: number;
-  lostMatches: number;
-  winRatio: number;
+export interface TTeamGeneric<T> {
+  teamType: 'blue' | 'red',
+  teamParticipants: Array<T>;
 }

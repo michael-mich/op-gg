@@ -1,7 +1,7 @@
 import { usePathname, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { getSpectatorData } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
+import { getSpectatorData } from '@/app/_lib/services/riotGamesApi';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import type { TSummonerPageParams } from '@/app/_types/types';

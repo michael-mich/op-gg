@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerChampionStats } from '@/app/_lib/api/riotGamesApi/summonerChampionStats';
-import { getFilteredChampions } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
+import { getSummonerChampionStats } from '@/app/_lib/serverActions/summonerChampionStats';
+import { getFilteredChampions } from '@/app/_lib/services/riotGamesApi';
 import { handleKdaTextColor } from '@/app/_lib/utils/utils';
-import type { TSummonerChampionStats, TChampionStats } from '@/app/_types/apiTypes/championStatsTypes';
+import type { TSummonerChampionStats, TChampionStats } from '@/app/_types/serverActions/championStats';
 import type { TDetailedChampionStats, TNumericStatKeyPath } from './types';
 import { TableColumns, SortOrder } from './enums';
 import { columns } from './data';
@@ -53,7 +53,7 @@ const Page = () => {
 
   const sortChampionsByNumericPath = (order: SortOrder, keyPath: TNumericStatKeyPath): Array<TDetailedChampionStats> | undefined => {
     const getNestedValue = (obj: TDetailedChampionStats): number => {
-      return keyPath.split('.').reduce((acc, key) => (acc as any)[key], obj) as unknown as number;     
+      return keyPath.split('.').reduce((acc, key) => (acc as any)[key], obj) as unknown as number;
     }
 
     if (order === SortOrder.Descending) {

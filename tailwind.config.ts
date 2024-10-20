@@ -17,6 +17,7 @@ const config: Config = {
         almostWhite: '#ebeef1',
         darkSlateGray: '#34414d',
         blue: '#5383E8',
+        darkBlue: '#28344e',
         lightBlue: '#ecf2ff',
         secondLightBlue: '#0090fb',
         gray: '#c0c8ce',
@@ -27,7 +28,9 @@ const config: Config = {
         mediumGreen: '#00bba3',
         lightGreen: '#03f9de',
         yellow: '#ffb900',
+        lightRed: '#fff1f3',
         red: '#e84057',
+        darkRed: '#59343b',
         orange: '#ff8200',
         darkMode: {
           darkBlue: '#1C1C1F',

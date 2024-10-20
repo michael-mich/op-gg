@@ -1,12 +1,31 @@
-import type { TSummonerMatchHistoryData } from '@/app/_types/apiTypes/apiTypes';
-import type { TChampionWinLostRatio, TAverageKdaStats } from '@/app/_types/types';
-import type { TTeam } from '@/app/_types/apiTypes/liveGameTypes';
+import type {
+  TSummonerMatchHistoryData,
+  TMatchHistory,
+  TSummonerSpellContent,
+  TSummonerSpellsAndPerks
+} from '@/app/_types/services';
+import type { TTeamGeneric } from '@/app/_types/types';
+import type { TAverageKdaStats, TChampionWinLostRatio } from '@/app/_types/serverActions/championStats';
 
 type TSummonerData = Array<Pick<TSummonerMatchHistoryData, 'assists' | 'deaths' | 'kills'>>;
 
-interface TTeamGeneric<T> extends Pick<TTeam, 'teamType'> {
-  teamParticipants: Array<T>;
-}
+export const filterSummonerSpells = <T extends TSummonerSpellsAndPerks>(
+  spellData: Array<TSummonerSpellContent> | undefined,
+  summonerData: T
+) => {
+  return spellData?.filter((spell) =>
+    spell.key === summonerData.spell1Id.toString() || spell.key === summonerData.spell2Id.toString()
+  );
+};
+
+export const findCurrentSummonerData = (
+  matchHistoryData: Array<TMatchHistory> | undefined,
+  summonerPuuid: string | undefined
+) => {
+  return matchHistoryData?.flatMap((match) =>
+    match!.info.participants.filter((participant) => (participant.puuid === summonerPuuid))
+  );
+};
 
 export const calculatePercentage = (part: number, total: number): number => {
   return Math.round((part / total) * 100);
@@ -55,7 +74,9 @@ export const calculateKdaStats = (summonerData: TSummonerData): TAverageKdaStats
   }
 }
 
-export const segregateSummonersToTeams = <T extends { teamId: number }>(matchParticipants: Array<T> | undefined) => {
+export const segregateSummonersToTeams = <T extends { teamId: number }>(
+  matchParticipants: Array<T> | undefined
+) => {
   const teams: Array<TTeamGeneric<T>> = [
     { teamType: 'blue', teamParticipants: [] },
     { teamType: 'red', teamParticipants: [] }

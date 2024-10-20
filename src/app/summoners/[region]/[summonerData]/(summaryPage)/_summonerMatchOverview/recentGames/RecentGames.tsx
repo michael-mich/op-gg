@@ -2,15 +2,21 @@
 
 import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import { useQuery } from '@tanstack/react-query';
-import { getRecentGamesData } from '@/app/_lib/api/riotGamesApi/recentGames';
+import { getRecentGamesSummary } from '@/app/_lib/serverActions/recentGamesSummary';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import type { TSetState } from '@/app/_types/tuples';
 import Summary from './Summary';
-import TopThreeChampions from './TopThreeChampions';
+import TopChampions from './TopChampions';
 import PreferredPosition from './PreferredPosition';
+import SearchChampion from './SearchChampion';
 import { CircularProgress } from '@nextui-org/react';
-import { IoIosSearch } from "react-icons/io";
 
-const RecentGames = () => {
+type Props = {
+  markedChampionId: number;
+  setMarkedChampionId: TSetState<number>;
+}
+
+const RecentGames = ({ markedChampionId, setMarkedChampionId }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const currentRegion = useCurrentRegion();
 
@@ -20,8 +26,8 @@ const RecentGames = () => {
     isSuccess: isRecentGamesSucces,
   } = useQuery({
     enabled: !!summonerPuuid,
-    queryKey: ['recentGames', summonerPuuid],
-    queryFn: () => getRecentGamesData(currentRegion, summonerPuuid),
+    queryKey: ['recentGames', summonerPuuid, markedChampionId],
+    queryFn: () => getRecentGamesSummary(currentRegion, summonerPuuid, markedChampionId),
     refetchOnWindowFocus: false,
     retryDelay: 5000
   });
@@ -36,18 +42,14 @@ const RecentGames = () => {
         <>
           <div className='flex items-center justify-between h-[35px] border-bottom-theme px-1'>
             <span className='text-sm pl-2'>Recent Games</span>
-            <div className='flex items-center gap-2 rounded bg-almostWhite dark:bg-darkMode-darkBlue py-0.5 px-2'>
-              <IoIosSearch className='size-6 text-secondGray' />
-              <input
-                className='w-full text-xs bg-transparent outline-none placeholder:opacity-50'
-                type='text'
-                placeholder='Search a champion'
-              />
-            </div>
+            <SearchChampion
+              recentGamesData={recentGamesData}
+              setMarkedChampionId={setMarkedChampionId}
+            />
           </div>
           <div className='grid grid-cols-3 py-2 px-3'>
             <Summary recentGamesData={recentGamesData} />
-            <TopThreeChampions recentGamesData={recentGamesData} />
+            <TopChampions recentGamesData={recentGamesData} />
             <PreferredPosition recentGamesData={recentGamesData} />
           </div>
         </>

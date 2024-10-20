@@ -1,4 +1,4 @@
-import type { TPromiseResult, TSummonerRank } from '../../_types/apiTypes/apiTypes';
+import type { TSummonerRank } from '../../_types/services';
 import type { TLocalStorageSummoner } from '../../_types/types';
 import { LocalStorageKeys, QueueType, TimeUnit } from '../../_enums/enums';
 
@@ -8,13 +8,16 @@ export const getLocalStorageData = (localeStorageKey: LocalStorageKeys): Array<T
   }
 }
 
-export const findQueueTypeData = (queueData: TPromiseResult<Array<TSummonerRank>>, queueType: QueueType): TSummonerRank | undefined => {
+export const findQueueTypeData = (
+  queueData: Array<TSummonerRank> | undefined,
+  queueType: QueueType
+): TSummonerRank | undefined => {
   return queueData?.find((data) => data.queueType === queueType);
 }
 
-export const calculateTimeUnit = (gameDuration: number | undefined, timeUnit: TimeUnit): number => {
-  if (gameDuration && gameDuration > 0) {
-    return timeUnit === TimeUnit.Minutes ? Math.floor(gameDuration / 60) : Math.floor(gameDuration % 60);
+export const calculateTimeUnit = (seconds: number | undefined, timeUnit: TimeUnit): number => {
+  if (seconds && seconds > 0) {
+    return timeUnit === TimeUnit.Minutes ? Math.floor(seconds / 60) : Math.floor(seconds % 60);
   }
   else {
     return 0;

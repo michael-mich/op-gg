@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getRunesData } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
-import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/liveGameTypes';
+import { getRunesData } from '@/app/_lib/services/riotGamesApi';
+import type { TUpdatedLiveGameParticipants } from '@/app/_types/serverActions/liveGame';
 import { shardData } from './summonerRunesData';
 
 type Props = {
@@ -92,7 +92,6 @@ const SummonerRunes = ({ summoner }: Props) => {
                           src={`https:ddragon.leagueoflegends.com/cdn/img/${rune?.icon}`}
                           width={28}
                           height={28}
-                          unoptimized
                           alt={rune.name}
                         />
                       </div>

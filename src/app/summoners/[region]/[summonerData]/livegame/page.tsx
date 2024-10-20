@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerLiveGameData } from '@/app/_lib/api/riotGamesApi/summonerLiveGameData';
+import { getSummonerLiveGameData } from '@/app/_lib/serverActions/summonerLiveGameData';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import GameTimer from './GameTimer';

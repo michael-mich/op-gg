@@ -1,5 +1,23 @@
-import type { TSummonerAccount } from './apiTypes';
-import type { TKda, TChampionWinLostRatio, TAverageKdaStats } from '../types';
+import type { TSummonerAccount } from '../services';
+
+export type TKda = {
+  assists: number;
+  deaths: number;
+  kills: number;
+}
+
+export type TAverageKdaStats = {
+  kda: number,
+  averageKills: string,
+  averageAssists: string,
+  averageDeaths: string
+}
+
+export type TChampionWinLostRatio = {
+  wonMatches: number;
+  lostMatches: number;
+  winRatio: number;
+}
 
 export type TChampionStats = {
   championId: number;

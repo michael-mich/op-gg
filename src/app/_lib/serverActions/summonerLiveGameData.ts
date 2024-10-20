@@ -1,29 +1,27 @@
 'use server';
 
-import { riotGamesApiKey } from './apiKey';
+import { riotGamesApiKey } from '../apiKey/riotGamesApiKey';
 import {
   getFilteredChampions,
   getSummonerRank,
   getSummonerProfileData,
   getSpectatorData,
-  getRunesData
-} from './riotGamesApi';
-import { fetchApi } from '../../utils/fetchApi';
-import { findQueueTypeData } from '../../utils/utils';
-import { segregateSummonersToTeams } from '../../utils/matchStats';
+  getRunesData,
+  getSummonerSpells
+} from '../services/riotGamesApi';
+import { fetchApi } from '../utils/fetchApi';
+import { findQueueTypeData } from '../utils/utils';
+import { segregateSummonersToTeams, filterSummonerSpells } from '../utils/matchStats';
 import type {
-  TLiveGameParticipants,
-  TSummonerSpell,
-  TSummonerSpellContent,
   TSummonerLiveGameData,
   TUpdatedLiveGameParticipants,
   TUpdatedRune,
   TBannedChampion
-} from '@/app/_types/apiTypes/liveGameTypes';
+} from '@/app/_types/serverActions/liveGame';
 import type {
-  TPromiseResult,
   TSummonerAccount,
-} from '@/app/_types/apiTypes/apiTypes';
+  TLiveGameParticipants
+} from '@/app/_types/services';
 import type { TRegionData } from '@/app/_types/types';
 import { QueueType, RuneType } from '@/app/_enums/enums';
 
@@ -40,11 +38,13 @@ const getChampionNameAndImage = async <T extends { championId: number }>(data: T
 export const getSummonerLiveGameData = async (
   regionData: TRegionData | undefined,
   summonerPuuid: string | undefined
-): Promise<TPromiseResult<TSummonerLiveGameData>> => {
+): Promise<TSummonerLiveGameData | undefined> => {
   const liveGameData = await getSpectatorData(regionData, summonerPuuid);
   const gameParticipants = liveGameData?.participants;
 
-  const processGameParticipants = async <T>(callback: (parameter: TLiveGameParticipants) => T | undefined): Promise<TPromiseResult<Array<Awaited<T | undefined>>>> => {
+  const processGameParticipants = async <T>(
+    callback: (parameter: TLiveGameParticipants) => T | undefined
+  ): Promise<Array<Awaited<T | undefined>> | undefined> => {
     return liveGameData && await Promise.all(gameParticipants!.map((participantData) => {
       return callback(participantData);
     }));
@@ -81,18 +81,11 @@ export const getSummonerLiveGameData = async (
     return summonerData?.summonerLevel;
   });
 
-  const allSummonerSpells = async (): Promise<TPromiseResult<Array<TSummonerSpellContent>>> => {
-    const spellData = await fetchApi<TSummonerSpell>('https://ddragon.leagueoflegends.com/cdn/14.17.1/data/en_US/summoner.json');
+  const awaitedSummonerSpells = await getSummonerSpells();
 
-    if (spellData) {
-      return Object.values(spellData.data);
-    }
-  }
-  const awaitedSummonerSpells = await allSummonerSpells();
-
-  const summonerSpells = gameParticipants?.map((participantData) => {
-    return awaitedSummonerSpells?.filter((spell) => spell.key === participantData.spell1Id.toString() || spell.key === participantData.spell2Id.toString());
-  });
+  const summonerSpells = gameParticipants?.map((participantData) =>
+    filterSummonerSpells(awaitedSummonerSpells, participantData)
+  );
 
   const allRunes = await getRunesData();
   const summonerRunes = await processGameParticipants(async (participantData) => {

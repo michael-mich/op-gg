@@ -4,11 +4,11 @@ import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerRank } from '@/app/_lib/api/riotGamesApi/riotGamesApi';
+import { getSummonerRank } from '@/app/_lib/services/riotGamesApi';
 import { findQueueTypeData } from '@/app/_lib/utils/utils';
 import { calculateWinRate, formatTierName, getRankedEmblem } from '@/app/_lib/utils/rank';
 import SummonerRankSkeleton from './SummonerRankSkeleton';
-import type { TSummonerRank } from '@/app/_types/apiTypes/apiTypes';
+import type { TSummonerRank } from '@/app/_types/services';
 import { QueueType } from '@/app/_enums/enums';
 
 type Props = {

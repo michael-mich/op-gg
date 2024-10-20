@@ -1,7 +1,7 @@
-import type { TPromiseResult, TRecetGames } from '@/app/_types/apiTypes/apiTypes';
+import type { TRecetGames } from '@/app/_types/serverActions/serverActions';
 
 type Props = {
-  recentGamesData: TPromiseResult<TRecetGames>;
+  recentGamesData: TRecetGames | undefined;
 }
 
 const Summary = ({ recentGamesData }: Props) => {

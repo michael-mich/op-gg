@@ -1,13 +1,13 @@
 'use server';
 
-import { getSummonerMatchHistoryData } from './riotGamesApi';
-import { calculateWinLossStats, calculateKdaStats } from '../../utils/matchStats';
-import type { TPromiseResult } from '@/app/_types/apiTypes/apiTypes';
+import { getSummonerMatchHistoryData } from '../services/riotGamesApi';
+import { calculateWinLossStats, calculateKdaStats } from '../utils/matchStats';
 import {
   TMatchParticipantStats,
   TSummonerChampionStats
-} from '@/app/_types/apiTypes/championStatsTypes';
-import type { TChampionWinLostRatio, TRegionData } from '@/app/_types/types';
+} from '@/app/_types/serverActions/championStats';
+import type { TChampionWinLostRatio } from '@/app/_types/serverActions/championStats';
+import type { TRegionData } from '@/app/_types/types';
 
 type OmitMatchParticipantStats = 'championName' | 'puuid' | 'teamId';
 
@@ -32,7 +32,7 @@ const calculateTotalChampionStat = (groupedChampionStats: TGroupedChampionStats,
 export const getSummonerChampionStats = async (
   regionData: TRegionData | undefined,
   summonerPuuid: string | undefined
-): Promise<TPromiseResult<Array<TSummonerChampionStats>>> => {
+): Promise<Array<TSummonerChampionStats> | undefined> => {
   const matchStats = await getSummonerMatchHistoryData(regionData, summonerPuuid);
 
   const summonerMatchStats = matchStats?.flatMap((stats) => stats?.info.participants.filter((participant) => participant.puuid === summonerPuuid));

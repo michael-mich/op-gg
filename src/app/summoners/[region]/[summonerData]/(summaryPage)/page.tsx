@@ -1,7 +1,7 @@
 import SummonerRank from './_summonerRank/SummonerRank';
 import SummonerChampionsMastery from '@/app/_components/summonerChampionsMastery/SummonerChampionsMastery';
 import { QueueType } from '@/app/_enums/enums';
-import RecentGames from './_recentGames/RecentGames';
+import SummonerMatchOverview from './_summonerMatchOverview/SummonerMatchOverview';
 
 const Page = () => {
   return (
@@ -18,7 +18,7 @@ const Page = () => {
           />
           <SummonerChampionsMastery />
         </div>
-        <RecentGames />
+        <SummonerMatchOverview />
       </div>
     </>
   );

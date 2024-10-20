@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/liveGameTypes';
+import type { TUpdatedLiveGameParticipants } from '@/app/_types/serverActions/liveGame';
 import { Avatar } from '@nextui-org/react';
 
 type Props = {

@@ -1,11 +1,6 @@
-import type { TPromiseResult } from '@/app/_types/apiTypes/apiTypes';
-
-export const fetchApi = async <T>(
-  url: string,
-  cacheValue?: { cache: 'force-cache' }
-): Promise<TPromiseResult<T>> => {
+export const fetchApi = async <T>(endpoint: string): Promise<T | undefined> => {
   try {
-    const response = await fetch(url, cacheValue);
+    const response = await fetch(endpoint);
     if (!response.ok) {
       throw new Error(response.statusText);
     }
