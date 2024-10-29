@@ -30,7 +30,9 @@ const RecentGames = ({ markedChampionId, setMarkedChampionId }: Props) => {
     enabled: !!summonerPuuid,
     queryKey: ['recentGames', summonerPuuid, markedChampionId],
     queryFn: async () => {
-      return await fetchApi<TRecetGames>(routeHandlerEndpoints.recentGamesSummary(summonerPuuid, continentLink, markedChampionId))
+      return await fetchApi<TRecetGames>(
+        routeHandlerEndpoints.recentGamesSummary(summonerPuuid, continentLink, markedChampionId)
+      );
     },
     refetchOnWindowFocus: false,
     retryDelay: 5000

@@ -23,7 +23,7 @@ const positionData = [
     image: '/positions/bottom.png'
   },
   {
-    type: 'support',
+    type: 'utility',
     image: '/positions/support.png'
   }
 ];
