@@ -4,12 +4,12 @@ import type {
   TLiveGame,
   TRune,
   TRuneSlots
-} from '../services';
+} from '../apiTypes';
 import type {
   TSummonerAccount,
   TChampion,
   TSummonerRank,
-} from '../services';
+} from '../apiTypes';
 import { RuneType } from '@/app/_enums/enums';
 
 export interface TUpdatedRune extends Omit<TRune, 'slots'> {

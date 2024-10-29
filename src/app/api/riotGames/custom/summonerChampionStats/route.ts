@@ -1,13 +1,13 @@
-'use server';
-
-import { getSummonerMatchHistoryData } from '../services/riotGamesApi';
-import { calculateWinLossStats, calculateKdaStats } from '../utils/matchStats';
-import {
+import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { calculateWinLossStats, calculateAverageKdaStats } from '@/app/_lib/utils/matchStats';
+import type { NextRequest } from 'next/server';
+import type { TMatchHistory } from '@/app/_types/apiTypes';
+import type {
   TMatchParticipantStats,
+  TChampionWinLostRatio,
   TSummonerChampionStats
-} from '@/app/_types/serverActions/championStats';
-import type { TChampionWinLostRatio } from '@/app/_types/serverActions/championStats';
-import type { TRegionData } from '@/app/_types/types';
+} from '@/app/_types/customApiTypes/championStats';
 
 type OmitMatchParticipantStats = 'championName' | 'puuid' | 'teamId';
 
@@ -17,23 +17,30 @@ type TGroupedChampionStatAccumulator = {
 
 type TGroupedChampionStats = Array<[string, Array<Omit<TMatchParticipantStats, OmitMatchParticipantStats>>]>
 
-const getMaxNumber = (groupedChampionStats: TGroupedChampionStats, key: 'kills' | 'deaths'): Array<number> => {
+const getMaxNumber = (
+  groupedChampionStats: TGroupedChampionStats,
+  key: 'kills' | 'deaths'
+): Array<number> => {
   return groupedChampionStats.map(([_, championStats]) => (
     championStats.reduce((accumulator, object) => Math.max(accumulator, object[key]), 0)
-  ))
+  ));
 }
 
-const calculateTotalChampionStat = (groupedChampionStats: TGroupedChampionStats, key: keyof Omit<TMatchParticipantStats, OmitMatchParticipantStats | 'win'>): Array<number> => {
+const calculateTotalChampionStat = (
+  groupedChampionStats: TGroupedChampionStats,
+  key: keyof Omit<TMatchParticipantStats, OmitMatchParticipantStats | 'win'>
+): Array<number> => {
   return groupedChampionStats.map(([_, championStats]) => (
     championStats.reduce((acumulator, object) => acumulator + object[key], 0)
-  ))
+  ));
 }
 
-export const getSummonerChampionStats = async (
-  regionData: TRegionData | undefined,
-  summonerPuuid: string | undefined
-): Promise<Array<TSummonerChampionStats> | undefined> => {
-  const matchStats = await getSummonerMatchHistoryData(regionData, summonerPuuid);
+export const GET = async (req: NextRequest) => {
+  const { summonerPuuid, regionContinentLink } = getRouteHandlerParams(req);
+
+  const matchStats = await fetchApi<Array<TMatchHistory>>(
+    routeHandlerEndpoints.summonerMatchHistory(summonerPuuid, regionContinentLink)
+  );
 
   const summonerMatchStats = matchStats?.flatMap((stats) => stats?.info.participants.filter((participant) => participant.puuid === summonerPuuid));
   const gameDurations = matchStats?.map((stats) => stats?.info.gameDuration);
@@ -111,7 +118,7 @@ export const getSummonerChampionStats = async (
   });
 
   const championKdaStats = groupedChampionStats.map(([_, championStats]) => {
-    return calculateKdaStats(championStats);
+    return calculateAverageKdaStats(championStats);
   });
 
   const championStats: Array<TSummonerChampionStats> = groupedChampionStats.map((_, index) => {
@@ -120,8 +127,8 @@ export const getSummonerChampionStats = async (
       played: championPlayedStats[index],
       minions: minionStatsPerChampion[index],
       totalGold: totalGoldPerChampion[index],
-      maxKills: maxKillsPerChampion[index],
-      maxDeaths: maxDeathsPerChampion[index],
+      maxKills: maxKillsPerChampion?.[index],
+      maxDeaths: maxDeathsPerChampion?.[index],
       averageDamageDealt: averageDamageDealtToChampions[index],
       doubleKills: totalDoubleKillsPerChampion[index],
       tripleKills: totalTripleKillsPerChampion[index],
@@ -131,5 +138,5 @@ export const getSummonerChampionStats = async (
     }
   });
 
-  return championStats;
+  return Response.json(championStats);
 }

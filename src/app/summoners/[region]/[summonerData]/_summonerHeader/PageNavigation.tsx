@@ -1,9 +1,10 @@
 import { usePathname, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { getSpectatorData } from '@/app/_lib/services/riotGamesApi';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
 import type { TSummonerPageParams } from '@/app/_types/types';
 
 const pageNavigationData = ['Sumary', 'Champions', 'Mastery', 'Live Game'];
@@ -12,7 +13,7 @@ const PageNavigation = () => {
   const params = useParams<TSummonerPageParams>();
   const pathname = usePathname();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const currentRegionData = useCurrentRegion();
+  const { regionLink } = useCurrentRegion() || {};
 
   const summonerPageUrl = `/summoners/${params.region}/${params.summonerData}`;
   const liveGamePage = `${summonerPageUrl}/livegame`;
@@ -20,7 +21,11 @@ const PageNavigation = () => {
   const { isSuccess: isLiveGameSuccess } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['liveGameCheck', summonerPuuid],
-    queryFn: () => getSpectatorData(currentRegionData, summonerPuuid),
+    queryFn: async () => {
+      return await fetchApi(
+        routeHandlerEndpoints.spectator(summonerPuuid, regionLink)
+      );
+    },
     refetchOnWindowFocus: false
   });
 

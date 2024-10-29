@@ -2,9 +2,11 @@
 
 import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import { useQuery } from '@tanstack/react-query';
-import { getRecentGamesSummary } from '@/app/_lib/serverActions/recentGamesSummary';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
 import type { TSetState } from '@/app/_types/tuples';
+import type { TRecetGames } from '@/app/_types/customApiTypes/customApiTypes';
 import Summary from './Summary';
 import TopChampions from './TopChampions';
 import PreferredPosition from './PreferredPosition';
@@ -12,13 +14,13 @@ import SearchChampion from './SearchChampion';
 import { CircularProgress } from '@nextui-org/react';
 
 type Props = {
-  markedChampionId: number;
-  setMarkedChampionId: TSetState<number>;
+  markedChampionId: string;
+  setMarkedChampionId: TSetState<string>;
 }
 
 const RecentGames = ({ markedChampionId, setMarkedChampionId }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const currentRegion = useCurrentRegion();
+  const { continentLink } = useCurrentRegion() || {};
 
   const {
     data: recentGamesData,
@@ -27,7 +29,9 @@ const RecentGames = ({ markedChampionId, setMarkedChampionId }: Props) => {
   } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['recentGames', summonerPuuid, markedChampionId],
-    queryFn: () => getRecentGamesSummary(currentRegion, summonerPuuid, markedChampionId),
+    queryFn: async () => {
+      return await fetchApi<TRecetGames>(routeHandlerEndpoints.recentGamesSummary(summonerPuuid, continentLink, markedChampionId))
+    },
     refetchOnWindowFocus: false,
     retryDelay: 5000
   });

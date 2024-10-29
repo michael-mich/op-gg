@@ -8,11 +8,13 @@ import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
 import { setSummonerId } from '@/app/_lib/features/summonerIdSlice';
 import { setSummonerPuuid } from '@/app/_lib/features/summonerPuuidSlice';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerProfileData, getSummonerAccount } from '@/app/_lib/services/riotGamesApi';
 import type { TLocalStorageSummoner, TSummonerPageParams } from '@/app/_types/types';
 import SummonerHeaderSkeleton from './Skeleton';
 import FavoriteSummonerButton from './FavoriteSummonerButton';
 import PageNavigation from './PageNavigation';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import { TSummonerProfile, type TSummonerAccount } from '@/app/_types/apiTypes';
 
 const SummonerHeader = () => {
   const params = useParams<TSummonerPageParams>();
@@ -30,7 +32,11 @@ const SummonerHeader = () => {
   } = useQuery({
     enabled: !!summonerName,
     queryKey: ['summonerAccount', 'summonerPage'],
-    queryFn: () => getSummonerAccount(summonerName, currentRegionData),
+    queryFn: async () => {
+      return await fetchApi<TSummonerAccount>(
+        routeHandlerEndpoints.summonerAccount(summonerName, currentRegionData?.continentLink, currentRegionData?.shorthand)
+      );
+    },
     refetchOnWindowFocus: false
   });
 
@@ -42,7 +48,11 @@ const SummonerHeader = () => {
   } = useQuery({
     enabled: isSuccessAccount,
     queryKey: ['summonerProfile', 'summonerPage', isSuccessAccount, summonerAccountData?.puuid],
-    queryFn: () => getSummonerProfileData(summonerAccountData?.puuid, currentRegionData),
+    queryFn: async () => {
+      return await fetchApi<TSummonerProfile>(
+        routeHandlerEndpoints.summonerProfile(summonerAccountData?.puuid, currentRegionData?.regionLink)
+      );
+    },
     refetchOnWindowFocus: false
   });
 

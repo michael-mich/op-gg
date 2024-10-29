@@ -3,9 +3,11 @@
 import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerLiveGameData } from '@/app/_lib/serverActions/summonerLiveGameData';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import type { TSummonerLiveGameData } from '@/app/_types/customApiTypes/liveGame';
 import GameTimer from './GameTimer';
 import TableHead from './TableHead';
 import SummonerCurrentGameDetails from './SummonerCurrentGameDetails';
@@ -28,7 +30,7 @@ const Page = () => {
     teamType: ''
   });
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const currentRegion = useCurrentRegion();
+  const { continentLink, regionLink } = useCurrentRegion() || {};
 
   const {
     data: liveGameData,
@@ -37,7 +39,11 @@ const Page = () => {
   } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['liveGame', summonerPuuid],
-    queryFn: () => getSummonerLiveGameData(currentRegion, summonerPuuid),
+    queryFn: async () => {
+      return await fetchApi<TSummonerLiveGameData>(
+        routeHandlerEndpoints.summonerLiveGame(summonerPuuid, regionLink, continentLink)
+      );
+    },
     refetchOnWindowFocus: false
   });
 

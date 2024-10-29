@@ -4,11 +4,12 @@ import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerRank } from '@/app/_lib/services/riotGamesApi';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
 import { findQueueTypeData } from '@/app/_lib/utils/utils';
 import { calculateWinRate, formatTierName, getRankedEmblem } from '@/app/_lib/utils/rank';
 import SummonerRankSkeleton from './SummonerRankSkeleton';
-import type { TSummonerRank } from '@/app/_types/services';
+import type { TSummonerRank } from '@/app/_types/apiTypes';
 import { QueueType } from '@/app/_enums/enums';
 
 type Props = {
@@ -17,13 +18,17 @@ type Props = {
 }
 
 const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
-  const currentRegionData = useCurrentRegion();
   const summonerId = useAppSelector((state) => state.summonerId.summonerId);
+  const { regionLink } = useCurrentRegion() || {};
 
   const { data: fetchedSummonerRanksData, isPending } = useQuery({
     enabled: !!summonerId,
     queryKey: ['summonerRank', summonerId],
-    queryFn: () => getSummonerRank(currentRegionData, summonerId),
+    queryFn: async () => {
+      return await fetchApi<Array<TSummonerRank>>(
+        routeHandlerEndpoints.summonerRank(summonerId, regionLink)
+      );
+    },
     refetchOnWindowFocus: false
   });
 

@@ -1,5 +1,5 @@
 import type { TTeamGeneric } from '../types';
-import type { TChampion, TSummonerMatchHistoryData, TMatchHistory } from '../services';
+import type { TChampion, TSummonerMatchHistoryData, TMatchHistory } from '../apiTypes';
 import type { TChampionWinLostRatio, TAverageKdaStats } from './championStats';
 
 export type TRecetGames = {

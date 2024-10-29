@@ -3,27 +3,33 @@
 import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import getDetailedMatchHistory from '@/app/_lib/serverActions/detailedMatchHistory';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
 import { calculateTimeUnit } from '@/app/_lib/utils/utils';
+import type { TDetailedMatchHistory } from '@/app/_types/customApiTypes/customApiTypes';
 import { TimeUnit } from '@/app/_enums/enums';
 import TimeSinceMatch from './TimeSinceMatch';
 import SummonerChampion from './SummonerChampion';
 
 type Props = {
-  markedChampionId: number;
+  markedChampionId: string;
 }
 
 const MatchHistory = ({ markedChampionId }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const currentRegion = useCurrentRegion();
+  const { continentLink } = useCurrentRegion() || {};
 
   const { data: matchHistoryData } = useQuery({
     queryKey: ['curretSummonerMatchHistory', summonerPuuid, markedChampionId],
-    queryFn: () => getDetailedMatchHistory(currentRegion, summonerPuuid, markedChampionId),
+    queryFn: async () => {
+      return await fetchApi<Array<TDetailedMatchHistory>>(
+        routeHandlerEndpoints.detailedMatchHistory(summonerPuuid, continentLink, markedChampionId)
+      );
+    },
     refetchOnWindowFocus: false,
     retryDelay: 7000
   });
-  console.log(matchHistoryData);
+
   return (
     <div className='mt-2'>
       {matchHistoryData?.map((match, matchIndex) => {

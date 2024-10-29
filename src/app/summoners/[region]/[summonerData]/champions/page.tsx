@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerChampionStats } from '@/app/_lib/serverActions/summonerChampionStats';
-import { getFilteredChampions } from '@/app/_lib/services/riotGamesApi';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
 import { handleKdaTextColor } from '@/app/_lib/utils/utils';
-import type { TSummonerChampionStats, TChampionStats } from '@/app/_types/serverActions/championStats';
+import type { TChampion } from '@/app/_types/apiTypes';
+import type { TSummonerChampionStats, TChampionStats } from '@/app/_types/customApiTypes/championStats';
 import type { TDetailedChampionStats, TNumericStatKeyPath } from './types';
 import { TableColumns, SortOrder } from './enums';
 import { columns } from './data';
@@ -17,8 +18,7 @@ const Page = () => {
   const [detailedChampionStats, setDetailedChampionStats] = useState<Array<TDetailedChampionStats> | undefined>([]);
   const [sortOptionIndex, setSortOptionIndex] = useState<TableColumns>(TableColumns.TotalGames);
   const [sortOrderDescending, setSortOrderDescending] = useState(true);
-
-  const currentRegionData = useCurrentRegion();
+  const { continentLink } = useCurrentRegion() || {};
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
 
   const {
@@ -29,9 +29,15 @@ const Page = () => {
   } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['matchStats', 'summonerPage', summonerPuuid],
-    queryFn: () => getSummonerChampionStats(currentRegionData, summonerPuuid),
+    queryFn: async () => {
+      return await fetchApi<Array<TSummonerChampionStats>>(
+        routeHandlerEndpoints.summonerChampionStats(summonerPuuid, continentLink)
+      );
+    },
     refetchOnWindowFocus: false
   });
+
+  const championIds = championStats?.map((champion) => champion.championId);
 
   const {
     data: championData,
@@ -41,7 +47,11 @@ const Page = () => {
   } = useQuery({
     enabled: isChampionStatsSuccess,
     queryKey: ['championData', 'summonerChampionsPage', isChampionStatsSuccess, summonerPuuid],
-    queryFn: () => getFilteredChampions(championStats),
+    queryFn: async () => {
+      return await fetchApi<Array<TChampion>>(
+        routeHandlerEndpoints.filteredChampions(championIds)
+      );
+    },
     refetchOnWindowFocus: false
   });
 

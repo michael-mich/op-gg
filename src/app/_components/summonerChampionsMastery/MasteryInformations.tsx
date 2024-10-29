@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import type { TChampionMastery, TChampion } from '@/app/_types/services';
+import type { TChampionMastery, TChampion } from '@/app/_types/apiTypes';
 import { Progress } from '@nextui-org/react';
 
 type Props = {

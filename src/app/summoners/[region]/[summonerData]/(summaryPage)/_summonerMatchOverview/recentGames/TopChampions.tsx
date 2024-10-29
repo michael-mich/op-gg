@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { handleKdaTextColor } from '@/app/_lib/utils/utils';
-import type { TRecetGames } from '@/app/_types/serverActions/serverActions';
+import type { TRecetGames } from '@/app/_types/customApiTypes/customApiTypes';
 
 type Props = {
   recentGamesData: TRecetGames | undefined;

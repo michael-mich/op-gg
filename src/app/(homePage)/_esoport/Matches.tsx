@@ -2,7 +2,9 @@
 
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getMatchResultLionsVsFnatic, getMatchResultFnaticVsBds } from '@/app/_lib/services/pandascoreApi';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import type { TEsportMatch } from '@/app/_types/apiTypes';
 import { LuLoader } from 'react-icons/lu';
 
 const Matches = () => {
@@ -12,7 +14,11 @@ const Matches = () => {
     isPending: isFirstMatchPending,
   } = useQuery({
     queryKey: ['lec-match', 1],
-    queryFn: () => getMatchResultLionsVsFnatic(),
+    queryFn: async () => {
+      return await fetchApi<TEsportMatch>(
+        routeHandlerEndpoints.matchResultLionsVsFnatic()
+      );
+    },
     refetchOnWindowFocus: false,
     staleTime: Infinity
   });
@@ -23,7 +29,9 @@ const Matches = () => {
     isPending: isSecondMatchPending,
   } = useQuery({
     queryKey: ['lec-match', 2],
-    queryFn: () => getMatchResultFnaticVsBds(),
+    queryFn: async () => {
+      return await fetchApi<TEsportMatch>(routeHandlerEndpoints.matchResultFnaticVsBds());
+    },
     refetchOnWindowFocus: false,
     staleTime: Infinity
   });

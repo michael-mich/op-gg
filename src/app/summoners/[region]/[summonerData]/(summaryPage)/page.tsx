@@ -16,7 +16,7 @@ const Page = () => {
             queueType={QueueType.RankedFlex}
             smallDataStyle
           />
-          <SummonerChampionsMastery />
+          <SummonerChampionsMastery getTopChampions />
         </div>
         <SummonerMatchOverview />
       </div>

@@ -2,9 +2,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerProfileData } from '@/app/_lib/services/riotGamesApi';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
 import { getLocalStorageData } from '@/app/_lib/utils/utils';
-import type { TSummonerAccount } from '@/app/_types/services';
+import type { TSummonerAccount, TSummonerProfile } from '@/app/_types/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';
 import { LocalStorageKeys } from '@/app/_enums/enums';
@@ -29,11 +30,16 @@ const SummonerLink = ({
   setDisplaySummonerSections
 }: Props) => {
   const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);
+  const { regionLink } = markedRegionData;
 
   const { data: summonerLevelAndIconIdData } = useQuery({
     enabled: !!summonerAccountData,
     queryKey: ['summonerLevelAndIconId', isSummonerAccountSuccess, summonerAccountData.puuid],
-    queryFn: () => getSummonerProfileData(summonerAccountData.puuid, markedRegionData),
+    queryFn: async () => {
+      return await fetchApi<TSummonerProfile>(
+        routeHandlerEndpoints.summonerProfile(summonerAccountData.puuid, regionLink)
+      );
+    },
     refetchOnWindowFocus: false
   });
 

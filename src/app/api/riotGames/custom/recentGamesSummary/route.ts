@@ -1,16 +1,14 @@
-'use server';
-
-import { getFilteredChampions, getSummonerMatchHistoryData } from '../services/riotGamesApi';
+import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
 import {
-  calculateWinLossStats,
-  calculateKdaStats,
-  segregateSummonersToTeams,
+  calculateAverageKdaStats,
   calculatePercentage,
-  findCurrentSummonerData
-} from '../utils/matchStats';
-import type { TRecetGames } from '@/app/_types/serverActions/serverActions';
-import type { TKda, TChampionWinLostRatio } from '@/app/_types/serverActions/championStats';
-import type { TRegionData } from '@/app/_types/types';
+  segregateSummonersToTeams,
+  calculateWinLossStats
+} from '@/app/_lib/utils/matchStats';
+import type { NextRequest } from 'next/server';
+import { TChampion, type TMatchHistory } from '@/app/_types/apiTypes';
+import type { TChampionWinLostRatio, TKda } from '@/app/_types/customApiTypes/championStats';
 
 interface TChampionPerformance extends TKda, Omit<TChampionWinLostRatio, 'winRatio'> {
   playAmount: number;
@@ -24,20 +22,32 @@ type TPositionPlayAmount = {
   [key: string]: Pick<TChampionPerformance, 'playAmount'>;
 }
 
-export const getRecentGamesSummary = async (
-  regionData: TRegionData | undefined,
-  summonerPuuid: string | undefined,
-  markedChampionId: number
-): Promise<TRecetGames | undefined> => {
-  const matchHistoryData = await getSummonerMatchHistoryData(regionData, summonerPuuid);
+export const GET = async (req: NextRequest) => {
+  const { summonerPuuid, regionContinentLink, markedChampionId } = getRouteHandlerParams(req);
 
-  const currentSummonerMatchData = findCurrentSummonerData(matchHistoryData, summonerPuuid);
+  const matchHistoryData = await fetchApi<Array<TMatchHistory>>(
+    routeHandlerEndpoints.summonerMatchHistory(summonerPuuid, regionContinentLink)
+  );
+
+  const currentSummonerMatchData = matchHistoryData?.flatMap((match) =>
+    match?.info.participants.filter((participant) => (participant.puuid === summonerPuuid))
+  );
+  const currentSummonerChampionIds = currentSummonerMatchData?.map((match) => match.championId);
+
   const matchesForMarkedChampion = currentSummonerMatchData?.filter((match) => {
-    return markedChampionId === 0 ? match : match.championId === markedChampionId;
+    const markedChampionIdNum = parseInt(markedChampionId || '');
+    return markedChampionIdNum === 0 ? match : match.championId === markedChampionIdNum;
   });
+  const markedChampionIds = matchesForMarkedChampion?.map((match) => match.championId);
 
-  const championsForMarkedMatches = await getFilteredChampions(matchesForMarkedChampion);
-  const summonerAllPlayedChampions = await getFilteredChampions(currentSummonerMatchData);
+  const summonerKda = matchesForMarkedChampion && calculateAverageKdaStats(matchesForMarkedChampion);
+
+  const championsForMarkedMatches = await fetchApi<Array<TChampion>>(
+    routeHandlerEndpoints.filteredChampions(markedChampionIds)
+  );
+  const summonerAllPlayedChampions = await fetchApi<Array<TChampion>>(
+    routeHandlerEndpoints.filteredChampions(currentSummonerChampionIds)
+  );
 
   const sortedChampionData = summonerAllPlayedChampions?.sort((a, b) => {
     const indexA = currentSummonerMatchData?.findIndex((match) => match.championId === parseInt(a.key));
@@ -109,7 +119,7 @@ export const getRecentGamesSummary = async (
       ...championData,
       championDetails: { image: matchedChampion?.image, name: matchedChampion?.name },
       winRatio: calculatePercentage(championData.wonMatches, championData.playAmount),
-      kda: calculateKdaStats([championData]).kda
+      kda: calculateAverageKdaStats([championData]).kda
     };
   });
 
@@ -144,9 +154,7 @@ export const getRecentGamesSummary = async (
     }
   }
 
-  const summonerKda = matchesForMarkedChampion && calculateKdaStats(matchesForMarkedChampion);
-
-  return {
+  return Response.json({
     gameAmounts: {
       ...calculateWinLossStats(matchesForMarkedChampion),
       totalGames
@@ -156,5 +164,5 @@ export const getRecentGamesSummary = async (
     topPlayedChampions: udpatedTopPlayedChampionsData,
     preferredPosition: summonerPositionPlayPercentage,
     playedChampions: sortedChampionData,
-  };
+  });
 }

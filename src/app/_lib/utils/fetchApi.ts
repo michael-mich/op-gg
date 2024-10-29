@@ -8,6 +8,6 @@ export const fetchApi = async <T>(endpoint: string): Promise<T | undefined> => {
     return data;
   }
   catch (error) {
-    console.error(error);
+    return;
   }
 }

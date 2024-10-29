@@ -5,7 +5,7 @@ import RecentGames from './recentGames/RecentGames';
 import MatchHistory from './matchHistory/MatchHistory';
 
 const SummonerMatchOverview = () => {
-  const [markedChampionId, setMarkedChampionId] = useState(0);
+  const [markedChampionId, setMarkedChampionId] = useState('0');
 
   return (
     <div className='w-full'>

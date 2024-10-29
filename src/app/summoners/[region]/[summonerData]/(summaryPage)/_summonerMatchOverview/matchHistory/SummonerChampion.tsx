@@ -1,4 +1,4 @@
-import type { TDetailedMatchHistory } from '@/app/_types/serverActions/serverActions';
+import type { TDetailedMatchHistory } from '@/app/_types/customApiTypes/customApiTypes';
 import { Avatar } from '@nextui-org/react';
 
 type Props = {

@@ -1,4 +1,4 @@
-import type { TMatchParticipantStats } from './serverActions/championStats';
+import type { TMatchParticipantStats } from './customApiTypes/championStats';
 
 type TEsportTeam = {
   acronym: string;
@@ -65,9 +65,31 @@ export type TChampionMasterySummary = {
   totalMasteryScore: number | undefined;
 }
 
-export interface TSummonerMatchHistoryData extends TMatchParticipantStats {
+export type TSummonerSpellId = {
+  summoner1Id: number;
+  summoner2Id: number;
+}
+
+export type TPerks = {
+  perks: {
+    perkIds: Array<number>;
+    perkStyle: number;
+    perkSubStyle: number;
+  };
+}
+
+export interface TSummonerMatchHistoryData extends TMatchParticipantStats, TSummonerSpellId {
   individualPosition: string;
   champLevel: number;
+  perks: {
+    styles: Array<{
+      style: number;
+      selections: Array<{
+        perk: number;
+      }>;
+      description: string;
+    }>;
+  };
 }
 
 export type TMatchHistory = {
@@ -79,17 +101,12 @@ export type TMatchHistory = {
   }
 }
 
-export type TSummonerSpellsAndPerks = {
+export type TSpellId = {
   spell1Id: number;
   spell2Id: number;
-  perks: {
-    perkIds: Array<number>;
-    perkStyle: number;
-    perkSubStyle: number;
-  };
 }
 
-export interface TLiveGameParticipants extends TSummonerSpellsAndPerks {
+export interface TLiveGameParticipants extends TSpellId, TPerks {
   puuid: TSummonerAccount['puuid'];
   championId: TChampionMastery['championId'];
   profileIconId: TSummonerProfile['profileIconId'];

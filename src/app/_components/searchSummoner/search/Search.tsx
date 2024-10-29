@@ -3,11 +3,12 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';
-import { getSummonerAccount } from '@/app/_lib/services/riotGamesApi';
-import type { TSummonerAccount } from '@/app/_types/services';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import type { TSummonerAccount } from '@/app/_types/apiTypes';
+import type { TBooleanProp } from '../SearchSummoner';
 import SummonerLink from './SummonerLink';
 import SummonerSections from './summonerSections/SummonerSections';
-import type { TBooleanProp } from '../SearchSummoner';
 
 const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
   const [summonerName, setSummonerName] = useState('');
@@ -16,6 +17,7 @@ const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
 
   const summonerSectionsRef = useOutsideClick(displaySummonerSections, setDisplaySummonerSections);
   const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);
+  const { continentLink, shorthand } = markedRegionData;
 
   const {
     data: summonerAccountData,
@@ -26,7 +28,11 @@ const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
   } = useQuery({
     enabled: false,
     queryKey: ['searchSummoner'],
-    queryFn: () => getSummonerAccount(summonerName, markedRegionData),
+    queryFn: async () => {
+      return await fetchApi<TSummonerAccount>(
+        routeHandlerEndpoints.summonerAccount(summonerName, continentLink, shorthand)
+      );
+    },
     refetchOnWindowFocus: false
   });
 

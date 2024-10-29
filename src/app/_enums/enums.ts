@@ -17,3 +17,10 @@ export enum TimeUnit {
   Minutes = 'minutes',
   Seconds = 'seconds'
 }
+
+export enum Spell {
+  Summoner1Id = 'summoner1Id',
+  Summoner2Id = 'summoner2Id',
+  Spell1Id = 'spell1Id',
+  Spell2Id = 'spell2Id'
+}

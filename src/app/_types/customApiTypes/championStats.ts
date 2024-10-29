@@ -1,4 +1,4 @@
-import type { TSummonerAccount } from '../services';
+import type { TSummonerAccount } from '../apiTypes';
 
 export type TKda = {
   assists: number;

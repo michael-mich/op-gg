@@ -1,4 +1,4 @@
-import type { TSummonerRank } from '@/app/_types/services';
+import type { TSummonerRank } from '@/app/_types/apiTypes';
 
 const rankedEmblems = [
   '/ranked-emblems/Bronze.png',

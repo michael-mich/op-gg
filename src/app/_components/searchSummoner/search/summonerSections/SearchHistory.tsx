@@ -39,8 +39,8 @@ const SearchHistory = ({
   }
 
   const toggleFavoriteSummoner = (index: number): void => {
-    const b = getLocalStorageData(LocalStorageKeys.SearchHistory) || [];
-    const searchHistoryData = b[index];
+    const searchHistoryArray = getLocalStorageData(LocalStorageKeys.SearchHistory) || [];
+    const searchHistoryData = searchHistoryArray[index];
     const favoriteSummonersArray = getLocalStorageData(LocalStorageKeys.FavoriteSummoners);
     const sameSummonerIndex = favoriteSummonersArray?.findIndex(
       (el) => el.summonerId === searchHistoryData.summonerId

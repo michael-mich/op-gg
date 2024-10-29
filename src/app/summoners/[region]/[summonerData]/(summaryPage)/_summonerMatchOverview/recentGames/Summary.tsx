@@ -1,4 +1,4 @@
-import type { TRecetGames } from '@/app/_types/serverActions/serverActions';
+import type { TRecetGames } from '@/app/_types/customApiTypes/customApiTypes';
 
 type Props = {
   recentGamesData: TRecetGames | undefined;

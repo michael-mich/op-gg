@@ -6,46 +6,55 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerChampionsMastery, getFilteredChampions } from '@/app/_lib/services/riotGamesApi';
-import type { TChampion } from '@/app/_types/services';
+import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import type { TChampion, TChampionMastery } from '@/app/_types/apiTypes';
 import type { TSummonerPageParams } from '@/app/_types/types';
 import { IoIosArrowForward } from "react-icons/io";
 import MasteryInformations from './MasteryInformations';
 import ChampionMasterySkeleton from './ChampionMasterySkeleton';
 
 type Props = {
-  getTopChampions?: boolean;
+  getTopChampions: boolean;
 }
 
-const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
+const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
   const params = useParams<TSummonerPageParams>();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const currentRegionData = useCurrentRegion();
+  const { regionLink } = useCurrentRegion() || {};
 
   const {
-    data: championsMasteryData,
+    data: championMasteryData,
     isSuccess: isChampionsMasterySuccess,
     isRefetching: isChampionsMasteryRefetching,
     isPending: isChampionsMasteryPending,
     isError: isChampionsMasteryError
   } = useQuery({
     enabled: !!summonerPuuid,
-    queryKey: ['topFourChampionsMastery', summonerPuuid],
-    queryFn: () => getSummonerChampionsMastery(currentRegionData, summonerPuuid, getTopChampions),
+    queryKey: ['championsMastery', summonerPuuid, getTopChampions],
+    queryFn: async () => {
+      return await fetchApi<Array<TChampionMastery>>(
+        routeHandlerEndpoints.summonerChampionMastery(summonerPuuid, regionLink, getTopChampions)
+      );
+    },
     refetchOnWindowFocus: false
   });
+
+  const championIds = championMasteryData?.map((champion) => champion.championId);
 
   const { data: filteredChampionsData, isPending: isFilteredChampionsPending } = useQuery({
     enabled: isChampionsMasterySuccess,
     queryKey: ['filteredChampions', isChampionsMasterySuccess, isChampionsMasteryRefetching],
-    queryFn: () => getFilteredChampions(championsMasteryData),
+    queryFn: async () => {
+      return await fetchApi<Array<TChampion>>(routeHandlerEndpoints.filteredChampions(championIds))
+    },
     refetchOnWindowFocus: false,
   });
 
   const sortedChampionsData = (): Array<TChampion> | undefined => {
     return filteredChampionsData?.sort((a, b) => {
-      const aPoints = championsMasteryData?.find((cham) => cham.championId.toString() === a.key)?.championPoints || 0;
-      const bPoints = championsMasteryData?.find((cham) => cham.championId.toString() === b.key)?.championPoints || 0;
+      const aPoints = championMasteryData?.find((cham) => cham.championId.toString() === a.key)?.championPoints || 0;
+      const bPoints = championMasteryData?.find((cham) => cham.championId.toString() === b.key)?.championPoints || 0;
 
       return bPoints - aPoints;
     })
@@ -53,7 +62,7 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded'>
-      {(championsMasteryData?.length === 0 || isChampionsMasteryError) ? (
+      {(championMasteryData?.length === 0 || isChampionsMasteryError) ? (
         <div className='flex flex-col items-center justify-center gap-1 p-3'>
           <Image
             className='size-16'
@@ -78,7 +87,7 @@ const SummonerChampionsMastery = ({ getTopChampions = true }: Props) => {
           ) : (
             <>
               <div className={`flex flex-wrap ${getTopChampions ? 'gap-2' : 'gap-y-4'} p-3`}>
-                {championsMasteryData?.map((championMastery, championMasteryIndex) => {
+                {championMasteryData?.map((championMastery, championMasteryIndex) => {
                   const championData = sortedChampionsData()?.[championMasteryIndex];
 
                   return (

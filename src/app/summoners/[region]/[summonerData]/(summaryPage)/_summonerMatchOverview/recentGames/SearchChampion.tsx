@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';
 import Image from 'next/image';
-import type { TRecetGames } from '@/app/_types/serverActions/serverActions';
+import type { TRecetGames } from '@/app/_types/customApiTypes/customApiTypes';
 import type { TSetState } from '@/app/_types/tuples';
 import { IoIosSearch } from 'react-icons/io';
 import { FaCertificate } from "react-icons/fa6";
 
 type Props = {
   recentGamesData: TRecetGames | undefined;
-  setMarkedChampionId: TSetState<number>;
+  setMarkedChampionId: TSetState<string>;
 }
 
 const SearchChampion = ({ recentGamesData, setMarkedChampionId }: Props) => {
@@ -28,7 +28,7 @@ const SearchChampion = ({ recentGamesData, setMarkedChampionId }: Props) => {
   }
 
   const resetMarkedChampionId = () => {
-    setMarkedChampionId(0);
+    setMarkedChampionId('0');
   }
 
   return (
@@ -64,7 +64,7 @@ const SearchChampion = ({ recentGamesData, setMarkedChampionId }: Props) => {
           {searchFilteredChampions?.map((champion) => (
             <li className='border-bottom-theme last-of-type:border-b-0 py-1.5 px-2.5' key={champion.key}>
               <button
-                onClick={() => setMarkedChampionId(parseInt(champion.key))}
+                onClick={() => setMarkedChampionId(champion.key)}
                 className='flex items-center gap-2 text-xs'
                 type='button'
               >
