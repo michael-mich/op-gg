@@ -6,7 +6,7 @@ type Props = {
 }
 
 const SummonerChampion = ({ match }: Props) => {
-  const { championName, champLevel } = match.currentSummonerMatchData || {};
+  const { championName, champLevel } = match.info.currentSummoner || {};
 
   return (
     <div>

@@ -1,8 +1,8 @@
-import { riotGamesApiKey } from '@/app/_lib/utils/envVariables';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { riotGamesApiKey } from '@/app/_utils/envVariables';
+import { fetchApi } from '@/app/_utils/fetchApi';
 import type { NextRequest } from 'next/server';
 import type { TMatchHistory } from '@/app/_types/apiTypes';
-import { getRouteHandlerParams } from '@/app/_lib/utils/routeHandlers';
+import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
 
 export const GET = async (req: NextRequest) => {
   const { summonerPuuid, regionContinentLink } = getRouteHandlerParams(req);

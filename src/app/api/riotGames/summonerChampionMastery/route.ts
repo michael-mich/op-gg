@@ -1,6 +1,6 @@
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { riotGamesApiKey } from '@/app/_lib/utils/envVariables';
-import { getRouteHandlerParams } from '@/app/_lib/utils/routeHandlers';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { riotGamesApiKey } from '@/app/_utils/envVariables';
+import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
 import type { NextRequest } from 'next/server';
 import type { TChampionMastery } from '@/app/_types/apiTypes';
 

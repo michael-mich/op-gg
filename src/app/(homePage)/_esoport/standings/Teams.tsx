@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { fetchApi } from '@/app/_utils/fetchApi';
 import type { TLecSpringSeason } from '@/app/_types/apiTypes';
 import { LuLoader } from 'react-icons/lu';
 
@@ -13,7 +13,6 @@ const Teams = () => {
         routeHandlerEndpoints.lecSpringSeason()
       );
     },
-    refetchOnWindowFocus: false,
     staleTime: Infinity
   });
 

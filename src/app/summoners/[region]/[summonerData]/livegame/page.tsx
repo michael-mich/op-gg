@@ -3,10 +3,10 @@
 import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
-import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import { useAppSelector } from '@/app/_hooks/reduxHooks';
+import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
 import type { TSummonerLiveGameData } from '@/app/_types/customApiTypes/liveGame';
 import GameTimer from './GameTimer';
 import TableHead from './TableHead';
@@ -43,8 +43,7 @@ const Page = () => {
       return await fetchApi<TSummonerLiveGameData>(
         routeHandlerEndpoints.summonerLiveGame(summonerPuuid, regionLink, continentLink)
       );
-    },
-    refetchOnWindowFocus: false
+    }
   });
 
   const gameData = useMemo(() => liveGameData, [summonerPuuid, isLiveGameSuccess]);

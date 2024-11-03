@@ -1,6 +1,6 @@
-import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { calculateWinLossStats, calculateAverageKdaStats } from '@/app/_lib/utils/matchStats';
+import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { calculateWinLossStats, calculateAverageKdaStats } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type { TMatchHistory } from '@/app/_types/apiTypes';
 import type {
@@ -46,7 +46,7 @@ export const GET = async (req: NextRequest) => {
   const gameDurations = matchStats?.map((stats) => stats?.info.gameDuration);
 
   const groupedChampionStats: TGroupedChampionStats = Object.entries(
-    (summonerMatchStats as Array<TMatchParticipantStats>).reduce((accumulator: TGroupedChampionStatAccumulator, {
+    (summonerMatchStats as unknown as Array<TMatchParticipantStats>).reduce((accumulator: TGroupedChampionStatAccumulator, {
       championName,
       assists,
       deaths,

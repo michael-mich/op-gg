@@ -1,13 +1,13 @@
 'use client';
 
-import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
+import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
 import type { TChampion, TChampionMastery } from '@/app/_types/apiTypes';
 import type { TSummonerPageParams } from '@/app/_types/types';
 import { IoIosArrowForward } from "react-icons/io";
@@ -36,8 +36,7 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
       return await fetchApi<Array<TChampionMastery>>(
         routeHandlerEndpoints.summonerChampionMastery(summonerPuuid, regionLink, getTopChampions)
       );
-    },
-    refetchOnWindowFocus: false
+    }
   });
 
   const championIds = championMasteryData?.map((champion) => champion.championId);
@@ -47,8 +46,7 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
     queryKey: ['filteredChampions', isChampionsMasterySuccess, isChampionsMasteryRefetching],
     queryFn: async () => {
       return await fetchApi<Array<TChampion>>(routeHandlerEndpoints.filteredChampions(championIds))
-    },
-    refetchOnWindowFocus: false,
+    }
   });
 
   const sortedChampionsData = (): Array<TChampion> | undefined => {

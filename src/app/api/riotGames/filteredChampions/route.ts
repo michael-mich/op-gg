@@ -1,5 +1,5 @@
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { getRouteHandlerParams } from '@/app/_lib/utils/routeHandlers';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
 import type { NextRequest } from 'next/server';
 import type { TChampion } from '@/app/_types/apiTypes';
 

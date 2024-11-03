@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import { notFound, useParams } from 'next/navigation';
 import { useEffect } from 'react';
-import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
-import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
+import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
+import { useAppDispatch } from '@/app/_hooks/reduxHooks';
 import { setSummonerId } from '@/app/_lib/features/summonerIdSlice';
 import { setSummonerPuuid } from '@/app/_lib/features/summonerPuuidSlice';
 import { useQuery } from '@tanstack/react-query';
@@ -12,9 +12,9 @@ import type { TLocalStorageSummoner, TSummonerPageParams } from '@/app/_types/ty
 import SummonerHeaderSkeleton from './Skeleton';
 import FavoriteSummonerButton from './FavoriteSummonerButton';
 import PageNavigation from './PageNavigation';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
-import { TSummonerProfile, type TSummonerAccount } from '@/app/_types/apiTypes';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import type { TSummonerProfile, TSummonerAccount } from '@/app/_types/apiTypes';
 
 const SummonerHeader = () => {
   const params = useParams<TSummonerPageParams>();
@@ -36,8 +36,7 @@ const SummonerHeader = () => {
       return await fetchApi<TSummonerAccount>(
         routeHandlerEndpoints.summonerAccount(summonerName, currentRegionData?.continentLink, currentRegionData?.shorthand)
       );
-    },
-    refetchOnWindowFocus: false
+    }
   });
 
   const {
@@ -52,8 +51,7 @@ const SummonerHeader = () => {
       return await fetchApi<TSummonerProfile>(
         routeHandlerEndpoints.summonerProfile(summonerAccountData?.puuid, currentRegionData?.regionLink)
       );
-    },
-    refetchOnWindowFocus: false
+    }
   });
 
   const favoriteSummonerData: TLocalStorageSummoner = {

@@ -10,7 +10,7 @@ import type {
   TChampion,
   TSummonerRank,
 } from '../apiTypes';
-import { RuneType } from '@/app/_enums/enums';
+import type { RuneType } from '@/app/_enums/enums';
 
 export interface TUpdatedRune extends Omit<TRune, 'slots'> {
   slots: Array<TRuneSlots>;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';
+import useOutsideClick from '@/app/_hooks/useOutsideClick';
 import Image from 'next/image';
 import type { TRecetGames } from '@/app/_types/customApiTypes/customApiTypes';
 import type { TSetState } from '@/app/_types/tuples';

@@ -1,10 +1,10 @@
 'use client';
 
-import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
+import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import { useAppSelector } from '@/app/_hooks/reduxHooks';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
 import type { TSetState } from '@/app/_types/tuples';
 import type { TRecetGames } from '@/app/_types/customApiTypes/customApiTypes';
 import Summary from './Summary';
@@ -34,7 +34,6 @@ const RecentGames = ({ markedChampionId, setMarkedChampionId }: Props) => {
         routeHandlerEndpoints.recentGamesSummary(summonerPuuid, continentLink, markedChampionId)
       );
     },
-    refetchOnWindowFocus: false,
     retryDelay: 5000
   });
 

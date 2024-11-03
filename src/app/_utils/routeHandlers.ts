@@ -1,6 +1,7 @@
 import { baseUrl } from './envVariables';
 import type { NextRequest } from 'next/server';
-import type { Nullable } from '@/app/_types/tuples';
+
+type Nullable<T> = T | undefined | null;
 
 enum RouteHandlers {
   Pandascore = '/api/pandascore',

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';
+import useOutsideClick from '@/app/_hooks/useOutsideClick';
 import { FaChevronDown } from "react-icons/fa";
 import { games } from './gamesServicesData';
 

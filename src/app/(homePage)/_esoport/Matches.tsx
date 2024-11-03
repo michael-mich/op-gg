@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
 import type { TEsportMatch } from '@/app/_types/apiTypes';
 import { LuLoader } from 'react-icons/lu';
 
@@ -19,7 +19,6 @@ const Matches = () => {
         routeHandlerEndpoints.matchResultLionsVsFnatic()
       );
     },
-    refetchOnWindowFocus: false,
     staleTime: Infinity
   });
 
@@ -32,7 +31,6 @@ const Matches = () => {
     queryFn: async () => {
       return await fetchApi<TEsportMatch>(routeHandlerEndpoints.matchResultFnaticVsBds());
     },
-    refetchOnWindowFocus: false,
     staleTime: Infinity
   });
 

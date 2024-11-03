@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
+import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
-import { handleKdaTextColor } from '@/app/_lib/utils/utils';
-import type { TChampion } from '@/app/_types/apiTypes';
-import type { TSummonerChampionStats, TChampionStats } from '@/app/_types/customApiTypes/championStats';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { handleKdaTextColor } from '@/app/_utils/utils';
+import type { TChampion, TChampionStats } from '@/app/_types/apiTypes';
+import type { TSummonerChampionStats } from '@/app/_types/customApiTypes/championStats';
 import type { TDetailedChampionStats, TNumericStatKeyPath } from './types';
 import { TableColumns, SortOrder } from './enums';
 import { columns } from './data';
@@ -33,8 +33,7 @@ const Page = () => {
       return await fetchApi<Array<TSummonerChampionStats>>(
         routeHandlerEndpoints.summonerChampionStats(summonerPuuid, continentLink)
       );
-    },
-    refetchOnWindowFocus: false
+    }
   });
 
   const championIds = championStats?.map((champion) => champion.championId);
@@ -51,8 +50,7 @@ const Page = () => {
       return await fetchApi<Array<TChampion>>(
         routeHandlerEndpoints.filteredChampions(championIds)
       );
-    },
-    refetchOnWindowFocus: false
+    }
   });
 
   const loadingCondition = (isChampionStatsPending || isChampionDataPending);

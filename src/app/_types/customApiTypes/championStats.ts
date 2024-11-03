@@ -1,10 +1,4 @@
-import type { TSummonerAccount } from '../apiTypes';
-
-export type TKda = {
-  assists: number;
-  deaths: number;
-  kills: number;
-}
+import type { TChampionStats, TSummonerAccount, TKda } from '../apiTypes';
 
 export type TAverageKdaStats = {
   kda: number,
@@ -19,16 +13,8 @@ export type TChampionWinLostRatio = {
   winRatio: number;
 }
 
-export type TChampionStats = {
-  championId: number;
-  doubleKills: number;
-  tripleKills: number;
-  quadraKills: number;
-  pentaKills: number;
-}
-
 /**
- * Types representing data modified in the summonerChampionStats.ts file
+ * Types for data from the 'championStats' endpoint
  */
 export interface TSummonerChampionStats extends TChampionStats {
   kda: TAverageKdaStats;
@@ -44,7 +30,7 @@ export interface TSummonerChampionStats extends TChampionStats {
 }
 
 /**
- * Types representing data fetched from Riot Games API
+ * Interface contains types that used to summarize summoner champions stats based on recent matches
  */
 export interface TMatchParticipantStats extends TChampionStats, Pick<TSummonerAccount, 'puuid'>, TKda {
   championName: string;
@@ -53,5 +39,4 @@ export interface TMatchParticipantStats extends TChampionStats, Pick<TSummonerAc
   gameDuration: number;
   goldEarned: number;
   totalDamageDealtToChampions: number;
-  teamId: number;
 }

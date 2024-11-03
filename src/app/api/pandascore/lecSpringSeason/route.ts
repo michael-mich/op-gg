@@ -1,5 +1,5 @@
-import { pandascoreApiKey } from '@/app/_lib/utils/envVariables';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { pandascoreApiKey } from '@/app/_utils/envVariables';
+import { fetchApi } from '@/app/_utils/fetchApi';
 import type { TLecSpringSeason } from '@/app/_types/apiTypes';
 
 export const GET = async () => {

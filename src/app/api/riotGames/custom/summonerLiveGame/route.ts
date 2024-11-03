@@ -1,9 +1,9 @@
-import { riotGamesApiKey } from '@/app/_lib/utils/envVariables';
-import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { filterSummonerSpells } from '@/app/_lib/utils/matchStats';
-import { findQueueTypeData } from '@/app/_lib/utils/utils';
-import { sortSummonerRunesByType, segregateSummonersToTeams } from '@/app/_lib/utils/matchStats';
+import { riotGamesApiKey } from '@/app/_utils/envVariables';
+import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { filterSummonerSpells } from '@/app/_utils/matchStats';
+import { findQueueTypeData } from '@/app/_utils/matchStats';
+import { sortSummonerRunesByType, segregateSummonersToTeams } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type {
   TRune,

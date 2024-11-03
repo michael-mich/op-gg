@@ -78,9 +78,24 @@ export type TPerks = {
   };
 }
 
-export interface TSummonerMatchHistoryData extends TMatchParticipantStats, TSummonerSpellId {
+export type TKda = {
+  assists: number;
+  deaths: number;
+  kills: number;
+}
+
+export type TChampionStats = {
+  championId: number;
+  doubleKills: number;
+  tripleKills: number;
+  quadraKills: number;
+  pentaKills: number;
+}
+
+export interface TSummonerMatchHistoryData extends Omit<TMatchParticipantStats, 'gameDuration'>, TSummonerSpellId {
   individualPosition: string;
   champLevel: number;
+  summonerId: string;
   perks: {
     styles: Array<{
       style: number;
@@ -90,6 +105,10 @@ export interface TSummonerMatchHistoryData extends TMatchParticipantStats, TSumm
       description: string;
     }>;
   };
+  totalEnemyJungleMinionsKilled: number;
+  [key: `item${number}`]: number;
+  teamEarlySurrendered: boolean;
+  teamId: number;
 }
 
 export type TMatchHistory = {
@@ -97,7 +116,7 @@ export type TMatchHistory = {
     gameDuration: number;
     gameEndTimestamp: number;
     gameType: string;
-    participants: Array<TSummonerMatchHistoryData>
+    participants: Array<TSummonerMatchHistoryData>;
   }
 }
 
@@ -106,11 +125,10 @@ export type TSpellId = {
   spell2Id: number;
 }
 
-export interface TLiveGameParticipants extends TSpellId, TPerks {
+export interface TLiveGameParticipants extends TSpellId, TPerks, Pick<TSummonerMatchHistoryData, 'summonerId'> {
   puuid: TSummonerAccount['puuid'];
   championId: TChampionMastery['championId'];
   profileIconId: TSummonerProfile['profileIconId'];
-  summonerId: string;
   teamId: number;
 }
 
@@ -142,3 +160,9 @@ export interface TRune extends Omit<TRuneSlots, 'longDesc' | 'shortDesc'> {
     runes: Array<TRuneSlots>;
   }>;
 };
+
+export type TChampionItem = {
+  data: Record<number, {
+    name: string;
+  } & Pick<TChampion, 'image'>>;
+}

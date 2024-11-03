@@ -6,7 +6,8 @@ const makeQueryClient = () => {
   return new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 100
+        staleTime: 100,
+        refetchOnWindowFocus: false,
       }
     }
   });

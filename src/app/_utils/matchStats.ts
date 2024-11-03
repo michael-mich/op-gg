@@ -1,4 +1,5 @@
 import type {
+  TSummonerRank,
   TSummonerMatchHistoryData,
   TSummonerSpellId,
   TSpellId,
@@ -6,7 +7,7 @@ import type {
 } from '@/app/_types/apiTypes';
 import type { TTeamGeneric } from '@/app/_types/types';
 import type { TAverageKdaStats, TChampionWinLostRatio } from '@/app/_types/customApiTypes/championStats';
-import { Spell, RuneType } from '@/app/_enums/enums';
+import { type Spell, RuneType, type QueueType } from '@/app/_enums/enums';
 
 type TSummonerData = Array<Pick<TSummonerMatchHistoryData, 'assists' | 'deaths' | 'kills'>>;
 
@@ -14,6 +15,13 @@ type SpellKeys<T> = T extends TSummonerSpellId ? keyof TSummonerSpellId : keyof 
 
 export const calculatePercentage = (part: number, total: number): number => {
   return Math.round((part / total) * 100);
+}
+
+export const findQueueTypeData = (
+  queueData: Array<TSummonerRank> | undefined,
+  queueType: QueueType
+): TSummonerRank | undefined => {
+  return queueData?.find((data) => data.queueType === queueType);
 }
 
 export const calculateWinLossStats = (matchData: Array<{ win: boolean }> | undefined): TChampionWinLostRatio => {

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
+import { useAppDispatch } from '@/app/_hooks/reduxHooks';
 import { setMarkedRegionData } from '../_lib/features/markedRegionDataSlice';
 import { allRegionsData } from '../_data/allRegionsData';
 

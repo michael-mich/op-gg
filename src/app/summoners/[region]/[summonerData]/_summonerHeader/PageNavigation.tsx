@@ -1,10 +1,10 @@
 import { usePathname, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
-import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import { useAppSelector } from '@/app/_hooks/reduxHooks';
+import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
 import type { TSummonerPageParams } from '@/app/_types/types';
 
 const pageNavigationData = ['Sumary', 'Champions', 'Mastery', 'Live Game'];
@@ -25,8 +25,7 @@ const PageNavigation = () => {
       return await fetchApi(
         routeHandlerEndpoints.spectator(summonerPuuid, regionLink)
       );
-    },
-    refetchOnWindowFocus: false
+    }
   });
 
   const generatePageUrl = (pageName: string): string => {

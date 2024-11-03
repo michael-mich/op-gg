@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import useOutsideClick from '@/app/_hooks/useOutsideClick';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
 import type { TSummonerAccount } from '@/app/_types/apiTypes';
 import type { TBooleanProp } from '../SearchSummoner';
 import SummonerLink from './SummonerLink';
@@ -32,8 +32,7 @@ const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
       return await fetchApi<TSummonerAccount>(
         routeHandlerEndpoints.summonerAccount(summonerName, continentLink, shorthand)
       );
-    },
-    refetchOnWindowFocus: false
+    }
   });
 
   const handleSummonerName = (e: React.ChangeEvent<HTMLInputElement>): void => {

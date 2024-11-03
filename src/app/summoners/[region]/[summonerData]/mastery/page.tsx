@@ -1,11 +1,11 @@
 'use client';
 
-import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
+import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import Image from 'next/image';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
 import type { TChampionMasterySummary } from '@/app/_types/apiTypes';
 import SummonerChampionsMastery from '@/app/_components/summonerChampionsMastery/SummonerChampionsMastery';
 import { CircularProgress } from '@nextui-org/react';
@@ -37,8 +37,7 @@ const Page = () => {
       return await fetchApi<TChampionMasterySummary>(
         routeHandlerEndpoints.summonerChampionsMasterySummary(summonerPuuid, regionLink)
       );
-    },
-    refetchOnWindowFocus: false
+    }
   });
 
   return (

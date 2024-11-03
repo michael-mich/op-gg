@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { calculateTimeUnit } from '@/app/_lib/utils/utils';
+import { calculateTimeUnit } from '@/app/_utils/utils';
 import { TimeUnit } from '@/app/_enums/enums';
 
 type Props = {

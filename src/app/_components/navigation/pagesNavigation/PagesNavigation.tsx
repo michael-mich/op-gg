@@ -1,10 +1,9 @@
-import { FC } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaRegUserCircle } from "react-icons/fa";
 import { pages } from './pagesNavigationData';
 
-const PagesNavigation: FC = () => {
+const PagesNavigation = () => {
   const pathname = usePathname();
 
   return (

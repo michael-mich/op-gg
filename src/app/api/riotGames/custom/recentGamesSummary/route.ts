@@ -1,14 +1,14 @@
-import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_lib/utils/routeHandlers';
-import { fetchApi } from '@/app/_lib/utils/fetchApi';
+import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { fetchApi } from '@/app/_utils/fetchApi';
 import {
   calculateAverageKdaStats,
   calculatePercentage,
   segregateSummonersToTeams,
   calculateWinLossStats
-} from '@/app/_lib/utils/matchStats';
+} from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
-import { TChampion, type TMatchHistory } from '@/app/_types/apiTypes';
-import type { TChampionWinLostRatio, TKda } from '@/app/_types/customApiTypes/championStats';
+import type { TChampion, TMatchHistory, TKda } from '@/app/_types/apiTypes';
+import type { TChampionWinLostRatio } from '@/app/_types/customApiTypes/championStats';
 
 interface TChampionPerformance extends TKda, Omit<TChampionWinLostRatio, 'winRatio'> {
   playAmount: number;
