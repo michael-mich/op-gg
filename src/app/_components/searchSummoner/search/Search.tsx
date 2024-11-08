@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import useOutsideClick from '@/app/_hooks/useOutsideClick';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
-import type { TSummonerAccount } from '@/app/_types/apiTypes';
+import type { TSummonerAccount } from '@/app/_types/apiTypes/apiTypes';
 import type { TBooleanProp } from '../SearchSummoner';
 import SummonerLink from './SummonerLink';
 import SummonerSections from './summonerSections/SummonerSections';

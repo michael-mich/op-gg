@@ -1,4 +1,4 @@
-import type { TMatchParticipantStats } from './customApiTypes/championStats';
+import type { TMatchParticipantStats } from './customApiTypes';
 
 type TEsportTeam = {
   acronym: string;
@@ -92,7 +92,7 @@ export type TChampionStats = {
   pentaKills: number;
 }
 
-export interface TSummonerMatchHistoryData extends Omit<TMatchParticipantStats, 'gameDuration'>, TSummonerSpellId {
+export interface TSummonerMatchHistoryData extends Omit<TMatchParticipantStats, 'gameDuration'>, TSummonerSpellId, Pick<TSummonerProfile, 'summonerLevel'> {
   individualPosition: string;
   champLevel: number;
   summonerId: string;

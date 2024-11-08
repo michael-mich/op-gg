@@ -6,7 +6,7 @@ import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
-import type { TChampionMasterySummary } from '@/app/_types/apiTypes';
+import type { TChampionMasterySummary } from '@/app/_types/apiTypes/apiTypes';
 import SummonerChampionsMastery from '@/app/_components/summonerChampionsMastery/SummonerChampionsMastery';
 import { CircularProgress } from '@nextui-org/react';
 

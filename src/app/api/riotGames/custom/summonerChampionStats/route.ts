@@ -2,12 +2,12 @@ import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_utils/route
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { calculateWinLossStats, calculateAverageKdaStats } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
-import type { TMatchHistory } from '@/app/_types/apiTypes';
+import type { TMatchHistory } from '@/app/_types/apiTypes/apiTypes';
 import type {
   TMatchParticipantStats,
   TChampionWinLostRatio,
   TSummonerChampionStats
-} from '@/app/_types/customApiTypes/championStats';
+} from '@/app/_types/apiTypes/customApiTypes';
 
 type OmitMatchParticipantStats = 'championName' | 'puuid' | 'teamId';
 
@@ -36,10 +36,10 @@ const calculateTotalChampionStat = (
 }
 
 export const GET = async (req: NextRequest) => {
-  const { summonerPuuid, regionContinentLink } = getRouteHandlerParams(req);
+  const { summonerPuuid, regionContinentLink, matchesCount } = getRouteHandlerParams(req);
 
   const matchStats = await fetchApi<Array<TMatchHistory>>(
-    routeHandlerEndpoints.summonerMatchHistory(summonerPuuid, regionContinentLink)
+    routeHandlerEndpoints.summonerMatchHistory(summonerPuuid, regionContinentLink, matchesCount)
   );
 
   const summonerMatchStats = matchStats?.flatMap((stats) => stats?.info.participants.filter((participant) => participant.puuid === summonerPuuid));

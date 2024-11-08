@@ -8,7 +8,7 @@ import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
-import type { TChampion, TChampionMastery } from '@/app/_types/apiTypes';
+import type { TChampion, TChampionMastery } from '@/app/_types/apiTypes/apiTypes';
 import type { TSummonerPageParams } from '@/app/_types/types';
 import { IoIosArrowForward } from "react-icons/io";
 import MasteryInformations from './MasteryInformations';

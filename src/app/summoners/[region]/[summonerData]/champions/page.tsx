@@ -7,8 +7,8 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
 import { handleKdaTextColor } from '@/app/_utils/utils';
-import type { TChampion, TChampionStats } from '@/app/_types/apiTypes';
-import type { TSummonerChampionStats } from '@/app/_types/customApiTypes/championStats';
+import type { TChampion, TChampionStats } from '@/app/_types/apiTypes/apiTypes';
+import type { TSummonerChampionStats } from '@/app/_types/apiTypes/customApiTypes';
 import type { TDetailedChampionStats, TNumericStatKeyPath } from './types';
 import { TableColumns, SortOrder } from './enums';
 import { columns } from './data';
@@ -31,7 +31,7 @@ const Page = () => {
     queryKey: ['matchStats', 'summonerPage', summonerPuuid],
     queryFn: async () => {
       return await fetchApi<Array<TSummonerChampionStats>>(
-        routeHandlerEndpoints.summonerChampionStats(summonerPuuid, continentLink)
+        routeHandlerEndpoints.summonerChampionStats(summonerPuuid, continentLink, '100')
       );
     }
   });

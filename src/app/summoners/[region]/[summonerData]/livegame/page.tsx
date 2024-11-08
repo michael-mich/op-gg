@@ -7,14 +7,14 @@ import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
-import type { TSummonerLiveGameData } from '@/app/_types/customApiTypes/liveGame';
+import type { TSummonerLiveGameData } from '@/app/_types/apiTypes/customApiTypes';
 import GameTimer from './GameTimer';
 import TableHead from './TableHead';
-import SummonerCurrentGameDetails from './SummonerCurrentGameDetails';
 import SummonerRank from './SummonerRank';
 import ToggleRunesButton from './ToggleRunesButton';
 import SummonerRunes from './_summonerRunes/SummonerRunes';
 import SummonerInactive from './SummonerInactive';
+import ChampionProfile from '@/app/_components/ChampionProfile';
 import { CircularProgress } from '@nextui-org/react';
 
 export type TActiveRuneDisplay = {
@@ -85,7 +85,9 @@ const Page = () => {
                         <tr className={`${blueTeam ? 'after:bg-blue' : 'after:bg-red'} border-t border-t-almostWhite                       
                         dark:border-t-darkMode-darkBlue relative after:absolute after:left-0 after:z-10 after:w-1 after:h-full`}
                         >
-                          <SummonerCurrentGameDetails summoner={summoner} />
+                          <td className='text-xss py-2 px-3'>
+                            <ChampionProfile summoner={summoner} displaySummonerData />
+                          </td>
                           <SummonerRank summoner={summoner} />
                           <ToggleRunesButton
                             activeRuneDisplay={activeRuneDisplay}

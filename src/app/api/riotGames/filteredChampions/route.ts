@@ -1,7 +1,7 @@
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
 import type { NextRequest } from 'next/server';
-import type { TChampion } from '@/app/_types/apiTypes';
+import type { TChampion } from '@/app/_types/apiTypes/apiTypes';
 
 export const GET = async (req: NextRequest) => {
   const { championIds } = getRouteHandlerParams(req);

@@ -1,5 +1,5 @@
 import { fetchApi } from '@/app/_utils/fetchApi';
-import type { TSummonerSpell } from '@/app/_types/apiTypes';
+import type { TSummonerSpell } from '@/app/_types/apiTypes/apiTypes';
 
 export const dynamic = 'force-static';
 

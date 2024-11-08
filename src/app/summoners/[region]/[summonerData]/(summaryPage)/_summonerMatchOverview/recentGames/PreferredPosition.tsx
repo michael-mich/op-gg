@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import type { TRecetGames } from '@/app/_types/customApiTypes/customApiTypes';
+import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {
   recentGamesData: TRecetGames | undefined;

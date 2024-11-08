@@ -6,7 +6,7 @@ import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
 import type { TSetState } from '@/app/_types/tuples';
-import type { TRecetGames } from '@/app/_types/customApiTypes/customApiTypes';
+import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
 import Summary from './Summary';
 import TopChampions from './TopChampions';
 import PreferredPosition from './PreferredPosition';
@@ -31,10 +31,9 @@ const RecentGames = ({ markedChampionId, setMarkedChampionId }: Props) => {
     queryKey: ['recentGames', summonerPuuid, markedChampionId],
     queryFn: async () => {
       return await fetchApi<TRecetGames>(
-        routeHandlerEndpoints.recentGamesSummary(summonerPuuid, continentLink, markedChampionId)
+        routeHandlerEndpoints.recentGamesSummary(summonerPuuid, continentLink, markedChampionId, '20')
       );
-    },
-    retryDelay: 5000
+    }
   });
 
   return (

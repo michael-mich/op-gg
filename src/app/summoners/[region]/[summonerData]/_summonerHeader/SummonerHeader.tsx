@@ -14,7 +14,7 @@ import FavoriteSummonerButton from './FavoriteSummonerButton';
 import PageNavigation from './PageNavigation';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
-import type { TSummonerProfile, TSummonerAccount } from '@/app/_types/apiTypes';
+import type { TSummonerProfile, TSummonerAccount } from '@/app/_types/apiTypes/apiTypes';
 
 const SummonerHeader = () => {
   const params = useParams<TSummonerPageParams>();

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
-import type { TEsportMatch } from '@/app/_types/apiTypes';
+import type { TEsportMatch } from '@/app/_types/apiTypes/apiTypes';
 import { LuLoader } from 'react-icons/lu';
 
 const Matches = () => {

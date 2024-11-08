@@ -18,6 +18,7 @@ enum RouteHandlerParams {
   GetTopChampions = 'getTopChampions',
   ChampionIds = 'championIds',
   MarkedChampionId = 'markedChampionId',
+  MatchesCount = 'matchesCount'
 }
 
 export const getRouteHandlerParams = (req: NextRequest) => {
@@ -31,6 +32,7 @@ export const getRouteHandlerParams = (req: NextRequest) => {
   const getTopChampions = searchParams.get(RouteHandlerParams.GetTopChampions);
   const championIds = searchParams.get(RouteHandlerParams.ChampionIds)?.split(',');
   const markedChampionId = searchParams.get(RouteHandlerParams.MarkedChampionId);
+  const matchesCount = searchParams.get(RouteHandlerParams.MatchesCount);
 
   return {
     summonerPuuid,
@@ -41,7 +43,8 @@ export const getRouteHandlerParams = (req: NextRequest) => {
     regionShorthand,
     getTopChampions,
     championIds,
-    markedChampionId
+    markedChampionId,
+    matchesCount
   };
 }
 
@@ -72,6 +75,9 @@ const routeQueryParams = {
   },
   markedChampionId: (markedChampionId: string) => {
     return `${RouteHandlerParams.MarkedChampionId}=${markedChampionId}`;
+  },
+  matchesCount: (matchesCount: string | null) => {
+    return `${RouteHandlerParams.MatchesCount}=${matchesCount}`;
   }
 }
 
@@ -123,28 +129,35 @@ export const routeHandlerEndpoints = {
   filteredChampions: (championIds: Array<number> | undefined) => {
     return `${baseUrl}${RouteHandlers.RiotGames}/filteredChampions?${routeQueryParams.championIds(championIds)}`;
   },
-  summonerMatchHistory: (summonerPuuid: string | null, regionContinentLink: string | null) => {
-    return `${baseUrl}${RouteHandlers.RiotGames}/summonerMatchHistory?${routeQueryParams.summonerPuuid(summonerPuuid)}&${routeQueryParams.regionContinentLink(regionContinentLink)}`;
+  summonerMatchHistory: (
+    summonerPuuid: string | null,
+    regionContinentLink: string | null,
+    matchesCount: string | null
+  ) => {
+    return `${baseUrl}${RouteHandlers.RiotGames}/summonerMatchHistory?${routeQueryParams.summonerPuuid(summonerPuuid)}&${routeQueryParams.regionContinentLink(regionContinentLink)}&${routeQueryParams.matchesCount(matchesCount)}`;
   },
   detailedMatchHistory: (
     summonerPuuid: Nullable<string>,
     regionContinentLink: Nullable<string>,
-    markedChampionId: string
+    markedChampionId: string,
+    mathcesCount: string | null
   ) => {
-    return `${baseUrl}${RouteHandlers.RiotGames}/custom/detailedMatchHistory?${routeQueryParams.summonerPuuid(summonerPuuid)}&${routeQueryParams.regionContinentLink(regionContinentLink)}&${routeQueryParams.markedChampionId(markedChampionId)}`;
+    return `${baseUrl}${RouteHandlers.RiotGames}/custom/detailedMatchHistory?${routeQueryParams.summonerPuuid(summonerPuuid)}&${routeQueryParams.regionContinentLink(regionContinentLink)}&${routeQueryParams.markedChampionId(markedChampionId)}&${routeQueryParams.matchesCount(mathcesCount)}`;
   },
   recentGamesSummary: (
     summonerPuuid: Nullable<string>,
     regionContinentLink: Nullable<string>,
-    markedChampionId: string
+    markedChampionId: string,
+    matchesCount: string | null,
   ) => {
-    return `${baseUrl}${RouteHandlers.RiotGames}/custom/recentGamesSummary?${routeQueryParams.summonerPuuid(summonerPuuid)}&${routeQueryParams.regionContinentLink(regionContinentLink)}&${routeQueryParams.markedChampionId(markedChampionId)}`;
+    return `${baseUrl}${RouteHandlers.RiotGames}/custom/recentGamesSummary?${routeQueryParams.summonerPuuid(summonerPuuid)}&${routeQueryParams.regionContinentLink(regionContinentLink)}&${routeQueryParams.markedChampionId(markedChampionId)}&${routeQueryParams.matchesCount(matchesCount)}`;
   },
   summonerChampionStats: (
     summonerPuuid: Nullable<string>,
-    regionContinentLink: Nullable<string>
+    regionContinentLink: Nullable<string>,
+    mathcesCount: string | null
   ) => {
-    return `${baseUrl}${RouteHandlers.RiotGames}/custom/summonerChampionStats?${routeQueryParams.summonerPuuid(summonerPuuid)}&${routeQueryParams.regionContinentLink(regionContinentLink)}`;
+    return `${baseUrl}${RouteHandlers.RiotGames}/custom/summonerChampionStats?${routeQueryParams.summonerPuuid(summonerPuuid)}&${routeQueryParams.regionContinentLink(regionContinentLink)}&${routeQueryParams.matchesCount(mathcesCount)}`;
   },
   summonerLiveGame: (
     summonerPuuid: Nullable<string>,

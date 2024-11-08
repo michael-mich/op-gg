@@ -7,8 +7,8 @@ import {
   calculateWinLossStats
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
-import type { TChampion, TMatchHistory, TKda } from '@/app/_types/apiTypes';
-import type { TChampionWinLostRatio } from '@/app/_types/customApiTypes/championStats';
+import type { TChampion, TMatchHistory, TKda } from '@/app/_types/apiTypes/apiTypes';
+import type { TChampionWinLostRatio } from '@/app/_types/apiTypes/customApiTypes';
 
 interface TChampionPerformance extends TKda, Omit<TChampionWinLostRatio, 'winRatio'> {
   playAmount: number;
@@ -23,10 +23,10 @@ type TPositionPlayAmount = {
 }
 
 export const GET = async (req: NextRequest) => {
-  const { summonerPuuid, regionContinentLink, markedChampionId } = getRouteHandlerParams(req);
+  const { summonerPuuid, regionContinentLink, markedChampionId, matchesCount } = getRouteHandlerParams(req);
 
   const matchHistoryData = await fetchApi<Array<TMatchHistory>>(
-    routeHandlerEndpoints.summonerMatchHistory(summonerPuuid, regionContinentLink)
+    routeHandlerEndpoints.summonerMatchHistory(summonerPuuid, regionContinentLink, matchesCount)
   );
 
   const currentSummonerMatchData = matchHistoryData?.flatMap((match) =>

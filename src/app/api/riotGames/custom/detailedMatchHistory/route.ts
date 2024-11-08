@@ -4,8 +4,8 @@ import {
   segregateSummonersToTeams,
   calculatePercentage,
   sortSummonerRunesByType,
-  calculateKda,
   filterSummonerSpells,
+  getChampionNameAndImage
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type {
@@ -14,16 +14,16 @@ import type {
   TRune,
   TChampionItem,
   TChampion,
-} from '@/app/_types/apiTypes';
+} from '@/app/_types/apiTypes/apiTypes';
 import { RuneType, Spell } from '@/app/_enums/enums';
 
 type TChampionItemsAndIds = Array<[string, { name: string } & Pick<TChampion, 'image'>] | '0'>;
 
 export const GET = async (req: NextRequest) => {
-  const { summonerPuuid, regionContinentLink, markedChampionId } = getRouteHandlerParams(req);
+  const { summonerPuuid, regionContinentLink, markedChampionId, matchesCount } = getRouteHandlerParams(req);
 
   const matchHistoryData = await fetchApi<Array<TMatchHistory>>(
-    routeHandlerEndpoints.summonerMatchHistory(summonerPuuid, regionContinentLink)
+    routeHandlerEndpoints.summonerMatchHistory(summonerPuuid, regionContinentLink, matchesCount)
   );
   const runeData = await fetchApi<Array<TRune>>(routeHandlerEndpoints.runes());
   const spellData = await fetchApi<Array<TSummonerSpellContent>>(routeHandlerEndpoints.summonerSpells());
@@ -42,13 +42,13 @@ export const GET = async (req: NextRequest) => {
     })
   );
 
+  const championNameAndImage = matchesForMarkedChampion && await Promise.all(matchesForMarkedChampion?.map((match) =>
+    Promise.all(match.info.participants.map((summoner) => getChampionNameAndImage(summoner))))
+  );
+
   const summonersSpells = matchesForMarkedChampion?.map((match) => {
     return filterSummonerSpells(Spell.Summoner1Id, Spell.Summoner2Id, match.info.participants, spellData);
   });
-
-  const summonersKda = matchesForMarkedChampion?.map((match) => match.info.participants.map((summoner) => {
-    return calculateKda(summoner.deaths, summoner.assists, summoner.kills);
-  }));
 
   const summonersMinionStats = matchHistoryData?.map((match) => match.info.participants.map((summoner) => {
     const totalMinions = summoner.totalMinionsKilled + summoner.totalEnemyJungleMinionsKilled;
@@ -108,7 +108,7 @@ export const GET = async (req: NextRequest) => {
       const indexB = summonerItemIds.findIndex((summonerItemId) => itemIdB === summonerItemId);
       return indexA - indexB;
     });
-    return sortedChampionItems;
+    return sortedChampionItems.map(([_, item]) => item);
   }));
 
   const matchedSummonerRunes = matchesForMarkedChampion?.map((match) =>
@@ -153,10 +153,10 @@ export const GET = async (req: NextRequest) => {
             ...summonerData,
             runes: sortSummonerRunesByType(matchedSummonerRunes?.[matchIndex][summonerIndex]),
             spells: summonersSpells?.[matchIndex]?.[summonerIndex],
-            kda: summonersKda?.[matchIndex][summonerIndex],
             killParticipation: summonersKillParticipation?.[matchIndex][summonerIndex],
             minions: summonersMinionStats?.[matchIndex][summonerIndex],
-            items: summonersItems?.[matchIndex][summonerIndex]
+            items: summonersItems?.[matchIndex][summonerIndex],
+            championData: championNameAndImage?.[matchIndex][summonerIndex]
           };
         })
       }

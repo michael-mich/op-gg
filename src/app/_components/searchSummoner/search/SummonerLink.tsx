@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
 import { getLocalStorageData } from '@/app/_utils/utils';
-import type { TSummonerAccount, TSummonerProfile } from '@/app/_types/apiTypes';
+import type { TSummonerAccount, TSummonerProfile } from '@/app/_types/apiTypes/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';
 import { LocalStorageKeys } from '@/app/_enums/enums';

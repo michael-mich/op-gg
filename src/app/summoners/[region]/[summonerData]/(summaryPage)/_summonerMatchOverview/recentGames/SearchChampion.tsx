@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useOutsideClick from '@/app/_hooks/useOutsideClick';
 import Image from 'next/image';
-import type { TRecetGames } from '@/app/_types/customApiTypes/customApiTypes';
+import { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
 import type { TSetState } from '@/app/_types/tuples';
 import { IoIosSearch } from 'react-icons/io';
 import { FaCertificate } from "react-icons/fa6";

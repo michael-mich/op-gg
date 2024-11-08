@@ -1,12 +1,18 @@
+import { fetchApi } from './fetchApi';
+import { routeHandlerEndpoints } from './routeHandlers';
 import type {
   TSummonerRank,
   TSummonerMatchHistoryData,
   TSummonerSpellId,
   TSpellId,
   TSummonerSpellContent,
-} from '@/app/_types/apiTypes';
-import type { TTeamGeneric } from '@/app/_types/types';
-import type { TAverageKdaStats, TChampionWinLostRatio } from '@/app/_types/customApiTypes/championStats';
+  TChampion
+} from '@/app/_types/apiTypes/apiTypes';
+import type {
+  TTeamGeneric,
+  TAverageKdaStats,
+  TChampionWinLostRatio
+} from '../_types/apiTypes/customApiTypes';
 import { type Spell, RuneType, type QueueType } from '@/app/_enums/enums';
 
 type TSummonerData = Array<Pick<TSummonerMatchHistoryData, 'assists' | 'deaths' | 'kills'>>;
@@ -52,15 +58,10 @@ export const filterSummonerSpells = <T extends Record<SpellKeys<T>, number>>(
   summonerData: Array<T> | undefined,
   spellData: Array<TSummonerSpellContent> | undefined,
 ): Array<Array<TSummonerSpellContent> | undefined> | undefined => {
-
   return summonerData?.map((summoner) => spellData?.filter((spell) => {
     const spellKeyNumber = parseInt(spell.key);
     return spellKeyNumber === summoner[spellKey1] || spellKeyNumber === summoner[spellKey2];
   }));
-}
-
-export const calculateKda = (deaths: number, assists: number, kills: number): number => {
-  return deaths === 0 ? assists + kills : (assists + kills) / deaths;
 }
 
 export const calculateAverageKdaStats = (summonerData: TSummonerData): TAverageKdaStats => {
@@ -74,8 +75,10 @@ export const calculateAverageKdaStats = (summonerData: TSummonerData): TAverageK
     }, { assists: 0, deaths: 0, kills: 0 }
   );
 
+  const kda = totalDeaths === 0 ? totalAssists + totalKills : (totalAssists + totalKills) / totalDeaths;
+
   return {
-    kda: calculateKda(totalDeaths, totalAssists, totalKills),
+    kda,
     averageKills: (totalKills / summonerData.length).toFixed(1),
     averageAssists: (totalAssists / summonerData.length).toFixed(1),
     averageDeaths: (totalDeaths / summonerData.length).toFixed(1)
@@ -114,3 +117,16 @@ export const sortSummonerRunesByType = <T extends Array<{ type: RuneType } | und
     }
   }
 };
+
+export const getChampionNameAndImage = async <T extends { championId: number }>(data: T) => {
+  const championData = await fetchApi<Array<TChampion>>(
+    routeHandlerEndpoints.filteredChampions([data.championId])
+  );
+
+  return championData?.map((champion) => {
+    return {
+      name: champion.name,
+      image: champion.image.full
+    }
+  })[0]
+}

@@ -2,8 +2,8 @@ import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
-import type { TRune } from '@/app/_types/apiTypes';
-import type { TUpdatedLiveGameParticipants } from '@/app/_types/customApiTypes/liveGame';
+import type { TRune } from '@/app/_types/apiTypes/apiTypes';
+import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/customApiTypes';
 import { shardData } from './summonerRunesData';
 
 type Props = {

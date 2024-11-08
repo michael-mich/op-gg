@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { handleKdaTextColor } from '@/app/_utils/utils';
-import type { TRecetGames } from '@/app/_types/customApiTypes/customApiTypes';
+import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {
   recentGamesData: TRecetGames | undefined;
@@ -16,7 +16,7 @@ const TopChampions = ({ recentGamesData }: Props) => {
         {recentGamesData?.topPlayedChampions.map((championData) => (
           <div className='flex items-center' key={championData.championDetails.name}>
             <Image
-              className='size-6 rounded-full aspect-square mr-2'
+              className='rounded-image mr-2'
               src={`https://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/${championData.championDetails.image?.full}`}
               width={24}
               height={24}

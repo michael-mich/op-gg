@@ -1,4 +1,4 @@
-import type { TDetailedMatchHistory } from '@/app/_types/customApiTypes/customApiTypes';
+import type { TDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {
   match: TDetailedMatchHistory;

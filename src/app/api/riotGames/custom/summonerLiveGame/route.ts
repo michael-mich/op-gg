@@ -3,37 +3,27 @@ import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_utils/route
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { filterSummonerSpells } from '@/app/_utils/matchStats';
 import { findQueueTypeData } from '@/app/_utils/matchStats';
-import { sortSummonerRunesByType, segregateSummonersToTeams } from '@/app/_utils/matchStats';
+import {
+  sortSummonerRunesByType,
+  segregateSummonersToTeams,
+  getChampionNameAndImage
+} from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type {
   TRune,
   TLiveGame,
-  TChampion,
   TSummonerAccount,
   TLiveGameParticipants,
   TSummonerRank,
   TSummonerProfile,
-  TSummonerSpellContent,
-} from '@/app/_types/apiTypes';
+  TSummonerSpellContent
+} from '@/app/_types/apiTypes/apiTypes';
 import type {
   TUpdatedLiveGameParticipants,
   TUpdatedRune,
   TBannedChampion
-} from '@/app/_types/customApiTypes/liveGame';
+} from '@/app/_types/apiTypes/customApiTypes';
 import { Spell, QueueType, RuneType } from '@/app/_enums/enums';
-
-const getChampionNameAndImage = async <T extends { championId: number }>(data: T) => {
-  const championData = await fetchApi<Array<TChampion>>(
-    routeHandlerEndpoints.filteredChampions([data.championId])
-  );
-
-  return championData?.map((champion) => {
-    return {
-      name: champion.name,
-      image: champion.image.full
-    }
-  })[0]
-}
 
 export const GET = async (req: NextRequest) => {
   const { summonerPuuid, regionLink, regionContinentLink } = getRouteHandlerParams(req);

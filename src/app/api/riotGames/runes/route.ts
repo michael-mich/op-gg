@@ -1,5 +1,5 @@
 import { fetchApi } from '@/app/_utils/fetchApi';
-import type { TRune } from '@/app/_types/apiTypes';
+import type { TRune } from '@/app/_types/apiTypes/apiTypes';
 
 export const dynamic = 'force-static';
 
