@@ -40,7 +40,7 @@ const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'defaul
           ))}
         </div>
         <div>
-          {summoner.runes.map((rune, index) => {
+          {summoner.runes?.map((rune, index) => {
             const firstElement = index === 0;
 
             return (

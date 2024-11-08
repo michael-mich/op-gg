@@ -1,5 +1,6 @@
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import {
   segregateSummonersToTeams,
   calculatePercentage,
@@ -23,10 +24,10 @@ export const GET = async (req: NextRequest) => {
   const { summonerPuuid, regionContinentLink, markedChampionId, matchesCount } = getRouteHandlerParams(req);
 
   const matchHistoryData = await fetchApi<Array<TMatchHistory>>(
-    routeHandlerEndpoints.summonerMatchHistory(summonerPuuid, regionContinentLink, matchesCount)
+    riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchesCount)
   );
-  const runeData = await fetchApi<Array<TRune>>(routeHandlerEndpoints.runes());
-  const spellData = await fetchApi<Array<TSummonerSpellContent>>(routeHandlerEndpoints.summonerSpells());
+  const runeData = await fetchApi<Array<TRune>>(riotGamesRoutes.runes());
+  const spellData = await fetchApi<Array<TSummonerSpellContent>>(riotGamesRoutes.summonerSpells());
   const championItemData = await fetchApi<TChampionItem>('https://ddragon.leagueoflegends.com/cdn/14.21.1/data/en_US/item.json');
 
   const matchesForMarkedChampion = matchHistoryData?.filter((match) =>

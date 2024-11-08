@@ -4,7 +4,7 @@ import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import type { TSetState } from '@/app/_types/tuples';
 import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
 import Summary from './Summary';
@@ -31,7 +31,7 @@ const RecentGames = ({ markedChampionId, setMarkedChampionId }: Props) => {
     queryKey: ['recentGames', summonerPuuid, markedChampionId],
     queryFn: async () => {
       return await fetchApi<TRecetGames>(
-        routeHandlerEndpoints.recentGamesSummary(summonerPuuid, continentLink, markedChampionId, '20')
+        riotGamesCustomRoutes.recentGamesSummary(summonerPuuid, continentLink, markedChampionId, '20')
       );
     }
   });

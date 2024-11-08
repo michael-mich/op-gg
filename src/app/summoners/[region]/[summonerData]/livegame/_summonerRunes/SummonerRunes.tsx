@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import type { TRune } from '@/app/_types/apiTypes/apiTypes';
 import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/customApiTypes';
 import { shardData } from './summonerRunesData';
@@ -14,7 +14,7 @@ const SummonerRunes = ({ summoner }: Props) => {
   const { data: runeData } = useQuery({
     queryKey: ['runes'],
     queryFn: async () => {
-      return await fetchApi<Array<TRune>>(routeHandlerEndpoints.runes());
+      return await fetchApi<Array<TRune>>(riotGamesRoutes.runes());
     },
     staleTime: Infinity
   });
@@ -32,11 +32,11 @@ const SummonerRunes = ({ summoner }: Props) => {
     }
   }));
 
-  const filteredRunes = summoner.runes.flatMap((summonerRune) => runeData?.filter((rune) => {
+  const filteredRunes = summoner.runes && summoner.runes.flatMap((summonerRune) => runeData?.filter((rune) => {
     return summonerRune?.id === rune.id;
   }));
 
-  const keystoneRemoveFromSecondRune = filteredRunes.map((mainRune, index) => {
+  const keystoneRemoveFromSecondRune = filteredRunes?.map((mainRune, index) => {
     if (index === 1) {
       return {
         ...mainRune,
@@ -48,7 +48,7 @@ const SummonerRunes = ({ summoner }: Props) => {
     }
   });
 
-  const runesWithMarkedStatus = keystoneRemoveFromSecondRune.map((mainRune) => ({
+  const runesWithMarkedStatus = keystoneRemoveFromSecondRune?.map((mainRune) => ({
     ...mainRune,
     slots: mainRune?.slots?.map((slot) => ({
       ...slot,
@@ -69,7 +69,7 @@ const SummonerRunes = ({ summoner }: Props) => {
     <tr className='dark:bg-darkMode-darkGray'>
       <td colSpan={6}>
         <div className='flex items-center justify-center py-[10px]'>
-          {runesWithMarkedStatus.map((mainRune, mainRuneIndex) => (
+          {runesWithMarkedStatus?.map((mainRune, mainRuneIndex) => (
             <div
               className={`${mainRuneIndex === 1 && 'self-end border-r-2 border-almostWhite dark:border-r-darkMode-secondDarkGray'}`}
               key={mainRuneIndex}

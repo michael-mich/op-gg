@@ -1,4 +1,5 @@
-import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import {
   calculateAverageKdaStats,
@@ -26,7 +27,7 @@ export const GET = async (req: NextRequest) => {
   const { summonerPuuid, regionContinentLink, markedChampionId, matchesCount } = getRouteHandlerParams(req);
 
   const matchHistoryData = await fetchApi<Array<TMatchHistory>>(
-    routeHandlerEndpoints.summonerMatchHistory(summonerPuuid, regionContinentLink, matchesCount)
+    riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchesCount)
   );
 
   const currentSummonerMatchData = matchHistoryData?.flatMap((match) =>
@@ -43,10 +44,10 @@ export const GET = async (req: NextRequest) => {
   const summonerKda = matchesForMarkedChampion && calculateAverageKdaStats(matchesForMarkedChampion);
 
   const championsForMarkedMatches = await fetchApi<Array<TChampion>>(
-    routeHandlerEndpoints.filteredChampions(markedChampionIds)
+    riotGamesRoutes.filteredChampions(markedChampionIds)
   );
   const summonerAllPlayedChampions = await fetchApi<Array<TChampion>>(
-    routeHandlerEndpoints.filteredChampions(currentSummonerChampionIds)
+    riotGamesRoutes.filteredChampions(currentSummonerChampionIds)
   );
 
   const sortedChampionData = summonerAllPlayedChampions?.sort((a, b) => {

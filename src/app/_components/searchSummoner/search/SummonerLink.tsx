@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { getLocalStorageData } from '@/app/_utils/utils';
 import type { TSummonerAccount, TSummonerProfile } from '@/app/_types/apiTypes/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
@@ -37,7 +37,7 @@ const SummonerLink = ({
     queryKey: ['summonerLevelAndIconId', isSummonerAccountSuccess, summonerAccountData.puuid],
     queryFn: async () => {
       return await fetchApi<TSummonerProfile>(
-        routeHandlerEndpoints.summonerProfile(summonerAccountData.puuid, regionLink)
+        riotGamesRoutes.summonerProfile(summonerAccountData.puuid, regionLink)
       );
     }
   });

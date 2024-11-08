@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { findQueueTypeData } from '@/app/_utils/matchStats';
 import { calculateWinRate, formatTierName, getRankedEmblem } from '@/app/_utils/rank';
 import SummonerRankSkeleton from './SummonerRankSkeleton';
@@ -26,7 +26,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
     queryKey: ['summonerRank', summonerId],
     queryFn: async () => {
       return await fetchApi<Array<TSummonerRank>>(
-        routeHandlerEndpoints.summonerRank(summonerId, regionLink)
+        riotGamesRoutes.summonerRank(summonerId, regionLink)
       );
     },
     refetchOnWindowFocus: false

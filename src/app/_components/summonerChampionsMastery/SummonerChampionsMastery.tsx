@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import type { TChampion, TChampionMastery } from '@/app/_types/apiTypes/apiTypes';
 import type { TSummonerPageParams } from '@/app/_types/types';
 import { IoIosArrowForward } from "react-icons/io";
@@ -34,7 +34,7 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
     queryKey: ['championsMastery', summonerPuuid, getTopChampions],
     queryFn: async () => {
       return await fetchApi<Array<TChampionMastery>>(
-        routeHandlerEndpoints.summonerChampionMastery(summonerPuuid, regionLink, getTopChampions)
+        riotGamesRoutes.summonerChampionMastery(summonerPuuid, regionLink, getTopChampions)
       );
     }
   });
@@ -45,7 +45,7 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
     enabled: isChampionsMasterySuccess,
     queryKey: ['filteredChampions', isChampionsMasterySuccess, isChampionsMasteryRefetching],
     queryFn: async () => {
-      return await fetchApi<Array<TChampion>>(routeHandlerEndpoints.filteredChampions(championIds))
+      return await fetchApi<Array<TChampion>>(riotGamesRoutes.filteredChampions(championIds))
     }
   });
 

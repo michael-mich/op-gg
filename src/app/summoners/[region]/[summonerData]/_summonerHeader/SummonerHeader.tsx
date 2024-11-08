@@ -13,7 +13,7 @@ import SummonerHeaderSkeleton from './Skeleton';
 import FavoriteSummonerButton from './FavoriteSummonerButton';
 import PageNavigation from './PageNavigation';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import type { TSummonerProfile, TSummonerAccount } from '@/app/_types/apiTypes/apiTypes';
 
 const SummonerHeader = () => {
@@ -34,7 +34,7 @@ const SummonerHeader = () => {
     queryKey: ['summonerAccount', 'summonerPage'],
     queryFn: async () => {
       return await fetchApi<TSummonerAccount>(
-        routeHandlerEndpoints.summonerAccount(summonerName, currentRegionData?.continentLink, currentRegionData?.shorthand)
+        riotGamesRoutes.summonerAccount(summonerName, currentRegionData?.continentLink, currentRegionData?.shorthand)
       );
     }
   });
@@ -49,7 +49,7 @@ const SummonerHeader = () => {
     queryKey: ['summonerProfile', 'summonerPage', isSuccessAccount, summonerAccountData?.puuid],
     queryFn: async () => {
       return await fetchApi<TSummonerProfile>(
-        routeHandlerEndpoints.summonerProfile(summonerAccountData?.puuid, currentRegionData?.regionLink)
+        riotGamesRoutes.summonerProfile(summonerAccountData?.puuid, currentRegionData?.regionLink)
       );
     }
   });

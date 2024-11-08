@@ -1,5 +1,6 @@
-import { riotGamesApiKey } from '@/app/_utils/envVariables';
-import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { RIOT_GAMES_API_KEY } from '@/app/_constants/constants';
+import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { filterSummonerSpells } from '@/app/_utils/matchStats';
 import { findQueueTypeData } from '@/app/_utils/matchStats';
@@ -29,13 +30,13 @@ export const GET = async (req: NextRequest) => {
   const { summonerPuuid, regionLink, regionContinentLink } = getRouteHandlerParams(req);
 
   const liveGameData = await fetchApi<TLiveGame>(
-    routeHandlerEndpoints.spectator(summonerPuuid, regionLink)
+    riotGamesRoutes.spectator(summonerPuuid, regionLink)
   );
   const runeData = await fetchApi<Array<TRune>>(
-    routeHandlerEndpoints.runes()
+    riotGamesRoutes.runes()
   );
   const spellData = await fetchApi<Array<TSummonerSpellContent>>(
-    routeHandlerEndpoints.summonerSpells()
+    riotGamesRoutes.summonerSpells()
   );
 
   const gameParticipants = liveGameData?.participants;
@@ -64,13 +65,13 @@ export const GET = async (req: NextRequest) => {
 
   const summonerRanks = await processGameParticipants(async (participantData) => {
     const rankData = await fetchApi<Array<TSummonerRank>>(
-      routeHandlerEndpoints.summonerRank(participantData.summonerId, regionLink)
+      riotGamesRoutes.summonerRank(participantData.summonerId, regionLink)
     );
     return findQueueTypeData(rankData, QueueType.RankedSolo);
   });
 
   const summonerNameAndTagLine = await processGameParticipants(async (participantData) => {
-    const summonerData = await fetchApi<TSummonerAccount>(`https://${regionContinentLink}/riot/account/v1/accounts/by-puuid/${participantData.puuid}?api_key=${riotGamesApiKey}`);
+    const summonerData = await fetchApi<TSummonerAccount>(`https://${regionContinentLink}/riot/account/v1/accounts/by-puuid/${participantData.puuid}?api_key=${RIOT_GAMES_API_KEY}`);
 
     return {
       name: summonerData?.gameName,
@@ -80,7 +81,7 @@ export const GET = async (req: NextRequest) => {
 
   const summonerLevels = await processGameParticipants(async (participantData) => {
     const summonerData = await fetchApi<TSummonerProfile>(
-      routeHandlerEndpoints.summonerProfile(participantData.puuid, regionLink)
+      riotGamesRoutes.summonerProfile(participantData.puuid, regionLink)
     );
     return summonerData?.summonerLevel;
   });

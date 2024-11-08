@@ -4,7 +4,7 @@ import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import useOutsideClick from '@/app/_hooks/useOutsideClick';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import type { TSummonerAccount } from '@/app/_types/apiTypes/apiTypes';
 import type { TBooleanProp } from '../SearchSummoner';
 import SummonerLink from './SummonerLink';
@@ -30,7 +30,7 @@ const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
     queryKey: ['searchSummoner'],
     queryFn: async () => {
       return await fetchApi<TSummonerAccount>(
-        routeHandlerEndpoints.summonerAccount(summonerName, continentLink, shorthand)
+        riotGamesRoutes.summonerAccount(summonerName, continentLink, shorthand)
       );
     }
   });

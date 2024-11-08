@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { pandascoreRoutes } from '@/app/_constants/endpoints';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import type { TLecSpringSeason } from '@/app/_types/apiTypes/apiTypes';
 import { LuLoader } from 'react-icons/lu';
@@ -10,7 +10,7 @@ const Teams = () => {
     queryKey: ['lec'],
     queryFn: async () => {
       return await fetchApi<Array<TLecSpringSeason>>(
-        routeHandlerEndpoints.lecSpringSeason()
+        pandascoreRoutes.lecSpringSeason()
       );
     },
     staleTime: Infinity

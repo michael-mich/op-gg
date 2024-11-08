@@ -4,7 +4,7 @@ import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import { calculateTimeUnit } from '@/app/_utils/utils';
 import type { TDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
 import { TimeUnit } from '@/app/_enums/enums';
@@ -26,7 +26,7 @@ const MatchHistory = ({ markedChampionId }: Props) => {
     queryKey: ['curretSummonerMatchHistory', summonerPuuid, markedChampionId],
     queryFn: async () => {
       return await fetchApi<Array<TDetailedMatchHistory>>(
-        routeHandlerEndpoints.detailedMatchHistory(summonerPuuid, continentLink, markedChampionId, '20')
+        riotGamesCustomRoutes.detailedMatchHistory(summonerPuuid, continentLink, markedChampionId, '20')
       );
     }
   });

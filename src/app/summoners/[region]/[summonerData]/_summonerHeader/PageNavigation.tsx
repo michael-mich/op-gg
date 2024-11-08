@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import type { TSummonerPageParams } from '@/app/_types/types';
 
 const pageNavigationData = ['Sumary', 'Champions', 'Mastery', 'Live Game'];
@@ -23,7 +23,7 @@ const PageNavigation = () => {
     queryKey: ['liveGameCheck', summonerPuuid],
     queryFn: async () => {
       return await fetchApi(
-        routeHandlerEndpoints.spectator(summonerPuuid, regionLink)
+        riotGamesRoutes.spectator(summonerPuuid, regionLink)
       );
     }
   });

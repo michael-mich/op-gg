@@ -5,7 +5,7 @@ import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { riotGamesRoutes, riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import { handleKdaTextColor } from '@/app/_utils/utils';
 import type { TChampion, TChampionStats } from '@/app/_types/apiTypes/apiTypes';
 import type { TSummonerChampionStats } from '@/app/_types/apiTypes/customApiTypes';
@@ -31,7 +31,7 @@ const Page = () => {
     queryKey: ['matchStats', 'summonerPage', summonerPuuid],
     queryFn: async () => {
       return await fetchApi<Array<TSummonerChampionStats>>(
-        routeHandlerEndpoints.summonerChampionStats(summonerPuuid, continentLink, '100')
+        riotGamesCustomRoutes.summonerChampionStats(summonerPuuid, continentLink, '100')
       );
     }
   });
@@ -48,7 +48,7 @@ const Page = () => {
     queryKey: ['championData', 'summonerChampionsPage', isChampionStatsSuccess, summonerPuuid],
     queryFn: async () => {
       return await fetchApi<Array<TChampion>>(
-        routeHandlerEndpoints.filteredChampions(championIds)
+        riotGamesRoutes.filteredChampions(championIds)
       );
     }
   });

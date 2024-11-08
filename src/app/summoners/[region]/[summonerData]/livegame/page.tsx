@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import type { TSummonerLiveGameData } from '@/app/_types/apiTypes/customApiTypes';
 import GameTimer from './GameTimer';
 import TableHead from './TableHead';
@@ -41,7 +41,7 @@ const Page = () => {
     queryKey: ['liveGame', summonerPuuid],
     queryFn: async () => {
       return await fetchApi<TSummonerLiveGameData>(
-        routeHandlerEndpoints.summonerLiveGame(summonerPuuid, regionLink, continentLink)
+        riotGamesCustomRoutes.summonerLiveGame(summonerPuuid, regionLink, continentLink)
       );
     }
   });

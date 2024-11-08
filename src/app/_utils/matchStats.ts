@@ -1,5 +1,5 @@
 import { fetchApi } from './fetchApi';
-import { routeHandlerEndpoints } from './routeHandlers';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import type {
   TSummonerRank,
   TSummonerMatchHistoryData,
@@ -120,7 +120,7 @@ export const sortSummonerRunesByType = <T extends Array<{ type: RuneType } | und
 
 export const getChampionNameAndImage = async <T extends { championId: number }>(data: T) => {
   const championData = await fetchApi<Array<TChampion>>(
-    routeHandlerEndpoints.filteredChampions([data.championId])
+    riotGamesRoutes.filteredChampions([data.championId])
   );
 
   return championData?.map((champion) => {

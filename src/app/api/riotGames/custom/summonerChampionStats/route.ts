@@ -1,4 +1,5 @@
-import { getRouteHandlerParams, routeHandlerEndpoints } from '@/app/_utils/routeHandlers';
+import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { calculateWinLossStats, calculateAverageKdaStats } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
@@ -39,7 +40,7 @@ export const GET = async (req: NextRequest) => {
   const { summonerPuuid, regionContinentLink, matchesCount } = getRouteHandlerParams(req);
 
   const matchStats = await fetchApi<Array<TMatchHistory>>(
-    routeHandlerEndpoints.summonerMatchHistory(summonerPuuid, regionContinentLink, matchesCount)
+    riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchesCount)
   );
 
   const summonerMatchStats = matchStats?.flatMap((stats) => stats?.info.participants.filter((participant) => participant.puuid === summonerPuuid));
