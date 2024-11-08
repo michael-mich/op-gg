@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/_hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import type { TChampionMasterySummary } from '@/app/_types/apiTypes/apiTypes';
 import SummonerChampionsMastery from '@/app/_components/summonerChampionsMastery/SummonerChampionsMastery';
 import { CircularProgress } from '@nextui-org/react';
@@ -35,7 +35,7 @@ const Page = () => {
     queryKey: ['summonerMasteryTotalData', summonerPuuid],
     queryFn: async () => {
       return await fetchApi<TChampionMasterySummary>(
-        riotGamesRoutes.summonerChampionsMasterySummary(summonerPuuid, regionLink)
+        riotGamesCustomRoutes.summonerChampionsMasterySummary(summonerPuuid, regionLink)
       );
     }
   });

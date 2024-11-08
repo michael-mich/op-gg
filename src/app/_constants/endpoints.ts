@@ -77,9 +77,9 @@ export const riotGamesRoutes = {
     )
   },
   summonerChampionMastery: (
-    summonerPuuid: string | undefined,
-    regionLink: string | undefined,
-    getTopChampions: boolean
+    summonerPuuid: Nullable<string>,
+    regionLink: Nullable<string>,
+    getTopChampions: string | boolean | null
   ) => {
     return createRouteUrl(
       RouteHandlers.RiotGames,
@@ -93,19 +93,6 @@ export const riotGamesRoutes = {
   },
   summonerSpells: () => {
     return createRouteUrl(RouteHandlers.RiotGames, 'summonerSpells');
-  },
-  summonerChampionsMasterySummary: (
-    summonerPuuid: string | undefined,
-    regionLink: string | undefined
-  ) => {
-    return createRouteUrl(
-      RouteHandlers.RiotGames,
-      'summonerChampionsMasterySummary',
-      {
-        [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
-        [RouteHandlerParams.RegionLink]: regionLink
-      }
-    );
   },
   spectator: (summonerPuuid: Nullable<string>, regionLink: Nullable<string>) => {
     return createRouteUrl(
@@ -142,6 +129,19 @@ export const riotGamesRoutes = {
 };
 
 export const riotGamesCustomRoutes = {
+  summonerChampionsMasterySummary: (
+    summonerPuuid: string | undefined,
+    regionLink: string | undefined
+  ) => {
+    return createRouteUrl(
+      RouteHandlers.RiotGames,
+      '/custom/summonerChampionsMasterySummary',
+      {
+        [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
+        [RouteHandlerParams.RegionLink]: regionLink
+      }
+    );
+  },
   detailedMatchHistory: (
     summonerPuuid: Nullable<string>,
     regionContinentLink: Nullable<string>,
