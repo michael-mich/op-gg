@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import type { TChampionMasterySummary } from '@/app/_types/apiTypes/apiTypes';
-import SummonerChampionsMastery from '@/app/_components/summonerChampionsMastery/SummonerChampionsMastery';
+import SummonerChampionsMastery from '@/app/summoners/[region]/[summonerData]/_components/summonerChampionsMastery/SummonerChampionsMastery';
 import { CircularProgress } from '@nextui-org/react';
 
 const championMasteryDetails = [

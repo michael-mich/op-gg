@@ -14,7 +14,7 @@ import SummonerRank from './SummonerRank';
 import ToggleRunesButton from './ToggleRunesButton';
 import SummonerRunes from './_summonerRunes/SummonerRunes';
 import SummonerInactive from './SummonerInactive';
-import ChampionProfile from '@/app/_components/ChampionProfile';
+import ChampionProfile from '@/app/summoners/[region]/[summonerData]/_components/ChampionProfile';
 import { CircularProgress } from '@nextui-org/react';
 
 export type TActiveRuneDisplay = {

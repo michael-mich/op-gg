@@ -1,5 +1,5 @@
 import SummonerRank from './_summonerRank/SummonerRank';
-import SummonerChampionsMastery from '@/app/_components/summonerChampionsMastery/SummonerChampionsMastery';
+import SummonerChampionsMastery from '@/app/summoners/[region]/[summonerData]/_components/summonerChampionsMastery/SummonerChampionsMastery';
 import { QueueType } from '@/app/_enums/enums';
 import SummonerMatchOverview from './_summonerMatchOverview/SummonerMatchOverview';
 

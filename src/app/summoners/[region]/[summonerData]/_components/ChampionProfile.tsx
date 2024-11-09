@@ -1,10 +1,9 @@
 import { memo } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import type {
   TUpdatedLiveGameParticipants,
   TSummonerDetailedMatchHistory
-} from '../_types/apiTypes/customApiTypes';
+} from '../../../../_types/apiTypes/customApiTypes';
 
 type Props = {
   summoner: TUpdatedLiveGameParticipants | TSummonerDetailedMatchHistory;
@@ -14,6 +13,8 @@ type Props = {
 
 const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'default' }: Props) => {
   const summonerLiveGame = (summoner as TUpdatedLiveGameParticipants).summonerNameAndTagLine;
+  const summonerMatchHistory = (summoner as TSummonerDetailedMatchHistory).championName;
+
   const largeSize = size === 'large';
   const imageSize = largeSize ? 'size-[22px]' : 'size-[15px]';
 
@@ -21,7 +22,7 @@ const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'defaul
     <div className='flex items-center'>
       <Image
         className={`rounded-image ${largeSize ? 'size-12' : 'size-8'}`}
-        src={`https://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/${summoner.championData?.image}`}
+        src={`https://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/${summoner.championData?.image || `${summonerMatchHistory}.png`}`}
         width={48}
         height={48}
         alt={summoner.championData?.name || ''}
@@ -58,14 +59,14 @@ const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'defaul
       </div>
       {displaySummonerData && (
         <div className='flex flex-col gap-[0.1rem] ml-3'>
-          <Link href='' className='flex items-baseline gap-0.5 text-xs hover:underline'>
+          <div className='flex items-baseline gap-0.5 text-xs hover:underline'>
             <span className='font-bold text-[#202d37] dark:text-white'>{
               summonerLiveGame?.name}
             </span>
             <span className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
               #{summonerLiveGame?.tagLine}
             </span>
-          </Link>
+          </div>
           <span className='text-xss text-secondGray dark:text-[#7b7a8e]'>
             Level {summoner.summonerLevel}
           </span>

@@ -11,7 +11,7 @@ import { TimeUnit } from '@/app/_enums/enums';
 import TimeSinceMatch from './TimeSinceMatch';
 //import Badge from './Badge';
 import ChampionItems from './components/ChampionItems';
-import ChampionProfile from '@/app/_components/ChampionProfile';
+import ChampionProfile from '../../../_components/ChampionProfile';
 
 type Props = {
   markedChampionId: string;
@@ -90,6 +90,9 @@ const MatchHistory = ({ markedChampionId }: Props) => {
                     </span>
                   </div>
                 </div>
+                <ul>
+                  <li>P/Kill {currentSummoner.killParticipation}%</li>
+                </ul>
               </div>
               <div className='flex items-center gap-2'>
                 <ChampionItems
