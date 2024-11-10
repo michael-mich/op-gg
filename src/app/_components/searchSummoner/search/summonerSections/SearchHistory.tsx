@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useAppDispatch, useAppSelector } from '@/app/_hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStorageFavoriteSummonersSlice';
 import { getLocalStorageData } from '@/app/_utils/utils';
 import type { TLocalStorageSummoner } from '@/app/_types/types';

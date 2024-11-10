@@ -2,7 +2,7 @@
 
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import Image from 'next/image';
-import { useAppSelector } from '@/app/_hooks/reduxHooks';
+import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';

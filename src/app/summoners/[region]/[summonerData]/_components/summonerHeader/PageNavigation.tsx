@@ -1,7 +1,7 @@
 import { usePathname, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { useAppSelector } from '@/app/_hooks/reduxHooks';
+import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';

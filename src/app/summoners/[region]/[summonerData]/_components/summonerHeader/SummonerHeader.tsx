@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { notFound, useParams } from 'next/navigation';
 import { useEffect } from 'react';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
-import { useAppDispatch } from '@/app/_hooks/reduxHooks';
+import { useAppDispatch } from '@/app/_hooks/useReduxHooks';
 import { setSummonerId } from '@/app/_lib/features/summonerIdSlice';
 import { setSummonerPuuid } from '@/app/_lib/features/summonerPuuidSlice';
 import { useQuery } from '@tanstack/react-query';

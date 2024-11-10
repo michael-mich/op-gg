@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAppSelector } from '@/app/_hooks/reduxHooks';
+import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import useOutsideClick from '@/app/_hooks/useOutsideClick';
 import { MdArrowDropDown } from 'react-icons/md';
 import RegionsList from '@/app/_components/RegionsList';

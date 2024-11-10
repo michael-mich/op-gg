@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch } from '@/app/_hooks/reduxHooks';
+import { useAppDispatch } from '@/app/_hooks/useReduxHooks';
 import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStorageFavoriteSummonersSlice';
 import { getLocalStorageData } from '@/app/_utils/utils';
 import type { TLocalStorageSummoner } from '@/app/_types/types';

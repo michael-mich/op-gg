@@ -2,8 +2,7 @@
 
 import Image from 'next/image';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
-import useGameVersion from '@/app/_hooks/queries/useGameVersionQuery';
-import { useAppSelector } from '@/app/_hooks/reduxHooks';
+import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
@@ -23,8 +22,6 @@ type Props = {
 const MatchHistory = ({ markedChampionId }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink, regionLink } = useCurrentRegion() || {};
-  const { data: newestGameVersion } = useGameVersion();
-  console.log(newestGameVersion);
 
   const { data: matchHistoryData } = useQuery({
     enabled: !!summonerPuuid,
@@ -41,7 +38,7 @@ const MatchHistory = ({ markedChampionId }: Props) => {
       );
     }
   });
-  console.log(matchHistoryData);
+
   return (
     <div className='mt-2'>
       {matchHistoryData?.map((match, matchIndex) => {

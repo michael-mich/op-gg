@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
-import { useAppSelector } from '@/app/_hooks/reduxHooks';
+import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes, riotGamesCustomRoutes } from '@/app/_constants/endpoints';
