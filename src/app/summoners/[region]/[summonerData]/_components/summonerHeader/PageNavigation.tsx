@@ -21,11 +21,7 @@ const PageNavigation = () => {
   const { isSuccess: isLiveGameSuccess } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['liveGameCheck', summonerPuuid],
-    queryFn: async () => {
-      return await fetchApi(
-        riotGamesRoutes.spectator(summonerPuuid, regionLink)
-      );
-    }
+    queryFn: () => fetchApi(riotGamesRoutes.spectator(summonerPuuid, regionLink))
   });
 
   const generatePageUrl = (pageName: string): string => {

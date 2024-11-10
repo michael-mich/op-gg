@@ -32,8 +32,8 @@ const SummonerHeader = () => {
   } = useQuery({
     enabled: !!summonerName,
     queryKey: ['summonerAccount', 'summonerPage'],
-    queryFn: async () => {
-      return await fetchApi<TSummonerAccount>(
+    queryFn: () => {
+      return fetchApi<TSummonerAccount>(
         riotGamesRoutes.summonerAccount(summonerName, currentRegionData?.continentLink, currentRegionData?.shorthand)
       );
     }
@@ -47,8 +47,8 @@ const SummonerHeader = () => {
   } = useQuery({
     enabled: isSuccessAccount,
     queryKey: ['summonerProfile', 'summonerPage', isSuccessAccount, summonerAccountData?.puuid],
-    queryFn: async () => {
-      return await fetchApi<TSummonerProfile>(
+    queryFn: () => {
+      return fetchApi<TSummonerProfile>(
         riotGamesRoutes.summonerProfile(summonerAccountData?.puuid, currentRegionData?.regionLink)
       );
     }

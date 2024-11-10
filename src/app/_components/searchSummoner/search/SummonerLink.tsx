@@ -35,8 +35,8 @@ const SummonerLink = ({
   const { data: summonerLevelAndIconIdData } = useQuery({
     enabled: !!summonerAccountData,
     queryKey: ['summonerLevelAndIconId', isSummonerAccountSuccess, summonerAccountData.puuid],
-    queryFn: async () => {
-      return await fetchApi<TSummonerProfile>(
+    queryFn: () => {
+      return fetchApi<TSummonerProfile>(
         riotGamesRoutes.summonerProfile(summonerAccountData.puuid, regionLink)
       );
     }

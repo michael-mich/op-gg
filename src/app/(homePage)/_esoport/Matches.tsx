@@ -14,11 +14,7 @@ const Matches = () => {
     isPending: isFirstMatchPending,
   } = useQuery({
     queryKey: ['lec-match', 1],
-    queryFn: async () => {
-      return await fetchApi<TEsportMatch>(
-        pandascoreRoutes.matchResultLionsVsFnatic()
-      );
-    },
+    queryFn: () => fetchApi<TEsportMatch>(pandascoreRoutes.matchResultLionsVsFnatic()),
     staleTime: Infinity
   });
 
@@ -28,9 +24,7 @@ const Matches = () => {
     isPending: isSecondMatchPending,
   } = useQuery({
     queryKey: ['lec-match', 2],
-    queryFn: async () => {
-      return await fetchApi<TEsportMatch>(pandascoreRoutes.matchResultFnaticVsBds());
-    },
+    queryFn: () => fetchApi<TEsportMatch>(pandascoreRoutes.matchResultFnaticVsBds()),
     staleTime: Infinity
   });
 

@@ -26,8 +26,8 @@ const MatchHistory = ({ markedChampionId }: Props) => {
   const { data: matchHistoryData } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['curretSummonerMatchHistory', summonerPuuid, markedChampionId],
-    queryFn: async () => {
-      return await fetchApi<Array<TDetailedMatchHistory>>(
+    queryFn: () => {
+      return fetchApi<Array<TDetailedMatchHistory>>(
         riotGamesCustomRoutes.detailedMatchHistory(
           summonerPuuid,
           continentLink,

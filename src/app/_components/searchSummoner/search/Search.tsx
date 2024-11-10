@@ -28,8 +28,8 @@ const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
   } = useQuery({
     enabled: false,
     queryKey: ['searchSummoner'],
-    queryFn: async () => {
-      return await fetchApi<TSummonerAccount>(
+    queryFn: () => {
+      return fetchApi<TSummonerAccount>(
         riotGamesRoutes.summonerAccount(summonerName, continentLink, shorthand)
       );
     }

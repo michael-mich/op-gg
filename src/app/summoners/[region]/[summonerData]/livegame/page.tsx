@@ -39,8 +39,8 @@ const Page = () => {
   } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['liveGame', summonerPuuid],
-    queryFn: async () => {
-      return await fetchApi<TSummonerLiveGameData>(
+    queryFn: () => {
+      return fetchApi<TSummonerLiveGameData>(
         riotGamesCustomRoutes.summonerLiveGame(summonerPuuid, regionLink, continentLink)
       );
     }

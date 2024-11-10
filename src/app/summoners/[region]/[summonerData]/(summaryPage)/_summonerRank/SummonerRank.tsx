@@ -24,11 +24,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
   const { data: fetchedSummonerRanksData, isPending } = useQuery({
     enabled: !!summonerId,
     queryKey: ['summonerRank', summonerId],
-    queryFn: async () => {
-      return await fetchApi<Array<TSummonerRank>>(
-        riotGamesRoutes.summonerRank(summonerId, regionLink)
-      );
-    },
+    queryFn: () => fetchApi<Array<TSummonerRank>>(riotGamesRoutes.summonerRank(summonerId, regionLink)),
     refetchOnWindowFocus: false
   });
 

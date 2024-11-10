@@ -8,11 +8,7 @@ import { LuLoader } from 'react-icons/lu';
 const Teams = () => {
   const { data, isError, isPending } = useQuery({
     queryKey: ['lec'],
-    queryFn: async () => {
-      return await fetchApi<Array<TLecSpringSeason>>(
-        pandascoreRoutes.lecSpringSeason()
-      );
-    },
+    queryFn: () => fetchApi<Array<TLecSpringSeason>>(pandascoreRoutes.lecSpringSeason()),
     staleTime: Infinity
   });
 

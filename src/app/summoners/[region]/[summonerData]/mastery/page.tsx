@@ -33,8 +33,8 @@ const Page = () => {
   const { data: championSummaryData, isPending, isSuccess } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['summonerMasteryTotalData', summonerPuuid],
-    queryFn: async () => {
-      return await fetchApi<TChampionMasterySummary>(
+    queryFn: () => {
+      return fetchApi<TChampionMasterySummary>(
         riotGamesCustomRoutes.summonerChampionsMasterySummary(summonerPuuid, regionLink)
       );
     }

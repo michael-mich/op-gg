@@ -29,8 +29,8 @@ const RecentGames = ({ markedChampionId, setMarkedChampionId }: Props) => {
   } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['recentGames', summonerPuuid, markedChampionId],
-    queryFn: async () => {
-      return await fetchApi<TRecetGames>(
+    queryFn: () => {
+      return fetchApi<TRecetGames>(
         riotGamesCustomRoutes.recentGamesSummary(summonerPuuid, continentLink, markedChampionId, '20')
       );
     }

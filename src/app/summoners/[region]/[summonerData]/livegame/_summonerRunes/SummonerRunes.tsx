@@ -13,9 +13,7 @@ type Props = {
 const SummonerRunes = ({ summoner }: Props) => {
   const { data: runeData } = useQuery({
     queryKey: ['runes'],
-    queryFn: async () => {
-      return await fetchApi<Array<TRune>>(riotGamesRoutes.runes());
-    },
+    queryFn: () => fetchApi<Array<TRune>>(riotGamesRoutes.runes()),
     staleTime: Infinity
   });
 

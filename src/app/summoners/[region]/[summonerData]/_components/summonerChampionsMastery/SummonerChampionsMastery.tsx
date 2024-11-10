@@ -32,8 +32,8 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
   } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['championsMastery', summonerPuuid, getTopChampions],
-    queryFn: async () => {
-      return await fetchApi<Array<TChampionMastery>>(
+    queryFn: () => {
+      return fetchApi<Array<TChampionMastery>>(
         riotGamesRoutes.summonerChampionMastery(summonerPuuid, regionLink, getTopChampions)
       );
     }
@@ -41,12 +41,13 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
 
   const championIds = championMasteryData?.map((champion) => champion.championId);
 
-  const { data: filteredChampionsData, isPending: isFilteredChampionsPending } = useQuery({
+  const {
+    data: filteredChampionsData,
+    isPending: isFilteredChampionsPending
+  } = useQuery({
     enabled: isChampionsMasterySuccess,
     queryKey: ['filteredChampions', isChampionsMasterySuccess, isChampionsMasteryRefetching],
-    queryFn: async () => {
-      return await fetchApi<Array<TChampion>>(riotGamesRoutes.filteredChampions(championIds))
-    }
+    queryFn: () => fetchApi<Array<TChampion>>(riotGamesRoutes.filteredChampions(championIds))
   });
 
   const sortedChampionsData = (): Array<TChampion> | undefined => {

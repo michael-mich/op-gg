@@ -29,8 +29,8 @@ const Page = () => {
   } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['matchStats', 'summonerPage', summonerPuuid],
-    queryFn: async () => {
-      return await fetchApi<Array<TSummonerChampionStats>>(
+    queryFn: () => {
+      return fetchApi<Array<TSummonerChampionStats>>(
         riotGamesCustomRoutes.summonerChampionStats(summonerPuuid, continentLink, '100')
       );
     }
@@ -46,11 +46,7 @@ const Page = () => {
   } = useQuery({
     enabled: isChampionStatsSuccess,
     queryKey: ['championData', 'summonerChampionsPage', isChampionStatsSuccess, summonerPuuid],
-    queryFn: async () => {
-      return await fetchApi<Array<TChampion>>(
-        riotGamesRoutes.filteredChampions(championIds)
-      );
-    }
+    queryFn: () => fetchApi<Array<TChampion>>(riotGamesRoutes.filteredChampions(championIds))
   });
 
   const loadingCondition = (isChampionStatsPending || isChampionDataPending);
