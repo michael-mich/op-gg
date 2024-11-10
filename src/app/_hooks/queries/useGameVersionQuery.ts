@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
 
-const useGameVersion = () => {
+const useGameVersionQuery = () => {
   return useQuery({
     queryKey: ['newestGameVersion'],
     queryFn: () => fetchApi<string>(riotGamesRoutes.newestGameVersion()),
@@ -10,4 +10,4 @@ const useGameVersion = () => {
   });
 }
 
-export default useGameVersion;
+export default useGameVersionQuery;
