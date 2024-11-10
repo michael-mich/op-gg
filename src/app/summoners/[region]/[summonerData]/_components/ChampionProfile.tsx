@@ -22,7 +22,7 @@ const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'defaul
     <div className='flex items-center'>
       <Image
         className={`rounded-image ${largeSize ? 'size-12' : 'size-8'}`}
-        src={`https://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/${summoner.championData?.image || `${summonerMatchHistory}.png`}`}
+        src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/champion/${summoner.championData?.image || `${summonerMatchHistory}.png`}`}
         width={48}
         height={48}
         alt={summoner.championData?.name || ''}
@@ -32,7 +32,7 @@ const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'defaul
           {summoner.spells?.map((spell, index) => (
             <Image
               className={`${imageSize} rounded first-of-type:mb-0.5`}
-              src={`https://ddragon.leagueoflegends.com/cdn/14.18.1/img/spell/${spell.image.full}`}
+              src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spell.image.full}`}
               width={15}
               height={15}
               alt={spell.name}

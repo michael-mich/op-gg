@@ -127,11 +127,11 @@ export interface TSummonerDetailedMatchHistory extends Pick<TUpdatedLiveGamePart
     minionsPerMinute: number;
     totalMinions: number;
     minions: number;
-    enemyJungleMinions: number;
   };
   challenges: {
     kda: number;
   };
+  rank: TSummonerRank | undefined;
 };
 
 export type TDetailedMatchHistory = {

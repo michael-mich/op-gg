@@ -105,9 +105,10 @@ export interface TSummonerMatchHistoryData extends Omit<TMatchParticipantStats, 
       description: string;
     }>;
   };
-  totalEnemyJungleMinionsKilled: number;
   [key: `item${number}`]: number;
   teamEarlySurrendered: boolean;
+  neutralMinionsKilled: number;
+  gameEndedInEarlySurrender: boolean;
   teamId: number;
 }
 
@@ -115,8 +116,8 @@ export type TMatchHistory = {
   info: {
     gameDuration: number;
     gameEndTimestamp: number;
-    gameType: string;
     participants: Array<TSummonerMatchHistoryData>;
+    queueId: number;
   }
 }
 

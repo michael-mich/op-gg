@@ -38,6 +38,9 @@ export const pandascoreRoutes = {
 };
 
 export const riotGamesRoutes = {
+  newestGameVersion: () => {
+    return createRouteUrl(RouteHandlers.RiotGames, 'newestGameVersion');
+  },
   runes: () => {
     return createRouteUrl(RouteHandlers.RiotGames, 'runes');
   },
@@ -143,8 +146,9 @@ export const riotGamesCustomRoutes = {
     );
   },
   detailedMatchHistory: (
-    summonerPuuid: Nullable<string>,
-    regionContinentLink: Nullable<string>,
+    summonerPuuid: string | undefined,
+    regionContinentLink: string | undefined,
+    regionLink: string | undefined,
     markedChampionId: string,
     mathcesCount: string | null
   ) => {
@@ -154,6 +158,7 @@ export const riotGamesCustomRoutes = {
       {
         [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
         [RouteHandlerParams.RegionContinentLink]: regionContinentLink,
+        [RouteHandlerParams.RegionLink]: regionLink,
         [RouteHandlerParams.MarkedChampionId]: markedChampionId,
         [RouteHandlerParams.MatchesCount]: mathcesCount
       }

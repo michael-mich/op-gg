@@ -13,7 +13,7 @@ import type {
   TAverageKdaStats,
   TChampionWinLostRatio
 } from '../_types/apiTypes/customApiTypes';
-import { type Spell, RuneType, type QueueType } from '@/app/_enums/enums';
+import { type Spell, RuneType, QueueType } from '@/app/_enums/enums';
 
 type TSummonerData = Array<Pick<TSummonerMatchHistoryData, 'assists' | 'deaths' | 'kills'>>;
 
@@ -28,6 +28,16 @@ export const findQueueTypeData = (
   queueType: QueueType
 ): TSummonerRank | undefined => {
   return queueData?.find((data) => data.queueType === queueType);
+}
+
+export const getSummonersRank = async <T extends Pick<TSummonerMatchHistoryData, 'summonerId'>>(
+  summonerData: T,
+  regionLink: string | null
+) => {
+  const rankData = await fetchApi<Array<TSummonerRank>>(
+    riotGamesRoutes.summonerRank(summonerData.summonerId, regionLink)
+  );
+  return findQueueTypeData(rankData, QueueType.RankedSolo);
 }
 
 export const calculateWinLossStats = (matchData: Array<{ win: boolean }> | undefined): TChampionWinLostRatio => {

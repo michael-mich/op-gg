@@ -6,7 +6,8 @@ import {
   calculatePercentage,
   sortSummonerRunesByType,
   filterSummonerSpells,
-  getChampionNameAndImage
+  getChampionNameAndImage,
+  getSummonersRank
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type {
@@ -15,13 +16,21 @@ import type {
   TRune,
   TChampionItem,
   TChampion,
+  TSummonerMatchHistoryData,
+  TSummonerRank
 } from '@/app/_types/apiTypes/apiTypes';
 import { RuneType, Spell } from '@/app/_enums/enums';
 
 type TChampionItemsAndIds = Array<[string, { name: string } & Pick<TChampion, 'image'>] | '0'>;
 
 export const GET = async (req: NextRequest) => {
-  const { summonerPuuid, regionContinentLink, markedChampionId, matchesCount } = getRouteHandlerParams(req);
+  const {
+    summonerPuuid,
+    regionContinentLink,
+    markedChampionId,
+    matchesCount,
+    regionLink
+  } = getRouteHandlerParams(req);
 
   const matchHistoryData = await fetchApi<Array<TMatchHistory>>(
     riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchesCount)
@@ -43,23 +52,34 @@ export const GET = async (req: NextRequest) => {
     })
   );
 
-  const championNameAndImage = matchesForMarkedChampion && await Promise.all(matchesForMarkedChampion?.map((match) =>
-    Promise.all(match.info.participants.map((summoner) => getChampionNameAndImage(summoner))))
-  );
+  const processSummonerMatches = async <T>(callback: (summoner: TSummonerMatchHistoryData) => T) => {
+    return matchesForMarkedChampion && await Promise.all(matchesForMarkedChampion.map((match) =>
+      Promise.all(match.info.participants.map((summoner) => {
+        return callback(summoner);
+      }))
+    ))
+  }
+
+  const summonersRank = await processSummonerMatches((summoner) => {
+    return getSummonersRank(summoner, regionLink);
+  });
+
+  const championNameAndImage = await processSummonerMatches((summoner) => {
+    return getChampionNameAndImage(summoner);
+  });
 
   const summonersSpells = matchesForMarkedChampion?.map((match) => {
     return filterSummonerSpells(Spell.Summoner1Id, Spell.Summoner2Id, match.info.participants, spellData);
   });
 
   const summonersMinionStats = matchHistoryData?.map((match) => match.info.participants.map((summoner) => {
-    const totalMinions = summoner.totalMinionsKilled + summoner.totalEnemyJungleMinionsKilled;
+    const totalMinions = summoner.totalMinionsKilled + summoner.neutralMinionsKilled;
     const minionsPerMinute = Math.round(totalMinions / (match.info.gameDuration / 60));
 
     return {
       minionsPerMinute,
       totalMinions,
-      minions: summoner.totalMinionsKilled,
-      enemyJungleMinions: summoner.totalEnemyJungleMinionsKilled
+      minions: summoner.totalMinionsKilled
     };
   }));
 
@@ -157,7 +177,8 @@ export const GET = async (req: NextRequest) => {
             killParticipation: summonersKillParticipation?.[matchIndex][summonerIndex],
             minions: summonersMinionStats?.[matchIndex][summonerIndex],
             items: summonersItems?.[matchIndex][summonerIndex],
-            championData: championNameAndImage?.[matchIndex][summonerIndex]
+            championData: championNameAndImage?.[matchIndex][summonerIndex],
+            rank: summonersRank?.[matchIndex][summonerIndex]
           };
         })
       }

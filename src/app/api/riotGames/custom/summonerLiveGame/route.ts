@@ -3,11 +3,11 @@ import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { filterSummonerSpells } from '@/app/_utils/matchStats';
-import { findQueueTypeData } from '@/app/_utils/matchStats';
 import {
   sortSummonerRunesByType,
   segregateSummonersToTeams,
-  getChampionNameAndImage
+  getChampionNameAndImage,
+  getSummonersRank
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type {
@@ -15,7 +15,6 @@ import type {
   TLiveGame,
   TSummonerAccount,
   TLiveGameParticipants,
-  TSummonerRank,
   TSummonerProfile,
   TSummonerSpellContent
 } from '@/app/_types/apiTypes/apiTypes';
@@ -24,7 +23,7 @@ import type {
   TUpdatedRune,
   TBannedChampion
 } from '@/app/_types/apiTypes/customApiTypes';
-import { Spell, QueueType, RuneType } from '@/app/_enums/enums';
+import { Spell, RuneType } from '@/app/_enums/enums';
 
 export const GET = async (req: NextRequest) => {
   const { summonerPuuid, regionLink, regionContinentLink } = getRouteHandlerParams(req);
@@ -63,11 +62,8 @@ export const GET = async (req: NextRequest) => {
     return participantData.perks.perkIds.slice(-3);
   });
 
-  const summonerRanks = await processGameParticipants(async (participantData) => {
-    const rankData = await fetchApi<Array<TSummonerRank>>(
-      riotGamesRoutes.summonerRank(participantData.summonerId, regionLink)
-    );
-    return findQueueTypeData(rankData, QueueType.RankedSolo);
+  const summonersRank = await processGameParticipants((participantData) => {
+    return getSummonersRank(participantData, regionLink);
   });
 
   const summonerNameAndTagLine = await processGameParticipants(async (participantData) => {
@@ -125,7 +121,7 @@ export const GET = async (req: NextRequest) => {
             summonerLevel: summonerLevels?.[index],
             spells: summonerSpells?.[index],
             runes: summonerRunes?.[index] as Array<TUpdatedRune | undefined>,
-            rank: summonerRanks?.[index],
+            rank: summonersRank?.[index],
             bannedChampion: bannedChampionsWithNames?.[index] as TBannedChampion | undefined,
             shardIds: shardIds?.[index]
           };
