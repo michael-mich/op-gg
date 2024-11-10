@@ -3,10 +3,12 @@
 import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import type { TSummonerLiveGameData } from '@/app/_types/apiTypes/customApiTypes';
 import GameTimer from './GameTimer';
 import TableHead from './TableHead';
@@ -31,6 +33,8 @@ const Page = () => {
   });
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink, regionLink } = useCurrentRegion() || {};
+
+  const { data: newestGameVersion } = useGameVersionQuery();
 
   const {
     data: liveGameData,
@@ -100,7 +104,7 @@ const Page = () => {
                             {summoner.bannedChampion && (
                               <Image
                                 className='size-8 rounded'
-                                src={`https://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/${summoner.bannedChampion?.image}`}
+                                src={`${imageEndpoints.championImage(newestGameVersion)}${summoner.bannedChampion?.image}`}
                                 width={32}
                                 height={32}
                                 alt={summoner.bannedChampion?.name || ''}

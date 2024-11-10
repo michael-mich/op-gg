@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import { handleKdaTextColor } from '@/app/_utils/utils';
 import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
 
@@ -7,6 +9,8 @@ type Props = {
 }
 
 const TopChampions = ({ recentGamesData }: Props) => {
+  const { data: newestGameVersion } = useGameVersionQuery();
+
   return (
     <div>
       <div className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
@@ -17,7 +21,7 @@ const TopChampions = ({ recentGamesData }: Props) => {
           <div className='flex items-center' key={championData.championDetails.name}>
             <Image
               className='rounded-image mr-2'
-              src={`https://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/${championData.championDetails.image?.full}`}
+              src={`${imageEndpoints.championImage(newestGameVersion)}${championData.championDetails.image?.full}`}
               width={24}
               height={24}
               alt={championData.championDetails.name || ''}

@@ -1,4 +1,6 @@
 import { memo } from 'react';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import Image from 'next/image';
 import type {
   TUpdatedLiveGameParticipants,
@@ -12,6 +14,8 @@ type Props = {
 }
 
 const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'default' }: Props) => {
+  const { data: newestGameVersion } = useGameVersionQuery();
+
   const summonerLiveGame = (summoner as TUpdatedLiveGameParticipants).summonerNameAndTagLine;
   const summonerMatchHistory = (summoner as TSummonerDetailedMatchHistory).championName;
 
@@ -22,7 +26,7 @@ const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'defaul
     <div className='flex items-center'>
       <Image
         className={`rounded-image ${largeSize ? 'size-12' : 'size-8'}`}
-        src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/champion/${summoner.championData?.image || `${summonerMatchHistory}.png`}`}
+        src={`${imageEndpoints.championImage(newestGameVersion)}${summoner.championData?.image || `${summonerMatchHistory}.png`}`}
         width={48}
         height={48}
         alt={summoner.championData?.name || ''}
@@ -32,7 +36,7 @@ const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'defaul
           {summoner.spells?.map((spell, index) => (
             <Image
               className={`${imageSize} rounded first-of-type:mb-0.5`}
-              src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spell.image.full}`}
+              src={`${imageEndpoints.spell(newestGameVersion)}${spell.image.full}`}
               width={15}
               height={15}
               alt={spell.name}
@@ -47,7 +51,7 @@ const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'defaul
             return (
               <Image
                 className={`${imageSize} first-of-type:bg-black first-of-type:rounded-full first-of-type:aspect-square first-of-type:mb-0.5`}
-                src={`https://ddragon.leagueoflegends.com/cdn/img/${firstElement ? rune?.slots[0].icon : rune?.icon}`}
+                src={`${imageEndpoints.rune}${firstElement ? rune?.slots[0].icon : rune?.icon}`}
                 width={15}
                 height={15}
                 alt={(firstElement ? rune?.slots[0].name : rune?.name) || ''}

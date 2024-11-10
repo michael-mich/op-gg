@@ -4,8 +4,10 @@ import Image from 'next/image';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { useQuery } from '@tanstack/react-query';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import { calculateTimeUnit } from '@/app/_utils/utils';
 import { checkQueueType, checkSummonerKills } from './utils/utils';
 import type { TDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
@@ -22,6 +24,8 @@ type Props = {
 const MatchHistory = ({ markedChampionId }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink, regionLink } = useCurrentRegion() || {};
+
+  const { data: newestGameVersion } = useGameVersionQuery();
 
   const { data: matchHistoryData } = useQuery({
     enabled: !!summonerPuuid,
@@ -107,7 +111,7 @@ const MatchHistory = ({ markedChampionId }: Props) => {
                   {team.teamParticipants.map((summoner) => (
                     <div key={summoner.puuid}>
                       <Image
-                        src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/champion/${summoner.championData?.image}`}
+                        src={`${imageEndpoints.championImage(newestGameVersion)}${summoner.championData?.image}`}
                         width={25}
                         height={25}
                         alt={summoner.championData?.name || ''}

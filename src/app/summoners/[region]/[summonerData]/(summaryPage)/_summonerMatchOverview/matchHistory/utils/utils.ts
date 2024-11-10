@@ -1,4 +1,4 @@
-import type { TSummonerDetailedMatchHistory } from "@/app/_types/apiTypes/customApiTypes";
+import type { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
 
 export const checkSummonerKills = (currentSummoner: TSummonerDetailedMatchHistory) => {
   if (currentSummoner.pentaKills > 0) {

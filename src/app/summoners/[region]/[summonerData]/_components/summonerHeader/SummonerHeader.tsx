@@ -8,6 +8,8 @@ import { useAppDispatch } from '@/app/_hooks/useReduxHooks';
 import { setSummonerId } from '@/app/_lib/features/summonerIdSlice';
 import { setSummonerPuuid } from '@/app/_lib/features/summonerPuuidSlice';
 import { useQuery } from '@tanstack/react-query';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import type { TLocalStorageSummoner, TSummonerPageParams } from '@/app/_types/types';
 import SummonerHeaderSkeleton from './Skeleton';
 import FavoriteSummonerButton from './FavoriteSummonerButton';
@@ -22,6 +24,8 @@ const SummonerHeader = () => {
   const currentRegionData = useCurrentRegion();
 
   const summonerName = params.summonerData.replace('-', ' ').split(' ')[0];
+
+  const { data: newestGameVersion } = useGameVersionQuery();
 
   const {
     data: summonerAccountData,
@@ -87,7 +91,7 @@ const SummonerHeader = () => {
               <div className='flex flex-col'>
                 <Image
                   className='w-24 aspect-square object-contain rounded-2xl'
-                  src={`https://ddragon.leagueoflegends.com/cdn/14.19.1/img/profileicon/${summonerProfileData?.profileIconId}.png`}
+                  src={`${imageEndpoints.summonerProfileIcon(newestGameVersion)}${summonerProfileData?.profileIconId}.png`}
                   width={20}
                   height={20}
                   alt=''

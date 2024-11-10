@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import type { TRune } from '@/app/_types/apiTypes/apiTypes';
 import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/customApiTypes';
 import { shardData } from './summonerRunesData';
@@ -74,7 +75,7 @@ const SummonerRunes = ({ summoner }: Props) => {
             >
               <Image
                 className='size-7 bg-almostWhite dark:bg-darkMode-darkBlue rounded-full aspect-square m-auto'
-                src={`https:ddragon.leagueoflegends.com/cdn/img/${mainRune?.icon}`}
+                src={`${imageEndpoints.rune}${mainRune?.icon}`}
                 width={28}
                 height={28}
                 alt={mainRune?.name || ''}
@@ -91,7 +92,7 @@ const SummonerRunes = ({ summoner }: Props) => {
                         <Image
                           className={`${!rune.markedRune && 'grayscale opacity-50'} 
                           size-7 bg-darkMode-darkBlue rounded-full aspect-square`}
-                          src={`https:ddragon.leagueoflegends.com/cdn/img/${rune?.icon}`}
+                          src={`${imageEndpoints.rune}${rune?.icon}`}
                           width={28}
                           height={28}
                           alt={rune.name}

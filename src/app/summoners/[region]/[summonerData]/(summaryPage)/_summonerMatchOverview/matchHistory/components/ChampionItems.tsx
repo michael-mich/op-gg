@@ -1,3 +1,5 @@
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import Image from 'next/image';
 import type { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
 
@@ -6,6 +8,8 @@ interface Props extends Pick<TSummonerDetailedMatchHistory, 'win' | 'items'> {
 }
 
 const ChampionItems = ({ items, win, earlySurrender }: Props) => {
+  const { data: newestGameVersion } = useGameVersionQuery();
+
   return (
     <div className='flex items-center gap-0.5'>
       {items.map((item, index) => {
@@ -20,7 +24,7 @@ const ChampionItems = ({ items, win, earlySurrender }: Props) => {
             {item !== null && (
               <Image
                 className={`${lastItem && 'rounded-full'} rounded`}
-                src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/item/${item.image.full}`}
+                src={`${imageEndpoints.championItem(newestGameVersion)}${item.image.full}`}
                 width={32}
                 height={32}
                 alt={item.name}

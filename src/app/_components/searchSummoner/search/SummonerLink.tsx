@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import { getLocalStorageData } from '@/app/_utils/utils';
 import type { TSummonerAccount, TSummonerProfile } from '@/app/_types/apiTypes/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
@@ -31,6 +33,8 @@ const SummonerLink = ({
 }: Props) => {
   const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);
   const { regionLink } = markedRegionData;
+
+  const { data: newestGameVersion } = useGameVersionQuery();
 
   const { data: summonerLevelAndIconIdData } = useQuery({
     enabled: !!summonerAccountData,
@@ -78,7 +82,7 @@ const SummonerLink = ({
       >
         <Image
           className='w-9 rounded-full aspect-square'
-          src={`https://ddragon.leagueoflegends.com/cdn/14.14.1/img/profileicon/${summonerLevelAndIconIdData?.profileIconId}.png`}
+          src={`${imageEndpoints.summonerProfileIcon(newestGameVersion)}${summonerLevelAndIconIdData?.profileIconId}.png`}
           width={30}
           height={30}
           alt=""

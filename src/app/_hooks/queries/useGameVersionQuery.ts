@@ -6,7 +6,7 @@ const useGameVersionQuery = () => {
   return useQuery({
     queryKey: ['newestGameVersion'],
     queryFn: () => fetchApi<string>(riotGamesRoutes.newestGameVersion()),
-    staleTime: 24 * 60 * 60 * 1000
+    staleTime: 24 * 60 * 60 * 1000 // 1 day
   });
 }
 

@@ -5,9 +5,11 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import type { TChampion, TChampionMastery } from '@/app/_types/apiTypes/apiTypes';
 import type { TSummonerPageParams } from '@/app/_types/types';
 import { IoIosArrowForward } from "react-icons/io";
@@ -22,6 +24,8 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
   const params = useParams<TSummonerPageParams>();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { regionLink } = useCurrentRegion() || {};
+
+  const { data: newestGameVersion } = useGameVersionQuery();
 
   const {
     data: championMasteryData,
@@ -98,7 +102,7 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
                       <div>
                         <Image
                           className={`${getTopChampions ? 'size-10' : 'size-[60px]'} object-contain rounded`}
-                          src={`https://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/${championData?.image.full}`}
+                          src={`${imageEndpoints.championImage(newestGameVersion)}${championData?.image.full}`}
                           width={40}
                           height={40}
                           alt={championData?.name || ''}

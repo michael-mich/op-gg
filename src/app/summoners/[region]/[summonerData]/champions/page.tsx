@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { useQuery } from '@tanstack/react-query';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes, riotGamesCustomRoutes } from '@/app/_constants/endpoints';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import { handleKdaTextColor } from '@/app/_utils/utils';
 import type { TChampion, TChampionStats } from '@/app/_types/apiTypes/apiTypes';
 import type { TSummonerChampionStats } from '@/app/_types/apiTypes/customApiTypes';
@@ -20,6 +22,8 @@ const Page = () => {
   const [sortOrderDescending, setSortOrderDescending] = useState(true);
   const { continentLink } = useCurrentRegion() || {};
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
+
+  const { data: newestGameVersion } = useGameVersionQuery();
 
   const {
     data: championStats,
@@ -254,7 +258,7 @@ const Page = () => {
                   <TableCell className='table-cell-hover-bg'>
                     <div className='flex items-center gap-2'>
                       <Avatar
-                        src={`https://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/${stats.championImage}`}
+                        src={`${imageEndpoints.championImage(newestGameVersion)}${stats.championImage}`}
                         size='sm'
                       />
                       <span className='text-xs font-bold'>{stats.championName}</span>

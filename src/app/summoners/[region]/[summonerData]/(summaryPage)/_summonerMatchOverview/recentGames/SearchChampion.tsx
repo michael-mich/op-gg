@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import useOutsideClick from '@/app/_hooks/useOutsideClick';
 import Image from 'next/image';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
 import type { TSetState } from '@/app/_types/tuples';
 import { IoIosSearch } from 'react-icons/io';
@@ -15,6 +17,8 @@ const SearchChampion = ({ recentGamesData, setMarkedChampionId }: Props) => {
   const [displaySummonerList, setDisplaySummonerList] = useState(false);
   const [searchedChampion, setSearchedChampion] = useState('');
   const championsListRef = useOutsideClick(displaySummonerList, setDisplaySummonerList);
+
+  const { data: newestGameVersion } = useGameVersionQuery();
 
   const searchFilteredChampions = recentGamesData?.playedChampions?.filter((champion) => {
     const cleanChampionName = champion.name.toLowerCase().replaceAll('\'', '');
@@ -70,7 +74,7 @@ const SearchChampion = ({ recentGamesData, setMarkedChampionId }: Props) => {
               >
                 <Image
                   className='size-6 rounded-full aspect-square'
-                  src={`https://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/${champion.image.full}`}
+                  src={`${imageEndpoints.championImage(newestGameVersion)}${champion.image.full}`}
                   width={24}
                   height={24}
                   alt={champion.name}
