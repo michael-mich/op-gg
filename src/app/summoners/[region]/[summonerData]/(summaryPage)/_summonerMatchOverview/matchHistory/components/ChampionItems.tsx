@@ -3,8 +3,10 @@ import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import Image from 'next/image';
 import type { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
 
-interface Props extends Pick<TSummonerDetailedMatchHistory, 'win' | 'items'> {
-  earlySurrender: boolean;
+type Props = {
+  earlySurrender: boolean | undefined;
+  items: TSummonerDetailedMatchHistory['items'] | undefined;
+  win: boolean | undefined;
 }
 
 const ChampionItems = ({ items, win, earlySurrender }: Props) => {
@@ -12,7 +14,7 @@ const ChampionItems = ({ items, win, earlySurrender }: Props) => {
 
   return (
     <div className='flex items-center gap-0.5'>
-      {items.map((item, index) => {
+      {items?.map((item, index) => {
         const lastItem = items.length - 1 === index;
 
         return (

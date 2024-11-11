@@ -53,20 +53,20 @@ const MatchHistory = ({ markedChampionId }: Props) => {
 
         return (
           <div
-            className={`${currentSummoner.gameEndedInEarlySurrender ? 'border-l-lightMode-secondLighterGray dark:border-l-darkMode-lighterGray bg-lightMode-lightGray dark:bg-darkMode-darkGray' : currentSummoner.win ? 'bg-lightBlue dark:bg-darkBlue border-l-blue' : 'bg-lightRed dark:bg-darkRed border-l-red'} 
+            className={`${currentSummoner?.gameEndedInEarlySurrender ? 'border-l-lightMode-secondLighterGray dark:border-l-darkMode-lighterGray bg-lightMode-lightGray dark:bg-darkMode-darkGray' : currentSummoner?.win ? 'bg-lightBlue dark:bg-darkBlue border-l-blue' : 'bg-lightRed dark:bg-darkRed border-l-red'} 
             flex border-l-[6px] rounded-tl-[5px] rounded-bl-[5px] py-1.5 px-2.5 mt-2 first-of-type:mt-0`}
             key={matchIndex}
           >
             <div>
               <div className='pb-2'>
-                <div className={`${currentSummoner.gameEndedInEarlySurrender ? 'text-darkMode-lighterGray' : currentSummoner.win ? 'text-blue' : 'text-red'} text-xs font-bold`}>
+                <div className={`${currentSummoner?.gameEndedInEarlySurrender ? 'text-darkMode-lighterGray' : currentSummoner?.win ? 'text-blue' : 'text-red'} text-xs font-bold`}>
                   {checkQueueType(queueId)}
                 </div>
                 <TimeSinceMatch match={match} />
               </div>
-              <div className={`${currentSummoner.gameEndedInEarlySurrender ? 'border-t-lightMode-thirdLighterGray dark:border-t-lightGrayBackground' : currentSummoner.win ? 'border-t-[#d5e3ff] dark:border-t-[#2f436e]' : 'border-t-[#ffd8d9] dark:border-t-[#703c47]'} border-t pt-2`}>
+              <div className={`${currentSummoner?.gameEndedInEarlySurrender ? 'border-t-lightMode-thirdLighterGray dark:border-t-lightGrayBackground' : currentSummoner?.win ? 'border-t-[#d5e3ff] dark:border-t-[#2f436e]' : 'border-t-[#ffd8d9] dark:border-t-[#703c47]'} border-t pt-2`}>
                 <div className='text-xs font-bold text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
-                  {currentSummoner.gameEndedInEarlySurrender ? 'Remake' : currentSummoner.win ? 'Victory' : 'Defeat'}
+                  {currentSummoner?.gameEndedInEarlySurrender ? 'Remake' : currentSummoner?.win ? 'Victory' : 'Defeat'}
                 </div>
                 <div className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
                   {gameMinutes}m {gameSeconds}s
@@ -79,24 +79,24 @@ const MatchHistory = ({ markedChampionId }: Props) => {
                   <ChampionProfile summoner={match.info.currentSummoner} size='large' />
                   <div className='flex flex-col'>
                     <div className='text-[15px] font-bold dark:text-darkMode-secondMediumGray'>
-                      <span className='text-lightMode-black dark:text-white'>{currentSummoner.kills}</span> / <span className='text-red'>{currentSummoner.deaths}</span> / <span className='text-lightMode-black dark:text-white'>{currentSummoner.assists}</span>
+                      <span className='text-lightMode-black dark:text-white'>{currentSummoner?.kills}</span> / <span className='text-red'>{currentSummoner?.deaths}</span> / <span className='text-lightMode-black dark:text-white'>{currentSummoner?.assists}</span>
                     </div>
                     <span className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray text-xs'>
-                      {currentSummoner.challenges.kda.toFixed(2)}:1 KDA
+                      {currentSummoner?.kda?.toFixed(2)}:1 KDA
                     </span>
                   </div>
                 </div>
                 <ul className='border-l'>
-                  <li>P/Kill {currentSummoner.killParticipation}%</li>
-                  <li>CS {currentSummoner.minions.totalMinions} ({currentSummoner.minions.minionsPerMinute})</li>
-                  <li>{currentSummoner.rank?.tier}</li>
+                  <li>P/Kill {currentSummoner?.killParticipation}%</li>
+                  <li>CS {currentSummoner?.minions?.totalMinions} ({currentSummoner?.minions?.minionsPerMinute})</li>
+                  <li>{currentSummoner?.rank?.tier}</li>
                 </ul>
               </div>
               <div className='flex items-center gap-2'>
                 <ChampionItems
-                  items={currentSummoner.items}
-                  win={currentSummoner.win}
-                  earlySurrender={currentSummoner.gameEndedInEarlySurrender}
+                  items={currentSummoner?.items}
+                  win={currentSummoner?.win}
+                  earlySurrender={currentSummoner?.gameEndedInEarlySurrender}
                 />
                 {checkSummonerKills(currentSummoner) && (
                   <span className='text-xs bg-red rounded-xl py-0.5 px-2'>

@@ -119,24 +119,22 @@ export interface TTeamGeneric<T> {
 export interface TSummonerDetailedMatchHistory extends Pick<TUpdatedLiveGameParticipants, 'championData'>, Omit<TSummonerMatchHistoryData, 'perks'> {
   items: Array<{
     name: string;
-  } & Pick<TChampion, 'image'> | null>;
+  } & Pick<TChampion, 'image'> | null> | undefined;
   killParticipation: number | undefined;
-  runes: Array<TUpdatedRune | undefined>;
+  runes: Array<TUpdatedRune | undefined> | undefined;
   spells: Array<TSummonerSpellContent> | undefined;
   minions: {
     minionsPerMinute: number;
     totalMinions: number;
     minions: number;
-  };
-  challenges: {
-    kda: number;
-  };
+  } | undefined;
   rank: TSummonerRank | undefined;
+  kda: number | undefined;
 };
 
 export type TDetailedMatchHistory = {
   info: Omit<TMatchHistory['info'], 'participants'> & {
     segregatedTeams: Array<TTeamGeneric<TSummonerDetailedMatchHistory | undefined>>;
-    currentSummoner: TSummonerDetailedMatchHistory;
+    currentSummoner: TSummonerDetailedMatchHistory | undefined;
   };
 }

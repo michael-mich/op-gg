@@ -41,6 +41,7 @@ const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
 
   const handleKeyboardEvent = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
+      console.log('enter');
       refetchSummonerAccountData();
     }
   }
@@ -54,7 +55,7 @@ const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
       setDisplaySummonerLink(true);
     }
   }, [isSummonerAccountError, isSummonerAccountPending, isSummonerAccountSuccess]);
-
+  console.log(summonerName);
   return (
     <div className={`${pageOtherThanHomePage ? 'h-8 rounded-r bg-white pr-3' : 'flex items-center h-[60px] rounded-r-full bg-white dark:bg-darkMode-mediumGray pl-4 pr-8'} flex justify-between w-full`}>
       <div ref={summonerSectionsRef} className={`${pageOtherThanHomePage && 'pl-3'} relative w-full`}>
