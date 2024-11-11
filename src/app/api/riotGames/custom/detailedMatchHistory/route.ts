@@ -7,7 +7,8 @@ import {
   sortSummonerRunesByType,
   filterSummonerSpells,
   getChampionNameAndImage,
-  getSummonersRank
+  getSummonersRank,
+  calculateKda
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type {
@@ -66,6 +67,10 @@ export const GET = async (req: NextRequest) => {
   const championNameAndImage = await processSummonerMatches((summoner) => {
     return getChampionNameAndImage(summoner);
   });
+
+  const summonersKda = matchesForMarkedChampion?.map((match) => match.info.participants.map((summoner) => {
+    return calculateKda(summoner.deaths, summoner.assists, summoner.kills);
+  }));
 
   const summonersSpells = matchesForMarkedChampion?.map((match) => {
     return filterSummonerSpells(Spell.Summoner1Id, Spell.Summoner2Id, match.info.participants, spellData);
@@ -177,7 +182,8 @@ export const GET = async (req: NextRequest) => {
             minions: summonersMinionStats?.[matchIndex][summonerIndex],
             items: summonersItems?.[matchIndex][summonerIndex],
             championData: championNameAndImage?.[matchIndex][summonerIndex],
-            rank: summonersRank?.[matchIndex][summonerIndex]
+            rank: summonersRank?.[matchIndex][summonerIndex],
+            kda: summonersKda?.[matchIndex][summonerIndex]
           };
         })
       }
@@ -194,7 +200,8 @@ export const GET = async (req: NextRequest) => {
         teamParticipants: team.teamParticipants.map((summoner, summonerIndex) => {
           const currentPosition = orderedPositions[summonerIndex];
 
-          if (summoner.individualPosition === currentPosition) {
+          // Some queues don't include position, e.g. ARAM
+          if (summoner.individualPosition === currentPosition || summoner.individualPosition === 'Invalid') {
             return summoner;
           }
           else {

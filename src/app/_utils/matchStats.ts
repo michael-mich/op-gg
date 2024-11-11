@@ -74,6 +74,10 @@ export const filterSummonerSpells = <T extends Record<SpellKeys<T>, number>>(
   }));
 }
 
+export const calculateKda = (deaths: number, assists: number, kills: number) => {
+  return deaths === 0 ? assists + kills : (assists + kills) / deaths;
+}
+
 export const calculateAverageKdaStats = (summonerData: TSummonerData): TAverageKdaStats => {
   const { assists: totalAssists, deaths: totalDeaths, kills: totalKills } = summonerData.reduce(
     (accumulator, { assists, deaths, kills }) => {
@@ -85,10 +89,8 @@ export const calculateAverageKdaStats = (summonerData: TSummonerData): TAverageK
     }, { assists: 0, deaths: 0, kills: 0 }
   );
 
-  const kda = totalDeaths === 0 ? totalAssists + totalKills : (totalAssists + totalKills) / totalDeaths;
-
   return {
-    kda,
+    kda: calculateKda(totalDeaths, totalAssists, totalKills),
     averageKills: (totalKills / summonerData.length).toFixed(1),
     averageAssists: (totalAssists / summonerData.length).toFixed(1),
     averageDeaths: (totalDeaths / summonerData.length).toFixed(1)
