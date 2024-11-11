@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
@@ -49,7 +49,6 @@ const Page = () => {
       );
     }
   });
-  console.log(liveGameData)
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded shadow-[0_0_5px_0_white] dark:shadow-none pt-2 mb-2'>
