@@ -17,7 +17,7 @@ const ChampionItems = ({ items, win, earlySurrender }: Props) => {
 
         return (
           <div
-            className={`${win ? 'bg-[#b3cdff] dark:bg-[#2f436e]' : 'bg-[#ffbac3] dark:bg-[#703c47]'} 
+            className={`${earlySurrender ? 'bg-[#c3cbd1] dark:bg-[#515163]' : win ? 'bg-[#b3cdff] dark:bg-[#2f436e]' : 'bg-[#ffbac3] dark:bg-[#703c47]'} 
             size-[22px] rounded ${lastItem && 'rounded-full'}`}
             key={index}
           >
