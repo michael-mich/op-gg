@@ -49,8 +49,7 @@ const Page = () => {
       );
     }
   });
-
-  const gameData = useMemo(() => liveGameData, [summonerPuuid, isLiveGameSuccess]);
+  console.log(liveGameData)
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded shadow-[0_0_5px_0_white] dark:shadow-none pt-2 mb-2'>
@@ -70,7 +69,7 @@ const Page = () => {
             </span>
             <GameTimer gameLength={liveGameData?.gameLength} />
           </div>
-          {gameData?.teams?.map((team) => {
+          {liveGameData?.teams?.map((team) => {
             const blueTeam = team.teamType === 'blue';
 
             return (
