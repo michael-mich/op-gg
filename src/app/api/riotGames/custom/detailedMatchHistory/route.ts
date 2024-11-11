@@ -16,8 +16,7 @@ import type {
   TRune,
   TChampionItem,
   TChampion,
-  TSummonerMatchHistoryData,
-  TSummonerRank
+  TSummonerMatchHistoryData
 } from '@/app/_types/apiTypes/apiTypes';
 import { RuneType, Spell } from '@/app/_enums/enums';
 
@@ -185,15 +184,36 @@ export const GET = async (req: NextRequest) => {
     };
   });
 
-  const segregatedMatchData = updatedSummonerData?.map((match) => {
+  const orderedPositions = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY'];
+
+  const segregatedTeamsAndSummoners = updatedSummonerData?.map((match) => {
+    const teams = segregateSummonersToTeams(match.info.participants);
+    return teams.map((team) => {
+      return {
+        ...team,
+        teamParticipants: team.teamParticipants.map((summoner, summonerIndex) => {
+          const currentPosition = orderedPositions[summonerIndex];
+
+          if (summoner.individualPosition === currentPosition) {
+            return summoner;
+          }
+          else {
+            return team.teamParticipants.find((findSum) => findSum.individualPosition === currentPosition);
+          }
+        })
+      };
+    });
+  });
+
+  const segregatedMatchData = updatedSummonerData?.map((match, matchIndex) => {
     const { participants, ...matchInfoData } = match.info;
 
     return {
       ...match,
       info: {
         ...matchInfoData,
-        segregatedTeams: segregateSummonersToTeams(match.info.participants),
-        currentSummoner: match.info.participants.find((summoner) => summoner.puuid === summonerPuuid)
+        segregatedTeams: segregatedTeamsAndSummoners?.[matchIndex],
+        currentSummoner: match.info.participants.find((summoner) => summoner.puuid === summonerPuuid),
       }
     }
   });
