@@ -136,7 +136,7 @@ export interface TSummonerDetailedMatchHistory extends Pick<TUpdatedLiveGamePart
 
 export type TDetailedMatchHistory = {
   info: Omit<TMatchHistory['info'], 'participants'> & {
-    segregatedTeams: Array<TTeamGeneric<TSummonerDetailedMatchHistory>>;
+    segregatedTeams: Array<TTeamGeneric<TSummonerDetailedMatchHistory | undefined>>;
     currentSummoner: TSummonerDetailedMatchHistory;
   };
 }

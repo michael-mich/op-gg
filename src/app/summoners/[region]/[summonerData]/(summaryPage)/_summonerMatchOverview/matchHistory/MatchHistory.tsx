@@ -108,13 +108,13 @@ const MatchHistory = ({ markedChampionId }: Props) => {
             <div className='flex'>
               {match.info.segregatedTeams.map((team) => (
                 <div key={team.teamType}>
-                  {team.teamParticipants.map((summoner) => (
-                    <div key={summoner.puuid}>
+                  {team.teamParticipants.map((summoner, summonerIndex) => (
+                    <div key={`${summoner?.puuid}-${summonerIndex}`}>
                       <Image
-                        src={`${imageEndpoints.championImage(newestGameVersion)}${summoner.championData?.image}`}
+                        src={`${imageEndpoints.championImage(newestGameVersion)}${summoner?.championData?.image}`}
                         width={25}
                         height={25}
-                        alt={summoner.championData?.name || ''}
+                        alt={summoner?.championData?.name || ''}
                       />
                     </div>
                   ))}
