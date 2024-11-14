@@ -5,7 +5,8 @@ import {
   calculateAverageKdaStats,
   calculatePercentage,
   segregateSummonersToTeams,
-  calculateWinLossStats
+  calculateWinLossStats,
+  isRecognizedGameMode
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type { TChampion, TMatchHistory, TKda } from '@/app/_types/apiTypes/apiTypes';
@@ -31,7 +32,9 @@ export const GET = async (req: NextRequest) => {
   );
 
   const currentSummonerMatchData = matchHistoryData?.flatMap((match) =>
-    match?.info.participants.filter((participant) => (participant.puuid === summonerPuuid))
+    match?.info.participants.filter((participant) =>
+      participant.puuid === summonerPuuid && isRecognizedGameMode(match)
+    )
   );
   const currentSummonerChampionIds = currentSummonerMatchData?.map((match) => match.championId);
 
@@ -77,7 +80,7 @@ export const GET = async (req: NextRequest) => {
   }, {} as TPositionPlayAmount);
 
   const matchesWithSummonerPosition = matchHistoryData?.filter((match) =>
-    match.info.queueId !== 450 && match.info.queueId !== 4501
+    match.info.queueId !== 450 && match.info.queueId !== 4501 && isRecognizedGameMode(match)
   );
 
   const summonerPositionPlayPercentage = Object.entries(summonerPositionPlayAmount || {}).map(([position, data]) => ({

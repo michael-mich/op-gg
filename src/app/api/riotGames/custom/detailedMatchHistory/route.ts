@@ -8,7 +8,8 @@ import {
   filterSummonerSpells,
   getChampionNameAndImage,
   getSummonersRank,
-  calculateKda
+  calculateKda,
+  isRecognizedGameMode
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type {
@@ -46,7 +47,7 @@ export const GET = async (req: NextRequest) => {
       if (markedChampionIdNum !== 0) {
         return summoner.puuid === summonerPuuid && markedChampionIdNum === summoner.championId;
       }
-      else {
+      else if (isRecognizedGameMode(match)) {
         return summoner;
       }
     })

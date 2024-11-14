@@ -6,7 +6,8 @@ import type {
   TSummonerSpellId,
   TSpellId,
   TSummonerSpellContent,
-  TChampion
+  TChampion,
+  TMatchHistory
 } from '@/app/_types/apiTypes/apiTypes';
 import type {
   TTeamGeneric,
@@ -18,6 +19,10 @@ import { type Spell, RuneType, QueueType } from '@/app/_enums/enums';
 type TSummonerData = Array<Pick<TSummonerMatchHistoryData, 'assists' | 'deaths' | 'kills'>>;
 
 type SpellKeys<T> = T extends TSummonerSpellId ? keyof TSummonerSpellId : keyof TSpellId;
+
+export const isRecognizedGameMode = (match: TMatchHistory): boolean => {
+  return match.info.gameMode !== 'STRAWBERRY';
+}
 
 export const calculatePercentage = (part: number, total: number): number => {
   return Math.round((part / total) * 100);

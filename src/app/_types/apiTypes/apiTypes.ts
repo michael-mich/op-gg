@@ -123,6 +123,7 @@ export type TMatchHistory = {
     gameEndTimestamp: number;
     participants: Array<TSummonerMatchHistoryData>;
     queueId: number;
+    gameMode: string;
   }
 }
 
