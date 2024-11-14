@@ -64,19 +64,25 @@ export const GET = async (req: NextRequest) => {
     const position = individualPosition.toLowerCase();
     let positionData = championStats[position];
 
-    if (!positionData) {
-      positionData = championStats[position] = {
-        playAmount: 0
-      };
+    if (position !== 'invalid') {
+      if (!positionData) {
+        positionData = championStats[position] = {
+          playAmount: 0
+        };
+      }
+      positionData.playAmount += 1;
     }
-    positionData.playAmount += 1;
 
     return championStats;
   }, {} as TPositionPlayAmount);
 
+  const matchesWithSummonerPosition = matchHistoryData?.filter((match) =>
+    match.info.queueId !== 450 && match.info.queueId !== 4501
+  );
+
   const summonerPositionPlayPercentage = Object.entries(summonerPositionPlayAmount || {}).map(([position, data]) => ({
     position,
-    playedPercentage: calculatePercentage(data.playAmount, totalGames || 0)
+    playedPercentage: calculatePercentage(data.playAmount, matchesWithSummonerPosition?.length || 0)
   }));
 
   const summonerChampionPerformance = matchesForMarkedChampion?.reduce((championStats, match) => {
