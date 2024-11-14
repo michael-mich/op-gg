@@ -49,7 +49,7 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
     data: filteredChampionsData,
     isPending: isFilteredChampionsPending
   } = useQuery({
-    enabled: isChampionsMasterySuccess,
+    enabled: !!championIds,
     queryKey: ['filteredChampions', isChampionsMasterySuccess, isChampionsMasteryRefetching],
     queryFn: () => fetchApi<Array<TChampion>>(riotGamesRoutes.filteredChampions(championIds))
   });

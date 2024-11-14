@@ -48,7 +48,7 @@ const Page = () => {
     isError: isChampionDataError,
     isPending: isChampionDataPending
   } = useQuery({
-    enabled: isChampionStatsSuccess,
+    enabled: !!championIds,
     queryKey: ['championData', 'summonerChampionsPage', isChampionStatsSuccess, summonerPuuid],
     queryFn: () => fetchApi<Array<TChampion>>(riotGamesRoutes.filteredChampions(championIds))
   });
