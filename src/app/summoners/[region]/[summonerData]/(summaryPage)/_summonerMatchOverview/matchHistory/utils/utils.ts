@@ -1,22 +1,3 @@
-import type { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
-
-export const checkSummonerKills = (currentSummoner: TSummonerDetailedMatchHistory | undefined) => {
-  if (currentSummoner) {
-    if (currentSummoner.pentaKills > 0) {
-      return 'Penta';
-    }
-    else if (currentSummoner.quadraKills > 0) {
-      return 'Quadra';
-    }
-    else if (currentSummoner.tripleKills > 0) {
-      return 'Tripple';
-    }
-    else if (currentSummoner.doubleKills > 0) {
-      return 'Double';
-    }
-  }
-}
-
 export const checkQueueType = (queueId: number): string => {
   switch (queueId) {
     case 400: return 'Normal';

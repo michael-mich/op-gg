@@ -31,7 +31,7 @@ const RecentGames = ({ markedChampionId, setMarkedChampionId }: Props) => {
     queryKey: ['recentGames', summonerPuuid, markedChampionId],
     queryFn: () => {
       return fetchApi<TRecetGames>(
-        riotGamesCustomRoutes.recentGamesSummary(summonerPuuid, continentLink, markedChampionId, '20')
+        riotGamesCustomRoutes.recentGamesSummary(summonerPuuid, continentLink, markedChampionId, '10')
       );
     }
   });

@@ -110,6 +110,11 @@ export interface TSummonerMatchHistoryData extends Omit<TMatchParticipantStats, 
   neutralMinionsKilled: number;
   gameEndedInEarlySurrender: boolean;
   teamId: number;
+  riotIdGameName: string;
+  summonerName: string;
+  wardsPlaced: number;
+  turretKills: number;
+  killingSprees: number;
 }
 
 export type TMatchHistory = {
