@@ -286,7 +286,7 @@ const Page = () => {
                     <span className={`${handleKdaTextColor(stats.kda.kda)} block text-center text-xs font-bold`}>
                       {stats.kda.kda.toFixed(2)}
                     </span>
-                    <span className='w-[85px] table-cell text-xss'>{stats.kda.averageKills} / {stats.kda.averageAssists} / {stats.kda.averageDeaths}</span>
+                    <span className='w-[85px] table-cell text-xss'>{stats.kda.averageKills} / {stats.kda.averageDeaths} / {stats.kda.averageAssists}</span>
                   </TableCell>
                   <TableCell className='table-cell table-cell-hover-bg'>{stats.totalGold.toLocaleString('en')}</TableCell>
                   <TableCell className='table-cell table-cell-hover-bg'>{stats.minions.averageKilledMinions.toFixed(1)} ({stats.minions.minionsPerMinute})</TableCell>
