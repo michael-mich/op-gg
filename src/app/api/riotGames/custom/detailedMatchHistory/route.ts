@@ -9,7 +9,7 @@ import {
   getChampionNameAndImage,
   getSummonersRank,
   calculateKda,
-  isRecognizedGameMode
+  isRecognizedQueueId
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type {
@@ -20,7 +20,7 @@ import type {
   TChampion,
   TSummonerMatchHistoryData
 } from '@/app/_types/apiTypes/apiTypes';
-import { RuneType, Spell } from '@/app/_enums/enums';
+import { RuneType, Spell } from '@/app/_enums/match';
 
 type TChampionItemsAndIds = Array<[string, { name: string } & Pick<TChampion, 'image'>] | '0'>;
 
@@ -29,12 +29,12 @@ export const GET = async (req: NextRequest) => {
     summonerPuuid,
     regionContinentLink,
     markedChampionId,
-    matchesCount,
+    matchHistoryCount,
     regionLink
   } = getRouteHandlerParams(req);
 
   const matchHistoryData = await fetchApi<Array<TMatchHistory>>(
-    riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchesCount)
+    riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchHistoryCount)
   );
   const runeData = await fetchApi<Array<TRune>>(riotGamesRoutes.runes());
   const spellData = await fetchApi<Array<TSummonerSpellContent>>(riotGamesRoutes.summonerSpells());
@@ -47,7 +47,7 @@ export const GET = async (req: NextRequest) => {
       if (markedChampionIdNum !== 0) {
         return summoner.puuid === summonerPuuid && markedChampionIdNum === summoner.championId;
       }
-      else if (isRecognizedGameMode(match)) {
+      else if (isRecognizedQueueId(match)) {
         return summoner;
       }
     })

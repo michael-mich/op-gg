@@ -14,18 +14,20 @@ import type {
   TAverageKdaStats,
   TChampionWinLostRatio
 } from '../_types/apiTypes/customApiTypes';
-import { type Spell, RuneType, QueueType } from '@/app/_enums/enums';
+import { type Spell, RuneType, QueueType, QueueId } from '@/app/_enums/match';
 
 type TSummonerData = Array<Pick<TSummonerMatchHistoryData, 'assists' | 'deaths' | 'kills'>>;
 
 type SpellKeys<T> = T extends TSummonerSpellId ? keyof TSummonerSpellId : keyof TSpellId;
 
-export const isRecognizedGameMode = (match: TMatchHistory): boolean => {
-  return match.info.gameMode !== 'STRAWBERRY';
-}
-
 export const calculatePercentage = (part: number, total: number): number => {
   return Math.round((part / total) * 100);
+}
+
+export const isRecognizedQueueId = (match: TMatchHistory): boolean => {
+  const queueIdEntries = Object.entries(QueueId);
+  const numericQueueIds = queueIdEntries.filter(([key]) => !isNaN(parseInt(key)));
+  return numericQueueIds.some(([key]) => parseInt(key) === match.info.queueId);
 }
 
 export const findQueueTypeData = (

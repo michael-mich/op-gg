@@ -23,7 +23,7 @@ import type {
   TUpdatedRune,
   TBannedChampion
 } from '@/app/_types/apiTypes/customApiTypes';
-import { Spell, RuneType } from '@/app/_enums/enums';
+import { Spell, RuneType } from '@/app/_enums/match';
 
 export const GET = async (req: NextRequest) => {
   const { summonerPuuid, regionLink, regionContinentLink } = getRouteHandlerParams(req);

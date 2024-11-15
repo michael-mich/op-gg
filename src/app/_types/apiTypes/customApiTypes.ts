@@ -12,7 +12,7 @@ import type {
   TSummonerMatchHistoryData,
   TMatchHistory
 } from './apiTypes';
-import type { RuneType } from '@/app/_enums/enums';
+import type { RuneType } from '@/app/_enums/match';
 
 export type TAverageKdaStats = {
   kda: number,

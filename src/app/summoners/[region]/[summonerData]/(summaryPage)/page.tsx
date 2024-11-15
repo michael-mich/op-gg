@@ -1,6 +1,6 @@
 import SummonerRank from './_summonerRank/SummonerRank';
 import SummonerChampionsMastery from '../_components/summonerChampionsMastery/SummonerChampionsMastery';
-import { QueueType } from '@/app/_enums/enums';
+import { QueueType } from '@/app/_enums/match';
 import SummonerMatchOverview from './_summonerMatchOverview/SummonerMatchOverview';
 
 const Page = () => {

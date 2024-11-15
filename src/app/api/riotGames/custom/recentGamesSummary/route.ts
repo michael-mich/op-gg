@@ -6,11 +6,12 @@ import {
   calculatePercentage,
   segregateSummonersToTeams,
   calculateWinLossStats,
-  isRecognizedGameMode
+  isRecognizedQueueId
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type { TChampion, TMatchHistory, TKda } from '@/app/_types/apiTypes/apiTypes';
 import type { TChampionWinLostRatio } from '@/app/_types/apiTypes/customApiTypes';
+import { QueueId } from '@/app/_enums/match';
 
 interface TChampionPerformance extends TKda, Omit<TChampionWinLostRatio, 'winRatio'> {
   playAmount: number;
@@ -25,15 +26,20 @@ type TPositionPlayAmount = {
 }
 
 export const GET = async (req: NextRequest) => {
-  const { summonerPuuid, regionContinentLink, markedChampionId, matchesCount } = getRouteHandlerParams(req);
+  const {
+    summonerPuuid,
+    regionContinentLink,
+    markedChampionId,
+    matchHistoryCount
+  } = getRouteHandlerParams(req);
 
   const matchHistoryData = await fetchApi<Array<TMatchHistory>>(
-    riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchesCount)
+    riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchHistoryCount)
   );
 
   const currentSummonerMatchData = matchHistoryData?.flatMap((match) =>
     match?.info.participants.filter((participant) =>
-      participant.puuid === summonerPuuid && isRecognizedGameMode(match)
+      participant.puuid === summonerPuuid && isRecognizedQueueId(match)
     )
   );
   const currentSummonerChampionIds = currentSummonerMatchData?.map((match) => match.championId);
@@ -80,7 +86,8 @@ export const GET = async (req: NextRequest) => {
   }, {} as TPositionPlayAmount);
 
   const matchesWithSummonerPosition = matchHistoryData?.filter((match) =>
-    match.info.queueId !== 450 && match.info.queueId !== 4501 && isRecognizedGameMode(match)
+    match.info.queueId !== QueueId.ARAM && match.info.queueId !== QueueId.ARAMClash
+    && isRecognizedQueueId(match)
   );
 
   const summonerPositionPlayPercentage = Object.entries(summonerPositionPlayAmount || {}).map(([position, data]) => ({

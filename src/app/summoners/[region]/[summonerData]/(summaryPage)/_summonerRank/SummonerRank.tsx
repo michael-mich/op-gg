@@ -10,7 +10,7 @@ import { findQueueTypeData } from '@/app/_utils/matchStats';
 import { calculateWinRate, formatTierName, getRankedEmblem } from '@/app/_utils/rank';
 import SummonerRankSkeleton from './SummonerRankSkeleton';
 import type { TSummonerRank } from '@/app/_types/apiTypes/apiTypes';
-import { QueueType } from '@/app/_enums/enums';
+import { QueueType } from '@/app/_enums/match';
 
 type Props = {
   queueType: QueueType;
