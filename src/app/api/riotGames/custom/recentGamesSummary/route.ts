@@ -12,7 +12,6 @@ import {
 import type { NextRequest } from 'next/server';
 import type { TChampion, TMatchHistory, TKda } from '@/app/_types/apiTypes/apiTypes';
 import type { TChampionWinLostRatio } from '@/app/_types/apiTypes/customApiTypes';
-import { QueueId } from '@/app/_enums/match';
 
 interface TChampionPerformance extends TKda, Omit<TChampionWinLostRatio, 'winRatio'> {
   playAmount: number;
@@ -86,8 +85,8 @@ export const GET = async (req: NextRequest) => {
     return championStats;
   }, {} as TPositionPlayAmount);
 
-  const matchesWithSummonerPosition = matchHistoryData?.filter((match) =>
-    match.info.queueId !== QueueId.ARAM && match.info.queueId !== QueueId.ARAMClash
+  const matchesWithSummonerPosition = matchesForMarkedChampion?.filter((summoner) =>
+    summoner.individualPosition !== 'Invalid'
   );
 
   const summonerPositionPlayPercentage = Object.entries(summonerPositionPlayAmount || {}).map(([position, data]) => ({
