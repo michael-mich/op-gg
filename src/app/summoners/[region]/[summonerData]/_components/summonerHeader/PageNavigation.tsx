@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import type { TSummonerPageParams } from '@/app/_types/types';
 
 const pageNavigationData = ['Sumary', 'Champions', 'Mastery', 'Live Game'];
@@ -13,15 +13,17 @@ const PageNavigation = () => {
   const params = useParams<TSummonerPageParams>();
   const pathname = usePathname();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const { regionLink } = useCurrentRegion() || {};
+  const { regionLink, continentLink } = useCurrentRegion() || {};
 
   const summonerPageUrl = `/summoners/${params.region}/${params.summonerData}`;
   const liveGamePage = `${summonerPageUrl}/livegame`;
 
   const { isSuccess: isLiveGameSuccess } = useQuery({
     enabled: !!summonerPuuid,
-    queryKey: ['liveGameCheck', summonerPuuid],
-    queryFn: () => fetchApi(riotGamesRoutes.spectator(summonerPuuid, regionLink))
+    queryKey: ['liveGame', summonerPuuid],
+    queryFn: () => fetchApi(
+      riotGamesCustomRoutes.summonerLiveGame(summonerPuuid, regionLink, continentLink)
+    )
   });
 
   const generatePageUrl = (pageName: string): string => {
