@@ -9,7 +9,8 @@ import {
   getChampionNameAndImage,
   getSummonersRank,
   calculateKda,
-  isRecognizedQueueId
+  isRecognizedQueueId,
+  filterMatchesByMonths
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type {
@@ -33,9 +34,12 @@ export const GET = async (req: NextRequest) => {
     regionLink
   } = getRouteHandlerParams(req);
 
-  const matchHistoryData = await fetchApi<Array<TMatchHistory>>(
+  const fetchedHistoryMatch = await fetchApi<Array<TMatchHistory>>(
     riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchHistoryCount)
   );
+  const recentMatches = filterMatchesByMonths(fetchedHistoryMatch);
+  const matchHistoryData = isRecognizedQueueId(recentMatches);
+
   const runeData = await fetchApi<Array<TRune>>(riotGamesRoutes.runes());
   const spellData = await fetchApi<Array<TSummonerSpellContent>>(riotGamesRoutes.summonerSpells());
   const championItemData = await fetchApi<TChampionItem>('https://ddragon.leagueoflegends.com/cdn/14.21.1/data/en_US/item.json');
@@ -47,7 +51,7 @@ export const GET = async (req: NextRequest) => {
       if (markedChampionIdNum !== 0) {
         return summoner.puuid === summonerPuuid && markedChampionIdNum === summoner.championId;
       }
-      else if (isRecognizedQueueId(match)) {
+      else {
         return summoner;
       }
     })
@@ -77,7 +81,7 @@ export const GET = async (req: NextRequest) => {
     return filterSummonerSpells(Spell.Summoner1Id, Spell.Summoner2Id, match.info.participants, spellData);
   });
 
-  const summonersMinionStats = matchHistoryData?.map((match) => match.info.participants.map((summoner) => {
+  const summonersMinionStats = matchesForMarkedChampion?.map((match) => match.info.participants.map((summoner) => {
     const totalMinions = summoner.totalMinionsKilled + summoner.neutralMinionsKilled;
     const minionsPerMinute = Math.round(totalMinions / (match.info.gameDuration / 60));
 

@@ -4,7 +4,8 @@ import { fetchApi } from '@/app/_utils/fetchApi';
 import {
   calculateWinLossStats,
   calculateAverageKdaStats,
-  isRecognizedQueueId
+  isRecognizedQueueId,
+  filterMatchesByMonths
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type { TMatchHistory } from '@/app/_types/apiTypes/apiTypes';
@@ -43,14 +44,14 @@ const calculateTotalChampionStat = (
 export const GET = async (req: NextRequest) => {
   const { summonerPuuid, regionContinentLink, matchHistoryCount } = getRouteHandlerParams(req);
 
-  const matchStats = await fetchApi<Array<TMatchHistory>>(
+  const fetchedMatchHistory = await fetchApi<Array<TMatchHistory>>(
     riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchHistoryCount)
   );
+  const recentMatches = filterMatchesByMonths(fetchedMatchHistory);
+  const matchStats = isRecognizedQueueId(recentMatches);
 
   const summonerMatchStats = matchStats?.flatMap((stats) =>
-    stats?.info.participants.filter((participant) =>
-      participant.puuid === summonerPuuid && isRecognizedQueueId(stats)
-    )
+    stats?.info.participants.filter((participant) => participant.puuid === summonerPuuid)
   );
   const gameDurations = matchStats?.map((stats) => stats?.info.gameDuration);
 

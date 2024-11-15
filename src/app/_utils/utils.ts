@@ -1,6 +1,20 @@
 import type { TLocalStorageSummoner } from '../_types/types';
 import { type LocalStorageKeys, TimeUnit } from '../_enums/enums';
 
+export const getDifferenceBetweenCurrentDate = (dateInMilliseconds: number) => {
+  const currentDateMilliseconds = new Date().valueOf();
+
+  const diffBetweenDateInMilliseconds = currentDateMilliseconds - dateInMilliseconds;
+  const daysDifference = Math.floor(diffBetweenDateInMilliseconds / (1000 * 60 * 60 * 24));
+  const monthsDifference = Math.floor(daysDifference / 30);
+
+  return {
+    diffBetweenDateInMilliseconds,
+    daysDifference,
+    monthsDifference
+  };
+}
+
 export const getLocalStorageData = (localeStorageKey: LocalStorageKeys): Array<TLocalStorageSummoner> | undefined => {
   if (typeof window === 'object') {
     return JSON.parse(localStorage.getItem(localeStorageKey) || '[]');

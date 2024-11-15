@@ -1,5 +1,6 @@
 import { fetchApi } from './fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { getDifferenceBetweenCurrentDate } from './utils';
 import type {
   TSummonerRank,
   TSummonerMatchHistoryData,
@@ -24,10 +25,20 @@ export const calculatePercentage = (part: number, total: number): number => {
   return Math.round((part / total) * 100);
 }
 
-export const isRecognizedQueueId = (match: TMatchHistory): boolean => {
-  const queueIdEntries = Object.entries(QueueId);
-  const numericQueueIds = queueIdEntries.filter(([key]) => !isNaN(parseInt(key)));
-  return numericQueueIds.some(([key]) => parseInt(key) === match.info.queueId);
+export const filterMatchesByMonths = (matchHistory: Array<TMatchHistory> | undefined) => {
+  const maxMonthsSinceLastMatchPlay = 6;
+  return matchHistory?.filter((match) => {
+    const { monthsDifference } = getDifferenceBetweenCurrentDate(match.info.gameEndTimestamp);
+    return monthsDifference <= maxMonthsSinceLastMatchPlay;
+  });
+}
+
+export const isRecognizedQueueId = (matchHistory: Array<TMatchHistory> | undefined) => {
+  return matchHistory?.filter((match) => {
+    const queueIdEntries = Object.entries(QueueId);
+    const numericQueueIds = queueIdEntries.filter(([key]) => !isNaN(parseInt(key)));
+    return numericQueueIds.some(([key]) => parseInt(key) === match.info.queueId);
+  });
 }
 
 export const findQueueTypeData = (

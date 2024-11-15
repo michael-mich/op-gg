@@ -6,7 +6,8 @@ import {
   calculatePercentage,
   segregateSummonersToTeams,
   calculateWinLossStats,
-  isRecognizedQueueId
+  isRecognizedQueueId,
+  filterMatchesByMonths
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
 import type { TChampion, TMatchHistory, TKda } from '@/app/_types/apiTypes/apiTypes';
@@ -33,14 +34,14 @@ export const GET = async (req: NextRequest) => {
     matchHistoryCount
   } = getRouteHandlerParams(req);
 
-  const matchHistoryData = await fetchApi<Array<TMatchHistory>>(
+  const fetchedMatchHistory = await fetchApi<Array<TMatchHistory>>(
     riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchHistoryCount)
   );
+  const recentMatches = filterMatchesByMonths(fetchedMatchHistory);
+  const matchHistoryData = isRecognizedQueueId(recentMatches);
 
   const currentSummonerMatchData = matchHistoryData?.flatMap((match) =>
-    match?.info.participants.filter((participant) =>
-      participant.puuid === summonerPuuid && isRecognizedQueueId(match)
-    )
+    match?.info.participants.filter((participant) => participant.puuid === summonerPuuid)
   );
   const currentSummonerChampionIds = currentSummonerMatchData?.map((match) => match.championId);
 
@@ -87,7 +88,6 @@ export const GET = async (req: NextRequest) => {
 
   const matchesWithSummonerPosition = matchHistoryData?.filter((match) =>
     match.info.queueId !== QueueId.ARAM && match.info.queueId !== QueueId.ARAMClash
-    && isRecognizedQueueId(match)
   );
 
   const summonerPositionPlayPercentage = Object.entries(summonerPositionPlayAmount || {}).map(([position, data]) => ({
