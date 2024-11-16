@@ -7,7 +7,7 @@ import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import type { TSetState } from '@/app/_types/tuples';
 import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
-import Summary from './GameStatsSummary';
+import GameStatsSummary from './GameStatsSummary';
 import TopChampions from './TopChampions';
 import PreferredPosition from './PreferredPosition';
 import SearchChampion from './SearchChampion';
@@ -19,7 +19,7 @@ type Props = {
   matchHistoryCount: number;
 }
 
-const RecentGames = ({ markedChampionId, setMarkedChampionId, matchHistoryCount }: Props) => {
+const MatchHistorySummary = ({ markedChampionId, setMarkedChampionId, matchHistoryCount }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink } = useCurrentRegion() || {};
 
@@ -59,7 +59,7 @@ const RecentGames = ({ markedChampionId, setMarkedChampionId, matchHistoryCount 
             />
           </div>
           <div className='grid grid-cols-3 py-2 px-3'>
-            <Summary recentGamesData={recentGamesData} />
+            <GameStatsSummary recentGamesData={recentGamesData} />
             <TopChampions recentGamesData={recentGamesData} />
             <PreferredPosition recentGamesData={recentGamesData} />
           </div>
@@ -72,4 +72,4 @@ const RecentGames = ({ markedChampionId, setMarkedChampionId, matchHistoryCount 
   );
 }
 
-export default RecentGames;
+export default MatchHistorySummary;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import RecentGames from './matchHistorySummary/MatchHistorySummary';
+import MatchHistorySummary from './matchHistorySummary/MatchHistorySummary';
 import MatchHistory from './matchHistory/MatchHistory';
 
 const SummonerMatchOverview = () => {
@@ -10,7 +10,7 @@ const SummonerMatchOverview = () => {
 
   return (
     <div className='w-full'>
-      <RecentGames
+      <MatchHistorySummary
         markedChampionId={markedChampionId}
         setMarkedChampionId={setMarkedChampionId}
         matchHistoryCount={matchHistoryCount}
