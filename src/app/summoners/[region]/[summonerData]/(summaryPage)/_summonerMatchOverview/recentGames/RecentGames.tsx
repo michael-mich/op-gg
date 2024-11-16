@@ -16,9 +16,10 @@ import { CircularProgress } from '@nextui-org/react';
 type Props = {
   markedChampionId: string;
   setMarkedChampionId: TSetState<string>;
+  matchHistoryCount: number;
 }
 
-const RecentGames = ({ markedChampionId, setMarkedChampionId }: Props) => {
+const RecentGames = ({ markedChampionId, setMarkedChampionId, matchHistoryCount }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink } = useCurrentRegion() || {};
 
@@ -28,12 +29,18 @@ const RecentGames = ({ markedChampionId, setMarkedChampionId }: Props) => {
     isSuccess: isRecentGamesSucces,
   } = useQuery({
     enabled: !!summonerPuuid,
-    queryKey: ['recentGames', summonerPuuid, markedChampionId],
+    queryKey: ['recentGames', summonerPuuid, markedChampionId, matchHistoryCount],
     queryFn: () => {
       return fetchApi<TRecetGames>(
-        riotGamesCustomRoutes.recentGamesSummary(summonerPuuid, continentLink, markedChampionId, '10')
+        riotGamesCustomRoutes.recentGamesSummary(
+          summonerPuuid,
+          continentLink,
+          markedChampionId,
+          matchHistoryCount.toString()
+        )
       );
-    }
+    },
+    placeholderData: (keepPreviousData) => keepPreviousData
   });
 
   return (
@@ -41,7 +48,7 @@ const RecentGames = ({ markedChampionId, setMarkedChampionId }: Props) => {
     h-fit bg-white dark:bg-darkMode-mediumGray rounded`}
     >
       {isRecentGamesPending ? (
-        <CircularProgress aria-label='loading summoner summary of 20 recent games' />
+        <CircularProgress aria-label={`loading summoner summary of ${matchHistoryCount} recent games`} />
       ) : isRecentGamesSucces ? (
         <>
           <div className='flex items-center justify-between h-[35px] border-bottom-theme px-1'>

@@ -117,7 +117,7 @@ export const riotGamesRoutes = {
   summonerMatchHistory: (
     summonerPuuid: string | null,
     regionContinentLink: string | null,
-    matchesCount: string | null
+    matchHistoryCount: string | null
   ) => {
     return createRouteUrl(
       RouteHandlers.RiotGames,
@@ -125,7 +125,7 @@ export const riotGamesRoutes = {
       {
         [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
         [RouteHandlerParams.RegionContinentLink]: regionContinentLink,
-        [RouteHandlerParams.MatchesCount]: matchesCount
+        [RouteHandlerParams.MatchHistoryCount]: matchHistoryCount
       }
     );
   },
@@ -150,7 +150,7 @@ export const riotGamesCustomRoutes = {
     regionContinentLink: string | undefined,
     regionLink: string | undefined,
     markedChampionId: string,
-    mathcesCount: string | null
+    matchHistoryCount: string | null
   ) => {
     return createRouteUrl(
       RouteHandlers.RiotGames,
@@ -160,7 +160,7 @@ export const riotGamesCustomRoutes = {
         [RouteHandlerParams.RegionContinentLink]: regionContinentLink,
         [RouteHandlerParams.RegionLink]: regionLink,
         [RouteHandlerParams.MarkedChampionId]: markedChampionId,
-        [RouteHandlerParams.MatchesCount]: mathcesCount
+        [RouteHandlerParams.MatchHistoryCount]: matchHistoryCount
       }
     );
   },
@@ -168,7 +168,7 @@ export const riotGamesCustomRoutes = {
     summonerPuuid: Nullable<string>,
     regionContinentLink: Nullable<string>,
     markedChampionId: string,
-    matchesCount: string | null,
+    matchHistoryCount: string | null,
   ) => {
     return createRouteUrl(
       RouteHandlers.RiotGames,
@@ -177,14 +177,14 @@ export const riotGamesCustomRoutes = {
         [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
         [RouteHandlerParams.RegionContinentLink]: regionContinentLink,
         [RouteHandlerParams.MarkedChampionId]: markedChampionId,
-        [RouteHandlerParams.MatchesCount]: matchesCount
+        [RouteHandlerParams.MatchHistoryCount]: matchHistoryCount
       }
     );
   },
   summonerChampionStats: (
     summonerPuuid: Nullable<string>,
     regionContinentLink: Nullable<string>,
-    mathcesCount: string | null
+    matchHistoryCount: string | null
   ) => {
     return createRouteUrl(
       RouteHandlers.RiotGames,
@@ -192,7 +192,7 @@ export const riotGamesCustomRoutes = {
       {
         [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
         [RouteHandlerParams.RegionContinentLink]: regionContinentLink,
-        [RouteHandlerParams.MatchesCount]: mathcesCount
+        [RouteHandlerParams.MatchHistoryCount]: matchHistoryCount
       }
     );
   },

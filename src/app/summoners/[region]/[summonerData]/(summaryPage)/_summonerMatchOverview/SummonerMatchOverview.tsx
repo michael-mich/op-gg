@@ -6,14 +6,20 @@ import MatchHistory from './matchHistory/MatchHistory';
 
 const SummonerMatchOverview = () => {
   const [markedChampionId, setMarkedChampionId] = useState('0');
+  const [matchHistoryCount, setMatchHistoryCount] = useState(10);
 
   return (
     <div className='w-full'>
       <RecentGames
         markedChampionId={markedChampionId}
         setMarkedChampionId={setMarkedChampionId}
+        matchHistoryCount={matchHistoryCount}
       />
-      <MatchHistory markedChampionId={markedChampionId} />
+      <MatchHistory
+        markedChampionId={markedChampionId}
+        matchHistoryCount={matchHistoryCount}
+        setMatchHistoryCount={setMatchHistoryCount}
+      />
     </div>
   );
 }

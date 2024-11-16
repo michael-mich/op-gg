@@ -8,5 +8,5 @@ export enum RouteHandlerParams {
   GetTopChampions = 'getTopChampions',
   ChampionIds = 'championIds',
   MarkedChampionId = 'markedChampionId',
-  MatchesCount = 'matchesCount'
+  MatchHistoryCount = 'matchHistoryCount'
 }

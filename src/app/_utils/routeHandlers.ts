@@ -12,7 +12,7 @@ export const getRouteHandlerParams = (req: NextRequest) => {
   const getTopChampions = searchParams.get(RouteHandlerParams.GetTopChampions);
   const championIds = searchParams.get(RouteHandlerParams.ChampionIds)?.split(',');
   const markedChampionId = searchParams.get(RouteHandlerParams.MarkedChampionId);
-  const matchesCount = searchParams.get(RouteHandlerParams.MatchesCount);
+  const matchHistoryCount = searchParams.get(RouteHandlerParams.MatchHistoryCount);
 
   return {
     summonerPuuid,
@@ -24,6 +24,6 @@ export const getRouteHandlerParams = (req: NextRequest) => {
     getTopChampions,
     championIds,
     markedChampionId,
-    matchesCount
+    matchHistoryCount
   };
 }

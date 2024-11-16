@@ -11,26 +11,30 @@ import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import { calculateTimeUnit } from '@/app/_utils/utils';
 import { checkQueueType } from './utils/utils';
 import type { TDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
+import type { TSetState } from '@/app/_types/tuples';
 import { TimeUnit } from '@/app/_enums/enums';
 import TimeSinceMatch from './TimeSinceMatch';
 import Badges from './Badges';
 import ChampionItems from './components/ChampionItems';
 import ChampionProfile from '../../../_components/ChampionProfile';
+import { CircularProgress } from '@nextui-org/react';
 import { IoIosArrowDown } from "react-icons/io";
 
 type Props = {
   markedChampionId: string;
+  matchHistoryCount: number;
+  setMatchHistoryCount: TSetState<number>;
 }
 
-const MatchHistory = ({ markedChampionId }: Props) => {
+const MatchHistory = ({ markedChampionId, matchHistoryCount, setMatchHistoryCount }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink, regionLink } = useCurrentRegion() || {};
 
   const { data: newestGameVersion } = useGameVersionQuery();
 
-  const { data: matchHistoryData } = useQuery({
+  const { data: matchHistoryData, isPlaceholderData } = useQuery({
     enabled: !!summonerPuuid,
-    queryKey: ['curretSummonerMatchHistory', summonerPuuid, markedChampionId],
+    queryKey: ['curretSummonerMatchHistory', summonerPuuid, markedChampionId, matchHistoryCount],
     queryFn: () => {
       return fetchApi<Array<TDetailedMatchHistory>>(
         riotGamesCustomRoutes.detailedMatchHistory(
@@ -38,10 +42,11 @@ const MatchHistory = ({ markedChampionId }: Props) => {
           continentLink,
           regionLink,
           markedChampionId,
-          '10'
+          matchHistoryCount.toString()
         )
       );
-    }
+    },
+    placeholderData: (keepPreviousData) => keepPreviousData
   });
 
   return (
@@ -143,6 +148,16 @@ const MatchHistory = ({ markedChampionId }: Props) => {
           </div>
         );
       })}
+      {(matchHistoryCount < 100 && matchHistoryData && matchHistoryData?.length > 0) && (
+        <button
+          onClick={() => setMatchHistoryCount(prev => prev + 10)}
+          className='flex justify-center w-full text-sm bg-white dark:bg-darkMode-mediumGray border 
+          border-lightMode-thirdLighterGray dark:border-lightGrayBackground rounded py-2 mt-2'
+          type='button'
+        >
+          {isPlaceholderData ? <CircularProgress aria-label='match history' size='sm' /> : 'Show more'}
+        </button>
+      )}
     </div>
   );
 }
