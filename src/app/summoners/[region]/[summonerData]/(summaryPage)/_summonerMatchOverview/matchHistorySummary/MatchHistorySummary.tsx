@@ -7,7 +7,7 @@ import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import type { TSetState } from '@/app/_types/tuples';
 import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
-import Summary from './Summary';
+import Summary from './GameStatsSummary';
 import TopChampions from './TopChampions';
 import PreferredPosition from './PreferredPosition';
 import SearchChampion from './SearchChampion';

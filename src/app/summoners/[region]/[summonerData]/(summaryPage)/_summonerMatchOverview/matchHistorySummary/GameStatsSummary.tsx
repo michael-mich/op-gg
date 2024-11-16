@@ -4,7 +4,7 @@ type Props = {
   recentGamesData: TRecetGames | undefined;
 }
 
-const Summary = ({ recentGamesData }: Props) => {
+const GameStatsSummary = ({ recentGamesData }: Props) => {
   const { totalGames, wonMatches, lostMatches, winRatio } = recentGamesData?.gameAmounts || {};
   const { averageAssists, averageDeaths, averageKills, kda } = recentGamesData?.kda || {};
 
@@ -49,4 +49,4 @@ const Summary = ({ recentGamesData }: Props) => {
   );
 }
 
-export default Summary;
+export default GameStatsSummary;

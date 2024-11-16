@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import RecentGames from './recentGames/RecentGames';
+import RecentGames from './matchHistorySummary/MatchHistorySummary';
 import MatchHistory from './matchHistory/MatchHistory';
 
 const SummonerMatchOverview = () => {
