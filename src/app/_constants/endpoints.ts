@@ -162,7 +162,6 @@ export const riotGamesCustomRoutes = {
         [RouteHandlerParams.RegionContinentLink]: regionContinentLink,
         [RouteHandlerParams.RegionLink]: regionLink,
         [RouteHandlerParams.MarkedChampionId]: markedChampionId,
-        [RouteHandlerParams.MatchHistoryCount]: '10',
         [RouteHandlerParams.MatchHistoryStartIndex]: matchHistoryStartIndex
       }
     );
@@ -181,7 +180,6 @@ export const riotGamesCustomRoutes = {
         [RouteHandlerParams.RegionContinentLink]: regionContinentLink,
         [RouteHandlerParams.MarkedChampionId]: markedChampionId,
         [RouteHandlerParams.MatchHistoryCount]: matchHistoryCount,
-        [RouteHandlerParams.MatchHistoryStartIndex]: '0'
       }
     );
   },
@@ -195,7 +193,6 @@ export const riotGamesCustomRoutes = {
       {
         [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
         [RouteHandlerParams.RegionContinentLink]: regionContinentLink,
-        [RouteHandlerParams.MatchHistoryCount]: '100'
       }
     );
   },

@@ -42,10 +42,10 @@ const calculateTotalChampionStat = (
 }
 
 export const GET = async (req: NextRequest) => {
-  const { summonerPuuid, regionContinentLink, matchHistoryCount } = getRouteHandlerParams(req);
+  const { summonerPuuid, regionContinentLink } = getRouteHandlerParams(req);
 
   const fetchedMatchHistory = await fetchApi<Array<TMatchHistory>>(
-    riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchHistoryCount)
+    riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, '100', '0')
   );
   const recentMatches = filterMatchesByMonths(fetchedMatchHistory);
   const matchStats = isRecognizedQueueId(recentMatches);
