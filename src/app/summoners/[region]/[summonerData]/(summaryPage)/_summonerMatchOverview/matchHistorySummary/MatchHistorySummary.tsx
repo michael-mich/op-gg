@@ -16,23 +16,24 @@ import { CircularProgress } from '@nextui-org/react';
 type Props = {
   markedChampionId: string;
   setMarkedChampionId: TSetState<string>;
-  matchHistoryCount: number;
+  matchHistoryStartIndex: number;
 }
 
-const MatchHistorySummary = ({ markedChampionId, setMarkedChampionId, matchHistoryCount }: Props) => {
+const MatchHistorySummary = ({ markedChampionId, setMarkedChampionId, matchHistoryStartIndex }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink } = useCurrentRegion() || {};
 
+  const matchHistoryCount = matchHistoryStartIndex === 0 ? 10 : matchHistoryStartIndex + 10;
   const {
-    data: recentGamesData,
-    isPending: isRecentGamesPending,
-    isSuccess: isRecentGamesSucces,
+    data: matchHistorySummaryData,
+    isPending,
+    isSuccess,
   } = useQuery({
     enabled: !!summonerPuuid,
-    queryKey: ['recentGames', summonerPuuid, markedChampionId, matchHistoryCount],
+    queryKey: ['summonerMatchHistorySummary', summonerPuuid, markedChampionId, matchHistoryCount],
     queryFn: () => {
       return fetchApi<TRecetGames>(
-        riotGamesCustomRoutes.recentGamesSummary(
+        riotGamesCustomRoutes.matchHistorySummary(
           summonerPuuid,
           continentLink,
           markedChampionId,
@@ -44,30 +45,29 @@ const MatchHistorySummary = ({ markedChampionId, setMarkedChampionId, matchHisto
   });
 
   return (
-    <div className={`${isRecentGamesPending && 'flex items-center justify-center py-12'} w-full 
+    <div className={`${isPending && 'flex items-center justify-center py-12'} w-full 
     h-fit bg-white dark:bg-darkMode-mediumGray rounded`}
     >
-      {isRecentGamesPending ? (
-        <CircularProgress aria-label={`loading summoner summary of ${matchHistoryCount} recent games`} />
-      ) : isRecentGamesSucces ? (
+      {isPending ? (
+        <CircularProgress aria-label={`loading summoner summary of 0 recent games`} />
+      ) : isSuccess ? (
         <>
           <div className='flex items-center justify-between h-[35px] border-bottom-theme px-1'>
             <span className='text-sm pl-2'>Recent Games</span>
             <SearchChampion
-              recentGamesData={recentGamesData}
+              matchHistorySummaryData={matchHistorySummaryData}
               setMarkedChampionId={setMarkedChampionId}
             />
           </div>
           <div className='grid grid-cols-3 py-2 px-3'>
-            <GameStatsSummary recentGamesData={recentGamesData} />
-            <TopChampions recentGamesData={recentGamesData} />
-            <PreferredPosition recentGamesData={recentGamesData} />
+            <GameStatsSummary matchHistorySummaryData={matchHistorySummaryData} />
+            <TopChampions matchHistorySummaryData={matchHistorySummaryData} />
+            <PreferredPosition matchHistorySummaryData={matchHistorySummaryData} />
           </div>
         </>
       ) : (
         <p>error</p>
-      )
-      }
+      )}
     </div >
   );
 }

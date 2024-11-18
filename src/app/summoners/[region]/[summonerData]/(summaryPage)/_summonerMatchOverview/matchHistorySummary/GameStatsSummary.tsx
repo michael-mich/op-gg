@@ -1,12 +1,12 @@
 import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {
-  recentGamesData: TRecetGames | undefined;
+  matchHistorySummaryData: TRecetGames | undefined;
 }
 
-const GameStatsSummary = ({ recentGamesData }: Props) => {
-  const { totalGames, wonMatches, lostMatches, winRatio } = recentGamesData?.gameAmounts || {};
-  const { averageAssists, averageDeaths, averageKills, kda } = recentGamesData?.kda || {};
+const GameStatsSummary = ({ matchHistorySummaryData }: Props) => {
+  const { totalGames, wonMatches, lostMatches, winRatio } = matchHistorySummaryData?.gameAmounts || {};
+  const { averageAssists, averageDeaths, averageKills, kda } = matchHistorySummaryData?.kda || {};
 
   return (
     <div>
@@ -41,7 +41,7 @@ const GameStatsSummary = ({ recentGamesData }: Props) => {
           </div>
           <span className='text-xl font-bold'>{`${kda?.toFixed(2)}:1`}</span>
           <span className='text-xs text-red'>
-            P/Kill {recentGamesData?.averageKillParticipation}%
+            P/Kill {matchHistorySummaryData?.averageKillParticipation}%
           </span>
         </div>
       </div>

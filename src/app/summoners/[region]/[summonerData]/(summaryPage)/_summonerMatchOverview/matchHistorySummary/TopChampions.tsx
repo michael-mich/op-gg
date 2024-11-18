@@ -5,19 +5,19 @@ import { handleKdaTextColor } from '@/app/_utils/utils';
 import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {
-  recentGamesData: TRecetGames | undefined;
+  matchHistorySummaryData: TRecetGames | undefined;
 }
 
-const TopChampions = ({ recentGamesData }: Props) => {
+const TopChampions = ({ matchHistorySummaryData }: Props) => {
   const { data: newestGameVersion } = useGameVersionQuery();
 
   return (
     <div>
       <div className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
-        Recent {recentGamesData?.gameAmounts.totalGames} Games Played Champions
+        Recent {matchHistorySummaryData?.gameAmounts.totalGames} Games Played Champions
       </div>
       <div className='flex flex-col gap-2 mt-3'>
-        {recentGamesData?.topPlayedChampions.map((championData) => (
+        {matchHistorySummaryData?.topPlayedChampions.map((championData) => (
           <div className='flex items-center' key={championData.championDetails.name}>
             <Image
               className='rounded-image mr-2'

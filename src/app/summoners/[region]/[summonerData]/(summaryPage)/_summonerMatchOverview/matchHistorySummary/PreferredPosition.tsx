@@ -2,7 +2,7 @@ import Image from 'next/image';
 import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {
-  recentGamesData: TRecetGames | undefined;
+  matchHistorySummaryData: TRecetGames | undefined;
 }
 
 const positionData = [
@@ -28,7 +28,7 @@ const positionData = [
   }
 ];
 
-const PreferredPosition = ({ recentGamesData }: Props) => {
+const PreferredPosition = ({ matchHistorySummaryData }: Props) => {
   return (
     <div className='flex flex-col'>
       <div className='text-xs text-center text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
@@ -38,7 +38,7 @@ const PreferredPosition = ({ recentGamesData }: Props) => {
         {positionData.map((position) => (
           <div className='flex-1 flex flex-col items-center gap-2' key={position.type}>
             <div className='relative h-full w-4 bg-lightMode-thirdLighterGray dark:bg-lightGrayBackground'>
-              {recentGamesData?.preferredPosition.map((preferredPosition, index) => (
+              {matchHistorySummaryData?.preferredPosition.map((preferredPosition, index) => (
                 position.type === preferredPosition.position && (
                   <div
                     key={index}

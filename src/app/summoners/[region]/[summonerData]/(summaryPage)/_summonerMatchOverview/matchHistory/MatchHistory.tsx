@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
@@ -22,19 +23,20 @@ import { IoIosArrowDown } from "react-icons/io";
 
 type Props = {
   markedChampionId: string;
-  matchHistoryCount: number;
-  setMatchHistoryCount: TSetState<number>;
+  matchHistoryStartIndex: number;
+  setMatchHistoryStartIndex: TSetState<number>;
 }
 
-const MatchHistory = ({ markedChampionId, matchHistoryCount, setMatchHistoryCount }: Props) => {
+const MatchHistory = ({ markedChampionId, matchHistoryStartIndex, setMatchHistoryStartIndex }: Props) => {
+  const [matchHistoryData, setMatchHistoryData] = useState<Array<TDetailedMatchHistory>>([]);
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink, regionLink } = useCurrentRegion() || {};
 
   const { data: newestGameVersion } = useGameVersionQuery();
 
-  const { data: matchHistoryData, isPlaceholderData } = useQuery({
+  const { data: newMatchHisotryData, isPlaceholderData, isFetched } = useQuery({
     enabled: !!summonerPuuid,
-    queryKey: ['curretSummonerMatchHistory', summonerPuuid, markedChampionId, matchHistoryCount],
+    queryKey: ['summonerMatchHistory', summonerPuuid, markedChampionId, matchHistoryStartIndex],
     queryFn: () => {
       return fetchApi<Array<TDetailedMatchHistory>>(
         riotGamesCustomRoutes.detailedMatchHistory(
@@ -42,16 +44,22 @@ const MatchHistory = ({ markedChampionId, matchHistoryCount, setMatchHistoryCoun
           continentLink,
           regionLink,
           markedChampionId,
-          matchHistoryCount.toString()
+          matchHistoryStartIndex.toString(),
         )
       );
     },
     placeholderData: (keepPreviousData) => keepPreviousData
   });
 
+  useEffect(() => {
+    if (isFetched && newMatchHisotryData) {
+      setMatchHistoryData([...matchHistoryData, ...newMatchHisotryData]);
+    }
+  }, [isFetched]);
+
   return (
     <div className='mt-2'>
-      {matchHistoryData?.map((match, matchIndex) => {
+      {matchHistoryData.map((match, matchIndex) => {
         const { currentSummoner, gameDuration, queueId } = match.info;
 
         const gameMinutes = calculateTimeUnit(gameDuration, TimeUnit.Minutes);
@@ -121,7 +129,7 @@ const MatchHistory = ({ markedChampionId, matchHistoryCount, setMatchHistoryCoun
                         >
                           <Image
                             className={`${currentSummoner ? 'rounded-image' : 'rounded'} size-4`}
-                            src={`${imageEndpoints.championImage(newestGameVersion)}${summoner?.championData?.image}`}
+                            src={`${imageEndpoints.championImage(newestGameVersion)}${summoner?.championData?.image || `${summoner?.championName}.png`}`}
                             width={16}
                             height={16}
                             alt={summoner?.championData?.name || ''}
@@ -140,7 +148,7 @@ const MatchHistory = ({ markedChampionId, matchHistoryCount, setMatchHistoryCoun
             </div>
             <button
               className={`${currentSummoner?.win ? 'bg-lightMode-blue dark:bg-darkMode-mediumBlue' : 'bg-lightMode-red dark:bg-darkMode-red'} 
-                flex items-end justify-center w-10 rounded-tr-[5px] rounded-br-[5px] p-2`}
+              flex items-end justify-center w-10 rounded-tr-[5px] rounded-br-[5px] p-2`}
               type='button'
             >
               <IoIosArrowDown className={`${currentSummoner?.win ? 'text-blue' : 'text-red'} size-5`} />
@@ -148,11 +156,11 @@ const MatchHistory = ({ markedChampionId, matchHistoryCount, setMatchHistoryCoun
           </div>
         );
       })}
-      {(matchHistoryCount < 100 && matchHistoryData && matchHistoryData?.length > 0) && (
+      {((matchHistoryStartIndex < 90 || !isFetched) && matchHistoryData && matchHistoryData?.length > 0) && (
         <button
-          onClick={() => setMatchHistoryCount(prev => prev + 10)}
-          className='flex justify-center w-full text-sm bg-white dark:bg-darkMode-mediumGray border 
-          border-lightMode-thirdLighterGray dark:border-lightGrayBackground rounded py-2 mt-2'
+          onClick={() => setMatchHistoryStartIndex(prev => prev + 10)}
+          className={`${isPlaceholderData && 'pointer-events-none'} flex justify-center w-full text-sm bg-white dark:bg-darkMode-mediumGray border 
+          border-lightMode-thirdLighterGray dark:border-lightGrayBackground rounded py-2 mt-2`}
           type='button'
         >
           {isPlaceholderData ? <CircularProgress aria-label='match history' size='sm' /> : 'Show more'}

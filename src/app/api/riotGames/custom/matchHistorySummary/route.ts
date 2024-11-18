@@ -34,7 +34,12 @@ export const GET = async (req: NextRequest) => {
   } = getRouteHandlerParams(req);
 
   const fetchedMatchHistory = await fetchApi<Array<TMatchHistory>>(
-    riotGamesRoutes.summonerMatchHistory(summonerPuuid, regionContinentLink, matchHistoryCount)
+    riotGamesRoutes.summonerMatchHistory(
+      summonerPuuid,
+      regionContinentLink,
+      matchHistoryCount,
+      '0'
+    )
   );
   const recentMatches = filterMatchesByMonths(fetchedMatchHistory);
   const matchHistoryData = isRecognizedQueueId(recentMatches);

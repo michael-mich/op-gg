@@ -35,7 +35,7 @@ const Page = () => {
     queryKey: ['matchStats', 'summonerPage', summonerPuuid],
     queryFn: () => {
       return fetchApi<Array<TSummonerChampionStats>>(
-        riotGamesCustomRoutes.summonerChampionStats(summonerPuuid, continentLink, '100')
+        riotGamesCustomRoutes.summonerChampionStats(summonerPuuid, continentLink)
       );
     }
   });

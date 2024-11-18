@@ -9,18 +9,18 @@ import { IoIosSearch } from 'react-icons/io';
 import { FaCertificate } from "react-icons/fa6";
 
 type Props = {
-  recentGamesData: TRecetGames | undefined;
+  matchHistorySummaryData: TRecetGames | undefined;
   setMarkedChampionId: TSetState<string>;
 }
 
-const SearchChampion = ({ recentGamesData, setMarkedChampionId }: Props) => {
+const SearchChampion = ({ matchHistorySummaryData, setMarkedChampionId }: Props) => {
   const [displaySummonerList, setDisplaySummonerList] = useState(false);
   const [searchedChampion, setSearchedChampion] = useState('');
   const championsListRef = useOutsideClick(displaySummonerList, setDisplaySummonerList);
 
   const { data: newestGameVersion } = useGameVersionQuery();
 
-  const searchFilteredChampions = recentGamesData?.playedChampions?.filter((champion) => {
+  const searchFilteredChampions = matchHistorySummaryData?.playedChampions?.filter((champion) => {
     const cleanChampionName = champion.name.toLowerCase().replaceAll('\'', '');
     const cleanSearchTerm = searchedChampion.toLowerCase().replaceAll(' ', '');
 
