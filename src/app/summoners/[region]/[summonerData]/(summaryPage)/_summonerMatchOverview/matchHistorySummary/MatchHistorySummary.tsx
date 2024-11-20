@@ -6,33 +6,33 @@ import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import type { TSetState } from '@/app/_types/tuples';
-import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
+import type { TMatchHistorySummary } from '@/app/_types/apiTypes/customApiTypes';
+import type { TMatchHistoryCount } from '../SummonerMatchOverview';
 import GameStatsSummary from './GameStatsSummary';
 import TopChampions from './TopChampions';
 import PreferredPosition from './PreferredPosition';
 import SearchChampion from './SearchChampion';
 import { CircularProgress } from '@nextui-org/react';
 
-type Props = {
+interface Props extends TMatchHistoryCount {
   markedChampionId: string;
   setMarkedChampionId: TSetState<string>;
-  matchHistoryStartIndex: number;
 }
 
-const MatchHistorySummary = ({ markedChampionId, setMarkedChampionId, matchHistoryStartIndex }: Props) => {
+const MatchHistorySummary = ({
+  markedChampionId,
+  setMarkedChampionId,
+  matchHistoryCount,
+  setMatchHistoryCount
+}: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink } = useCurrentRegion() || {};
 
-  const matchHistoryCount = matchHistoryStartIndex === 0 ? 10 : matchHistoryStartIndex + 10;
-  const {
-    data: matchHistorySummaryData,
-    isPending,
-    isSuccess,
-  } = useQuery({
+  const { data: matchHistorySummaryData, isPending, isSuccess } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['summonerMatchHistorySummary', summonerPuuid, markedChampionId, matchHistoryCount],
     queryFn: () => {
-      return fetchApi<TRecetGames>(
+      return fetchApi<TMatchHistorySummary>(
         riotGamesCustomRoutes.matchHistorySummary(
           summonerPuuid,
           continentLink,
@@ -57,6 +57,7 @@ const MatchHistorySummary = ({ markedChampionId, setMarkedChampionId, matchHisto
             <SearchChampion
               matchHistorySummaryData={matchHistorySummaryData}
               setMarkedChampionId={setMarkedChampionId}
+              setMatchHistoryCount={setMatchHistoryCount}
             />
           </div>
           <div className='grid grid-cols-3 py-2 px-3'>

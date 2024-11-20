@@ -1,7 +1,7 @@
-import type { TRecetGames } from '@/app/_types/apiTypes/customApiTypes';
+import type { TMatchHistorySummary } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {
-  matchHistorySummaryData: TRecetGames | undefined;
+  matchHistorySummaryData: TMatchHistorySummary | undefined;
 }
 
 const GameStatsSummary = ({ matchHistorySummaryData }: Props) => {

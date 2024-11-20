@@ -90,7 +90,7 @@ export interface TSummonerLiveGameData extends Pick<TLiveGame, 'gameLength'> {
   }>;
 }
 
-export type TRecetGames = {
+export type TMatchHistorySummary = {
   gameAmounts: {
     totalGames: number | undefined;
   } & TChampionWinLostRatio;

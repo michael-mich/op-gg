@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
@@ -12,6 +12,7 @@ import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import { calculateTimeUnit } from '@/app/_utils/utils';
 import { checkQueueType } from './utils/utils';
 import type { TDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
+import type { TMatchHistoryCount } from '../SummonerMatchOverview';
 import type { TSetState } from '@/app/_types/tuples';
 import { TimeUnit } from '@/app/_enums/enums';
 import TimeSinceMatch from './TimeSinceMatch';
@@ -21,45 +22,49 @@ import ChampionProfile from '../../../_components/ChampionProfile';
 import { CircularProgress } from '@nextui-org/react';
 import { IoIosArrowDown } from "react-icons/io";
 
-type Props = {
+interface Props extends TMatchHistoryCount {
   markedChampionId: string;
   matchHistoryStartIndex: number;
   setMatchHistoryStartIndex: TSetState<number>;
 }
 
-const MatchHistory = ({ markedChampionId, matchHistoryStartIndex, setMatchHistoryStartIndex }: Props) => {
-  const [matchHistoryData, setMatchHistoryData] = useState<Array<TDetailedMatchHistory>>([]);
+const MatchHistory = ({ markedChampionId, matchHistoryCount, setMatchHistoryCount }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink, regionLink } = useCurrentRegion() || {};
 
   const { data: newestGameVersion } = useGameVersionQuery();
 
-  const { data: newMatchHisotryData, isPlaceholderData, isFetched } = useQuery({
+  const { data: matchHistoryData, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     enabled: !!summonerPuuid,
-    queryKey: ['summonerMatchHistory', summonerPuuid, markedChampionId, matchHistoryStartIndex],
-    queryFn: () => {
+    queryKey: ['summonerMatchHistory', summonerPuuid, markedChampionId],
+    queryFn: ({ pageParam }) => {
       return fetchApi<Array<TDetailedMatchHistory>>(
         riotGamesCustomRoutes.detailedMatchHistory(
           summonerPuuid,
           continentLink,
           regionLink,
           markedChampionId,
-          matchHistoryStartIndex.toString(),
+          pageParam.toString(),
         )
       );
     },
-    placeholderData: (keepPreviousData) => keepPreviousData
+    initialPageParam: 0,
+    maxPages: 90,
+    getNextPageParam: (_, __, lastPageParam) => lastPageParam + 10,
   });
 
   useEffect(() => {
-    if (isFetched && newMatchHisotryData) {
-      setMatchHistoryData([...matchHistoryData, ...newMatchHisotryData]);
+    if (matchHistoryData?.pages) {
+      setMatchHistoryCount(matchHistoryData?.pages.length * 10);
     }
-  }, [isFetched]);
+    else {
+      setMatchHistoryCount(10);
+    }
+  }, [summonerPuuid]);
 
   return (
     <div className='mt-2'>
-      {matchHistoryData.map((match, matchIndex) => {
+      {matchHistoryData?.pages.map((page) => page?.map((match, matchIndex) => {
         const { currentSummoner, gameDuration, queueId } = match.info;
 
         const gameMinutes = calculateTimeUnit(gameDuration, TimeUnit.Minutes);
@@ -155,15 +160,18 @@ const MatchHistory = ({ markedChampionId, matchHistoryStartIndex, setMatchHistor
             </button>
           </div>
         );
-      })}
-      {((matchHistoryStartIndex < 90 || !isFetched) && matchHistoryData && matchHistoryData?.length > 0) && (
+      }))}
+      {((matchHistoryCount < 100 || isFetchingNextPage) && matchHistoryData?.pages && matchHistoryData?.pages?.length > 0) && (
         <button
-          onClick={() => setMatchHistoryStartIndex(prev => prev + 10)}
-          className={`${isPlaceholderData && 'pointer-events-none'} flex justify-center w-full text-sm bg-white dark:bg-darkMode-mediumGray border 
-          border-lightMode-thirdLighterGray dark:border-lightGrayBackground rounded py-2 mt-2`}
+          onClick={() => {
+            fetchNextPage();
+            setMatchHistoryCount(prev => prev + 10);
+          }}
+          className={`${isFetchingNextPage && 'pointer-events-none'} flex justify-center w-full text-sm bg-white dark:bg-darkMode-mediumGray 
+          border border-lightMode-thirdLighterGray dark:border-lightGrayBackground rounded py-2 mt-2`}
           type='button'
         >
-          {isPlaceholderData ? <CircularProgress aria-label='match history' size='sm' /> : 'Show more'}
+          {isFetchingNextPage ? <CircularProgress aria-label='match history' size='sm' /> : 'Show more'}
         </button>
       )}
     </div>
