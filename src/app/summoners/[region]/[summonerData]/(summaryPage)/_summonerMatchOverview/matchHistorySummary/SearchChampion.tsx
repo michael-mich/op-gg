@@ -56,7 +56,9 @@ const SearchChampion = ({
   });
 
   return (
-    <div className='relative flex items-center gap-2 rounded bg-almostWhite dark:bg-darkMode-darkBlue py-0.5 px-2'>
+    <div className='relative flex items-center gap-2 rounded bg-almostWhite 
+    dark:bg-darkMode-darkBlue py-0.5 px-2'
+    >
       <IoIosSearch className='size-6 text-secondGray' />
       <input
         onClick={handleDisplaySummonerList}
@@ -67,47 +69,53 @@ const SearchChampion = ({
         type='text'
         placeholder='Search a champion'
       />
-      <div
-        ref={championsListRef}
-        className={`${displaySummonerList ? 'block' : 'hidden'} absolute left-0 top-8 z-10 w-full dark:bg-darkMode-mediumGray rounded`}
-      >
-        <div className='text-sm border-bottom-theme py-1.5 px-2.5'>Recently played</div>
-        <ul className='overflow-scroll'>
-          <li className='border-bottom-theme py-1.5 px-2.5'>
-            <button
-              onClick={resetStates}
-              className='flex items-center gap-2 text-xs'
-              type='button'
-            >
-              <div className='bg-blue rounded-full aspect-square p-1.5'>
-                <FaCertificate className='size-3 text-white' />
-              </div>
-              All Champions
-            </button>
-          </li>
-          {searchFilteredChampions?.map((champion) => (
-            <li className='border-bottom-theme last-of-type:border-b-0 py-1.5 px-2.5' key={champion.key}>
+      {displaySummonerList && (
+        <div
+          ref={championsListRef}
+          className='absolute left-0 top-8 z-10 w-full max-h-[366px] overflow-y-auto 
+          dark:bg-darkMode-mediumGray rounded'
+        >
+          <div className='text-sm border-bottom-theme py-1.5 px-2.5'>Recently played</div>
+          <ul className='overflow-scroll'>
+            <li className='border-bottom-theme py-1.5 px-2.5'>
               <button
-                onClick={() => {
-                  setMarkedChampionId(champion.key);
-                  handleMatchHistoryCount(champion.key);
-                }}
+                onClick={resetStates}
                 className='flex items-center gap-2 text-xs'
                 type='button'
               >
-                <Image
-                  className='size-6 rounded-full aspect-square'
-                  src={`${imageEndpoints.championImage(newestGameVersion)}${champion.image.full}`}
-                  width={24}
-                  height={24}
-                  alt={champion.name}
-                />
-                {champion.name}
+                <div className='bg-blue rounded-full aspect-square p-1.5'>
+                  <FaCertificate className='size-3 text-white' />
+                </div>
+                All Champions
               </button>
             </li>
-          ))}
-        </ul>
-      </div>
+            {searchFilteredChampions?.map((champion) => (
+              <li
+                className='border-bottom-theme last-of-type:border-b-0 py-1.5 px-2.5'
+                key={champion.key}
+              >
+                <button
+                  onClick={() => {
+                    setMarkedChampionId(champion.key);
+                    handleMatchHistoryCount(champion.key);
+                  }}
+                  className='flex items-center gap-2 text-xs'
+                  type='button'
+                >
+                  <Image
+                    className='size-6 rounded-full aspect-square'
+                    src={`${imageEndpoints.championImage(newestGameVersion)}${champion.image.full}`}
+                    width={24}
+                    height={24}
+                    alt={champion.name}
+                  />
+                  {champion.name}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
