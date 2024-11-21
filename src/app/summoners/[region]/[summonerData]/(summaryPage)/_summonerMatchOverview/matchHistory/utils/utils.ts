@@ -1,6 +1,6 @@
 import { QueueId } from "@/app/_enums/match";
 
-export const checkQueueType = (queueId: number): string => {
+export const checkQueueType = (queueId: number | undefined): string => {
   switch (queueId) {
     case QueueId.Normal: return 'Normal';
     case QueueId.RankedSoloDuo: return 'Ranked Solo/Duo';

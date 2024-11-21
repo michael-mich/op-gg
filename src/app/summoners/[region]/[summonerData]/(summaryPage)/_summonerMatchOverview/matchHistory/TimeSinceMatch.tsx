@@ -2,7 +2,7 @@ import { getDifferenceBetweenCurrentDate } from '@/app/_utils/utils';
 import type { TDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {
-  match: TDetailedMatchHistory;
+  match: TDetailedMatchHistory | undefined;
 }
 
 const TimeSinceMatch = ({ match }: Props) => {
@@ -10,8 +10,8 @@ const TimeSinceMatch = ({ match }: Props) => {
     monthsDifference,
     daysDifference,
     diffBetweenDateInMilliseconds
-  } = getDifferenceBetweenCurrentDate(match.info.gameEndTimestamp);
-  const gameEndedDate = new Date(match.info.gameEndTimestamp)
+  } = getDifferenceBetweenCurrentDate(match?.info.gameEndTimestamp || 0);
+  const gameEndedDate = new Date(match?.info.gameEndTimestamp || 0);
 
   const minutesDiffrence = Math.floor(diffBetweenDateInMilliseconds / 60000);
   const hoursDifference = Math.floor(minutesDiffrence / 60);

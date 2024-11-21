@@ -29,7 +29,6 @@ export const GET = async (req: NextRequest) => {
   const {
     summonerPuuid,
     regionContinentLink,
-    markedChampionId,
     regionLink,
     matchHistoryStartIndex
   } = getRouteHandlerParams(req);
@@ -49,21 +48,8 @@ export const GET = async (req: NextRequest) => {
   const spellData = await fetchApi<Array<TSummonerSpellContent>>(riotGamesRoutes.summonerSpells());
   const championItemData = await fetchApi<TChampionItem>('https://ddragon.leagueoflegends.com/cdn/14.21.1/data/en_US/item.json');
 
-  const matchesForMarkedChampion = matchHistoryData?.filter((match) =>
-    match.info.participants.find((summoner) => {
-      const markedChampionIdNum = parseInt(markedChampionId || '');
-
-      if (markedChampionIdNum !== 0) {
-        return summoner.puuid === summonerPuuid && markedChampionIdNum === summoner.championId;
-      }
-      else {
-        return summoner;
-      }
-    })
-  );
-
   const processSummonerMatches = async <T>(callback: (summoner: TSummonerMatchHistoryData) => T) => {
-    return matchesForMarkedChampion && await Promise.all(matchesForMarkedChampion.map((match) =>
+    return matchHistoryData && await Promise.all(matchHistoryData.map((match) =>
       Promise.all(match.info.participants.map((summoner) => {
         return callback(summoner);
       }))
@@ -78,15 +64,15 @@ export const GET = async (req: NextRequest) => {
     return getChampionNameAndImage(summoner);
   });
 
-  const summonersKda = matchesForMarkedChampion?.map((match) => match.info.participants.map((summoner) => {
+  const summonersKda = matchHistoryData?.map((match) => match.info.participants.map((summoner) => {
     return calculateKda(summoner.deaths, summoner.assists, summoner.kills);
   }));
 
-  const summonersSpells = matchesForMarkedChampion?.map((match) => {
+  const summonersSpells = matchHistoryData?.map((match) => {
     return filterSummonerSpells(Spell.Summoner1Id, Spell.Summoner2Id, match.info.participants, spellData);
   });
 
-  const summonersMinionStats = matchesForMarkedChampion?.map((match) => match.info.participants.map((summoner) => {
+  const summonersMinionStats = matchHistoryData?.map((match) => match.info.participants.map((summoner) => {
     const totalMinions = summoner.totalMinionsKilled + summoner.neutralMinionsKilled;
     const minionsPerMinute = Math.round(totalMinions / (match.info.gameDuration / 60));
 
@@ -97,7 +83,7 @@ export const GET = async (req: NextRequest) => {
     };
   }));
 
-  const summonersIntoTeams = matchesForMarkedChampion?.map((match) =>
+  const summonersIntoTeams = matchHistoryData?.map((match) =>
     segregateSummonersToTeams(match.info.participants)
   );
 
@@ -107,7 +93,7 @@ export const GET = async (req: NextRequest) => {
     }, 0);
   }));
 
-  const summonersKillParticipation = matchesForMarkedChampion?.map((match, matchIndex) =>
+  const summonersKillParticipation = matchHistoryData?.map((match, matchIndex) =>
     match.info.participants.map((summoner, summonerIndex) => {
       if (teamsKillsPerMatch) {
         const assistsAndKillsSum = summoner.assists + summoner.kills;
@@ -126,7 +112,7 @@ export const GET = async (req: NextRequest) => {
     })
   );
 
-  const summonersItems = matchesForMarkedChampion?.map((match) => match.info.participants.map((summoner) => {
+  const summonersItems = matchHistoryData?.map((match) => match.info.participants.map((summoner) => {
     const itemLackId = '0';
     const summonerItemIds = new Array(7).fill('').map((_, index) => `${summoner[`item${index}`]}`);
     const championItemEntries = Object.entries(championItemData?.data || {});
@@ -146,7 +132,7 @@ export const GET = async (req: NextRequest) => {
     return sortedChampionItems.map(([_, item]) => item);
   }));
 
-  const matchedSummonerRunes = matchesForMarkedChampion?.map((match) =>
+  const matchedSummonerRunes = matchHistoryData?.map((match) =>
     match.info.participants.map((summoner) => runeData?.map((rune) => {
       const filterRunes = (runeType: RuneType) => {
         return {
@@ -176,7 +162,7 @@ export const GET = async (req: NextRequest) => {
     }).filter(Boolean))
   );
 
-  const updatedSummonerData = matchesForMarkedChampion?.map((match, matchIndex) => {
+  const updatedSummonerData = matchHistoryData?.map((match, matchIndex) => {
     return {
       ...match,
       info: {

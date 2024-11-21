@@ -7,23 +7,24 @@ import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import type { TSetState } from '@/app/_types/tuples';
 import type { TMatchHistorySummary } from '@/app/_types/apiTypes/customApiTypes';
-import type { TMatchHistoryCount } from '../SummonerMatchOverview';
 import GameStatsSummary from './GameStatsSummary';
 import TopChampions from './TopChampions';
 import PreferredPosition from './PreferredPosition';
 import SearchChampion from './SearchChampion';
 import { CircularProgress } from '@nextui-org/react';
 
-interface Props extends TMatchHistoryCount {
+interface Props {
   markedChampionId: string;
   setMarkedChampionId: TSetState<string>;
+  matchHistoryCount: number;
+  setChampionSearchMode: TSetState<boolean>;
 }
 
 const MatchHistorySummary = ({
   markedChampionId,
   setMarkedChampionId,
   matchHistoryCount,
-  setMatchHistoryCount
+  setChampionSearchMode
 }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink } = useCurrentRegion() || {};
@@ -40,8 +41,7 @@ const MatchHistorySummary = ({
           matchHistoryCount.toString()
         )
       );
-    },
-    placeholderData: (keepPreviousData) => keepPreviousData
+    }
   });
 
   return (
@@ -57,7 +57,7 @@ const MatchHistorySummary = ({
             <SearchChampion
               matchHistorySummaryData={matchHistorySummaryData}
               setMarkedChampionId={setMarkedChampionId}
-              setMatchHistoryCount={setMatchHistoryCount}
+              setChampionSearchMode={setChampionSearchMode}
             />
           </div>
           <div className='grid grid-cols-3 py-2 px-3'>

@@ -151,7 +151,6 @@ export const riotGamesCustomRoutes = {
     summonerPuuid: string | undefined,
     regionContinentLink: string | undefined,
     regionLink: string | undefined,
-    markedChampionId: string,
     matchHistoryStartIndex: string | null
   ) => {
     return createRouteUrl(
@@ -161,7 +160,6 @@ export const riotGamesCustomRoutes = {
         [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
         [RouteHandlerParams.RegionContinentLink]: regionContinentLink,
         [RouteHandlerParams.RegionLink]: regionLink,
-        [RouteHandlerParams.MarkedChampionId]: markedChampionId,
         [RouteHandlerParams.MatchHistoryStartIndex]: matchHistoryStartIndex
       }
     );

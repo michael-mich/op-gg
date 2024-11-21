@@ -2,31 +2,26 @@ import { useState } from 'react';
 import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import useOutsideClick from '@/app/_hooks/useOutsideClick';
 import Image from 'next/image';
-import { useAppSelector } from '@/app/_hooks/useReduxHooks';
-import { useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
-import type { TDetailedMatchHistory, TMatchHistorySummary } from '@/app/_types/apiTypes/customApiTypes';
+import type { TMatchHistorySummary } from '@/app/_types/apiTypes/customApiTypes';
 import type { TSetState } from '@/app/_types/tuples';
-import type { TMatchHistoryCount } from '../SummonerMatchOverview';
 import { IoIosSearch } from 'react-icons/io';
 import { FaCertificate } from "react-icons/fa6";
 
-interface Props extends Pick<TMatchHistoryCount, 'setMatchHistoryCount'> {
+interface Props {
   matchHistorySummaryData: TMatchHistorySummary | undefined;
   setMarkedChampionId: TSetState<string>;
+  setChampionSearchMode: TSetState<boolean>;
 }
 
 const SearchChampion = ({
   matchHistorySummaryData,
   setMarkedChampionId,
-  setMatchHistoryCount
+  setChampionSearchMode
 }: Props) => {
   const [displaySummonerList, setDisplaySummonerList] = useState(false);
   const [searchedChampion, setSearchedChampion] = useState('');
   const championsListRef = useOutsideClick(displaySummonerList, setDisplaySummonerList);
-
-  const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const queryClient = useQueryClient();
 
   const { data: newestGameVersion } = useGameVersionQuery();
 
@@ -34,17 +29,8 @@ const SearchChampion = ({
     setDisplaySummonerList(true);
   }
 
-  const handleMatchHistoryCount = (championId: string) => {
-    const matchHistoryData = queryClient.getQueryData([
-      'summonerMatchHistory',
-      summonerPuuid,
-      championId
-    ]) as InfiniteData<Array<TDetailedMatchHistory> | undefined> | undefined;
-    setMatchHistoryCount(matchHistoryData?.pages ? matchHistoryData.pages.length * 10 : 10);
-  }
-
   const resetStates = () => {
-    handleMatchHistoryCount('0');
+    setChampionSearchMode(false);
     setMarkedChampionId('0');
   }
 
@@ -97,7 +83,7 @@ const SearchChampion = ({
                 <button
                   onClick={() => {
                     setMarkedChampionId(champion.key);
-                    handleMatchHistoryCount(champion.key);
+                    setChampionSearchMode(true);
                   }}
                   className='flex items-center gap-2 text-xs'
                   type='button'
