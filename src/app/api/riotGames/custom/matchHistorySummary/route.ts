@@ -64,7 +64,7 @@ export const GET = async (req: NextRequest) => {
     riotGamesRoutes.filteredChampions(currentSummonerChampionIds)
   );
 
-  const sortedChampionData = summonerAllPlayedChampions?.sort((a, b) => {
+  const championsStoredByRecentPlay = summonerAllPlayedChampions?.sort((a, b) => {
     const indexA = currentSummonerMatchData?.findIndex((match) => match.championId === parseInt(a.key));
     const indexB = currentSummonerMatchData?.findIndex((match) => match.championId === parseInt(b.key));
 
@@ -184,6 +184,6 @@ export const GET = async (req: NextRequest) => {
     averageKillParticipation: averageKillParticipation(),
     topPlayedChampions: udpatedTopPlayedChampionsData,
     preferredPosition: summonerPositionPlayPercentage,
-    playedChampions: sortedChampionData,
+    playedChampions: championsStoredByRecentPlay,
   });
 }
