@@ -1,5 +1,5 @@
 export enum QueueId {
-  Normal = 400,
+  Normal = 490,
   RankedSoloDuo = 420,
   NormalBlindPick = 430,
   RankedFlex = 440,
