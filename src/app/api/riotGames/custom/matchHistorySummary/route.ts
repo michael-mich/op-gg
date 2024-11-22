@@ -71,8 +71,6 @@ export const GET = async (req: NextRequest) => {
     return (indexA || 0) - (indexB || 0);
   });
 
-  const totalGames = (matchesForMarkedChampion && matchesForMarkedChampion.length) as number | undefined;
-
   const summonerPositionPlayAmount = matchesForMarkedChampion?.reduce((championStats, match) => {
     const { individualPosition } = match;
     const position = individualPosition.toLowerCase();
@@ -117,10 +115,10 @@ export const GET = async (req: NextRequest) => {
     championData.assists += assists;
     championData.deaths += deaths;
     championData.kills += kills;
-    if (match.win) {
+    if (match.win && !match.gameEndedInEarlySurrender) {
       championData.wonMatches += 1;
     }
-    else {
+    else if (!match.gameEndedInEarlySurrender) {
       championData.lostMatches += 1;
     }
 
@@ -152,7 +150,7 @@ export const GET = async (req: NextRequest) => {
     }));
 
     return teamsWithCurrentSummoner?.teamParticipants.reduce((acc, { kills }) => {
-      return acc + kills
+      return acc + kills;
     }, 0);
   });
 
@@ -163,8 +161,10 @@ export const GET = async (req: NextRequest) => {
     }
   }).filter(Boolean);
 
+  const totalGames = (matchesForMarkedChampion && matchesForMarkedChampion.length) as number | undefined;
+
   const averageKillParticipation = () => {
-    if (killParticipationForEachMatch && totalGames) {
+    if (killParticipationForEachMatch?.[0] && totalGames) {
       const killParticipationSum = killParticipationForEachMatch.reduce((acc, cur) => {
         if (acc && cur) {
           return acc + cur;

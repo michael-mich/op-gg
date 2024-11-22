@@ -41,6 +41,7 @@ export const GET = async (req: NextRequest) => {
       matchHistoryStartIndex
     )
   );
+
   const recentMatches = filterMatchesByMonths(fetchedHistoryMatch);
   const matchHistoryData = isRecognizedQueueId(recentMatches);
 

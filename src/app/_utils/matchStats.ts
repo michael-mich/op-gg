@@ -58,15 +58,17 @@ export const getSummonersRank = async <T extends Pick<TSummonerMatchHistoryData,
   return findQueueTypeData(rankData, QueueType.RankedSolo);
 }
 
-export const calculateWinLossStats = (matchData: Array<{ win: boolean }> | undefined): TChampionWinLostRatio => {
+export const calculateWinLossStats = (
+  matchData: Array<Pick<TSummonerMatchHistoryData, 'win' | 'gameEndedInEarlySurrender'>> | undefined
+): TChampionWinLostRatio => {
   let wonMatches = 0;
   let lostMatches = 0;
 
-  matchData?.forEach((data) => {
-    if (data.win) {
+  matchData?.forEach((summoner) => {
+    if (summoner.win && !summoner.gameEndedInEarlySurrender) {
       wonMatches++;
     }
-    else {
+    else if (!summoner.gameEndedInEarlySurrender) {
       lostMatches++;
     }
   });

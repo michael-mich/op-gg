@@ -41,7 +41,7 @@ const GameStatsSummary = ({ matchHistorySummaryData }: Props) => {
           </div>
           <span className='text-xl font-bold'>{`${kda?.toFixed(2)}:1`}</span>
           <span className='text-xs text-red'>
-            P/Kill {matchHistorySummaryData?.averageKillParticipation}%
+            P/Kill {matchHistorySummaryData?.averageKillParticipation || 0}%
           </span>
         </div>
       </div>
