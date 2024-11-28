@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { getFormattedKda } from '../utils/utils';
 import ChampionProfile from '../../../../_components/ChampionProfile';
 import ChampionItems from '../components/ChampionItems';
 import Badges from './Badges';
@@ -9,6 +10,8 @@ type Props = {
 }
 
 const SummonerStats = ({ currentSummoner }: Props) => {
+  const formattedKda = getFormattedKda(currentSummoner);
+
   return (
     <div className='flex-1 self-center'>
       <div className='flex'>
@@ -18,7 +21,7 @@ const SummonerStats = ({ currentSummoner }: Props) => {
             <span className='text-lightMode-black dark:text-white'>{currentSummoner?.kills}</span> / <span className='text-red'>{currentSummoner?.deaths}</span> / <span className='text-lightMode-black dark:text-white'>{currentSummoner?.assists}</span>
           </div>
           <span className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray text-xs'>
-            {currentSummoner?.kda?.toFixed(2)}:1 KDA
+            {formattedKda === 'Perfect' ? formattedKda : `${formattedKda} KDA`}
           </span>
         </div>
         <ul className={`${currentSummoner?.gameEndedInEarlySurrender ? 'border-l-lightMode-thirdLighterGray dark:border-l-lightGrayBackground' : currentSummoner?.win ? 'border-l-lightMode-blue dark:border-l-darkMode-mediumBlue' : 'border-l-lightMode-red dark:border-l-darkMode-red'} 

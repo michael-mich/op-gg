@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { handleKdaTextColor } from '@/app/_utils/utils';
+import { getFormattedKda } from './utils/utils';
 import type {
   TDetailedMatchHistory,
   TSummonerDetailedMatchHistory
@@ -69,7 +70,7 @@ const MatchDetails = ({ match, currentSummoner }: Props) => {
                       <div className='flex flex-col items-center gap-1 text-xss'>
                         <span>{summoner?.kills}/{summoner?.deaths}/{summoner?.assists} ({summoner?.killParticipation}%)</span>
                         <span className={`${handleKdaTextColor(summoner?.kda)} font-bold`}>
-                          {(summoner?.deaths === 0 && summoner.assists !== 0 && summoner.kills !== 0) ? 'Perfect' : `${summoner?.kda?.toFixed(2)}:1`}
+                          {getFormattedKda(currentSummoner)}
                         </span>
                       </div>
                     </td>

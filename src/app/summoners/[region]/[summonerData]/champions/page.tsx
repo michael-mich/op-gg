@@ -284,19 +284,37 @@ const Page = () => {
                   </TableCell>
                   <TableCell className='table-cell-hover-bg'>
                     <span className={`${handleKdaTextColor(stats.kda.kda)} block text-center text-xs font-bold`}>
-                      {stats.kda.kda.toFixed(2)}
+                      {(stats.kda.averageKills !== '0.0' && stats.kda.averageDeaths === '0.0' && stats.kda.averageAssists !== '0.0') ? 'Perfect' : `${stats.kda.kda.toFixed(2)}:1`}
                     </span>
                     <span className='w-[85px] table-cell text-xss'>{stats.kda.averageKills} / {stats.kda.averageDeaths} / {stats.kda.averageAssists}</span>
                   </TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{stats.totalGold.toLocaleString('en')}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{stats.minions.averageKilledMinions.toFixed(1)} ({stats.minions.minionsPerMinute})</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{stats.maxKills}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{stats.maxDeaths}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{stats.averageDamageDealt.toLocaleString('en')}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'doubleKills')}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'tripleKills')}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'quadraKills')}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'pentaKills')}</TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {stats.totalGold.toLocaleString('en')}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {stats.minions.averageKilledMinions.toFixed(1)} ({stats.minions.minionsPerMinute})
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {stats.maxKills}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {stats.maxDeaths}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {stats.averageDamageDealt.toLocaleString('en')}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {formatKillStat(stats, 'doubleKills')}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {formatKillStat(stats, 'tripleKills')}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {formatKillStat(stats, 'quadraKills')}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {formatKillStat(stats, 'pentaKills')}
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

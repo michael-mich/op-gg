@@ -1,4 +1,14 @@
+import { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
 import { QueueId } from '@/app/_enums/match';
+
+export const getFormattedKda = (summoner: TSummonerDetailedMatchHistory | undefined): string => {
+  if (summoner?.kills !== 0 && summoner?.deaths === 0 && summoner?.assists !== 0) {
+    return 'Perfect';
+  }
+  else {
+    return `${summoner?.kda?.toFixed(2)}:1`;
+  }
+}
 
 export const checkQueueType = (queueId: number | undefined): string => {
   switch (queueId) {

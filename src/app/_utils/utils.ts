@@ -31,6 +31,7 @@ export const calculateTimeUnit = (seconds: number | undefined, timeUnit: TimeUni
 }
 
 export const handleKdaTextColor = (kda: number | undefined): string => {
+  const basicGray = 'text-lightMode-secondMediumGray dark:text-darkMode-lighterGray';
   if (kda) {
     if (kda >= 6.0) {
       return 'text-orange';
@@ -42,10 +43,10 @@ export const handleKdaTextColor = (kda: number | undefined): string => {
       return 'text-mediumGreen';
     }
     else {
-      return 'text-lightMode-secondMediumGray dark:text-darkMode-lighterGray';
+      return basicGray;
     }
   }
   else {
-    return '';
+    return basicGray;
   }
 }
