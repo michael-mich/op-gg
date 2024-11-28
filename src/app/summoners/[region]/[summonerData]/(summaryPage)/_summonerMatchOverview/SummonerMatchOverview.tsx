@@ -17,7 +17,7 @@ export type TMatchProps = {
 }
 
 const SummonerMatchOverview = () => {
-  const [markedMatchIndexes, setMarkedMatchIndexes] = useState<Record<number, boolean>>({});
+  const [markedMatchIndexes, setMarkedMatchIndexes] = useState<TMarkedMatchIndexes>({});
   const [markedChampionId, setMarkedChampionId] = useState('0');
   const [matchHistoryCount, setMatchHistoryCount] = useState(10);
   const [championSearchMode, setChampionSearchMode] = useState(false);
