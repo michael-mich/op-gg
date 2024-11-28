@@ -47,7 +47,9 @@ export const GET = async (req: NextRequest) => {
 
   const runeData = await fetchApi<Array<TRune>>(riotGamesRoutes.runes());
   const spellData = await fetchApi<Array<TSummonerSpellContent>>(riotGamesRoutes.summonerSpells());
-  const championItemData = await fetchApi<TChampionItem>('https://ddragon.leagueoflegends.com/cdn/14.21.1/data/en_US/item.json');
+
+  const newestGameVersion = await fetchApi<string>(riotGamesRoutes.newestGameVersion());
+  const championItemData = await fetchApi<TChampionItem>(`https://ddragon.leagueoflegends.com/cdn/${newestGameVersion}/data/en_US/item.json`);
 
   const processSummonerMatches = async <T>(callback: (summoner: TSummonerMatchHistoryData) => T) => {
     return matchHistoryData && await Promise.all(matchHistoryData.map((match) =>

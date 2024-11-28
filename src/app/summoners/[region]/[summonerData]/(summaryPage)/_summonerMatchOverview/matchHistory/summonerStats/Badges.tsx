@@ -33,7 +33,7 @@ const Badges = ({ currentSummoner }: Props) => {
 
   return (
     filteredBadges && (
-      <div className='flex items-center gap-0.5 max-w-[200px] overflow-x-scroll'>
+      <div className='flex items-center gap-0.5 max-w-[200px] overflow-x-scroll scrollbar-width-thin'>
         {filteredBadges.map((badge, index) => (
           <span
             className={`${typeof badge.value === 'string' ? 'bg-red' : 'bg-lightMode-secondMediumGray'}

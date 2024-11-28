@@ -13,14 +13,6 @@ const rankedEmblems = [
   '/ranked-emblems/Silver.png'
 ];
 
-export const calculateWinRate = (rankedData: TSummonerRank | undefined): number => {
-  const wins = rankedData?.wins || 0;
-  const losses = rankedData?.losses || 0;
-  const winRate = (wins / (wins + losses) * 100);
-
-  return Math.round(winRate);
-}
-
 export const formatTierName = (rankedData: TSummonerRank | undefined): string => {
   if (rankedData) {
     const tierName = rankedData.tier;

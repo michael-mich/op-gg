@@ -1,41 +1,64 @@
 import { memo } from 'react';
 import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
-import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import Image from 'next/image';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
+import { formatTierName } from '@/app/_utils/rank';
 import type {
   TUpdatedLiveGameParticipants,
   TSummonerDetailedMatchHistory
 } from '../../../../_types/apiTypes/customApiTypes';
 
+type TSummoner = TUpdatedLiveGameParticipants | TSummonerDetailedMatchHistory | undefined;
+
 type Props = {
-  summoner: TUpdatedLiveGameParticipants | TSummonerDetailedMatchHistory | undefined;
+  summoner: TSummoner;
   displaySummonerData?: boolean;
-  size?: 'default' | 'large';
+  imageSize?: 'default' | 'large';
+  displayLevel?: boolean;
+  levelSize?: 'default' | 'small';
 }
 
-const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'default' }: Props) => {
+const ChampionProfile = ({
+  summoner,
+  displaySummonerData = false,
+  imageSize = 'default',
+  displayLevel = false,
+  levelSize = 'default',
+}: Props) => {
   const { data: newestGameVersion } = useGameVersionQuery();
 
-  const summonerLiveGame = (summoner as TUpdatedLiveGameParticipants | undefined)?.summonerNameAndTagLine;
-  const summonerMatchHistory = (summoner as TSummonerDetailedMatchHistory | undefined)?.championName;
+  const isDetailedMatchHistory = (summoner: TSummoner): summoner is TSummonerDetailedMatchHistory => {
+    return (summoner as TSummonerDetailedMatchHistory | undefined)?.champLevel !== undefined;
+  }
+  const matchHistory = isDetailedMatchHistory(summoner) ? summoner : undefined;
+  const liveGame = !isDetailedMatchHistory(summoner) ? summoner : undefined;
 
-  const largeSize = size === 'large';
-  const imageSize = largeSize ? 'size-[22px]' : 'size-[15px]';
+  const imageLargeSize = imageSize === 'large';
+  const imageSizeStyle = imageLargeSize ? 'size-[22px]' : 'size-[15px]';
 
   return (
     <div className='flex items-center'>
-      <Image
-        className={`rounded-image ${largeSize ? 'size-12' : 'size-8'}`}
-        src={`${imageEndpoints.championImage(newestGameVersion)}${summoner?.championData?.image || `${summonerMatchHistory}.png`}`}
-        width={48}
-        height={48}
-        alt={summoner?.championData?.name || ''}
-      />
+      <div className='relative'>
+        <Image
+          className={`rounded-image ${imageLargeSize ? 'size-12' : 'size-8'}`}
+          src={`${imageEndpoints.championImage(newestGameVersion)}${summoner?.championData?.image || `${matchHistory?.championName}.png`}`}
+          width={48}
+          height={48}
+          alt={summoner?.championData?.name || ''}
+        />
+        {displayLevel && (
+          <span className={`level ${levelSize === 'default' ? 'bottom-0 right-0 size-5 text-xss' : 'bottom-[-3px] left-[-3px] size-[15px] text-[10px]'} 
+          absolute z-[1] flex items-center justify-center size-5 aspect-square`}
+          >
+            {matchHistory?.champLevel}
+          </span>
+        )}
+      </div>
       <div className='flex items-center gap-0.5 ml-1'>
         <div>
           {summoner?.spells?.map((spell, index) => (
             <Image
-              className={`${imageSize} rounded first-of-type:mb-0.5`}
+              className={`${imageSizeStyle} rounded first-of-type:mb-0.5`}
               src={`${imageEndpoints.spell(newestGameVersion)}${spell.image.full}`}
               width={15}
               height={15}
@@ -50,7 +73,8 @@ const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'defaul
 
             return (
               <Image
-                className={`${imageSize} first-of-type:bg-black first-of-type:rounded-full first-of-type:aspect-square first-of-type:mb-0.5`}
+                className={`${imageSizeStyle} first-of-type:bg-black first-of-type:rounded-full 
+                first-of-type:aspect-square first-of-type:mb-0.5`}
                 src={`${imageEndpoints.rune}${firstElement ? rune?.slots[0].icon : rune?.icon}`}
                 width={15}
                 height={15}
@@ -62,17 +86,17 @@ const ChampionProfile = ({ summoner, displaySummonerData = false, size = 'defaul
         </div>
       </div>
       {displaySummonerData && (
-        <div className='flex flex-col gap-[0.1rem] ml-3'>
+        <div className={`${matchHistory ? 'ml-1.5' : 'ml-3'} flex flex-col gap-[0.1rem]`}>
           <div className='flex items-baseline gap-0.5 text-xs hover:underline'>
-            <span className='font-bold text-[#202d37] dark:text-white'>{
-              summonerLiveGame?.name}
+            <span className='font-bold text-[#202d37] dark:text-white'>
+              {matchHistory?.riotIdGameName || liveGame?.summonerNameAndTagLine?.name}
             </span>
             <span className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
-              #{summonerLiveGame?.tagLine}
+              #{matchHistory?.riotIdTagline || liveGame?.summonerNameAndTagLine?.tagLine}
             </span>
           </div>
           <span className='text-xss text-secondGray dark:text-[#7b7a8e]'>
-            Level {summoner?.summonerLevel}
+            {matchHistory ? `${formatTierName(matchHistory.rank)} ${matchHistory.rank?.rank}` : `Level ${liveGame?.summonerLevel}`}
           </span>
         </div>
       )}

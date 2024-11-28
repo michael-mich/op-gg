@@ -1,4 +1,4 @@
-import { QueueId } from "@/app/_enums/match";
+import { QueueId } from '@/app/_enums/match';
 
 export const checkQueueType = (queueId: number | undefined): string => {
   switch (queueId) {

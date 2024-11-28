@@ -6,8 +6,8 @@ import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
-import { findQueueTypeData } from '@/app/_utils/matchStats';
-import { calculateWinRate, formatTierName, getRankedEmblem } from '@/app/_utils/rank';
+import { findQueueTypeData, calculatePercentage } from '@/app/_utils/matchStats';
+import { formatTierName, getRankedEmblem } from '@/app/_utils/rank';
 import SummonerRankSkeleton from './SummonerRankSkeleton';
 import type { TSummonerRank } from '@/app/_types/apiTypes/apiTypes';
 import { QueueType } from '@/app/_enums/match';
@@ -30,8 +30,9 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
 
   const rankedData: TSummonerRank | undefined = findQueueTypeData(fetchedSummonerRanksData, queueType);
 
+  const totalPlayedGames = rankedData ? rankedData?.wins + rankedData?.losses : 0;
+  const winRate = calculatePercentage(rankedData?.wins || 0, totalPlayedGames);
   const tierName = formatTierName(rankedData);
-  const winRate = calculateWinRate(rankedData);
   const rankedEmblem = getRankedEmblem(rankedData);
 
   return (

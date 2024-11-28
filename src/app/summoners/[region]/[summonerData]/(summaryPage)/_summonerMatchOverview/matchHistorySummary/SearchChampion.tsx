@@ -3,12 +3,13 @@ import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import useOutsideClick from '@/app/_hooks/useOutsideClick';
 import Image from 'next/image';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
+import type { TMatchProps } from '../SummonerMatchOverview';
 import type { TMatchHistorySummary } from '@/app/_types/apiTypes/customApiTypes';
 import type { TSetState } from '@/app/_types/tuples';
 import { IoIosSearch } from 'react-icons/io';
 import { FaCertificate } from "react-icons/fa6";
 
-interface Props {
+interface Props extends Omit<TMatchProps, 'markedMatchIndexes'> {
   matchHistorySummaryData: TMatchHistorySummary | undefined;
   setMarkedChampionId: TSetState<string>;
   setChampionSearchMode: TSetState<boolean>;
@@ -16,8 +17,13 @@ interface Props {
 
 const SearchChampion = ({
   matchHistorySummaryData,
+  markedChampionId,
   setMarkedChampionId,
-  setChampionSearchMode
+  setChampionSearchMode,
+  matchHistoryCount,
+  isPending,
+  setTransition,
+  setMarkedMatchIndexes
 }: Props) => {
   const [displaySummonerList, setDisplaySummonerList] = useState(false);
   const [searchedChampion, setSearchedChampion] = useState('');
@@ -30,8 +36,13 @@ const SearchChampion = ({
   }
 
   const resetStates = () => {
+    setMarkedMatchIndexes({});
     setChampionSearchMode(false);
     setMarkedChampionId('0');
+  }
+
+  const addOpacityStyle = (championId: string) => {
+    return markedChampionId === championId && isPending && matchHistoryCount > 10;
   }
 
   const searchFilteredChampions = matchHistorySummaryData?.playedChampions?.filter((champion) => {
@@ -59,13 +70,19 @@ const SearchChampion = ({
         <div
           ref={championsListRef}
           className='absolute left-0 top-8 z-10 w-full max-h-[366px] overflow-y-auto 
-          dark:bg-darkMode-mediumGray rounded'
+          bg-white dark:bg-darkMode-mediumGray rounded transition-opacity'
         >
           <div className='text-sm border-bottom-theme py-1.5 px-2.5'>Recently played</div>
           <ul className='overflow-scroll'>
-            <li className='border-bottom-theme py-1.5 px-2.5'>
+            <li className={`${markedChampionId === '0' && 'pointer-events-none bg-almostWhite dark:bg-darkMode-darkBlue'} 
+            ${addOpacityStyle('0') && 'opacity-70'} transition-all border-bottom-theme py-1.5 px-2.5`}
+            >
               <button
-                onClick={resetStates}
+                onClick={() => {
+                  setTransition(() => {
+                    resetStates();
+                  })
+                }}
                 className='flex items-center gap-2 text-xs'
                 type='button'
               >
@@ -77,13 +94,17 @@ const SearchChampion = ({
             </li>
             {searchFilteredChampions?.map((champion) => (
               <li
-                className='border-bottom-theme last-of-type:border-b-0 py-1.5 px-2.5'
+                className={`${champion.key === markedChampionId && 'pointer-events-none bg-almostWhite dark:bg-darkMode-darkBlue'} 
+                ${addOpacityStyle(champion.key) && 'opacity-70'} transition-all border-bottom-theme last-of-type:border-b-0 py-1.5 px-2.5`}
                 key={champion.key}
               >
                 <button
                   onClick={() => {
-                    setMarkedChampionId(champion.key);
-                    setChampionSearchMode(true);
+                    setTransition(() => {
+                      setMarkedChampionId(champion.key);
+                      setChampionSearchMode(true);
+                      setMarkedMatchIndexes({});
+                    })
                   }}
                   className='flex items-center gap-2 text-xs'
                   type='button'

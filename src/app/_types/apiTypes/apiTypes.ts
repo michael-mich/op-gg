@@ -115,6 +115,7 @@ export interface TSummonerMatchHistoryData extends Omit<TMatchParticipantStats, 
   wardsPlaced: number;
   turretKills: number;
   killingSprees: number;
+  riotIdTagline: string;
 }
 
 export type TMatchHistory = {

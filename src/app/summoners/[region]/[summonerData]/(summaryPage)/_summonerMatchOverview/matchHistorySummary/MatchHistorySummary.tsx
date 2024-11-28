@@ -1,10 +1,12 @@
 'use client';
 
+import { memo } from 'react';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
+import type { TMatchProps } from '../SummonerMatchOverview';
 import type { TSetState } from '@/app/_types/tuples';
 import type { TMatchHistorySummary } from '@/app/_types/apiTypes/customApiTypes';
 import GameStatsSummary from './GameStatsSummary';
@@ -13,23 +15,24 @@ import PreferredPosition from './PreferredPosition';
 import SearchChampion from './SearchChampion';
 import { CircularProgress } from '@nextui-org/react';
 
-interface Props {
-  markedChampionId: string;
+interface Props extends Omit<TMatchProps, 'markedMatchIndexes'> {
   setMarkedChampionId: TSetState<string>;
-  matchHistoryCount: number;
   setChampionSearchMode: TSetState<boolean>;
 }
 
 const MatchHistorySummary = ({
   markedChampionId,
-  setMarkedChampionId,
   matchHistoryCount,
-  setChampionSearchMode
+  ...props
 }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink } = useCurrentRegion() || {};
 
-  const { data: matchHistorySummaryData, isPending, isSuccess } = useQuery({
+  const {
+    data: matchHistorySummaryData,
+    isPending: isMatchHistorySummaryPending,
+    isSuccess
+  } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['summonerMatchHistorySummary', summonerPuuid, markedChampionId, matchHistoryCount],
     queryFn: () => {
@@ -45,10 +48,10 @@ const MatchHistorySummary = ({
   });
 
   return (
-    <div className={`${isPending && 'flex items-center justify-center py-12'} w-full 
-    h-fit bg-white dark:bg-darkMode-mediumGray rounded`}
+    <div className={`${isMatchHistorySummaryPending && 'flex items-center justify-center py-12'} 
+    w-full h-fit bg-white dark:bg-darkMode-mediumGray rounded`}
     >
-      {isPending ? (
+      {isMatchHistorySummaryPending ? (
         <CircularProgress aria-label={`loading summoner summary of 0 recent games`} />
       ) : isSuccess ? (
         <>
@@ -56,8 +59,9 @@ const MatchHistorySummary = ({
             <span className='text-sm pl-2'>Recent Games</span>
             <SearchChampion
               matchHistorySummaryData={matchHistorySummaryData}
-              setMarkedChampionId={setMarkedChampionId}
-              setChampionSearchMode={setChampionSearchMode}
+              markedChampionId={markedChampionId}
+              matchHistoryCount={matchHistoryCount}
+              {...props}
             />
           </div>
           <div className='grid grid-cols-3 py-2 px-3'>
@@ -73,4 +77,4 @@ const MatchHistorySummary = ({
   );
 }
 
-export default MatchHistorySummary;
+export default memo(MatchHistorySummary);
