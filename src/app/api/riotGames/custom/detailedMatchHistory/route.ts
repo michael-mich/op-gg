@@ -18,12 +18,9 @@ import type {
   TMatchHistory,
   TRune,
   TChampionItem,
-  TChampion,
   TSummonerMatchHistoryData
 } from '@/app/_types/apiTypes/apiTypes';
 import { RuneType, Spell } from '@/app/_enums/match';
-
-type TChampionItemsAndIds = Array<[string, { name: string } & Pick<TChampion, 'image'>] | '0'>;
 
 export const GET = async (req: NextRequest) => {
   const {
@@ -41,7 +38,6 @@ export const GET = async (req: NextRequest) => {
       matchHistoryStartIndex
     )
   );
-
   const recentMatches = filterMatchesByMonths(fetchedHistoryMatch);
   const matchHistoryData = isRecognizedQueueId(recentMatches);
 
@@ -116,16 +112,13 @@ export const GET = async (req: NextRequest) => {
   );
 
   const summonersItems = matchHistoryData?.map((match) => match.info.participants.map((summoner) => {
-    const itemLackId = '0';
     const summonerItemIds = new Array(7).fill('').map((_, index) => `${summoner[`item${index}`]}`);
     const championItemEntries = Object.entries(championItemData?.data || {});
-    const summonerChampionItems = championItemEntries.filter(([itemId]) => summonerItemIds.includes(itemId));
-    const filteredChampionItemsAndIds: TChampionItemsAndIds = [...summonerChampionItems];
-    summonerItemIds.forEach((summonerItemId) => {
-      if (summonerItemId === itemLackId) {
-        filteredChampionItemsAndIds.push(summonerItemId);
-      }
+    const filteredChampionItemsAndIds = summonerItemIds.map((summonerItemId) => {
+      const item = championItemEntries.find(([itemId]) => itemId === summonerItemId);
+      return item ? item : summonerItemId;
     });
+
     // Sorts champion items to maintain the order they were used by the summoner in the game
     const sortedChampionItems = filteredChampionItemsAndIds.sort(([itemIdA], [itemIdB]) => {
       const indexA = summonerItemIds.findIndex((summonerItemId) => itemIdA === summonerItemId);
