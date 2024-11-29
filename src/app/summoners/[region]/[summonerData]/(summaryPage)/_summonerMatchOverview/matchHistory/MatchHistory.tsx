@@ -13,7 +13,7 @@ import type { TDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes
 import type { TSetState } from '@/app/_types/tuples';
 import { TimeUnit } from '@/app/_enums/enums';
 import TimeSinceMatch from './TimeSinceMatch';
-import MatchDetails from './MatchDetails';
+import MatchDetails from './matchDetails/MatchDetails';
 import Teams from './Teams';
 import SummonerStats from './summonerStats/SummonerStats';
 import PaginationButton from './PaginationButton';
@@ -63,7 +63,7 @@ const MatchHistory = ({
         return match.info.currentSummoner?.championId.toString() === markedChampionId;
       }
     }));
-  }, [summonerPuuid, markedChampionId]);
+  }, [summonerPuuid, matchHistoryData, markedChampionId]);
 
   const handleMarkedMatchIndexes = (matchIndex: number) => {
     const newMarkedState = !markedMatchIndexes[matchIndex];
