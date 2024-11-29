@@ -52,7 +52,7 @@ const MatchHistorySummary = ({
     w-full h-fit bg-white dark:bg-darkMode-mediumGray rounded`}
     >
       {isMatchHistorySummaryPending ? (
-        <CircularProgress aria-label={`loading summoner summary of 0 recent games`} />
+        <CircularProgress aria-label={`loading summoner summary of ${matchHistoryCount} recent games`} />
       ) : isSuccess ? (
         <>
           <div className='flex items-center justify-between h-[35px] border-bottom-theme px-1'>

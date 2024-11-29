@@ -37,11 +37,7 @@ const SummonerStats = ({ currentSummoner }: Props) => {
         </ul>
       </div>
       <div className='flex items-center gap-2 mt-[2px]'>
-        <ChampionItems
-          items={currentSummoner?.items}
-          win={currentSummoner?.win}
-          earlySurrender={currentSummoner?.gameEndedInEarlySurrender}
-        />
+        <ChampionItems summoner={currentSummoner} />
         <Badges currentSummoner={currentSummoner} />
       </div>
     </div>

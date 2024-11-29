@@ -4,23 +4,21 @@ import Image from 'next/image';
 import type { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {
-  earlySurrender: boolean | undefined;
-  items: TSummonerDetailedMatchHistory['items'] | undefined;
-  win: boolean | undefined;
+  summoner: TSummonerDetailedMatchHistory | undefined;
 }
 
-const ChampionItems = ({ items, win, earlySurrender }: Props) => {
+const ChampionItems = ({ summoner }: Props) => {
   const { data: newestGameVersion } = useGameVersionQuery();
 
   return (
-    <div className='flex items-center gap-0.5'>
-      {items?.map((item, index) => {
-        const lastItem = items.length - 1 === index;
+    <div className='flex items-center justify-center gap-0.5'>
+      {summoner?.items?.map((item, index) => {
+        const lastItem = summoner?.items && summoner.items.length - 1 === index;
 
         return (
           <div
-            className={`${earlySurrender ? 'bg-[#c3cbd1] dark:bg-[#515163]' : win ? 'bg-[#b3cdff] dark:bg-[#2f436e]' : 'bg-[#ffbac3] dark:bg-[#703c47]'} 
-            size-[22px] rounded ${lastItem && 'rounded-full'}`}
+            className={`${summoner?.gameEndedInEarlySurrender ? 'bg-[#c3cbd1] dark:bg-[#515163]' : summoner?.win ? 'bg-[#b3cdff] dark:bg-[#2f436e]' : 'bg-[#ffbac3] dark:bg-[#703c47]'} 
+            size-[22px] ${lastItem && 'rounded-full'}`}
             key={index}
           >
             {item !== null && (
