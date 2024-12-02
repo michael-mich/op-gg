@@ -26,7 +26,8 @@ const PaginationButton = ({
       }}
       className={`${isFetchingNextPage && 'pointer-events-none'} flex justify-center w-full text-sm 
       bg-white dark:bg-darkMode-mediumGray border border-lightMode-thirdLighterGray 
-      dark:border-lightGrayBackground rounded py-2 mt-2`}
+      dark:border-lightGrayBackground rounded py-2 mt-2 transition-colors 
+      hover:bg-lightMode-thirdLighterGray hover:dark:bg-darkMode-secondDarkGray`}
       type='button'
     >
       {isFetchingNextPage ? (

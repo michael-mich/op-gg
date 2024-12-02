@@ -126,8 +126,8 @@ const MatchHistory = ({
               </div>
               <button
                 onClick={() => handleMarkedMatchIndexes(matchIndex)}
-                className={`${currentSummoner?.gameEndedInEarlySurrender ? 'bg-lightMode-thirdLighterGray dark:bg-lightGrayBackground' : currentSummoner?.win ? 'bg-lightMode-blue dark:bg-darkMode-mediumBlue' : 'bg-lightMode-red dark:bg-darkMode-red'} 
-                flex items-end justify-center w-10 rounded-tr-[5px] rounded-br-[5px] p-2`}
+                className={`${currentSummoner?.gameEndedInEarlySurrender ? 'bg-lightMode-thirdLighterGray dark:bg-lightGrayBackground hover:bg-lightMode-lightGray hover:dark:bg-darkMode-darkGray' : currentSummoner?.win ? 'bg-lightMode-blue dark:bg-darkMode-mediumBlue hover:bg-lightBlue hover:dark:bg-darkBlue' : 'bg-lightMode-red dark:bg-darkMode-red hover:bg-lightRed hover:dark:bg-darkRed'} 
+                flex items-end justify-center w-10 rounded-tr-[5px] rounded-br-[5px] p-2 transition-colors`}
                 type='button'
               >
                 <IoIosArrowDown className={`${currentSummoner?.gameEndedInEarlySurrender ? 'text-lightMode-secondLighterGray dark:text-mediumGrayText' : currentSummoner?.win ? 'text-blue' : 'text-red'} 
