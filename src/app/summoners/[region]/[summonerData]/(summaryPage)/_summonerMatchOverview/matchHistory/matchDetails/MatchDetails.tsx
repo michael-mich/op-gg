@@ -47,7 +47,10 @@ const MatchDetails = ({ match, currentSummoner }: Props) => {
                 <tr className='text-xs font-normal text-secondGray dark:text-mediumGrayText'>
                   {tableColumns.map((column, columnIndex) => (
                     columnIndex === 0 ? (
-                      <th className={`${isFirstTeam && 'rounded-tl-[5px]'} bg-white dark:bg-darkMode-mediumGray`}>
+                      <th
+                        className={`${isFirstTeam && 'rounded-tl-[5px]'} bg-white dark:bg-darkMode-mediumGray`}
+                        key={columnIndex}
+                      >
                         <span className={`${firstSummoner?.win ? 'text-blue' : 'text-red'} font-bold tracking-wide`}>
                           {firstSummoner?.gameEndedInEarlySurrender ? '' : firstSummoner?.win ? 'Victory' : 'Defeat'}
                         </span>
@@ -55,8 +58,10 @@ const MatchDetails = ({ match, currentSummoner }: Props) => {
                         ({team?.teamType === 'red' ? 'Red' : 'Blue'} team)
                       </th>
                     ) : (
-                      <th className={`${(columnIndex === 6 && isFirstTeam) && 'rounded-tr-[5px]'} bg-white 
-                      dark:bg-darkMode-mediumGray`}
+                      <th
+                        className={`${(columnIndex === 6 && isFirstTeam) && 'rounded-tr-[5px]'} bg-white 
+                        dark:bg-darkMode-mediumGray`}
+                        key={columnIndex}
                       >
                         {column}
                       </th>
