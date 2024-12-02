@@ -143,8 +143,8 @@ const MatchHistory = ({
       })}
       {(matchHistoryCount < 100 || isFetchingNextPage)
         && !championSearchMode
-        && matchHistoryData?.pages
-        && matchHistoryData?.pages?.length > 0
+        && filteredMatchHistory
+        && filteredMatchHistory.length > 0
         && (
           <PaginationButton
             isFetchingNextPage={isFetchingNextPage}
