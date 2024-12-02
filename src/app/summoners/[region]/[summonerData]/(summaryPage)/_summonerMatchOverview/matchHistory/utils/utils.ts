@@ -1,4 +1,4 @@
-import { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
+import type { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
 import { QueueId } from '@/app/_enums/match';
 
 export const getFormattedKda = (summoner: TSummonerDetailedMatchHistory | undefined): string => {
