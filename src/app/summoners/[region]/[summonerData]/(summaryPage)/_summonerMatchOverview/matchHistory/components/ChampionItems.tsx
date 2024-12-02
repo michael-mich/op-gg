@@ -18,12 +18,12 @@ const ChampionItems = ({ summoner }: Props) => {
         return (
           <div
             className={`${summoner?.gameEndedInEarlySurrender ? 'bg-[#c3cbd1] dark:bg-[#515163]' : summoner?.win ? 'bg-[#b3cdff] dark:bg-[#2f436e]' : 'bg-[#ffbac3] dark:bg-[#703c47]'} 
-            size-[22px] ${lastItem && 'rounded-full'}`}
+            size-[22px] ${lastItem ? 'rounded-full' : 'rounded'}`}
             key={index}
           >
             {item !== null && (
               <Image
-                className={`${lastItem && 'rounded-full'} rounded`}
+                className={`${lastItem ? 'rounded-full' : 'rounded'}`}
                 src={`${imageEndpoints.championItem(newestGameVersion)}${item.image.full}`}
                 width={32}
                 height={32}
