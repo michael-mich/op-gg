@@ -10,6 +10,20 @@ export const getFormattedKda = (summoner: TSummonerDetailedMatchHistory | undefi
   }
 }
 
+export const determineTeamsOrder = <T>(
+  currentSummoner: TSummonerDetailedMatchHistory | undefined,
+  teams: Array<T> | undefined
+): Array<T | undefined> | undefined => {
+  if (currentSummoner?.teamId === 100) {
+    return teams;
+  }
+  else {
+    const blueTeam = teams?.[0];
+    const redTeam = teams?.[1];
+    return [redTeam, blueTeam];
+  }
+}
+
 export const checkQueueType = (queueId: number | undefined): string => {
   switch (queueId) {
     case QueueId.Normal: return 'Normal';

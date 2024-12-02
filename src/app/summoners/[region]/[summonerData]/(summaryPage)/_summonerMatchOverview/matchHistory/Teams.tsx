@@ -15,9 +15,9 @@ const Teams = ({ match }: Props) => {
 
   return (
     <div className='flex gap-2 w-[168px]'>
-      {match?.info.segregatedTeams.map((team) => (
-        <div className='flex flex-col gap-0.5' key={team.teamType}>
-          {team.teamParticipants.map((summoner, summonerIndex) => {
+      {match?.info.segregatedTeams?.map((team) => (
+        <div className='flex flex-col gap-0.5' key={team?.teamType}>
+          {team?.teamParticipants.map((summoner, summonerIndex) => {
             const currentSummoner = summonerPuuid === summoner?.puuid;
 
             return (
