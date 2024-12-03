@@ -9,7 +9,10 @@ import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import { calculateTimeUnit } from '@/app/_utils/utils';
 import { checkQueueType } from './utils/utils';
 import type { TMatchProps } from '../SummonerMatchOverview';
-import type { TDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
+import type {
+  TDetailedMatchHistory,
+  TSummonerDetailedMatchHistory
+} from '@/app/_types/apiTypes/customApiTypes';
 import type { TSetState } from '@/app/_types/tuples';
 import { TimeUnit } from '@/app/_enums/enums';
 import TimeSinceMatch from './TimeSinceMatch';
@@ -18,6 +21,12 @@ import Teams from './Teams';
 import SummonerStats from './summonerStats/SummonerStats';
 import PaginationButton from './PaginationButton';
 import { IoIosArrowDown } from "react-icons/io";
+
+export type TMatchAndSummonerProps = {
+  [key in 'summoner' | 'currentSummoner']?: TSummonerDetailedMatchHistory | undefined;
+} & {
+  match?: TDetailedMatchHistory | undefined;
+};
 
 interface Props extends Omit<TMatchProps, 'setTransition'> {
   championSearchMode: boolean;

@@ -1,11 +1,7 @@
 import { getDifferenceBetweenCurrentDate } from '@/app/_utils/utils';
-import type { TDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
+import type { TMatchAndSummonerProps } from './MatchHistory';
 
-type Props = {
-  match: TDetailedMatchHistory | undefined;
-}
-
-const TimeSinceMatch = ({ match }: Props) => {
+const TimeSinceMatch = ({ match }: TMatchAndSummonerProps) => {
   const {
     monthsDifference,
     daysDifference,

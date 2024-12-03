@@ -3,10 +3,7 @@ import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { handleKdaTextColor } from '@/app/_utils/utils';
 import { formatTierName } from '@/app/_utils/rank';
 import { getFormattedKda, determineTeamsOrder } from '../utils/utils';
-import type {
-  TDetailedMatchHistory,
-  TSummonerDetailedMatchHistory
-} from '@/app/_types/apiTypes/customApiTypes';
+import type { TMatchAndSummonerProps } from '../MatchHistory';
 import ChampionProfile from '../../../../_components/ChampionProfile';
 import ChampionItems from '../components/ChampionItems';
 import ChampionDamage from './ChampionDamage';
@@ -14,12 +11,7 @@ import TeamStats from './teamStats/TeamStats';
 
 const tableColumns = ['', 'Rank', 'KDA', 'Damage', 'Wards', 'CS', 'Item'];
 
-type Props = {
-  match: TDetailedMatchHistory | undefined;
-  currentSummoner: TSummonerDetailedMatchHistory | undefined;
-}
-
-const MatchDetails = ({ match, currentSummoner }: Props) => {
+const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const teamsInOrder = determineTeamsOrder(currentSummoner, match?.info.segregatedTeams);
 

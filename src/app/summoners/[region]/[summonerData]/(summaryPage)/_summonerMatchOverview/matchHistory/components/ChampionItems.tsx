@@ -1,13 +1,9 @@
 import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import Image from 'next/image';
-import type { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
+import type { TMatchAndSummonerProps } from '../MatchHistory';
 
-type Props = {
-  summoner: TSummonerDetailedMatchHistory | undefined;
-}
-
-const ChampionItems = ({ summoner }: Props) => {
+const ChampionItems = ({ summoner }: TMatchAndSummonerProps) => {
   const { data: newestGameVersion } = useGameVersionQuery();
 
   return (

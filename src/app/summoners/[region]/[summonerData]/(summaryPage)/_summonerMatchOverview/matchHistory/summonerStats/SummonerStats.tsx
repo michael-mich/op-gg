@@ -3,13 +3,9 @@ import { getFormattedKda } from '../utils/utils';
 import ChampionProfile from '../../../../_components/ChampionProfile';
 import ChampionItems from '../components/ChampionItems';
 import Badges from './Badges';
-import type { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
+import type { TMatchAndSummonerProps } from '../MatchHistory';
 
-type Props = {
-  currentSummoner: TSummonerDetailedMatchHistory | undefined;
-}
-
-const SummonerStats = ({ currentSummoner }: Props) => {
+const SummonerStats = ({ currentSummoner }: TMatchAndSummonerProps) => {
   const formattedKda = getFormattedKda(currentSummoner);
 
   return (

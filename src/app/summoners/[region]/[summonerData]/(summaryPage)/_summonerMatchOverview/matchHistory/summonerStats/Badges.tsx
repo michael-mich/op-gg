@@ -1,8 +1,5 @@
 import type { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
-
-type Props = {
-  currentSummoner: TSummonerDetailedMatchHistory | undefined;
-}
+import type { TMatchAndSummonerProps } from '../MatchHistory';
 
 const checkSummonerKills = (currentSummoner: TSummonerDetailedMatchHistory | undefined) => {
   if (currentSummoner) {
@@ -21,7 +18,7 @@ const checkSummonerKills = (currentSummoner: TSummonerDetailedMatchHistory | und
   }
 }
 
-const Badges = ({ currentSummoner }: Props) => {
+const Badges = ({ currentSummoner }: TMatchAndSummonerProps) => {
   const badgeData = [
     { value: `${checkSummonerKills(currentSummoner) ? `${checkSummonerKills(currentSummoner)} Kill` : ''}` },
     { label: 'Wards Placed:', value: currentSummoner?.wardsPlaced },

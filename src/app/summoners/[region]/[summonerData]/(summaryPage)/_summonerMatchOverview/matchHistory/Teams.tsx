@@ -3,13 +3,9 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
-import type { TDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
+import type { TMatchAndSummonerProps } from './MatchHistory';
 
-type Props = {
-  match: TDetailedMatchHistory | undefined;
-}
-
-const Teams = ({ match }: Props) => {
+const Teams = ({ match }: TMatchAndSummonerProps) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { data: newestGameVersion } = useGameVersionQuery();
 

@@ -1,14 +1,9 @@
 import React from 'react';
 import { determineTeamsOrder } from '../../utils/utils';
-import type { TDetailedMatchHistory, TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
+import type { TMatchAndSummonerProps } from '../../MatchHistory';
 import ObjectiveImages from './ObjectiveImages';
 
-type Props = {
-  match: TDetailedMatchHistory | undefined;
-  currentSummoner: TSummonerDetailedMatchHistory | undefined;
-}
-
-const TeamStats = ({ match, currentSummoner }: Props) => {
+const TeamStats = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
   const teamsInOrder = determineTeamsOrder(currentSummoner, match?.info.teams);
 
   return (

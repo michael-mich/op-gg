@@ -1,11 +1,8 @@
 import { calculatePercentage } from '@/app/_utils/matchStats';
 import type { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
+import type { TMatchAndSummonerProps } from '../MatchHistory';
 
-type Props = {
-  summoner: TSummonerDetailedMatchHistory | undefined;
-}
-
-const ChampionDamage = ({ summoner }: Props) => {
+const ChampionDamage = ({ summoner }: TMatchAndSummonerProps) => {
   const calculateDamagePercentage = (
     summoner: TSummonerDetailedMatchHistory | undefined,
     calcualteDamageDealt = true
