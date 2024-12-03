@@ -122,10 +122,6 @@ export interface TSummonerMatchHistoryData extends Omit<TMatchParticipantStats, 
   totalDamageTaken: number;
 }
 
-type TObjectiveStats = {
-  kills: number;
-}
-
 export type TMatchHistory = {
   info: {
     gameDuration: number;
@@ -136,13 +132,9 @@ export type TMatchHistory = {
     teams: Array<
       {
         objectives: {
-          baron: TObjectiveStats;
-          champion: TObjectiveStats;
-          dragon: TObjectiveStats;
-          horde: TObjectiveStats;
-          inhibitor: TObjectiveStats;
-          riftHerald: TObjectiveStats;
-          tower: TObjectiveStats;
+          [key: string]: {
+            kills: number;
+          };
         };
         win: boolean;
       } & Pick<TSummonerMatchHistoryData, 'teamId'>
