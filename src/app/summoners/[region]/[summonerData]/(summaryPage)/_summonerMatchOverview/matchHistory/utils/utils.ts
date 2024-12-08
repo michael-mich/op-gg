@@ -1,12 +1,18 @@
 import type { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
 import { QueueId } from '@/app/_enums/match';
 
+export const getFormattedKillParticipation = (
+  summoner: TSummonerDetailedMatchHistory | undefined
+): number => {
+  return summoner ? Math.round(summoner.challenges.killParticipation * 100) : 0;
+}
+
 export const getFormattedKda = (summoner: TSummonerDetailedMatchHistory | undefined): string => {
   if (summoner?.kills !== 0 && summoner?.deaths === 0 && summoner?.assists !== 0) {
     return 'Perfect';
   }
   else {
-    return `${summoner?.kda?.toFixed(2)}:1`;
+    return `${summoner?.challenges?.kda.toFixed(2)}:1`;
   }
 }
 

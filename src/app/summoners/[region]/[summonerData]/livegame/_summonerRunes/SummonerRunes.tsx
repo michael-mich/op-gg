@@ -1,9 +1,6 @@
 import Image from 'next/image';
-import { useQuery } from '@tanstack/react-query';
-import { fetchApi } from '@/app/_utils/fetchApi';
-import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import useChampionRunesQuery from '@/app/_hooks/queries/useChampionRunesQuery';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
-import type { TRune } from '@/app/_types/apiTypes/apiTypes';
 import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/customApiTypes';
 import { shardData } from './summonerRunesData';
 
@@ -12,11 +9,7 @@ type Props = {
 }
 
 const SummonerRunes = ({ summoner }: Props) => {
-  const { data: runeData } = useQuery({
-    queryKey: ['runes'],
-    queryFn: () => fetchApi<Array<TRune>>(riotGamesRoutes.runes()),
-    staleTime: Infinity
-  });
+  const { data: runesData } = useChampionRunesQuery();
 
   const shardsWithMarkedStatus = shardData.map((shardGroup, shardGroupIndex) => shardGroup.map((shard) => {
     const markedShard = summoner.shardIds?.some((summonerShardId, summonerShardIdIndex) => {
@@ -31,7 +24,7 @@ const SummonerRunes = ({ summoner }: Props) => {
     }
   }));
 
-  const filteredRunes = summoner.runes && summoner.runes.flatMap((summonerRune) => runeData?.filter((rune) => {
+  const filteredRunes = summoner.runes && summoner.runes.flatMap((summonerRune) => runesData?.filter((rune) => {
     return summonerRune?.id === rune.id;
   }));
 

@@ -44,6 +44,9 @@ export const riotGamesRoutes = {
   runes: () => {
     return createRouteUrl(RouteHandlers.RiotGames, 'runes');
   },
+  championItems: () => {
+    return createRouteUrl(RouteHandlers.RiotGames, 'championItems');
+  },
   summonerAccount: (
     summonerName: string,
     regionContinentLink: Nullable<string>,
@@ -107,12 +110,8 @@ export const riotGamesRoutes = {
       }
     );
   },
-  filteredChampions: (championIds: Array<number> | undefined) => {
-    return createRouteUrl(
-      RouteHandlers.RiotGames,
-      'filteredChampions',
-      { [RouteHandlerParams.ChampionIds]: championIds }
-    );
+  championData: () => {
+    return createRouteUrl(RouteHandlers.RiotGames, 'championData');
   },
   summonerMatchHistory: (
     summonerPuuid: string | null,

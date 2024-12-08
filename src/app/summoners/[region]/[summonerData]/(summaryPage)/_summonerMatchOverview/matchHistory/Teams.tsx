@@ -11,7 +11,7 @@ const Teams = ({ match }: TMatchAndSummonerProps) => {
 
   return (
     <div className='flex gap-2 w-[168px]'>
-      {match?.info.segregatedTeams?.map((team) => (
+      {match?.info.participants?.map((team) => (
         <div className='flex flex-col gap-0.5' key={team?.teamType}>
           {team?.teamParticipants.map((summoner, summonerIndex) => {
             const currentSummoner = summonerPuuid === summoner?.puuid;
@@ -23,10 +23,10 @@ const Teams = ({ match }: TMatchAndSummonerProps) => {
               >
                 <Image
                   className={`${currentSummoner ? 'rounded-image' : 'rounded'} size-4`}
-                  src={`${imageEndpoints.championImage(newestGameVersion)}${summoner?.championData?.image || `${summoner?.championName}.png`}`}
+                  src={`${imageEndpoints.championImage(newestGameVersion)}${summoner?.championName}.png`}
                   width={16}
                   height={16}
-                  alt={summoner?.championData?.name || ''}
+                  alt={''}
                 />
                 <span className={`${currentSummoner ? 'text-black dark:text-white' : 'text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'} 
                 block max-w-[60px] text-xs overflow-hidden text-ellipsis whitespace-nowrap`}

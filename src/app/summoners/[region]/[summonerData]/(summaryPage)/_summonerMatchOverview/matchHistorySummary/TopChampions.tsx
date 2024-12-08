@@ -17,8 +17,8 @@ const TopChampions = ({ matchHistorySummaryData }: Props) => {
         Recent {matchHistorySummaryData?.gameAmounts.totalGames} Games Played Champions
       </div>
       <div className='flex flex-col gap-2 mt-3'>
-        {matchHistorySummaryData?.topPlayedChampions.map((championData) => (
-          <div className='flex items-center' key={championData.championDetails.name}>
+        {matchHistorySummaryData?.topPlayedChampions.map((championData, championIndex) => (
+          <div className='flex items-center' key={championData.championDetails.name || championIndex}>
             <Image
               className='rounded-image mr-2'
               src={`${imageEndpoints.championImage(newestGameVersion)}${championData.championDetails.image?.full}`}

@@ -67,7 +67,7 @@ export type TBannedChampion = {
   teamId: number;
 }
 
-export interface TUpdatedLiveGameParticipants extends Pick<TLiveGameParticipants, 'teamId'>, Pick<TSummonerAccount, 'puuid'> {
+export interface TUpdatedLiveGameParticipants extends Pick<TLiveGameParticipants, 'teamId' | 'perks' | 'spell1Id' | 'spell2Id'>, Pick<TSummonerAccount, 'puuid'> {
   championData: Pick<TChampion, 'name'> & {
     image: string;
   } | undefined;
@@ -116,25 +116,12 @@ export interface TTeamGeneric<T> {
   teamParticipants: Array<T>;
 }
 
-export interface TSummonerDetailedMatchHistory extends Pick<TUpdatedLiveGameParticipants, 'championData'>, Omit<TSummonerMatchHistoryData, 'perks'> {
-  items: Array<{
-    name: string;
-  } & Pick<TChampion, 'image'> | null> | undefined;
-  killParticipation: number | undefined;
-  runes: Array<TUpdatedRune | undefined> | undefined;
-  spells: Array<TSummonerSpellContent> | undefined;
-  minions: {
-    minionsPerMinute: number;
-    totalMinions: number;
-    minions: number;
-  } | undefined;
-  rank: TSummonerRank | undefined;
-  kda: number | undefined;
-};
+export interface TSummonerDetailedMatchHistory extends TSummonerMatchHistoryData {
+  rank: TSummonerRank;
+}
 
 export type TDetailedMatchHistory = {
   info: Omit<TMatchHistory['info'], 'participants'> & {
-    segregatedTeams: Array<TTeamGeneric<TSummonerDetailedMatchHistory>> | undefined;
-    currentSummoner: TSummonerDetailedMatchHistory | undefined;
+    participants: Array<TTeamGeneric<TSummonerDetailedMatchHistory | undefined>>;
   };
 }

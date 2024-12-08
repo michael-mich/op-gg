@@ -1,29 +1,43 @@
-import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
-import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import Image from 'next/image';
+import { useQuery } from '@tanstack/react-query';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
+import type { TChampionItem } from '@/app/_types/apiTypes/apiTypes';
 import type { TMatchAndSummonerProps } from '../MatchHistory';
 
 const ChampionItems = ({ summoner }: TMatchAndSummonerProps) => {
   const { data: newestGameVersion } = useGameVersionQuery();
 
+  const { data: itemsData } = useQuery({
+    queryKey: ['championItems'],
+    queryFn: () => fetchApi<TChampionItem>(riotGamesRoutes.championItems()),
+    staleTime: Infinity,
+    gcTime: 60_000 // 10 minutes
+  });
+
+  const itemIds = new Array(7).fill('').map((_, index) => `${summoner?.[`item${index}`]}`);
+
   return (
     <div className='flex items-center justify-center gap-0.5'>
-      {summoner?.items?.map((item, index) => {
-        const lastItem = summoner?.items && summoner.items.length - 1 === index;
+      {itemIds.map((itemId, index) => {
+        const item = itemsData?.[itemId];
+        const isLastItem = itemIds.length - 1 === index;
 
         return (
           <div
             className={`${summoner?.gameEndedInEarlySurrender ? 'bg-[#c3cbd1] dark:bg-[#515163]' : summoner?.win ? 'bg-[#b3cdff] dark:bg-[#2f436e]' : 'bg-[#ffbac3] dark:bg-[#703c47]'} 
-            size-[22px] ${lastItem ? 'rounded-full' : 'rounded'}`}
+            size-[22px] ${isLastItem ? 'rounded-full' : 'rounded'}`}
             key={index}
           >
-            {item !== null && (
+            {itemId !== '0' && (
               <Image
-                className={`${lastItem ? 'rounded-full' : 'rounded'}`}
-                src={`${imageEndpoints.championItem(newestGameVersion)}${item.image.full}`}
+                className={`${isLastItem ? 'rounded-full' : 'rounded'}`}
+                src={`${imageEndpoints.championItem(newestGameVersion)}${item?.image.full}`}
                 width={32}
                 height={32}
-                alt={item.name}
+                alt={item?.name || ''}
               />
             )}
           </div>

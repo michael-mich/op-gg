@@ -1,12 +1,15 @@
 import { memo } from 'react';
-import { getFormattedKda } from '../utils/utils';
-import ChampionProfile from '../../../../_components/ChampionProfile';
+import { getFormattedKda, getFormattedKillParticipation } from '../utils/utils';
+import { getSummonerMinionStats } from '@/app/_utils/matchStats';
+import ChampionProfile from '../../../../_components/championProfile/ChampionProfile';
 import ChampionItems from '../components/ChampionItems';
 import Badges from './Badges';
 import type { TMatchAndSummonerProps } from '../MatchHistory';
 
-const SummonerStats = ({ currentSummoner }: TMatchAndSummonerProps) => {
+const SummonerStats = ({ currentSummoner, match }: TMatchAndSummonerProps) => {
   const formattedKda = getFormattedKda(currentSummoner);
+  const minonStats = getSummonerMinionStats(currentSummoner, match);
+  const killParticipation = getFormattedKillParticipation(currentSummoner);
 
   return (
     <div className='flex-1 self-center'>
@@ -24,10 +27,10 @@ const SummonerStats = ({ currentSummoner }: TMatchAndSummonerProps) => {
         flex flex-col gap-1 h-[58px] text-xss text-lightMode-secondLighterGray dark:text-darkMode-lighterGray border-l pl-2`}
         >
           <li className='text-xs leading-3 text-red'>
-            P/Kill {currentSummoner?.killParticipation || 0}%
+            P/Kill {killParticipation}%
           </li>
           <li>
-            CS {currentSummoner?.minions?.totalMinions} ({currentSummoner?.minions?.minionsPerMinute})
+            CS {minonStats?.totalMinions} ({minonStats?.minionsPerMinute})
           </li>
           <li>{currentSummoner?.rank?.tier}</li>
         </ul>

@@ -7,13 +7,14 @@ import type {
   TSummonerSpellId,
   TSpellId,
   TSummonerSpellContent,
-  TChampion,
   TMatchHistory
 } from '@/app/_types/apiTypes/apiTypes';
 import type {
   TTeamGeneric,
   TAverageKdaStats,
-  TChampionWinLostRatio
+  TChampionWinLostRatio,
+  TSummonerDetailedMatchHistory,
+  TDetailedMatchHistory
 } from '../_types/apiTypes/customApiTypes';
 import { type Spell, RuneType, QueueType, QueueId } from '@/app/_enums/match';
 
@@ -150,15 +151,18 @@ export const sortSummonerRunesByType = <T extends Array<{ type: RuneType } | und
   }
 };
 
-export const getChampionNameAndImage = async <T extends { championId: number }>(data: T) => {
-  const championData = await fetchApi<Array<TChampion>>(
-    riotGamesRoutes.filteredChampions([data.championId])
-  );
+export const getSummonerMinionStats = (
+  summoner: TSummonerDetailedMatchHistory | undefined,
+  match: TDetailedMatchHistory | undefined
+) => {
+  if (summoner && match) {
+    const totalMinions = summoner?.totalMinionsKilled + summoner?.neutralMinionsKilled;
+    const minionsPerMinute = Math.round(totalMinions / (match?.info.gameDuration / 60));
 
-  return championData?.map((champion) => {
     return {
-      name: champion.name,
-      image: champion.image.full
+      minionsPerMinute,
+      totalMinions,
+      minions: summoner?.totalMinionsKilled
     }
-  })[0]
+  };
 }

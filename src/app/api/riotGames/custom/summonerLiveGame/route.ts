@@ -112,7 +112,7 @@ export const GET = async (req: NextRequest) => {
       return {
         ...gameData,
         participants: gameParticipants?.map((participantData, index) => {
-          const { championId, perks, spell1Id, spell2Id, ...summonerData } = participantData;
+          const { championId, ...summonerData } = participantData;
 
           const updatedData: TUpdatedLiveGameParticipants = {
             ...summonerData,

@@ -2,9 +2,10 @@ import React, { memo } from 'react';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { handleKdaTextColor } from '@/app/_utils/utils';
 import { formatTierName } from '@/app/_utils/rank';
-import { getFormattedKda, determineTeamsOrder } from '../utils/utils';
+import { getSummonerMinionStats } from '@/app/_utils/matchStats';
+import { getFormattedKda, determineTeamsOrder, getFormattedKillParticipation } from '../utils/utils';
 import type { TMatchAndSummonerProps } from '../MatchHistory';
-import ChampionProfile from '../../../../_components/ChampionProfile';
+import ChampionProfile from '../../../../_components/championProfile/ChampionProfile';
 import ChampionItems from '../components/ChampionItems';
 import ChampionDamage from './ChampionDamage';
 import TeamStats from './teamStats/TeamStats';
@@ -13,7 +14,9 @@ const tableColumns = ['', 'Rank', 'KDA', 'Damage', 'Wards', 'CS', 'Item'];
 
 const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const teamsInOrder = determineTeamsOrder(currentSummoner, match?.info.segregatedTeams);
+  const teamsInOrder = determineTeamsOrder(currentSummoner, match?.info.participants);
+  const minionStats = getSummonerMinionStats(currentSummoner, match);
+  const killParticipation = getFormattedKillParticipation(currentSummoner);
 
   return (
     <div className='mt-1'>
@@ -62,13 +65,13 @@ const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
                 </tr>
               </thead>
               <tbody>
-                {team?.teamParticipants.map((summoner) => {
+                {team?.teamParticipants.map((summoner, summonerIndex) => {
                   const formattedTierName = formatTierName(summoner?.rank);
 
                   return (
                     <tr
                       className={`${summonerPuuid === summoner?.puuid && (summoner?.gameEndedInEarlySurrender ? 'dark:bg-darkMode-darkBlue' : summoner?.win ? 'dark:bg-darkMode-mediumBlue' : 'dark:bg-darkMode-red')}`}
-                      key={summoner?.puuid}
+                      key={summonerIndex}
                     >
                       <td className='py-[5px] pl-[10px]'>
                         <ChampionProfile
@@ -84,9 +87,9 @@ const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
                       <td>
                         <div className='flex flex-col items-center gap-1 text-xss'>
                           <span className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
-                            {summoner?.kills}/{summoner?.deaths}/{summoner?.assists} ({summoner?.killParticipation}%)
+                            {summoner?.kills}/{summoner?.deaths}/{summoner?.assists} ({killParticipation}%)
                           </span>
-                          <span className={`${handleKdaTextColor(summoner?.kda)} font-bold`}>
+                          <span className={`${handleKdaTextColor(summoner?.challenges.kda)} font-bold`}>
                             {getFormattedKda(summoner)}
                           </span>
                         </div>
@@ -99,8 +102,8 @@ const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
                         </span>
                       </td>
                       <td className='text-xss text-center text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
-                        <span className='block mb-0.5'>{summoner?.minions?.totalMinions}</span>
-                        <span className='block'>{summoner?.minions?.minionsPerMinute}/m</span>
+                        <span className='block mb-0.5'>{minionStats?.totalMinions}</span>
+                        <span className='block'>{minionStats?.minionsPerMinute}/m</span>
                       </td>
                       <td><ChampionItems summoner={summoner} /></td>
                     </tr>

@@ -70,14 +70,6 @@ export type TSummonerSpellId = {
   summoner2Id: number;
 }
 
-export type TPerks = {
-  perks: {
-    perkIds: Array<number>;
-    perkStyle: number;
-    perkSubStyle: number;
-  };
-}
-
 export type TKda = {
   assists: number;
   deaths: number;
@@ -93,7 +85,9 @@ export type TChampionStats = {
 }
 
 export interface TSummonerMatchHistoryData extends Omit<TMatchParticipantStats, 'gameDuration'>, TSummonerSpellId, Pick<TSummonerProfile, 'summonerLevel'> {
+  championName: string;
   individualPosition: string;
+  teamPosition: string;
   champLevel: number;
   summonerId: string;
   perks: {
@@ -120,6 +114,10 @@ export interface TSummonerMatchHistoryData extends Omit<TMatchParticipantStats, 
   riotIdTagline: string;
   totalDamageDealtToChampions: number;
   totalDamageTaken: number;
+  challenges: {
+    kda: number;
+    killParticipation: number;
+  };
 }
 
 export type TMatchHistory = {
@@ -147,11 +145,16 @@ export type TSpellId = {
   spell2Id: number;
 }
 
-export interface TLiveGameParticipants extends TSpellId, TPerks, Pick<TSummonerMatchHistoryData, 'summonerId'> {
+export interface TLiveGameParticipants extends TSpellId, Pick<TSummonerMatchHistoryData, 'summonerId'> {
   puuid: TSummonerAccount['puuid'];
   championId: TChampionMastery['championId'];
   profileIconId: TSummonerProfile['profileIconId'];
   teamId: number;
+  perks: {
+    perkIds: Array<number>;
+    perkStyle: number;
+    perkSubStyle: number;
+  };
 }
 
 export type TLiveGame = {
@@ -184,7 +187,5 @@ export interface TRune extends Omit<TRuneSlots, 'longDesc' | 'shortDesc'> {
 };
 
 export type TChampionItem = {
-  data: Record<number, {
-    name: string;
-  } & Pick<TChampion, 'image'>>;
+  [key: string]: TChampion;
 }

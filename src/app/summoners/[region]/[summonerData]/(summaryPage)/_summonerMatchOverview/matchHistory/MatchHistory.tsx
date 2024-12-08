@@ -64,16 +64,18 @@ const MatchHistory = ({
   });
 
   const filteredMatchHistory = useMemo(() => {
-    return matchHistoryData?.pages.flatMap((page) => page?.filter((match) => {
-      if (markedChampionId === '0') {
-        return match;
-      }
-      else {
-        return match.info.currentSummoner?.championId.toString() === markedChampionId;
-      }
-    }));
+    return matchHistoryData?.pages.flatMap((page) => page?.filter((match) =>
+      match.info.participants?.map((team) => team.teamParticipants.map((summoner) => {
+        if (markedChampionId === '0') {
+          return match;
+        }
+        else {
+          return summoner?.championId.toString() === markedChampionId;
+        }
+      })))
+    );
   }, [summonerPuuid, matchHistoryData, markedChampionId]);
-
+  console.log(filteredMatchHistory);
   const handleMarkedMatchIndexes = (matchIndex: number) => {
     const newMarkedState = !markedMatchIndexes[matchIndex];
     if (newMarkedState) {
@@ -102,7 +104,11 @@ const MatchHistory = ({
   return (
     <div className='mt-2'>
       {filteredMatchHistory?.map((match, matchIndex) => {
-        const { currentSummoner, gameDuration, queueId } = match?.info || {};
+        const { gameDuration, queueId } = match?.info || {};
+
+        const currentSummoner = match?.info.participants.flatMap((team) =>
+          team.teamParticipants.filter((summoner) => summoner?.puuid === summonerPuuid)
+        )[0];
 
         const gameMinutes = calculateTimeUnit(gameDuration, TimeUnit.Minutes);
         const gameSeconds = calculateTimeUnit(gameDuration, TimeUnit.Seconds);
@@ -130,7 +136,7 @@ const MatchHistory = ({
                     </div>
                   </div>
                 </div>
-                <SummonerStats currentSummoner={currentSummoner} />
+                <SummonerStats currentSummoner={currentSummoner} match={match} />
                 <Teams match={match} />
               </div>
               <button
