@@ -67,7 +67,7 @@ const sortSummonerByPosition = (
 ) => {
   const currentPosition = orderedPositions[summonerIndex];
   // Some queues don't include position, e.g. ARAM
-  if (summoner.teamPosition === currentPosition || summoner.teamPosition === 'Invalid') {
+  if (summoner.teamPosition === currentPosition || summoner.teamPosition === '') {
     return summoner;
   }
   else {
