@@ -15,8 +15,6 @@ const tableColumns = ['', 'Rank', 'KDA', 'Damage', 'Wards', 'CS', 'Item'];
 const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const teamsInOrder = determineTeamsOrder(currentSummoner, match?.info.participants);
-  const minionStats = getSummonerMinionStats(currentSummoner, match);
-  const killParticipation = getFormattedKillParticipation(currentSummoner);
 
   return (
     <div className='mt-1'>
@@ -67,6 +65,8 @@ const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
               <tbody>
                 {team?.teamParticipants.map((summoner, summonerIndex) => {
                   const formattedTierName = formatTierName(summoner?.rank);
+                  const minionStats = getSummonerMinionStats(summoner, match);
+                  const killParticipation = getFormattedKillParticipation(summoner);
 
                   return (
                     <tr
