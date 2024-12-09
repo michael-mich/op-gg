@@ -157,7 +157,7 @@ export const getSummonerMinionStats = (
 ) => {
   if (summoner && match) {
     const totalMinions = summoner?.totalMinionsKilled + summoner?.neutralMinionsKilled;
-    const minionsPerMinute = Math.round(totalMinions / (match?.info.gameDuration / 60));
+    const minionsPerMinute = +(totalMinions / (match?.info.gameDuration / 60)).toFixed(1);
 
     return {
       minionsPerMinute,
