@@ -4,6 +4,7 @@ import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
+import { TEN_MINUTES } from '@/app/_constants/timeUnits';
 import type { TChampionItem } from '@/app/_types/apiTypes/apiTypes';
 import type { TMatchAndSummonerProps } from '../MatchHistory';
 
@@ -14,7 +15,7 @@ const ChampionItems = ({ summoner }: TMatchAndSummonerProps) => {
     queryKey: ['championItems'],
     queryFn: () => fetchApi<TChampionItem>(riotGamesRoutes.championItems()),
     staleTime: Infinity,
-    gcTime: 60_000 // 10 minutes
+    gcTime: TEN_MINUTES
   });
 
   const itemIds = new Array(7).fill('').map((_, index) => `${summoner?.[`item${index}`]}`);

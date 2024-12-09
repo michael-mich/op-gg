@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { TEN_MINUTES } from '@/app/_constants/timeUnits';
 import type { TChampion } from '@/app/_types/apiTypes/apiTypes';
 
 type TChampionData = {
@@ -12,7 +13,7 @@ const useChampionDataQuery = () => {
     queryKey: ['championData'],
     queryFn: () => fetchApi<TChampionData>(riotGamesRoutes.championData()),
     staleTime: Infinity,
-    gcTime: 60_000
+    gcTime: TEN_MINUTES
   });
 }
 

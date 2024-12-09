@@ -4,6 +4,7 @@ import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
+import { TEN_MINUTES } from '@/app/_constants/timeUnits';
 import type { TSummonerSpellContent } from '@/app/_types/apiTypes/apiTypes';
 import type { TSummonerAndImageStyle } from './ChampionProfile';
 
@@ -18,7 +19,7 @@ const Spells = ({
     queryKey: ['championSpells'],
     queryFn: () => fetchApi<Array<TSummonerSpellContent>>(riotGamesRoutes.summonerSpells()),
     staleTime: Infinity,
-    gcTime: 600_000 // 10 minutes
+    gcTime: TEN_MINUTES
   });
 
   const currentSummonerSpells = spellData?.filter((spell) => {
