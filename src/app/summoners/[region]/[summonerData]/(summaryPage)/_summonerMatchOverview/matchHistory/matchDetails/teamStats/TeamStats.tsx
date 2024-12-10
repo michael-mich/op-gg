@@ -1,7 +1,7 @@
 import React from 'react';
 import { determineTeamsOrder } from '../../utils/utils';
 import type { TMatchAndSummonerProps } from '../../MatchHistory';
-import ObjectiveImages from './ObjectiveImages';
+import ObjectiveImage from './ObjectiveImage';
 
 const TeamStats = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
   const teamsInOrder = determineTeamsOrder(currentSummoner, match?.info.teams);
@@ -23,7 +23,7 @@ const TeamStats = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
               {filteredObjectives.map(([objectiveName, objectiveData], objectiveIndex) => (
                 <li key={objectiveName}>
                   <div className='flex items-center gap-1'>
-                    {ObjectiveImages[objectiveIndex]}
+                    <ObjectiveImage isWinMatch={team?.win} objectiveIndex={objectiveIndex} />
                     <span className='text-sm text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
                       {objectiveData.kills}
                     </span>
