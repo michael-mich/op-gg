@@ -1,5 +1,5 @@
 import React from 'react';
-import { determineTeamsOrder } from '../../utils/utils';
+import { adjustTeamsOrderBasedOnSummoner } from '../../utils/utils';
 import type { TMatchAndSummonerProps } from '../../MatchHistory';
 import ObjectiveImage from './ObjectiveImage';
 

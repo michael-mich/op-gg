@@ -16,7 +16,7 @@ export const getFormattedKda = (summoner: TSummonerDetailedMatchHistory | undefi
   }
 }
 
-export const determineTeamsOrder = <T>(
+export const adjustTeamsOrderBasedOnSummoner = <T>(
   currentSummoner: TSummonerDetailedMatchHistory | undefined,
   teams: Array<T> | undefined
 ): Array<T | undefined> | undefined => {

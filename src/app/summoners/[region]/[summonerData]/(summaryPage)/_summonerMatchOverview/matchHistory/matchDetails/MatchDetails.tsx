@@ -3,7 +3,11 @@ import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { handleKdaTextColor } from '@/app/_utils/utils';
 import { formatTierName } from '@/app/_utils/rank';
 import { getSummonerMinionStats } from '@/app/_utils/matchStats';
-import { getFormattedKda, determineTeamsOrder, getFormattedKillParticipation } from '../utils/utils';
+import {
+  getFormattedKda,
+  adjustTeamsOrderBasedOnSummoner,
+  getFormattedKillParticipation
+} from '../utils/utils';
 import type { TMatchAndSummonerProps } from '../MatchHistory';
 import ChampionProfile from '../../../../_components/championProfile/ChampionProfile';
 import ChampionItems from '../components/ChampionItems';
@@ -14,7 +18,7 @@ const tableColumns = ['', 'Rank', 'KDA', 'Damage', 'Wards', 'CS', 'Item'];
 
 const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const teamsInOrder = determineTeamsOrder(currentSummoner, match?.info.participants);
+  const teamsInOrder = adjustTeamsOrderBasedOnSummoner(currentSummoner, match?.info.participants);
 
   return (
     <div className='mt-1'>
@@ -112,7 +116,11 @@ const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
               </tbody>
             </table>
             {(isFirstTeam && !currentSummoner?.gameEndedInEarlySurrender) && (
-              <TeamStats match={match} currentSummoner={currentSummoner} />
+              <TeamStats
+                teamsInOrder={teamsInOrder}
+                match={match}
+                currentSummoner={currentSummoner}
+              />
             )}
           </React.Fragment>
         );
