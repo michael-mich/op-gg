@@ -14,7 +14,8 @@ const rankedEmblems = [
 ];
 
 export const formatTierName = (rankedData: TSummonerRank | undefined): string => {
-  if (rankedData) {
+  if (rankedData?.tier) {
+    console.log(rankedData);
     const tierName = rankedData.tier;
     return `${tierName[0]}${tierName.slice(1).toLowerCase()}`;
   }
