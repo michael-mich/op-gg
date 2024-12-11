@@ -4,14 +4,10 @@ import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { TEN_MINUTES } from '@/app/_constants/timeUnits';
 import type { TChampion } from '@/app/_types/apiTypes/apiTypes';
 
-type TChampionData = {
-  [key: string]: TChampion;
-}
-
 const useChampionDataQuery = () => {
   return useQuery({
     queryKey: ['championData'],
-    queryFn: () => fetchApi<TChampionData>(riotGamesRoutes.championData()),
+    queryFn: () => fetchApi<Array<TChampion>>(riotGamesRoutes.championData()),
     staleTime: Infinity,
     gcTime: TEN_MINUTES
   });

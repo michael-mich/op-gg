@@ -6,7 +6,7 @@ export const GET = async () => {
   const newestGameVersion = await fetchApi<string>(riotGamesRoutes.newestGameVersion());
 
   const data = await fetchApi<{ data: Record<string, TChampion> }>(`https://ddragon.leagueoflegends.com/cdn/${newestGameVersion}/data/en_US/champion.json`);
-  const champions = data?.data;
+  const champions = Object.values(data?.data || {});
 
   return Response.json(champions);
 }
