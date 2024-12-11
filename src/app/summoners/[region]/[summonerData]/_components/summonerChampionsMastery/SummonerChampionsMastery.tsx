@@ -1,18 +1,18 @@
 'use client';
 
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
+import useChampionDataQuery from '@/app/_hooks/queries/useChampionDataQuery';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
-import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
-import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import type { TChampion, TChampionMastery } from '@/app/_types/apiTypes/apiTypes';
 import type { TSummonerPageParams } from '@/app/_types/types';
 import { IoIosArrowForward } from "react-icons/io";
+import ChampionAvatar from '@/app/_components/ChampionAvatar';
 import MasteryInformations from './MasteryInformations';
 import ChampionMasterySkeleton from './ChampionMasterySkeleton';
 
@@ -25,7 +25,7 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { regionLink } = useCurrentRegion() || {};
 
-  const { data: newestGameVersion } = useGameVersionQuery();
+  const { data: championsData } = useChampionDataQuery();
 
   const {
     data: championMasteryData,
@@ -42,19 +42,12 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
     }
   });
 
-  const championIds = championMasteryData?.map((champion) => champion.championId);
-
-  const {
-    data: filteredChampionsData,
-    isPending: isFilteredChampionsPending
-  } = useQuery({
-    enabled: !!championIds,
-    queryKey: ['filteredChampionsForMasteries', summonerPuuid, getTopChampions],
-    queryFn: () => fetchApi<Array<TChampion>>(riotGamesRoutes.filteredChampions(championIds))
-  });
+  const foundChampions = championsData?.filter((champ) => championMasteryData?.some((c) =>
+    champ.key === c.championId.toString())
+  );
 
   const sortedChampionsData = (): Array<TChampion> | undefined => {
-    return filteredChampionsData?.sort((a, b) => {
+    return foundChampions?.sort((a, b) => {
       const aPoints = championMasteryData?.find((cham) => cham.championId.toString() === a.key)?.championPoints || 0;
       const bPoints = championMasteryData?.find((cham) => cham.championId.toString() === b.key)?.championPoints || 0;
 
@@ -84,7 +77,7 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
               <span className='text-sm'>Mastery</span>
             </div>
           )}
-          {(isChampionsMasteryPending || isFilteredChampionsPending || isChampionsMasteryRefetching) ? (
+          {(isChampionsMasteryPending || isChampionsMasteryRefetching) ? (
             <ChampionMasterySkeleton getTopChampions={getTopChampions} />
           ) : (
             <>
@@ -99,12 +92,9 @@ const SummonerChampionsMastery = ({ getTopChampions }: Props) => {
                       key={championMastery.championId}
                     >
                       <div>
-                        <Image
-                          className={`${getTopChampions ? 'size-10' : 'size-[60px]'} object-contain rounded`}
-                          src={`${imageEndpoints.championImage(newestGameVersion)}${championData?.image.full}`}
-                          width={40}
-                          height={40}
-                          alt={championData?.name || ''}
+                        <ChampionAvatar
+                          championData={championData}
+                          imageSize={getTopChampions ? 'mediumLarge' : 'giant'}
                         />
                         <div className='relative flex flex-col items-center'>
                           <Image
