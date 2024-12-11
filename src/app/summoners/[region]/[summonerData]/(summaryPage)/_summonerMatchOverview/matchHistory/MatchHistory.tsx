@@ -25,7 +25,7 @@ import { IoIosArrowDown } from "react-icons/io";
 export type TMatchAndSummonerProps = {
   [key in 'summoner' | 'currentSummoner']?: TSummonerDetailedMatchHistory | undefined;
 } & {
-  match?: TDetailedMatchHistory | undefined;
+  match?: TDetailedMatchHistory;
 };
 
 interface Props extends Omit<TMatchProps, 'setTransition'> {
@@ -75,7 +75,7 @@ const MatchHistory = ({
       })))
     );
   }, [summonerPuuid, matchHistoryData, markedChampionId]);
-  console.log(filteredMatchHistory);
+
   const handleMarkedMatchIndexes = (matchIndex: number) => {
     const newMarkedState = !markedMatchIndexes[matchIndex];
     if (newMarkedState) {
@@ -106,7 +106,7 @@ const MatchHistory = ({
       {filteredMatchHistory?.map((match, matchIndex) => {
         const { gameDuration, queueId } = match?.info || {};
 
-        const currentSummoner = match?.info.participants.flatMap((team) =>
+        const currentSummoner = match?.info.participants?.flatMap((team) =>
           team.teamParticipants.filter((summoner) => summoner?.puuid === summonerPuuid)
         )[0];
 

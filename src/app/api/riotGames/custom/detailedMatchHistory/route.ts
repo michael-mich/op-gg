@@ -61,18 +61,18 @@ export const GET = async (req: NextRequest) => {
 const orderedPositions = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY'];
 
 const sortSummonerByPosition = (
-  summoner: TSummonerMatchHistoryData,
+  summoner: TSummonerMatchHistoryData | undefined,
   team: TTeamGeneric<TSummonerMatchHistoryData>,
   summonerIndex: number
 ) => {
   const currentPosition = orderedPositions[summonerIndex];
   // Some queues don't include position, e.g. ARAM
-  if (summoner.teamPosition === currentPosition || summoner.teamPosition === '') {
+  if (summoner?.teamPosition === currentPosition || summoner?.teamPosition === '') {
     return summoner;
   }
   else {
     return team.teamParticipants.find((findSum) =>
-      findSum.teamPosition === currentPosition
+      findSum?.teamPosition === currentPosition
     );
   }
 }

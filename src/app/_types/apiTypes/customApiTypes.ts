@@ -113,7 +113,7 @@ export type TMatchHistorySummary = {
 
 export interface TTeamGeneric<T> {
   teamType: 'blue' | 'red',
-  teamParticipants: Array<T>;
+  teamParticipants: Array<T | undefined>;
 }
 
 export interface TSummonerDetailedMatchHistory extends TSummonerMatchHistoryData {
@@ -122,6 +122,6 @@ export interface TSummonerDetailedMatchHistory extends TSummonerMatchHistoryData
 
 export type TDetailedMatchHistory = {
   info: Omit<TMatchHistory['info'], 'participants'> & {
-    participants: Array<TTeamGeneric<TSummonerDetailedMatchHistory | undefined>>;
+    participants: Array<TTeamGeneric<TSummonerDetailedMatchHistory>>;
   };
 }
