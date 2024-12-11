@@ -8,7 +8,7 @@ import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes, riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
-import { handleKdaTextColor } from '@/app/_utils/utils';
+import { handleKdaTextColor } from '../_utils/utils';
 import type { TChampion, TChampionStats } from '@/app/_types/apiTypes/apiTypes';
 import type { TSummonerChampionStats } from '@/app/_types/apiTypes/customApiTypes';
 import type { TDetailedChampionStats, TNumericStatKeyPath } from './types';

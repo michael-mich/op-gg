@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
-import { handleKdaTextColor } from '@/app/_utils/utils';
+import { handleKdaTextColor } from '../../../_utils/utils';
 import type { TMatchHistorySummary } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {

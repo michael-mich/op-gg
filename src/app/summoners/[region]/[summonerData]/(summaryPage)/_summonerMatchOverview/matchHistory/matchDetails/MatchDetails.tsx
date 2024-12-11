@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
-import { handleKdaTextColor } from '@/app/_utils/utils';
+import { handleKdaTextColor } from '../../../../_utils/utils';
 import { formatTierName } from '@/app/_utils/rank';
 import { getSummonerMinionStats } from '@/app/_utils/matchStats';
 import {
