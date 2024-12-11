@@ -22,8 +22,16 @@ type TSummonerData = Array<Pick<TSummonerMatchHistoryData, 'assists' | 'deaths' 
 
 type SpellKeys<T> = T extends TSummonerSpellId ? keyof TSummonerSpellId : keyof TSpellId;
 
-export const calculatePercentage = (part: number, total: number): number => {
-  return Math.round((part / total) * 100);
+export const calculatePercentage = (
+  part: number | undefined,
+  total: number | undefined
+): number => {
+  if (part && total) {
+    return Math.round((part / total) * 100);
+  }
+  else {
+    return 0;
+  }
 }
 
 export const filterMatchesByMonths = (matchHistory: Array<TMatchHistory> | undefined) => {

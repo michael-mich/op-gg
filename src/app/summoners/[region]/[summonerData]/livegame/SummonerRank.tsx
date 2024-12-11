@@ -10,7 +10,7 @@ type Props = {
 
 const SummonerRank = ({ summoner }: Props) => {
   const totalPlayedGames = summoner.rank ? summoner.rank?.losses + summoner.rank?.wins : 0;
-  const winRatio = calculatePercentage(summoner.rank?.wins || 0, totalPlayedGames);
+  const winRatio = calculatePercentage(summoner.rank?.wins, totalPlayedGames);
 
   const getColorBasedOnWinRatio = (winRatio: number, useageType: 'bg' | 'text'): string => {
     if (winRatio >= 70) {
