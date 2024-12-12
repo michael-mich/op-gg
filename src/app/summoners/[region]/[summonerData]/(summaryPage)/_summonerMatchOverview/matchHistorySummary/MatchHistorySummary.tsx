@@ -17,7 +17,6 @@ import { CircularProgress } from '@nextui-org/react';
 
 interface Props extends Omit<TMatchProps, 'markedMatchIndexes'> {
   setMarkedChampionId: TSetState<string>;
-  setChampionSearchMode: TSetState<boolean>;
 }
 
 const MatchHistorySummary = ({

@@ -19,8 +19,7 @@ export type TMatchProps = {
 const SummonerMatchOverview = () => {
   const [markedMatchIndexes, setMarkedMatchIndexes] = useState<TMarkedMatchIndexes>({});
   const [markedChampionId, setMarkedChampionId] = useState('0');
-  const [matchHistoryCount, setMatchHistoryCount] = useState(10);
-  const [championSearchMode, setChampionSearchMode] = useState(false);
+  const [matchHistoryCount, setMatchHistoryCount] = useState(20);
   const [isPending, setTransition] = useTransition();
 
   return (
@@ -29,7 +28,6 @@ const SummonerMatchOverview = () => {
         markedChampionId={markedChampionId}
         setMarkedChampionId={setMarkedChampionId}
         matchHistoryCount={matchHistoryCount}
-        setChampionSearchMode={setChampionSearchMode}
         isPending={isPending}
         setTransition={setTransition}
         setMarkedMatchIndexes={setMarkedMatchIndexes}
@@ -38,7 +36,6 @@ const SummonerMatchOverview = () => {
         markedChampionId={markedChampionId}
         matchHistoryCount={matchHistoryCount}
         setMatchHistoryCount={setMatchHistoryCount}
-        championSearchMode={championSearchMode}
         isPending={isPending}
         markedMatchIndexes={markedMatchIndexes}
         setMarkedMatchIndexes={setMarkedMatchIndexes}

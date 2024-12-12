@@ -29,7 +29,6 @@ export type TMatchAndSummonerProps = {
 };
 
 interface Props extends Omit<TMatchProps, 'setTransition'> {
-  championSearchMode: boolean;
   setMatchHistoryCount: TSetState<number>;
 }
 
@@ -37,7 +36,6 @@ const MatchHistory = ({
   markedChampionId,
   matchHistoryCount,
   setMatchHistoryCount,
-  championSearchMode,
   isPending,
   markedMatchIndexes,
   setMarkedMatchIndexes
@@ -157,7 +155,7 @@ const MatchHistory = ({
         );
       })}
       {(matchHistoryCount < 100 || isFetchingNextPage)
-        && !championSearchMode
+        && markedChampionId === '0'
         && filteredMatchHistory
         && filteredMatchHistory.length > 0
         && (

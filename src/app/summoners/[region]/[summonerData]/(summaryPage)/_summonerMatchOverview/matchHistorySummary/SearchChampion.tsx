@@ -12,14 +12,12 @@ import { FaCertificate } from "react-icons/fa6";
 interface Props extends Omit<TMatchProps, 'markedMatchIndexes'> {
   matchHistorySummaryData: TMatchHistorySummary | undefined;
   setMarkedChampionId: TSetState<string>;
-  setChampionSearchMode: TSetState<boolean>;
 }
 
 const SearchChampion = ({
   matchHistorySummaryData,
   markedChampionId,
   setMarkedChampionId,
-  setChampionSearchMode,
   matchHistoryCount,
   isPending,
   setTransition,
@@ -37,7 +35,6 @@ const SearchChampion = ({
 
   const resetStates = () => {
     setMarkedMatchIndexes({});
-    setChampionSearchMode(false);
     setMarkedChampionId('0');
   }
 
@@ -102,7 +99,6 @@ const SearchChampion = ({
                   onClick={() => {
                     setTransition(() => {
                       setMarkedChampionId(champion.key);
-                      setChampionSearchMode(true);
                       setMarkedMatchIndexes({});
                     })
                   }}
