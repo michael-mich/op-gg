@@ -13,15 +13,9 @@ export const GET = async (req: NextRequest) => {
   } = getRouteHandlerParams(req);
 
   const matchIds = await fetchApi<Array<string>>(`https://${regionContinentLink}/lol/match/v5/matches/by-puuid/${summonerPuuid}/ids?start=${matchHistoryStartIndex}&count=${matchHistoryCount}&api_key=${RIOT_GAMES_API_KEY}`);
-  const matchHistoryData = [] as Array<TMatchHistory>;
-
-  // for loop is used to sequentially fetch detailed match data
-  if (matchIds) {
-    for (const id of matchIds) {
-      const matchData = await fetchApi<TMatchHistory>(`https://${regionContinentLink}/lol/match/v5/matches/${id}?api_key=${RIOT_GAMES_API_KEY}`);
-      matchData && matchHistoryData.push(matchData);
-    };
-  }
+  const matchHistoryData = matchIds && await Promise.all(matchIds.map((id) => {
+    return fetchApi<TMatchHistory>(`https://${regionContinentLink}/lol/match/v5/matches/${id}?api_key=${RIOT_GAMES_API_KEY}`);
+  }));
 
   return Response.json(matchHistoryData);
 }
