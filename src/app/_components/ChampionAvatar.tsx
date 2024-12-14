@@ -5,7 +5,7 @@ import type { TChampion } from '../_types/apiTypes/apiTypes';
 
 type Props = {
   championData: TChampion | undefined;
-  imageSize: 'giant' | 'large' | 'mediumLarge' | 'medium' | 'small';
+  imageSize: 'giant' | 'large' | 'mediumLarge' | 'medium' | 'smallMedium' | 'small';
   isRoundedImage?: boolean;
 }
 
@@ -26,6 +26,8 @@ const ChampionAvatar = ({
         return 40;
       case 'medium':
         return 32;
+      case 'smallMedium':
+        return 24;
       case 'small':
         return 16;
       default:
@@ -35,7 +37,7 @@ const ChampionAvatar = ({
 
   return (
     <Image
-      className={`${imageSize === 'giant' ? 'size-[60px]' : imageSize === 'large' ? 'size-12 min-w-12 min-h-12' : imageSize === 'mediumLarge' ? 'size-10' : imageSize === 'medium' ? 'size-8 min-w-8 min-h-8' : 'size-4'}
+      className={`${imageSize === 'giant' ? 'size-[60px]' : imageSize === 'large' ? 'size-12 min-w-12 min-h-12' : imageSize === 'mediumLarge' ? 'size-10' : imageSize === 'medium' ? 'size-8 min-w-8 min-h-8' : imageSize === 'smallMedium' ? 'size-6' : 'size-4'}
       ${isRoundedImage ? 'rounded-image' : 'rounded'} object-contain`}
       src={`${imageEndpoints.championImage(newestGameVersion)}${championData?.image.full}`}
       width={getImageDimension()}
