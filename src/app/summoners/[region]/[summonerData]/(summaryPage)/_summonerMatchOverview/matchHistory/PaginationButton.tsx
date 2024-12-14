@@ -22,7 +22,7 @@ const PaginationButton = ({
     <button
       onClick={() => {
         fetchNextPage();
-        setMatchHistoryCount(prev => prev + 10);
+        setMatchHistoryCount(prev => prev + 20);
       }}
       className={`${isFetchingNextPage && 'pointer-events-none'} flex justify-center w-full text-sm 
       bg-white dark:bg-darkMode-mediumGray border border-lightMode-thirdLighterGray 
