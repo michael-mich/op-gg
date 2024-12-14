@@ -4,13 +4,12 @@ import { fetchApi } from '@/app/_utils/fetchApi';
 import {
   calculateAverageKdaStats,
   calculatePercentage,
-  segregateSummonersToTeams,
   calculateWinLossStats,
   isRecognizedQueueId,
   filterMatchesByMonths
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
-import type { TChampion, TMatchHistory, TKda } from '@/app/_types/apiTypes/apiTypes';
+import type { TMatchHistory, TKda } from '@/app/_types/apiTypes/apiTypes';
 import type { TChampionWinLostRatio } from '@/app/_types/apiTypes/customApiTypes';
 
 interface TChampionPerformance extends TKda, Omit<TChampionWinLostRatio, 'winRatio'> {
@@ -47,36 +46,18 @@ export const GET = async (req: NextRequest) => {
   const currentSummonerMatchData = matchHistoryData?.flatMap((match) =>
     match?.info.participants.filter((participant) => participant.puuid === summonerPuuid)
   );
-  const currentSummonerChampionIds = currentSummonerMatchData?.map((match) => match.championId);
 
   const matchesForMarkedChampion = currentSummonerMatchData?.filter((match) => {
     const markedChampionIdNum = parseInt(markedChampionId || '');
     return markedChampionIdNum === 0 ? match : match.championId === markedChampionIdNum;
   });
-  const markedChampionIds = matchesForMarkedChampion?.map((match) => match.championId);
-
-  const summonerKda = matchesForMarkedChampion && calculateAverageKdaStats(matchesForMarkedChampion);
-
-  const championsForMarkedMatches = await fetchApi<Array<TChampion>>(
-    riotGamesRoutes.filteredChampions(markedChampionIds)
-  );
-  const summonerAllPlayedChampions = await fetchApi<Array<TChampion>>(
-    riotGamesRoutes.filteredChampions(currentSummonerChampionIds)
-  );
-
-  const championsStoredByRecentPlay = summonerAllPlayedChampions?.sort((a, b) => {
-    const indexA = currentSummonerMatchData?.findIndex((match) => match.championId === parseInt(a.key));
-    const indexB = currentSummonerMatchData?.findIndex((match) => match.championId === parseInt(b.key));
-
-    return (indexA || 0) - (indexB || 0);
-  });
 
   const summonerPositionPlayAmount = matchesForMarkedChampion?.reduce((championStats, match) => {
-    const { individualPosition } = match;
-    const position = individualPosition.toLowerCase();
+    const { teamPosition } = match;
+    const position = teamPosition.toLowerCase();
     let positionData = championStats[position];
 
-    if (position !== 'invalid') {
+    if (position !== '') {
       if (!positionData) {
         positionData = championStats[position] = {
           playAmount: 0
@@ -88,10 +69,9 @@ export const GET = async (req: NextRequest) => {
     return championStats;
   }, {} as TPositionPlayAmount);
 
-  const matchesWithSummonerPosition = matchesForMarkedChampion?.filter((summoner) =>
-    summoner.individualPosition !== 'Invalid'
+  const matchesWithSummonerPosition = matchesForMarkedChampion?.filter((match) =>
+    match.teamPosition !== ''
   );
-
   const summonerPositionPlayPercentage = Object.entries(summonerPositionPlayAmount || {}).map(([position, data]) => ({
     position,
     playedPercentage: calculatePercentage(data.playAmount, matchesWithSummonerPosition?.length || 0)
@@ -127,63 +107,50 @@ export const GET = async (req: NextRequest) => {
 
   const topPlayedChampions = () => {
     const recentlyPlayedChampions = Object.entries(summonerChampionPerformance || {});
-    const descendingOrder = recentlyPlayedChampions.sort((a, b) => b[1].playAmount - a[1].playAmount);
+    const championWithStats = recentlyPlayedChampions.map(([championId, championData]) => ({
+      ...championData,
+      championId,
+      winRatio: calculatePercentage(championData.wonMatches, championData.playAmount),
+      kda: calculateAverageKdaStats([championData]).kda
+    }));
+
+    const descendingOrder = championWithStats.sort((a, b) => {
+      if (b.playAmount === a.playAmount) {
+        return b.kda - a.kda;
+      }
+      else {
+        return b.playAmount - a.playAmount;
+      }
+    });
     return descendingOrder.slice(0, 3);
   }
 
-  const udpatedTopPlayedChampionsData = topPlayedChampions().map(([championId, championData]) => {
-    const matchedChampion = championsForMarkedMatches?.find((champion) => champion.key === championId);
-
-    return {
-      ...championData,
-      championDetails: { image: matchedChampion?.image, name: matchedChampion?.name },
-      winRatio: calculatePercentage(championData.wonMatches, championData.playAmount),
-      kda: calculateAverageKdaStats([championData]).kda
-    };
-  });
-
-  const summonersIntoTeams = matchHistoryData?.map((match) => segregateSummonersToTeams(match.info.participants));
-
-  const teamKillsPerMatch = summonersIntoTeams?.map((team) => {
-    const teamsWithCurrentSummoner = team.find((teamData) => teamData.teamParticipants.some((participant) => {
-      return participant.puuid === summonerPuuid;
-    }));
-
-    return teamsWithCurrentSummoner?.teamParticipants.reduce((acc, { kills }) => {
-      return acc + kills;
+  const calculateAverageKillParticipation = () => {
+    const totalGames = matchesForMarkedChampion?.filter((match) => !match.gameEndedInEarlySurrender);
+    const totalKillParticipation = totalGames?.reduce((acc, summoner) => {
+      return acc + summoner.challenges.killParticipation;
     }, 0);
-  });
 
-  const killParticipationForEachMatch = matchesForMarkedChampion?.map((summonerData, index) => {
-    const assistsAndKillsSum = summonerData.kills + summonerData.assists;
-    if (typeof teamKillsPerMatch?.[index] === 'number') {
-      return (assistsAndKillsSum / teamKillsPerMatch[index]) * 100;
+    if (totalKillParticipation && totalGames) {
+      return Math.round((totalKillParticipation / totalGames.length) * 100);
     }
-  }).filter(Boolean);
-
-  const totalGames = (matchesForMarkedChampion && matchesForMarkedChampion.length) as number | undefined;
-
-  const averageKillParticipation = () => {
-    if (killParticipationForEachMatch?.[0] && totalGames) {
-      const killParticipationSum = killParticipationForEachMatch.reduce((acc, cur) => {
-        if (acc && cur) {
-          return acc + cur;
-        }
-      })
-
-      return killParticipationSum && Math.round(killParticipationSum / totalGames);
+    else {
+      return 0;
     }
   }
+
+  const championIds = currentSummonerMatchData?.map((summoner) => summoner.championId.toString());
+  const summonerKdaStats = matchesForMarkedChampion && calculateAverageKdaStats(matchesForMarkedChampion);
 
   return Response.json({
     gameAmounts: {
       ...calculateWinLossStats(matchesForMarkedChampion),
-      totalGames
+      totalGames: matchesForMarkedChampion?.length
     },
-    kda: summonerKda,
-    averageKillParticipation: averageKillParticipation(),
-    topPlayedChampions: udpatedTopPlayedChampionsData,
+    kda: summonerKdaStats,
+    averageKillParticipation: calculateAverageKillParticipation(),
+    topPlayedChampions: topPlayedChampions(),
     preferredPosition: summonerPositionPlayPercentage,
-    playedChampions: championsStoredByRecentPlay,
+    championIds
   });
 }

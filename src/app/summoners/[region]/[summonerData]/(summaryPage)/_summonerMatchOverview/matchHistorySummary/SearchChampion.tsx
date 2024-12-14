@@ -1,8 +1,6 @@
-import { useState } from 'react';
-import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
+import { useMemo, useState } from 'react';
+import useChampionDataQuery from '@/app/_hooks/queries/useChampionDataQuery';
 import useOutsideClick from '@/app/_hooks/useOutsideClick';
-import Image from 'next/image';
-import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import type { TMatchProps } from '../SummonerMatchOverview';
 import type { TMatchHistorySummary } from '@/app/_types/apiTypes/customApiTypes';
 import type { TSetState } from '@/app/_types/tuples';
@@ -27,7 +25,7 @@ const SearchChampion = ({
   const [searchedChampion, setSearchedChampion] = useState('');
   const championsListRef = useOutsideClick(displaySummonerList, setDisplaySummonerList);
 
-  const { data: newestGameVersion } = useGameVersionQuery();
+  const { data: championData } = useChampionDataQuery();
 
   const handleDisplaySummonerList = () => {
     setDisplaySummonerList(true);
@@ -42,7 +40,11 @@ const SearchChampion = ({
     return markedChampionId === championId && isPending && matchHistoryCount > 10;
   }
 
-  const searchFilteredChampions = matchHistorySummaryData?.playedChampions?.filter((champion) => {
+  const recentlyPlayedChampions = useMemo(() => championData?.filter((champion) =>
+    matchHistorySummaryData?.championIds?.some((id) => id === champion.key)
+  ), [matchHistorySummaryData]);
+
+  const searchFilteredChampions = recentlyPlayedChampions?.filter((champion) => {
     const cleanChampionName = champion.name.toLowerCase().replaceAll('\'', '');
     const cleanSearchTerm = searchedChampion.toLowerCase().replaceAll(' ', '');
 

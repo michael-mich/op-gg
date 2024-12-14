@@ -95,12 +95,9 @@ export type TMatchHistorySummary = {
     totalGames: number | undefined;
   } & TChampionWinLostRatio;
   kda: TAverageKdaStats | undefined;
-  averageKillParticipation: number | undefined;
+  averageKillParticipation: number;
   topPlayedChampions: Array<{
-    championDetails: {
-      name: TChampion['name'] | undefined;
-      image: TChampion['image'] | undefined
-    };
+    championId: string;
     kda: number;
     playAmount: number;
   } & TChampionWinLostRatio>;
@@ -108,7 +105,7 @@ export type TMatchHistorySummary = {
     position: string;
     playedPercentage: number;
   }>;
-  playedChampions: Array<TChampion> | undefined;
+  championIds: Array<string> | undefined;
 }
 
 export interface TTeamGeneric<T> {
