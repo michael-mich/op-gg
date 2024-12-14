@@ -24,7 +24,8 @@ const Runes = ({
   const extractKeystoneRune = <T,>(callback: (keyStone: TRuneSlots) => T) => {
     return currentSummonerRunes?.map((rune) => ({
       ...rune,
-      slots: rune.slots.map((slot) => slot.runes.find((keyStone) => callback(keyStone))).filter(Boolean)
+      slots: rune.slots.map((slot) => slot.runes.find((keyStone) =>
+        callback(keyStone))).filter(Boolean)
     }));
   }
 
