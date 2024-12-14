@@ -27,7 +27,7 @@ const SummonerStats = ({ currentSummoner, match }: TMatchAndSummonerProps) => {
         flex flex-col gap-1 h-[58px] text-xss text-lightMode-secondLighterGray dark:text-darkMode-lighterGray border-l pl-2`}
         >
           <li className='text-xs leading-3 text-red'>
-            P/Kill {killParticipation}%
+            P/Kill {currentSummoner?.gameEndedInEarlySurrender ? 0 : killParticipation}%
           </li>
           <li>
             CS {minonStats?.totalMinions} ({minonStats?.minionsPerMinute})

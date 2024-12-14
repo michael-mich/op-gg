@@ -91,7 +91,9 @@ const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
                       <td>
                         <div className='flex flex-col items-center gap-1 text-xss'>
                           <span className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
-                            {summoner?.kills}/{summoner?.deaths}/{summoner?.assists} ({killParticipation}%)
+                            {summoner?.kills}/{summoner?.deaths}/{summoner?.assists}
+                            {' '}
+                            ({summoner?.gameEndedInEarlySurrender ? 0 : killParticipation}%)
                           </span>
                           <span className={`${handleKdaTextColor(summoner?.challenges.kda)} font-bold`}>
                             {getFormattedKda(summoner)}
