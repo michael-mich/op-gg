@@ -23,7 +23,7 @@ export const GET = async (req: NextRequest) => {
     riotGamesRoutes.summonerMatchHistory(
       summonerPuuid,
       regionContinentLink,
-      '10',
+      '20',
       matchHistoryStartIndex
     )
   );
