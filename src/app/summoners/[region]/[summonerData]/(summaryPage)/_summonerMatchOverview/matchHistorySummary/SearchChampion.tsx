@@ -95,7 +95,8 @@ const SearchChampion = ({
             {searchFilteredChampions?.map((champion) => (
               <li
                 className={`${champion.key === markedChampionId && 'pointer-events-none bg-almostWhite dark:bg-darkMode-darkBlue'} 
-                ${addOpacityStyle(champion.key) && 'opacity-70'} transition-all border-bottom-theme last-of-type:border-b-0 py-1.5 px-2.5`}
+                ${isPending && 'pointer-events-none'} ${addOpacityStyle(champion.key) && 'opacity-70'} 
+                transition-all border-bottom-theme last-of-type:border-b-0 py-1.5 px-2.5`}
                 key={champion.key}
               >
                 <button
