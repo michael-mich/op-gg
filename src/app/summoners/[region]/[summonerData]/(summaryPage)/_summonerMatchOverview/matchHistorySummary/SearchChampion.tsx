@@ -5,7 +5,7 @@ import type { TMatchProps } from '../SummonerMatchOverview';
 import type { TMatchHistorySummary } from '@/app/_types/apiTypes/customApiTypes';
 import type { TSetState } from '@/app/_types/tuples';
 import { IoIosSearch } from 'react-icons/io';
-import { FaCertificate } from "react-icons/fa6";
+import { FaCertificate } from 'react-icons/fa6';
 import ChampionAvatar from '@/app/_components/ChampionAvatar';
 
 interface Props extends Omit<TMatchProps, 'markedMatchIndexes'> {

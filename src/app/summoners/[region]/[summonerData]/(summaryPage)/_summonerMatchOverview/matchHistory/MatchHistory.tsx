@@ -20,7 +20,7 @@ import MatchDetails from './matchDetails/MatchDetails';
 import Teams from './Teams';
 import SummonerStats from './summonerStats/SummonerStats';
 import PaginationButton from './PaginationButton';
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown } from 'react-icons/io';
 
 export type TMatchAndSummonerProps = {
   [key in 'summoner' | 'currentSummoner']?: TSummonerDetailedMatchHistory | undefined;
@@ -57,23 +57,24 @@ const MatchHistory = ({
       );
     },
     initialPageParam: 0,
-    maxPages: 90,
-    getNextPageParam: (_, __, lastPageParam) => lastPageParam + 10,
+    maxPages: 180,
+    getNextPageParam: (_, __, lastPageParam) => lastPageParam + 20,
   });
 
   const filteredMatchHistory = useMemo(() => {
     return matchHistoryData?.pages.flatMap((page) => page?.filter((match) =>
-      match.info.participants?.map((team) => team.teamParticipants.map((summoner) => {
+      match.info.participants?.some((team) => team.teamParticipants.some((summoner) => {
         if (markedChampionId === '0') {
           return match;
         }
         else {
-          return summoner?.championId.toString() === markedChampionId;
+          return summoner?.championId.toString() === markedChampionId
+            && summoner.puuid === summonerPuuid;
         }
       })))
     );
   }, [summonerPuuid, matchHistoryData, markedChampionId]);
-
+  console.log(filteredMatchHistory);
   const handleMarkedMatchIndexes = (matchIndex: number) => {
     const newMarkedState = !markedMatchIndexes[matchIndex];
     if (newMarkedState) {
@@ -92,10 +93,10 @@ const MatchHistory = ({
 
   useEffect(() => {
     if (matchHistoryData?.pages) {
-      setMatchHistoryCount(matchHistoryData?.pages.length * 10);
+      setMatchHistoryCount(matchHistoryData?.pages.length * 20);
     }
     else {
-      setMatchHistoryCount(10);
+      setMatchHistoryCount(20);
     }
   }, [summonerPuuid]);
 
@@ -113,7 +114,7 @@ const MatchHistory = ({
 
         return (
           <React.Fragment key={matchIndex}>
-            <div className={`${(isPending && matchHistoryCount > 10) && 'opacity-70'} transition-opacity flex mt-2 first-of-type:mt-0`}>
+            <div className={`${isPending && 'opacity-70'} transition-opacity flex mt-2 first-of-type:mt-0`}>
               <div className={`${currentSummoner?.gameEndedInEarlySurrender ? 'border-l-lightMode-secondLighterGray dark:border-l-darkMode-lighterGray bg-lightMode-lightGray dark:bg-darkMode-darkGray' : currentSummoner?.win ? 'bg-lightBlue dark:bg-darkBlue border-l-blue' : 'bg-lightRed dark:bg-darkRed border-l-red'} 
               flex-1 flex gap-2 border-l-[6px] rounded-tl-[5px] rounded-bl-[5px] py-1.5 px-2.5`}
               >
