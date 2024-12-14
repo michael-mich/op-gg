@@ -2,9 +2,16 @@ import type { TChampion } from '@/app/_types/apiTypes/apiTypes';
 
 export const findChampionById = (
   championData: Array<TChampion> | undefined,
-  championId: number | undefined
+  championId: number | string | undefined
 ) => {
-  return championData?.find((champion) => champion.key === championId?.toString());
+  return championData?.find((champion) => {
+    if (typeof championId === 'string') {
+      return champion.key === championId;
+    }
+    else {
+      return champion.key === championId?.toString();
+    }
+  });
 }
 
 export const handleKdaTextColor = (kda: number | undefined): string => {
