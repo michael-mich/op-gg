@@ -6,6 +6,7 @@ import type { TMatchHistorySummary } from '@/app/_types/apiTypes/customApiTypes'
 import type { TSetState } from '@/app/_types/tuples';
 import { IoIosSearch } from 'react-icons/io';
 import { FaCertificate } from "react-icons/fa6";
+import ChampionAvatar from '@/app/_components/ChampionAvatar';
 
 interface Props extends Omit<TMatchProps, 'markedMatchIndexes'> {
   matchHistorySummaryData: TMatchHistorySummary | undefined;
@@ -107,12 +108,10 @@ const SearchChampion = ({
                   className='flex items-center gap-2 text-xs'
                   type='button'
                 >
-                  <Image
-                    className='size-6 rounded-full aspect-square'
-                    src={`${imageEndpoints.championImage(newestGameVersion)}${champion.image.full}`}
-                    width={24}
-                    height={24}
-                    alt={champion.name}
+                  <ChampionAvatar
+                    championData={champion}
+                    imageSize='smallMedium'
+                    isRoundedImage
                   />
                   {champion.name}
                 </button>
