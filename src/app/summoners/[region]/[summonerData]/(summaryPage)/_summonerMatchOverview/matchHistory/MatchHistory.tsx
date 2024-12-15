@@ -1,9 +1,10 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import React, { useEffect, useMemo } from 'react';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import { calculateTimeUnit } from '@/app/_utils/utils';
@@ -40,6 +41,8 @@ const MatchHistory = ({
   markedMatchIndexes,
   setMarkedMatchIndexes
 }: Props) => {
+  const pathname = usePathname();
+  const queryClient = useQueryClient();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink, regionLink } = useCurrentRegion() || {};
 
@@ -74,7 +77,7 @@ const MatchHistory = ({
       })))
     );
   }, [summonerPuuid, matchHistoryData, markedChampionId]);
-  console.log(filteredMatchHistory);
+
   const handleMarkedMatchIndexes = (matchIndex: number) => {
     const newMarkedState = !markedMatchIndexes[matchIndex];
     if (newMarkedState) {
@@ -92,13 +95,18 @@ const MatchHistory = ({
   }
 
   useEffect(() => {
-    if (matchHistoryData?.pages) {
-      setMatchHistoryCount(matchHistoryData?.pages.length * 20);
-    }
-    else {
+    if (filteredMatchHistory && filteredMatchHistory?.length > 20) {
+      queryClient.setQueryData(
+        ['summonerMatchHistory', summonerPuuid],
+        (oldData: typeof matchHistoryData) => ({
+          ...oldData,
+          pages: [oldData?.pages[0]],
+          pageParams: [0],
+        })
+      );
       setMatchHistoryCount(20);
     }
-  }, [summonerPuuid]);
+  }, [pathname, summonerPuuid]);
 
   return (
     <div className='mt-2'>
