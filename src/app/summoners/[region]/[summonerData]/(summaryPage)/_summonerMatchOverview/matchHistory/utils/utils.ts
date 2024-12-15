@@ -32,13 +32,17 @@ export const adjustTeamsOrderBasedOnSummoner = <T>(
 
 export const checkQueueType = (queueId: number | undefined): string => {
   switch (queueId) {
-    case QueueId.Normal: return 'Normal';
+    case QueueId.Normal:
+    case QueueId.Normal2:
+      return 'Normal';
     case QueueId.RankedSoloDuo: return 'Ranked Solo/Duo';
     case QueueId.NormalBlindPick: return 'Normal Blind Pick';
     case QueueId.RankedFlex: return 'Ranked Flex';
     case QueueId.ARAM: return 'ARAM';
     case QueueId.Clash: return 'Clash';
-    case QueueId.URF || QueueId.URF2: return 'URF';
+    case QueueId.URF:
+    case QueueId.URF2:
+      return 'URF';
     case QueueId.SnowARURF: return 'Snow ARURF';
     case QueueId.NexusBlitz: return 'Nexus Blitz';
     case QueueId.Blitz: return 'Blitz';
