@@ -163,17 +163,18 @@ const MatchHistory = ({
           </React.Fragment>
         );
       })}
-      {(matchHistoryCount < 100 || isFetchingNextPage)
+      {(matchHistoryCount < 300 || isFetchingNextPage)
         && markedChampionId === '0'
-        && filteredMatchHistory
-        && filteredMatchHistory.length > 0
+        && matchHistoryData?.pages
+        && matchHistoryData?.pages[matchHistoryData.pages.length - 1]?.length !== 0
         && (
           <PaginationButton
             isFetchingNextPage={isFetchingNextPage}
             fetchNextPage={fetchNextPage}
             setMatchHistoryCount={setMatchHistoryCount}
           />
-        )}
+        )
+      }
     </div>
   );
 }
