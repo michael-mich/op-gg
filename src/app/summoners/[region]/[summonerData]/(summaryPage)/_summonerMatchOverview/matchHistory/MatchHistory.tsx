@@ -60,7 +60,7 @@ const MatchHistory = ({
       );
     },
     initialPageParam: 0,
-    maxPages: 180,
+    maxPages: 20,
     getNextPageParam: (_, __, lastPageParam) => lastPageParam + 20,
   });
 
