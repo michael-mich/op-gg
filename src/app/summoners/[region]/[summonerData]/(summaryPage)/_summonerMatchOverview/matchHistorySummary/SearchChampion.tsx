@@ -46,7 +46,7 @@ const SearchChampion = ({
   ), [matchHistorySummaryData]);
 
   const searchFilteredChampions = recentlyPlayedChampions?.filter((champion) => {
-    const cleanChampionName = champion.name.toLowerCase().replaceAll('\'', '');
+    const cleanChampionName = champion.name.toLowerCase().replaceAll('\'', '').replaceAll(' ', '');
     const cleanSearchTerm = searchedChampion.toLowerCase().replaceAll(' ', '');
 
     return cleanChampionName.includes(cleanSearchTerm);
