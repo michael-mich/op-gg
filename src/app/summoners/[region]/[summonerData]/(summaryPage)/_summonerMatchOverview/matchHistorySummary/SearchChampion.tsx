@@ -1,7 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useChampionDataQuery from '@/app/_hooks/queries/useChampionDataQuery';
 import useOutsideClick from '@/app/_hooks/useOutsideClick';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import type { TMatchProps } from '../SummonerMatchOverview';
+import type { TChampion } from '@/app/_types/apiTypes/apiTypes';
 import type { TMatchHistorySummary } from '@/app/_types/apiTypes/customApiTypes';
 import type { TSetState } from '@/app/_types/tuples';
 import { IoIosSearch } from 'react-icons/io';
@@ -23,8 +26,18 @@ const SearchChampion = ({
   setMarkedMatchIndexes
 }: Props) => {
   const [displaySummonerList, setDisplaySummonerList] = useState(false);
-  const [searchedChampion, setSearchedChampion] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const [championPlaceholderData, setChampionPlaceholderData] = useState<Array<TChampion> | undefined>([]);
   const championsListRef = useOutsideClick(displaySummonerList, setDisplaySummonerList);
+
+  const queryClient = useQueryClient();
+  const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
+  const allChampionsMatchHistorySummary = queryClient.getQueryData([
+    'summonerMatchHistorySummary',
+    summonerPuuid,
+    '0',
+    matchHistoryCount
+  ]);
 
   const { data: championData } = useChampionDataQuery();
 
@@ -45,12 +58,25 @@ const SearchChampion = ({
     matchHistorySummaryData?.championIds?.some((id) => id === champion.key)
   ), [matchHistorySummaryData]);
 
-  const searchFilteredChampions = recentlyPlayedChampions?.filter((champion) => {
-    const cleanChampionName = champion.name.toLowerCase().replaceAll('\'', '').replaceAll(' ', '');
-    const cleanSearchTerm = searchedChampion.toLowerCase().replaceAll(' ', '');
+  const filterChampionsBySearchTerm = (champions: Array<TChampion> | undefined) => {
+    return champions?.filter((champion) => {
+      const cleanChampionName = champion.name.toLowerCase().replaceAll('\'', '').replaceAll(' ', '');
+      const cleanSearchTerm = searchInput.toLowerCase().replaceAll(' ', '');
 
-    return cleanChampionName.includes(cleanSearchTerm);
-  });
+      return cleanChampionName.includes(cleanSearchTerm);
+    });
+  }
+  const searchedRecentlyPlayedChampions = filterChampionsBySearchTerm(recentlyPlayedChampions);
+  const searchedChampionPlaceholderData = filterChampionsBySearchTerm(championPlaceholderData);
+
+  const displayedChampions = searchedRecentlyPlayedChampions && searchedRecentlyPlayedChampions?.length > 0 ?
+    searchedRecentlyPlayedChampions : searchedChampionPlaceholderData;
+
+  useEffect(() => {
+    if (recentlyPlayedChampions && recentlyPlayedChampions.length > 0) {
+      setChampionPlaceholderData([...recentlyPlayedChampions]);
+    }
+  }, [allChampionsMatchHistorySummary]);
 
   return (
     <div className='relative flex items-center gap-2 rounded bg-almostWhite 
@@ -60,8 +86,8 @@ const SearchChampion = ({
       <input
         onClick={handleDisplaySummonerList}
         onFocus={handleDisplaySummonerList}
-        onChange={(e) => setSearchedChampion(e.target.value)}
-        value={searchedChampion}
+        onChange={(e) => setSearchInput(e.target.value)}
+        value={searchInput}
         className='w-full text-xs bg-transparent outline-none placeholder:opacity-50'
         type='text'
         placeholder='Search a champion'
@@ -92,7 +118,7 @@ const SearchChampion = ({
                 All Champions
               </button>
             </li>
-            {searchFilteredChampions?.map((champion) => (
+            {displayedChampions?.map((champion) => (
               <li
                 className={`${champion.key === markedChampionId && 'pointer-events-none bg-almostWhite dark:bg-darkMode-darkBlue'} 
                 ${isPending && 'pointer-events-none'} ${addOpacityStyle(champion.key) && 'opacity-70'} 
