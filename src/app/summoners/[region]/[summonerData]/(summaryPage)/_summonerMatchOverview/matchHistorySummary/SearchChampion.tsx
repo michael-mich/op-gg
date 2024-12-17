@@ -79,7 +79,9 @@ const SearchChampion = ({
   }, [allChampionsMatchHistorySummary]);
 
   return (
-    <div className='relative flex items-center gap-2 rounded bg-almostWhite 
+    <div
+      ref={championsListRef}
+      className='relative flex items-center gap-2 rounded bg-almostWhite 
     dark:bg-darkMode-darkBlue py-0.5 px-2'
     >
       <IoIosSearch className='size-6 text-secondGray' />
@@ -94,7 +96,6 @@ const SearchChampion = ({
       />
       {displaySummonerList && (
         <div
-          ref={championsListRef}
           className='absolute left-0 top-8 z-10 w-full max-h-[366px] overflow-y-auto 
           bg-white dark:bg-darkMode-mediumGray rounded transition-opacity'
         >
