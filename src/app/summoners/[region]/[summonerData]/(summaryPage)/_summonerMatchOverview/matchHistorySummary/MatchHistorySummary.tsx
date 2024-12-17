@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+import { useTheme } from 'next-themes';
 import { memo } from 'react';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useQuery } from '@tanstack/react-query';
@@ -24,6 +26,7 @@ const MatchHistorySummary = ({
   matchHistoryCount,
   ...props
 }: Props) => {
+  const { resolvedTheme } = useTheme();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink } = useCurrentRegion() || {};
 
@@ -47,22 +50,25 @@ const MatchHistorySummary = ({
   });
 
   return (
-    <div className={`${isMatchHistorySummaryPending && 'flex items-center justify-center py-12'} 
-    w-full h-fit bg-white dark:bg-darkMode-mediumGray rounded`}
-    >
+    <div className='w-full h-fit bg-white dark:bg-darkMode-mediumGray rounded'>
+      <div className='flex items-center justify-between h-[35px] border-bottom-theme px-1'>
+        <span className='text-sm pl-2'>Recent Games</span>
+        <SearchChampion
+          matchHistorySummaryData={matchHistorySummaryData}
+          markedChampionId={markedChampionId}
+          matchHistoryCount={matchHistoryCount}
+          {...props}
+        />
+      </div>
       {isMatchHistorySummaryPending ? (
-        <CircularProgress aria-label={`loading summoner summary of ${matchHistoryCount} recent games`} />
-      ) : isSuccess ? (
+        <div className='flex flex-col items-center justify-center py-12'>
+          <CircularProgress aria-label={`loading summoner summary of ${matchHistoryCount} recent games`} />
+        </div>
+      ) : (isSuccess
+        && matchHistorySummaryData?.gameAmounts.totalGames
+        && matchHistorySummaryData.gameAmounts.totalGames > 0
+      ) ? (
         <>
-          <div className='flex items-center justify-between h-[35px] border-bottom-theme px-1'>
-            <span className='text-sm pl-2'>Recent Games</span>
-            <SearchChampion
-              matchHistorySummaryData={matchHistorySummaryData}
-              markedChampionId={markedChampionId}
-              matchHistoryCount={matchHistoryCount}
-              {...props}
-            />
-          </div>
           <div className='grid grid-cols-3 py-2 px-3'>
             <GameStatsSummary matchHistorySummaryData={matchHistorySummaryData} />
             <TopChampions matchHistorySummaryData={matchHistorySummaryData} />
@@ -70,7 +76,17 @@ const MatchHistorySummary = ({
           </div>
         </>
       ) : (
-        <p>error</p>
+        <div className='flex flex-col items-center py-8'>
+          <Image
+            src={`https://s-lol-web.op.gg/static/images/site/summoner/summoner_no_result_recent${resolvedTheme === 'dark' ? '_dark' : ''}.png`}
+            width={270}
+            height={120}
+            alt='Not found data'
+          />
+          <p className='text-sm text-secondGray dark:text-mediumGrayText'>
+            There are no recent match records
+          </p>
+        </div>
       )}
     </div >
   );
