@@ -101,7 +101,8 @@ const SearchChampion = ({
         onFocus={handleDisplaySummonerList}
         onChange={(e) => setSearchInput(e.target.value)}
         value={searchInput}
-        className='w-full text-xs bg-transparent outline-none placeholder:opacity-50'
+        className={`${isPending && 'pointer-events-none'} w-full text-xs bg-transparent 
+        outline-none placeholder:opacity-50`}
         type='text'
         placeholder='Search a champion'
       />
