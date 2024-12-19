@@ -32,7 +32,7 @@ const SearchChampion = ({
 
   const queryClient = useQueryClient();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const allChampionsMatchHistorySummary = queryClient.getQueryData([
+  const allChampionsMatchHistorySummary: Array<TMatchHistorySummary> | undefined = queryClient.getQueryData([
     'summonerMatchHistorySummary',
     summonerPuuid,
     '0',
@@ -58,16 +58,27 @@ const SearchChampion = ({
     matchHistorySummaryData?.championIds?.some((id) => id === champion.key)
   ), [matchHistorySummaryData]);
 
+  const sortChampionsInHistoryMatchOrder = (champions: Array<TChampion> | undefined) => {
+    return champions?.sort((a, b) => {
+      const championA = matchHistorySummaryData?.championIds?.indexOf(a.key) || 0;
+      const championB = matchHistorySummaryData?.championIds?.indexOf(b.key) || 0;
+      return championA - championB;
+    })
+  }
+
   const filterChampionsBySearchTerm = (champions: Array<TChampion> | undefined) => {
     return champions?.filter((champion) => {
       const cleanChampionName = champion.name.toLowerCase().replaceAll('\'', '').replaceAll(' ', '');
       const cleanSearchTerm = searchInput.toLowerCase().replaceAll(' ', '');
-
       return cleanChampionName.includes(cleanSearchTerm);
     });
   }
-  const searchedRecentlyPlayedChampions = filterChampionsBySearchTerm(recentlyPlayedChampions);
-  const searchedChampionPlaceholderData = filterChampionsBySearchTerm(championPlaceholderData);
+
+  const sortedRecentlyPlayedChampions = sortChampionsInHistoryMatchOrder(recentlyPlayedChampions);
+  const searchedRecentlyPlayedChampions = filterChampionsBySearchTerm(sortedRecentlyPlayedChampions);
+
+  const sortedChampionPlaceholderData = sortChampionsInHistoryMatchOrder(championPlaceholderData);
+  const searchedChampionPlaceholderData = filterChampionsBySearchTerm(sortedChampionPlaceholderData);
 
   const displayedChampions = searchedRecentlyPlayedChampions && searchedRecentlyPlayedChampions?.length > 0 ?
     searchedRecentlyPlayedChampions : searchedChampionPlaceholderData;
