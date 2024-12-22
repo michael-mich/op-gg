@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import React, { useEffect, useMemo } from 'react';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useIsFetching, useQueryClient } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import { calculateTimeUnit } from '@/app/_utils/utils';
@@ -45,6 +45,8 @@ const MatchHistory = ({
   const queryClient = useQueryClient();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
   const { continentLink, regionLink } = useCurrentRegion() || {};
+  const isFetchingSummonerAccount = useIsFetching({ queryKey: ['summonerAccount'] });
+  const isFetchingSummonerProfile = useIsFetching({ queryKey: ['summonerProfile'] });
 
   const { data: matchHistoryData, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     enabled: !!summonerPuuid,
@@ -146,24 +148,15 @@ const MatchHistory = ({
                 <SummonerStats currentSummoner={currentSummoner} match={match} />
                 <Teams match={match} />
               </div>
-              <button
-                onClick={() => handleMarkedMatchIndexes(matchIndex)}
-                className={`${currentSummoner?.gameEndedInEarlySurrender ? 'bg-lightMode-thirdLighterGray dark:bg-lightGrayBackground hover:bg-lightMode-lightGray hover:dark:bg-darkMode-darkGray' : currentSummoner?.win ? 'bg-lightMode-blue dark:bg-darkMode-mediumBlue hover:bg-lightBlue hover:dark:bg-darkBlue' : 'bg-lightMode-red dark:bg-darkMode-red hover:bg-lightRed hover:dark:bg-darkRed'} 
-                flex items-end justify-center w-10 rounded-tr-[5px] rounded-br-[5px] p-2 transition-colors`}
-                type='button'
-              >
-                <IoIosArrowDown className={`${currentSummoner?.gameEndedInEarlySurrender ? 'text-lightMode-secondLighterGray dark:text-mediumGrayText' : currentSummoner?.win ? 'text-blue' : 'text-red'} 
-                ${markedMatchIndexes[matchIndex] ? 'rotate-180' : 'rotate-0'} size-5 transition-transform`}
-                />
-              </button>
-            </div>
-            {markedMatchIndexes[matchIndex] && (
-              <MatchDetails match={match} currentSummoner={currentSummoner} />
-            )}
-          </React.Fragment>
-        );
-      })}
-      {(matchHistoryCount < 300 || isFetchingNextPage)
+              {markedMatchIndexes[matchIndex] && (
+                <MatchDetails match={match} currentSummoner={currentSummoner} />
+              )}
+            </React.Fragment>
+          );
+        })
+      )}
+      {(!isFetchingSummonerAccount && !isFetchingSummonerProfile)
+        && (matchHistoryCount < 100 || isFetchingNextPage)
         && markedChampionId === '0'
         && matchHistoryData?.pages
         && matchHistoryData?.pages[matchHistoryData.pages.length - 1]?.length !== 0
