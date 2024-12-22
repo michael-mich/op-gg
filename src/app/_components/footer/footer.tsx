@@ -48,7 +48,7 @@ const Footer = () => {
         </div>
         <div className='flex items-center gap-8 border-t border-t-white dark:border-t-[#2f2f39] pt-5 mt-6'>
           <p className='text-xs text-white dark:text-[#727184]'>
-            © 2012-2024 OP.GG. OP.GG is not endorsed by Riot Games and does not reflect the views
+            © 2012-{new Date().getFullYear()} OP.GG. OP.GG is not endorsed by Riot Games and does not reflect the views
             or opinions of Riot Games or anyone officially involved in producing or managing
             League of Legends. League of Legends and Riot Games are trademarks or registered
             trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
