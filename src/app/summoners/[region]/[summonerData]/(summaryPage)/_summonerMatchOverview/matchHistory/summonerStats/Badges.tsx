@@ -34,7 +34,7 @@ const Badges = ({ currentSummoner }: TMatchAndSummonerProps) => {
         {filteredBadges.map((badge, index) => (
           <span
             className={`${typeof badge.value === 'string' ? 'bg-red' : 'bg-lightMode-secondMediumGray'}
-            text-xs text-white whitespace-nowrap rounded-xl py-1 px-2`}
+            text-xs text-white whitespace-nowrap rounded-xl py-0.5 px-2`}
             key={index}
           >
             {badge?.label} {badge.value}
