@@ -1,11 +1,12 @@
 import { Skeleton } from '@nextui-org/react';
+import { createEmptyStringArray } from '@/app/_utils/utils';
 
 type Props = {
   getTopChampions: boolean;
 }
 
 const ChampionMasterySkeleton = ({ getTopChampions }: Props) => {
-  const skeletons = Array(getTopChampions ? 4 : 8).fill('');
+  const skeletons = createEmptyStringArray(getTopChampions ? 4 : 8);
 
   return (
     <div className='flex gap-2 p-3'>

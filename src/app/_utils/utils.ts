@@ -1,6 +1,10 @@
 import type { TLocalStorageSummoner } from '../_types/types';
 import { type LocalStorageKeys, TimeUnit } from '../_enums/enums';
 
+export const createEmptyStringArray = (amount: number): Array<string> => {
+  return new Array(amount).fill('');
+}
+
 export const getDifferenceBetweenCurrentDate = (dateInMilliseconds: number) => {
   const currentDateMilliseconds = new Date().valueOf();
 
