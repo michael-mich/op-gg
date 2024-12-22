@@ -35,7 +35,7 @@ const SummonerStats = ({ currentSummoner, match }: TMatchAndSummonerProps) => {
           <li>{currentSummoner?.rank?.tier}</li>
         </ul>
       </div>
-      <div className='flex items-center gap-2 mt-[2px]'>
+      <div className='flex items-center gap-2 mt-0.5'>
         <ChampionItems summoner={currentSummoner} />
         <Badges currentSummoner={currentSummoner} />
       </div>
