@@ -26,7 +26,9 @@ const TopChampions = ({ matchHistorySummaryData }: Props) => {
                 imageSize='smallMedium'
                 isRoundedImage
               />
-              <span className={`${champion.winRatio > 50 ? 'text-red' : 'text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'} text-xss mr-0.5`}>
+              <span className={`${champion.winRatio > 50 ? 'text-red' : 'text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'} 
+              text-xss ml-1.5 mr-0.5`}
+              >
                 {champion.winRatio}%
               </span>
               <span className='text-xss text-secondGray dark:text-darkMode-secondMediumGray'>
