@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
+import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerProfileData } from '@/app/_lib/services/riotGamesApi';
-import { getLocalStorageData } from '@/app/_lib/utils/utils';
-import type { TSummonerAccount } from '@/app/_types/services';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
+import { getLocalStorageData } from '@/app/_utils/utils';
+import type { TSummonerAccount, TSummonerProfile } from '@/app/_types/apiTypes/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';
 import { LocalStorageKeys } from '@/app/_enums/enums';
@@ -29,12 +32,18 @@ const SummonerLink = ({
   setDisplaySummonerSections
 }: Props) => {
   const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);
+  const { regionLink } = markedRegionData;
+
+  const { data: newestGameVersion } = useGameVersionQuery();
 
   const { data: summonerLevelAndIconIdData } = useQuery({
     enabled: !!summonerAccountData,
     queryKey: ['summonerLevelAndIconId', isSummonerAccountSuccess, summonerAccountData.puuid],
-    queryFn: () => getSummonerProfileData(summonerAccountData.puuid, markedRegionData),
-    refetchOnWindowFocus: false
+    queryFn: () => {
+      return fetchApi<TSummonerProfile>(
+        riotGamesRoutes.summonerProfile(summonerAccountData.puuid, regionLink)
+      );
+    }
   });
 
   const searchHistoryData: TLocalStorageSummoner = {
@@ -73,7 +82,7 @@ const SummonerLink = ({
       >
         <Image
           className='w-9 rounded-full aspect-square'
-          src={`https://ddragon.leagueoflegends.com/cdn/14.14.1/img/profileicon/${summonerLevelAndIconIdData?.profileIconId}.png`}
+          src={`${imageEndpoints.summonerProfileIcon(newestGameVersion)}${summonerLevelAndIconIdData?.profileIconId}.png`}
           width={30}
           height={30}
           alt=""

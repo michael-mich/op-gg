@@ -1,15 +1,16 @@
 'use client';
 
-import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
+import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import Image from 'next/image';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerRank } from '@/app/_lib/services/riotGamesApi';
-import { findQueueTypeData } from '@/app/_lib/utils/utils';
-import { calculateWinRate, formatTierName, getRankedEmblem } from '@/app/_lib/utils/rank';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { findQueueTypeData, calculatePercentage } from '@/app/_utils/matchStats';
+import { formatTierName, getRankedEmblem } from '@/app/_utils/rank';
 import SummonerRankSkeleton from './SummonerRankSkeleton';
-import type { TSummonerRank } from '@/app/_types/services';
-import { QueueType } from '@/app/_enums/enums';
+import type { TSummonerRank } from '@/app/_types/apiTypes/apiTypes';
+import { QueueType } from '@/app/_enums/match';
 
 type Props = {
   queueType: QueueType;
@@ -17,20 +18,21 @@ type Props = {
 }
 
 const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
-  const currentRegionData = useCurrentRegion();
   const summonerId = useAppSelector((state) => state.summonerId.summonerId);
+  const { regionLink } = useCurrentRegion() || {};
 
   const { data: fetchedSummonerRanksData, isPending } = useQuery({
     enabled: !!summonerId,
     queryKey: ['summonerRank', summonerId],
-    queryFn: () => getSummonerRank(currentRegionData, summonerId),
+    queryFn: () => fetchApi<Array<TSummonerRank>>(riotGamesRoutes.summonerRank(summonerId, regionLink)),
     refetchOnWindowFocus: false
   });
 
   const rankedData: TSummonerRank | undefined = findQueueTypeData(fetchedSummonerRanksData, queueType);
 
+  const totalPlayedGames = rankedData ? rankedData?.wins + rankedData?.losses : 0;
+  const winRate = calculatePercentage(rankedData?.wins, totalPlayedGames);
   const tierName = formatTierName(rankedData);
-  const winRate = calculateWinRate(rankedData);
   const rankedEmblem = getRankedEmblem(rankedData);
 
   return (
@@ -40,7 +42,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
       ) : (
         <>
           <div className='flex items-center justify-between h-[35px] border-bottom-theme px-3'>
-            <span className='text-sm'>{queueType === 'RANKED_SOLO_5x5' ? 'Ranked Solo' : 'Ranked Flex'}</span>
+            <span className='text-sm'>{queueType === QueueType.RankedSolo ? 'Ranked Solo' : 'Ranked Flex'}</span>
             {!rankedData && (
               <span className='text-sm text-[#c3cbd1] dark:text-[#515163]'>Unranked</span>
             )}

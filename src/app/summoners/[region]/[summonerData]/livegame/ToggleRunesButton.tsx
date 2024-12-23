@@ -1,9 +1,10 @@
 import type { TActiveRuneDisplay } from './page';
+import type { TSetState } from '@/app/_types/tuples';
 import { IoIosArrowDown } from 'react-icons/io';
 
 interface Props extends Pick<TActiveRuneDisplay, 'summonerIndex' | 'teamType'> {
   activeRuneDisplay: TActiveRuneDisplay;
-  setActiveRuneDisplay: React.Dispatch<React.SetStateAction<TActiveRuneDisplay>>;
+  setActiveRuneDisplay: TSetState<TActiveRuneDisplay>;
   isActiveRuneDisplayed: boolean;
 }
 

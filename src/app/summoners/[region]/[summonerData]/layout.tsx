@@ -1,4 +1,4 @@
-import SummonerHeader from './_summonerHeader/SummonerHeader';
+import SummonerHeader from './_components/summonerHeader/SummonerHeader';
 import ScrollToTopButton from '@/app/_components/ScrollToTopButton';
 
 const Layout = ({

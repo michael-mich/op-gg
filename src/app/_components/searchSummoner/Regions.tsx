@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
-import useOutsideClick from '@/app/_lib/hooks/useOutsideClick';
+import { useAppSelector } from '@/app/_hooks/useReduxHooks';
+import useOutsideClick from '@/app/_hooks/useOutsideClick';
 import { MdArrowDropDown } from 'react-icons/md';
 import RegionsList from '@/app/_components/RegionsList';
 import type { TBooleanProp } from './SearchSummoner';

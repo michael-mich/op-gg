@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
-import Provider from './_lib/providers/provider';
+import ThemeProvider from './_lib/providers/ThemeProvider';
 import ReactQueryProvider from './_lib/providers/ReactQueryProvider';
 import StoreProvider from './_lib/providers/StoreProvider';
 import NextUiProvider from './_lib/providers/NextUiProvider';
 import Navigation from './_components/navigation/Navigation';
-import Footer from './_components/footer/footer';
+import Footer from './_components/footer/Footer';
 import './globals.css';
 
 const roboto = Roboto({
@@ -27,7 +27,7 @@ const RootLayout = ({
   return (
     <html lang='en' className={`${roboto.className}`} suppressHydrationWarning>
       <body>
-        <Provider>
+        <ThemeProvider>
           <StoreProvider>
             <ReactQueryProvider>
               <NextUiProvider>
@@ -37,7 +37,7 @@ const RootLayout = ({
               </NextUiProvider>
             </ReactQueryProvider>
           </StoreProvider>
-        </Provider>
+        </ThemeProvider>
       </body>
     </html>
   );

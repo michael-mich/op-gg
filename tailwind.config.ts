@@ -34,6 +34,8 @@ const config: Config = {
         orange: '#ff8200',
         darkMode: {
           darkBlue: '#1C1C1F',
+          mediumBlue: '#2f436e',
+          red: '#703c47',
           darkGray: '#282830',
           secondDarkGray: '#222227',
           mediumGray: '#31313C',
@@ -41,6 +43,9 @@ const config: Config = {
           lighterGray: '#9e9eb1',
         },
         lightMode: {
+          black: "#202d37",
+          blue: '#d5e3ff',
+          red: '#ffd8d9',
           secondMediumGray: '#57646F',
           lightGray: '#f7f7f9',
           lighterGray: '#f1f2f5',

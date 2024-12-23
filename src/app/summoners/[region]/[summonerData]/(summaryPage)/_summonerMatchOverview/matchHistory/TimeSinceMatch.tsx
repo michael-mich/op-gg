@@ -1,21 +1,16 @@
-import type { TDetailedMatchHistory } from '@/app/_types/serverActions/serverActions';
+import { getDifferenceBetweenCurrentDate } from '@/app/_utils/utils';
+import type { TMatchAndSummonerProps } from './MatchHistory';
 
-type Props = {
-  match: TDetailedMatchHistory;
-}
+const TimeSinceMatch = ({ match }: TMatchAndSummonerProps) => {
+  const {
+    monthsDifference,
+    daysDifference,
+    diffBetweenDateInMilliseconds
+  } = getDifferenceBetweenCurrentDate(match?.info.gameEndTimestamp || 0);
+  const gameEndedDate = new Date(match?.info.gameEndTimestamp || 0);
 
-const TimeSinceMatch = ({ match }: Props) => {
-  const gameEndedDate = new Date(match.info.gameEndTimestamp)
-
-  const gameEndedDateMiliseconds = gameEndedDate.valueOf();
-  const currentDateMiliseconds = new Date().valueOf();
-
-  const differenceInMilliseconds = currentDateMiliseconds - gameEndedDateMiliseconds;
-
-  const minutesDiffrence = Math.floor(differenceInMilliseconds / 60000);
+  const minutesDiffrence = Math.floor(diffBetweenDateInMilliseconds / 60000);
   const hoursDifference = Math.floor(minutesDiffrence / 60);
-  const daysDifference = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
-  const monthsDifference = Math.floor(daysDifference / 30);
 
   const formatTimeSinceMatch = (): string => {
     if (minutesDiffrence < 60) {

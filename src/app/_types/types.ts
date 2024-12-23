@@ -17,8 +17,3 @@ export type TSummonerPageParams = {
   region: string;
   summonerData: string;
 }
-
-export interface TTeamGeneric<T> {
-  teamType: 'blue' | 'red',
-  teamParticipants: Array<T>;
-}

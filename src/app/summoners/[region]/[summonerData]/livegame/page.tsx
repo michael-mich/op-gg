@@ -1,18 +1,22 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerLiveGameData } from '@/app/_lib/serverActions/summonerLiveGameData';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
-import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
+import { useAppSelector } from '@/app/_hooks/useReduxHooks';
+import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
+import type { TSummonerLiveGameData } from '@/app/_types/apiTypes/customApiTypes';
 import GameTimer from './GameTimer';
 import TableHead from './TableHead';
-import SummonerCurrentGameDetails from './SummonerCurrentGameDetails';
 import SummonerRank from './SummonerRank';
 import ToggleRunesButton from './ToggleRunesButton';
 import SummonerRunes from './_summonerRunes/SummonerRunes';
 import SummonerInactive from './SummonerInactive';
+import ChampionProfile from '../_components/championProfile/ChampionProfile';
 import { CircularProgress } from '@nextui-org/react';
 
 export type TActiveRuneDisplay = {
@@ -28,7 +32,9 @@ const Page = () => {
     teamType: ''
   });
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const currentRegion = useCurrentRegion();
+  const { continentLink, regionLink } = useCurrentRegion() || {};
+
+  const { data: newestGameVersion } = useGameVersionQuery();
 
   const {
     data: liveGameData,
@@ -37,11 +43,12 @@ const Page = () => {
   } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['liveGame', summonerPuuid],
-    queryFn: () => getSummonerLiveGameData(currentRegion, summonerPuuid),
-    refetchOnWindowFocus: false
+    queryFn: () => {
+      return fetchApi<TSummonerLiveGameData>(
+        riotGamesCustomRoutes.summonerLiveGame(summonerPuuid, regionLink, continentLink)
+      );
+    }
   });
-
-  const gameData = useMemo(() => liveGameData, [summonerPuuid, isLiveGameSuccess]);
 
   return (
     <div className='bg-white dark:bg-darkMode-mediumGray rounded shadow-[0_0_5px_0_white] dark:shadow-none pt-2 mb-2'>
@@ -61,7 +68,7 @@ const Page = () => {
             </span>
             <GameTimer gameLength={liveGameData?.gameLength} />
           </div>
-          {gameData?.teams?.map((team) => {
+          {liveGameData?.teams?.map((team) => {
             const blueTeam = team.teamType === 'blue';
 
             return (
@@ -80,7 +87,9 @@ const Page = () => {
                         <tr className={`${blueTeam ? 'after:bg-blue' : 'after:bg-red'} border-t border-t-almostWhite                       
                         dark:border-t-darkMode-darkBlue relative after:absolute after:left-0 after:z-10 after:w-1 after:h-full`}
                         >
-                          <SummonerCurrentGameDetails summoner={summoner} />
+                          <td className='text-xss py-2 px-3'>
+                            <ChampionProfile summoner={summoner} displaySummonerData />
+                          </td>
                           <SummonerRank summoner={summoner} />
                           <ToggleRunesButton
                             activeRuneDisplay={activeRuneDisplay}
@@ -93,7 +102,7 @@ const Page = () => {
                             {summoner.bannedChampion && (
                               <Image
                                 className='size-8 rounded'
-                                src={`https://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/${summoner.bannedChampion?.image}`}
+                                src={`${imageEndpoints.championImage(newestGameVersion)}${summoner.bannedChampion?.image}`}
                                 width={32}
                                 height={32}
                                 alt={summoner.bannedChampion?.name || ''}

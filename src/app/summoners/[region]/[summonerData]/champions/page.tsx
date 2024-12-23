@@ -1,13 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
+import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerChampionStats } from '@/app/_lib/serverActions/summonerChampionStats';
-import { getFilteredChampions } from '@/app/_lib/services/riotGamesApi';
-import { handleKdaTextColor } from '@/app/_lib/utils/utils';
-import type { TSummonerChampionStats, TChampionStats } from '@/app/_types/serverActions/championStats';
+import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { riotGamesRoutes, riotGamesCustomRoutes } from '@/app/_constants/endpoints';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
+import { handleKdaTextColor } from '../_utils/utils';
+import type { TChampion, TChampionStats } from '@/app/_types/apiTypes/apiTypes';
+import type { TSummonerChampionStats } from '@/app/_types/apiTypes/customApiTypes';
 import type { TDetailedChampionStats, TNumericStatKeyPath } from './types';
 import { TableColumns, SortOrder } from './enums';
 import { columns } from './data';
@@ -17,9 +20,10 @@ const Page = () => {
   const [detailedChampionStats, setDetailedChampionStats] = useState<Array<TDetailedChampionStats> | undefined>([]);
   const [sortOptionIndex, setSortOptionIndex] = useState<TableColumns>(TableColumns.TotalGames);
   const [sortOrderDescending, setSortOrderDescending] = useState(true);
-
-  const currentRegionData = useCurrentRegion();
+  const { continentLink } = useCurrentRegion() || {};
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
+
+  const { data: newestGameVersion } = useGameVersionQuery();
 
   const {
     data: championStats,
@@ -29,9 +33,14 @@ const Page = () => {
   } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['matchStats', 'summonerPage', summonerPuuid],
-    queryFn: () => getSummonerChampionStats(currentRegionData, summonerPuuid),
-    refetchOnWindowFocus: false
+    queryFn: () => {
+      return fetchApi<Array<TSummonerChampionStats>>(
+        riotGamesCustomRoutes.summonerChampionStats(summonerPuuid, continentLink)
+      );
+    }
   });
+
+  const championIds = championStats?.map((champion) => champion.championId);
 
   const {
     data: championData,
@@ -39,10 +48,9 @@ const Page = () => {
     isError: isChampionDataError,
     isPending: isChampionDataPending
   } = useQuery({
-    enabled: isChampionStatsSuccess,
+    enabled: !!championIds,
     queryKey: ['championData', 'summonerChampionsPage', isChampionStatsSuccess, summonerPuuid],
-    queryFn: () => getFilteredChampions(championStats),
-    refetchOnWindowFocus: false
+    queryFn: () => fetchApi<Array<TChampion>>(riotGamesRoutes.filteredChampions(championIds))
   });
 
   const loadingCondition = (isChampionStatsPending || isChampionDataPending);
@@ -250,7 +258,7 @@ const Page = () => {
                   <TableCell className='table-cell-hover-bg'>
                     <div className='flex items-center gap-2'>
                       <Avatar
-                        src={`https://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/${stats.championImage}`}
+                        src={`${imageEndpoints.championImage(newestGameVersion)}${stats.championImage}`}
                         size='sm'
                       />
                       <span className='text-xs font-bold'>{stats.championName}</span>
@@ -276,19 +284,37 @@ const Page = () => {
                   </TableCell>
                   <TableCell className='table-cell-hover-bg'>
                     <span className={`${handleKdaTextColor(stats.kda.kda)} block text-center text-xs font-bold`}>
-                      {stats.kda.kda.toFixed(2)}
+                      {(stats.kda.averageKills !== '0.0' && stats.kda.averageDeaths === '0.0' && stats.kda.averageAssists !== '0.0') ? 'Perfect' : `${stats.kda.kda.toFixed(2)}:1`}
                     </span>
-                    <span className='w-[85px] table-cell text-xss'>{stats.kda.averageKills} / {stats.kda.averageAssists} / {stats.kda.averageDeaths}</span>
+                    <span className='w-[85px] table-cell text-xss'>{stats.kda.averageKills} / {stats.kda.averageDeaths} / {stats.kda.averageAssists}</span>
                   </TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{stats.totalGold.toLocaleString('en')}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{stats.minions.averageKilledMinions.toFixed(1)} ({stats.minions.minionsPerMinute})</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{stats.maxKills}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{stats.maxDeaths}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{stats.averageDamageDealt.toLocaleString('en')}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'doubleKills')}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'tripleKills')}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'quadraKills')}</TableCell>
-                  <TableCell className='table-cell table-cell-hover-bg'>{formatKillStat(stats, 'pentaKills')}</TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {stats.totalGold.toLocaleString('en')}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {stats.minions.averageKilledMinions.toFixed(1)} ({stats.minions.minionsPerMinute})
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {stats.maxKills}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {stats.maxDeaths}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {stats.averageDamageDealt.toLocaleString('en')}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {formatKillStat(stats, 'doubleKills')}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {formatKillStat(stats, 'tripleKills')}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {formatKillStat(stats, 'quadraKills')}
+                  </TableCell>
+                  <TableCell className='table-cell table-cell-hover-bg'>
+                    {formatKillStat(stats, 'pentaKills')}
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

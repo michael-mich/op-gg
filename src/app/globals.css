@@ -128,11 +128,27 @@
   .table-cell-hover-bg {
     @apply transition-colors group-hover:bg-lightMode-lightGray dark:group-hover:bg-darkMode-darkGray;  
   }
+
+  .rounded-image {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 100%;
+    aspect-ratio: 1 / 1;    
+  }
 }
 
 @layer utilities {
   .text-xss {
     font-size: 0.6875rem !important; /* 11px */
     line-height: 10px;
+  }
+
+  .scrollbar-width-thin {
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
   }
 }

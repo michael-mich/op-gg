@@ -1,13 +1,14 @@
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getLecSpringSeason } from '@/app/_lib/services/pandascoreApi';
+import { pandascoreRoutes } from '@/app/_constants/endpoints';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import type { TLecSpringSeason } from '@/app/_types/apiTypes/apiTypes';
 import { LuLoader } from 'react-icons/lu';
 
 const Teams = () => {
   const { data, isError, isPending } = useQuery({
     queryKey: ['lec'],
-    queryFn: () => getLecSpringSeason(),
-    refetchOnWindowFocus: false,
+    queryFn: () => fetchApi<Array<TLecSpringSeason>>(pandascoreRoutes.lecSpringSeason()),
     staleTime: Infinity
   });
 

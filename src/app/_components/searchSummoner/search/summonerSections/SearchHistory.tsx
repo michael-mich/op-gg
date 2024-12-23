@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { useAppDispatch, useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStorageFavoriteSummonersSlice';
-import { getLocalStorageData } from '@/app/_lib/utils/utils';
+import { getLocalStorageData } from '@/app/_utils/utils';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';
 import { LocalStorageKeys } from '@/app/_enums/enums';
@@ -39,8 +39,8 @@ const SearchHistory = ({
   }
 
   const toggleFavoriteSummoner = (index: number): void => {
-    const b = getLocalStorageData(LocalStorageKeys.SearchHistory) || [];
-    const searchHistoryData = b[index];
+    const searchHistoryArray = getLocalStorageData(LocalStorageKeys.SearchHistory) || [];
+    const searchHistoryData = searchHistoryArray[index];
     const favoriteSummonersArray = getLocalStorageData(LocalStorageKeys.FavoriteSummoners);
     const sameSummonerIndex = favoriteSummonersArray?.findIndex(
       (el) => el.summonerId === searchHistoryData.summonerId

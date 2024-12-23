@@ -1,7 +1,8 @@
 import { memo } from 'react';
 import Image from 'next/image';
-import { calculateWinRate, getRankedEmblem, formatTierName } from '@/app/_lib/utils/rank';
-import type { TUpdatedLiveGameParticipants } from '@/app/_types/serverActions/liveGame';
+import { calculatePercentage } from '@/app/_utils/matchStats';
+import { getRankedEmblem, formatTierName } from '@/app/_utils/rank';
+import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {
   summoner: TUpdatedLiveGameParticipants;
@@ -9,7 +10,7 @@ type Props = {
 
 const SummonerRank = ({ summoner }: Props) => {
   const totalPlayedGames = summoner.rank ? summoner.rank?.losses + summoner.rank?.wins : 0;
-  const winRatio = calculateWinRate(summoner.rank);
+  const winRatio = calculatePercentage(summoner.rank?.wins, totalPlayedGames);
 
   const getColorBasedOnWinRatio = (winRatio: number, useageType: 'bg' | 'text'): string => {
     if (winRatio >= 70) {

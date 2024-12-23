@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch } from '@/app/_lib/hooks/reduxHooks';
+import { useAppDispatch } from '@/app/_hooks/useReduxHooks';
 import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStorageFavoriteSummonersSlice';
-import { getLocalStorageData } from '@/app/_lib/utils/utils';
+import { getLocalStorageData } from '@/app/_utils/utils';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';
 import { LocalStorageKeys } from '@/app/_enums/enums';

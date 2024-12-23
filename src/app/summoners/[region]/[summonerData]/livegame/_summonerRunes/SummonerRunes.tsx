@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import { useQuery } from '@tanstack/react-query';
-import { getRunesData } from '@/app/_lib/services/riotGamesApi';
-import type { TUpdatedLiveGameParticipants } from '@/app/_types/serverActions/liveGame';
+import useChampionRunesQuery from '@/app/_hooks/queries/useChampionRunesQuery';
+import { imageEndpoints } from '@/app/_constants/imageEndpoints';
+import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/customApiTypes';
 import { shardData } from './summonerRunesData';
 
 type Props = {
@@ -9,11 +9,7 @@ type Props = {
 }
 
 const SummonerRunes = ({ summoner }: Props) => {
-  const { data: runesData } = useQuery({
-    queryKey: ['runes'],
-    queryFn: () => getRunesData(),
-    refetchOnWindowFocus: false
-  });
+  const { data: runesData } = useChampionRunesQuery();
 
   const shardsWithMarkedStatus = shardData.map((shardGroup, shardGroupIndex) => shardGroup.map((shard) => {
     const markedShard = summoner.shardIds?.some((summonerShardId, summonerShardIdIndex) => {
@@ -28,11 +24,11 @@ const SummonerRunes = ({ summoner }: Props) => {
     }
   }));
 
-  const filteredRunes = summoner.runes.flatMap((summonerRune) => runesData?.filter((rune) => {
+  const filteredRunes = summoner.runes && summoner.runes.flatMap((summonerRune) => runesData?.filter((rune) => {
     return summonerRune?.id === rune.id;
   }));
 
-  const keystoneRemoveFromSecondRune = filteredRunes.map((mainRune, index) => {
+  const keystoneRemoveFromSecondRune = filteredRunes?.map((mainRune, index) => {
     if (index === 1) {
       return {
         ...mainRune,
@@ -44,7 +40,7 @@ const SummonerRunes = ({ summoner }: Props) => {
     }
   });
 
-  const runesWithMarkedStatus = keystoneRemoveFromSecondRune.map((mainRune) => ({
+  const runesWithMarkedStatus = keystoneRemoveFromSecondRune?.map((mainRune) => ({
     ...mainRune,
     slots: mainRune?.slots?.map((slot) => ({
       ...slot,
@@ -65,14 +61,14 @@ const SummonerRunes = ({ summoner }: Props) => {
     <tr className='dark:bg-darkMode-darkGray'>
       <td colSpan={6}>
         <div className='flex items-center justify-center py-[10px]'>
-          {runesWithMarkedStatus.map((mainRune, mainRuneIndex) => (
+          {runesWithMarkedStatus?.map((mainRune, mainRuneIndex) => (
             <div
               className={`${mainRuneIndex === 1 && 'self-end border-r-2 border-almostWhite dark:border-r-darkMode-secondDarkGray'}`}
               key={mainRuneIndex}
             >
               <Image
                 className='size-7 bg-almostWhite dark:bg-darkMode-darkBlue rounded-full aspect-square m-auto'
-                src={`https:ddragon.leagueoflegends.com/cdn/img/${mainRune?.icon}`}
+                src={`${imageEndpoints.rune}${mainRune?.icon}`}
                 width={28}
                 height={28}
                 alt={mainRune?.name || ''}
@@ -89,7 +85,7 @@ const SummonerRunes = ({ summoner }: Props) => {
                         <Image
                           className={`${!rune.markedRune && 'grayscale opacity-50'} 
                           size-7 bg-darkMode-darkBlue rounded-full aspect-square`}
-                          src={`https:ddragon.leagueoflegends.com/cdn/img/${rune?.icon}`}
+                          src={`${imageEndpoints.rune}${rune?.icon}`}
                           width={28}
                           height={28}
                           alt={rune.name}

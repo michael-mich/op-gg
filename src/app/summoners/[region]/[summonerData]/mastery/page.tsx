@@ -1,11 +1,13 @@
 'use client';
 
-import useCurrentRegion from '@/app/_lib/hooks/useCurrentRegion';
+import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
 import Image from 'next/image';
-import { useAppSelector } from '@/app/_lib/hooks/reduxHooks';
+import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getSummonerChampionsMasterySummary } from '@/app/_lib/services/riotGamesApi';
-import SummonerChampionsMastery from '@/app/_components/summonerChampionsMastery/SummonerChampionsMastery';
+import { fetchApi } from '@/app/_utils/fetchApi';
+import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
+import type { TChampionMasterySummary } from '@/app/_types/apiTypes/apiTypes';
+import SummonerChampionMastery from '../_components/summonerChampionsMastery/SummonerChampionMastery';
 import { CircularProgress } from '@nextui-org/react';
 
 const championMasteryDetails = [
@@ -26,13 +28,16 @@ const championMasteryDetails = [
 
 const Page = () => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const currentRegionData = useCurrentRegion();
+  const { regionLink } = useCurrentRegion() || {};
 
   const { data: championSummaryData, isPending, isSuccess } = useQuery({
     enabled: !!summonerPuuid,
     queryKey: ['summonerMasteryTotalData', summonerPuuid],
-    queryFn: () => getSummonerChampionsMasterySummary(currentRegionData, summonerPuuid),
-    refetchOnWindowFocus: false
+    queryFn: () => {
+      return fetchApi<TChampionMasterySummary>(
+        riotGamesCustomRoutes.summonerChampionsMasterySummary(summonerPuuid, regionLink)
+      );
+    }
   });
 
   return (
@@ -68,7 +73,7 @@ const Page = () => {
           )
         )}
       </div>
-      <SummonerChampionsMastery getTopChampions={false} />
+      <SummonerChampionMastery getTopChampions={false} />
     </>
   )
 }
