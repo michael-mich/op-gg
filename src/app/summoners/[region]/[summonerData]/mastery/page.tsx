@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import type { TChampionMasterySummary } from '@/app/_types/apiTypes/apiTypes';
-import SummonerChampionsMastery from '../_components/summonerChampionsMastery/SummonerChampionsMastery';
+import SummonerChampionMastery from '../_components/summonerChampionsMastery/SummonerChampionMastery';
 import { CircularProgress } from '@nextui-org/react';
 
 const championMasteryDetails = [
@@ -73,7 +73,7 @@ const Page = () => {
           )
         )}
       </div>
-      <SummonerChampionsMastery getTopChampions={false} />
+      <SummonerChampionMastery getTopChampions={false} />
     </>
   )
 }
