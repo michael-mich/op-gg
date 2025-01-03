@@ -8,37 +8,25 @@ import {
   filterMatchesByMonths
 } from '@/app/_utils/matchStats';
 import type { NextRequest } from 'next/server';
-import type { TMatchHistory } from '@/app/_types/apiTypes/apiTypes';
+import type { PickNumberProperties } from '@/app/_types/types';
 import type {
-  TMatchParticipantStats,
-  TChampionWinLostRatio,
-  TSummonerChampionStats
-} from '@/app/_types/apiTypes/customApiTypes';
+  TMatchHistory,
+  TChampionStats,
+  TKda,
+  TSummonerMatchHistoryData
+} from '@/app/_types/apiTypes/apiTypes';
 
-type OmitMatchParticipantStats = 'championName' | 'puuid' | 'teamId';
+interface TMatchSummonerStats extends
+  Pick<TSummonerMatchHistoryData,
+    'totalDamageDealtToChampions' |
+    'totalMinionsKilled' |
+    'goldEarned'
+  >, Omit<TChampionStats, 'championId'>, Omit<TKda, 'assists'> { };
+
+type NumericSummonerStats = PickNumberProperties<TMatchSummonerStats>;
 
 type TGroupedChampionStatAccumulator = {
-  [key: string]: Array<Omit<TMatchParticipantStats, OmitMatchParticipantStats>>;
-}
-
-type TGroupedChampionStats = Array<[string, Array<Omit<TMatchParticipantStats, OmitMatchParticipantStats>>]>
-
-const getMaxNumber = (
-  groupedChampionStats: TGroupedChampionStats,
-  key: 'kills' | 'deaths'
-): Array<number> => {
-  return groupedChampionStats.map(([_, championStats]) => (
-    championStats.reduce((accumulator, object) => Math.max(accumulator, object[key]), 0)
-  ));
-}
-
-const calculateTotalChampionStat = (
-  groupedChampionStats: TGroupedChampionStats,
-  key: keyof Omit<TMatchParticipantStats, OmitMatchParticipantStats | 'win'>
-): Array<number> => {
-  return groupedChampionStats.map(([_, championStats]) => (
-    championStats.reduce((acumulator, object) => acumulator + object[key], 0)
-  ));
+  [key: string]: Array<TSummonerMatchHistoryData>;
 }
 
 export const GET = async (req: NextRequest) => {
@@ -50,103 +38,91 @@ export const GET = async (req: NextRequest) => {
   const recentMatches = filterMatchesByMonths(fetchedMatchHistory);
   const matchStats = isRecognizedQueueId(recentMatches);
 
-  const summonerMatchStats = matchStats?.flatMap((stats) =>
-    stats?.info.participants.filter((participant) => participant.puuid === summonerPuuid)
-  );
   const gameDurations = matchStats?.map((stats) => stats?.info.gameDuration);
 
-  const groupedChampionStats: TGroupedChampionStats = Object.entries(
-    (summonerMatchStats as unknown as Array<TMatchParticipantStats>).reduce((accumulator: TGroupedChampionStatAccumulator, {
-      championName,
-      assists,
-      deaths,
-      kills,
-      win,
-      totalMinionsKilled,
-      goldEarned,
-      totalDamageDealtToChampions,
-      doubleKills,
-      tripleKills,
-      quadraKills,
-      pentaKills,
-      championId
-    }, index) => {
-      if (!accumulator[championName]) {
-        accumulator[championName] = [];
+  const summonerMatchStats = matchStats?.flatMap((stats) =>
+    stats?.info.participants.filter((participant) =>
+      participant.puuid === summonerPuuid && !participant.gameEndedInEarlySurrender
+    )
+  );
+
+  const groupedChampionStats = Object.entries(
+    (summonerMatchStats || []).reduce((
+      accumulator: TGroupedChampionStatAccumulator,
+      summoner,
+    ) => {
+      if (!accumulator[summoner.championId]) {
+        accumulator[summoner.championId] = [];
       }
-
-      accumulator[championName].push({
-        assists,
-        deaths,
-        kills,
-        win,
-        totalMinionsKilled,
-        goldEarned,
-        gameDuration: gameDurations?.[index] ?? 0,
-        totalDamageDealtToChampions,
-        doubleKills,
-        tripleKills,
-        quadraKills,
-        pentaKills,
-        championId
-      });
-
+      accumulator[summoner.championId].push(summoner);
       return accumulator;
     }, {})
-  ).filter(([championName, _]) => !championName.includes('Strawberry'));
+  );
 
-  const championsId = groupedChampionStats.map(([_, championStats]) => championStats[0].championId);
+  const championStatsSummary = groupedChampionStats.map(([championId, championStats], groupIndex) => {
+    const championPerformanceData = championStats.reduce((accumulator, champion, championIndex) => {
+      const getMaxNumber = (key: 'kills' | 'deaths'): number => {
+        return Math.max(accumulator[key], champion[key]);
+      }
 
-  const maxKillsPerChampion = getMaxNumber(groupedChampionStats, 'kills');
-  const maxDeathsPerChampion = getMaxNumber(groupedChampionStats, 'deaths');
+      const calculateStat = (key: keyof NumericSummonerStats): number => {
+        return accumulator[key] + champion[key];
+      }
 
-  const totalGoldPerChampion = calculateTotalChampionStat(groupedChampionStats, 'goldEarned');
-  const totalChampionDamageDealt = calculateTotalChampionStat(groupedChampionStats, 'totalDamageDealtToChampions');
-  const totalMinionsKilledSum = calculateTotalChampionStat(groupedChampionStats, 'totalMinionsKilled');
-  const totalGameDurationSum = calculateTotalChampionStat(groupedChampionStats, 'gameDuration');
-  const totalDoubleKillsPerChampion = calculateTotalChampionStat(groupedChampionStats, 'doubleKills');
-  const totalTripleKillsPerChampion = calculateTotalChampionStat(groupedChampionStats, 'tripleKills');
-  const totalQuadraKillsPerChampion = calculateTotalChampionStat(groupedChampionStats, 'quadraKills');
-  const totalPentaKillsPerChampion = calculateTotalChampionStat(groupedChampionStats, 'pentaKills');
+      const calculatedDamgaeDealt = calculateStat('totalDamageDealtToChampions');
+      const averageDamageDealt = championStats.length - 1 === championIndex
+        ? Math.round(calculatedDamgaeDealt / championStats.length)
+        : calculatedDamgaeDealt;
 
-  const averageDamageDealtToChampions = groupedChampionStats.map(([_, championStats], index) => {
-    return Math.round((totalChampionDamageDealt[index] / championStats.length));
-  });
+      return {
+        goldEarned: calculateStat('goldEarned'),
+        doubleKills: calculateStat('doubleKills'),
+        tripleKills: calculateStat('tripleKills'),
+        quadraKills: calculateStat('quadraKills'),
+        pentaKills: calculateStat('pentaKills'),
+        kills: getMaxNumber('kills'),
+        deaths: getMaxNumber('deaths'),
+        totalDamageDealtToChampions: averageDamageDealt,
+        totalMinionsKilled: calculateStat('totalMinionsKilled'),
+      };
+    }, {
+      totalDamageDealtToChampions: 0,
+      goldEarned: 0,
+      doubleKills: 0,
+      tripleKills: 0,
+      quadraKills: 0,
+      pentaKills: 0,
+      kills: 0,
+      deaths: 0,
+      totalMinionsKilled: 0,
+    });
 
-  const minionStatsPerChampion = groupedChampionStats.map(([_, championStats], index) => {
-    const averageKilledMinions = totalMinionsKilledSum[index] / championStats.length;
-    const averageGameDuration = totalGameDurationSum[index] / championStats.length;
-
-    return {
+    const averageKilledMinions = championPerformanceData.totalMinionsKilled / championStats.length;
+    const averageGameDuration = (gameDurations?.[groupIndex] || 0) / championStats.length;
+    const minions = {
       averageKilledMinions: averageKilledMinions,
       minionsPerMinute: (averageKilledMinions / (averageGameDuration / 60)).toFixed(2)
-    }
-  });
+    };
 
-  const championPlayedStats = groupedChampionStats.map(([_, championStats]): TChampionWinLostRatio => {
-    return calculateWinLossStats(championStats);
-  });
-
-  const championKdaStats = groupedChampionStats.map(([_, championStats]) => {
-    return calculateAverageKdaStats(championStats);
-  });
-
-  const championStats: Array<TSummonerChampionStats> = groupedChampionStats.map((_, index) => {
     return {
-      kda: championKdaStats[index],
-      played: championPlayedStats[index],
-      minions: minionStatsPerChampion[index],
-      totalGold: totalGoldPerChampion[index],
-      maxKills: maxKillsPerChampion?.[index],
-      maxDeaths: maxDeathsPerChampion?.[index],
-      averageDamageDealt: averageDamageDealtToChampions[index],
-      doubleKills: totalDoubleKillsPerChampion[index],
-      tripleKills: totalTripleKillsPerChampion[index],
-      quadraKills: totalQuadraKillsPerChampion[index],
-      pentaKills: totalPentaKillsPerChampion[index],
-      championId: championsId[index]
-    }
+      ...championPerformanceData,
+      played: calculateWinLossStats(championStats),
+      kda: calculateAverageKdaStats(championStats),
+      minions,
+      championId
+    };
   });
 
-  return Response.json(championStats);
+  const championsSortedByGamesPlayed = championStatsSummary.sort((a, b) => {
+    const aGames = a.played.wonMatches + a.played.lostMatches;
+    const bGames = b.played.wonMatches + b.played.lostMatches;
+    return bGames - aGames
+  });
+
+  const rankedChampions = championsSortedByGamesPlayed?.map((champion, index) => ({
+    ...champion,
+    championRank: index + 1
+  }));
+
+  return Response.json(rankedChampions);
 }

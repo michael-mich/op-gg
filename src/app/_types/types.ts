@@ -17,3 +17,7 @@ export type TSummonerPageParams = {
   region: string;
   summonerData: string;
 }
+
+export type PickNumberProperties<T> = {
+  [P in keyof T as T[P] extends number ? P : never]: T[P];
+}

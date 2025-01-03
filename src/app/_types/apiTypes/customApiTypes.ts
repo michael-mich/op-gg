@@ -1,6 +1,5 @@
 import type {
   TChampionStats,
-  TKda,
   TRuneSlots,
   TRune,
   TSummonerRank,
@@ -27,32 +26,15 @@ export type TChampionWinLostRatio = {
   winRatio: number;
 }
 
-/**
- * Types for data from the 'championStats' endpoint
- */
-export interface TSummonerChampionStats extends TChampionStats {
+export interface TSummonerChampionStats extends Omit<TChampionStats, 'championId'>, Pick<TSummonerMatchHistoryData, 'goldEarned' | 'kills' | 'deaths' | 'totalDamageDealtToChampions'> {
   kda: TAverageKdaStats;
   played: TChampionWinLostRatio,
   minions: {
     averageKilledMinions: number,
     minionsPerMinute: string
   };
-  totalGold: number;
-  maxKills: number;
-  maxDeaths: number;
-  averageDamageDealt: number;
-}
-
-/**
- * Interface contains types that used to summarize summoner champions stats based on recent matches
- */
-export interface TMatchParticipantStats extends TChampionStats, Pick<TSummonerAccount, 'puuid'>, TKda {
-  championName: string;
-  win: boolean;
-  totalMinionsKilled: number;
-  gameDuration: number;
-  goldEarned: number;
-  totalDamageDealtToChampions: number;
+  championRank: number;
+  championId: string;
 }
 
 export interface TUpdatedRune extends Omit<TRune, 'slots'> {
@@ -81,6 +63,7 @@ export interface TUpdatedLiveGameParticipants extends Pick<TLiveGameParticipants
   spells: Array<TSummonerSpellContent> | undefined,
   bannedChampion: TBannedChampion | undefined;
   shardIds: Array<number> | undefined;
+  championId: number;
 }
 
 export interface TSummonerLiveGameData extends Pick<TLiveGame, 'gameLength'> {

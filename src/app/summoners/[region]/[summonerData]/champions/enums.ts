@@ -1,4 +1,4 @@
-export enum TableColumns {
+export enum TableColumnIndex {
   TotalGames,
   Champion,
   Played,
