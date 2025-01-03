@@ -65,7 +65,7 @@ const SummonerChampionMastery = ({ getTopChampions }: Props) => {
       {(isChampionsMasteryPending || isChampionsMasteryRefetching) ? (
         <ChampionMasterySkeleton getTopChampions={getTopChampions} />
       ) : (isChampionsMasteryError || !championMasteryData?.length) ? (
-        <NoDataError text='No mastery data available' />
+        <NoDataError text='No mastery data available' size='medium' />
       ) : (
         <>
           <div className={`flex flex-wrap ${getTopChampions ? 'gap-2' : 'gap-y-4'} p-3`}>

@@ -14,6 +14,7 @@ import type { TSummonerChampionStats } from '@/app/_types/apiTypes/customApiType
 import { TableColumnIndex, SortOrder } from './enums';
 import { columns } from './data';
 import ChampionAvatar from '@/app/_components/ChampionAvatar';
+import NoDataError from '../_components/NoDataError';
 import {
   Table,
   TableHeader,
@@ -209,14 +210,14 @@ const Page = () => {
     }
   }, [isChampionStatsSuccess]);
 
-  if (isChampionStatsError) {
-    return <p>error</p>
-  }
-
   return (
-    <div className={`custom-table-wrapper ${isChampionStatsPending && 'loading'}`}>
+    <div className={`custom-table-wrapper ${isChampionStatsPending && 'loading'} 
+    ${isChampionStatsError && 'flex justify-center items-center h-[205px] bg-white dark:bg-darkMode-mediumGray'}`}
+    >
       {isChampionStatsPending ? (
         <CircularProgress aria-label='champion stats loading' />
+      ) : isChampionStatsError ? (
+        <NoDataError text='There is no results recorded' />
       ) : (
         <Table aria-label='table with champion stats'>
           <TableHeader>
