@@ -32,7 +32,7 @@ const SummonerSections = ({ pageOtherThanHomePage, setDisplaySummonerSections }:
 
   useEffect(() => {
     setLocalStorageSearchHistory(getLocalStorageData(LocalStorageKeys.SearchHistory)!);
-    dispatch(setLocalStorageFavoriteSummoners(getLocalStorageData(LocalStorageKeys.FavoriteSummoners)!));
+    //dispatch(setLocalStorageFavoriteSummoners(getLocalStorageData(LocalStorageKeys.FavoriteSummoners)!));
   }, []);
 
   return (
