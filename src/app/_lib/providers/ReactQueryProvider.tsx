@@ -1,14 +1,16 @@
 'use client'
 
 import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { TEN_MINUTES } from '@/app/_constants/timeUnits';
 
 const makeQueryClient = () => {
   return new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 3_600_000, // 1 hour
-        gcTime: 600_000, // 10 minutes
+        staleTime: TEN_MINUTES,
+        gcTime: TEN_MINUTES,
         refetchOnWindowFocus: false,
+        retry: 1,
       }
     }
   });
