@@ -8,10 +8,10 @@ enum RouteHandlers {
   RiotGames = '/api/riotGames',
 }
 
-const createRouteUrl = (
+const createRouteUrl = <T,>(
   routeHandler: RouteHandlers,
   subRoute: string,
-  params?: Record<string, string | Array<number> | boolean | null | undefined> | undefined
+  params?: Record<string, T | undefined> | undefined
 ) => {
   const queryParamsEntries = Object.entries(params || {});
   const queryParams = queryParamsEntries.map(([key, value]) => `${key}=${value}`).join('&');
