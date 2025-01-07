@@ -1,5 +1,6 @@
 import useChampionDataQuery from '@/app/_hooks/queries/useChampionDataQuery';
 import { findChampionById } from '../../_utils/utils';
+import { isDetailedMatchHistory } from '../../_utils/typeGuards';
 import type {
   TUpdatedLiveGameParticipants,
   TSummonerDetailedMatchHistory
@@ -8,8 +9,6 @@ import ChampionAvatar from '@/app/_components/ChampionAvatar';
 import Runes from './Runes';
 import Spells from './Spells';
 
-export type TSummoner = TUpdatedLiveGameParticipants | TSummonerDetailedMatchHistory | undefined;
-
 export type TSummonerAndImageStyle = {
   summonerMatchHistory: TSummonerDetailedMatchHistory | undefined;
   summonerLiveGame: TUpdatedLiveGameParticipants | undefined;
@@ -17,7 +16,7 @@ export type TSummonerAndImageStyle = {
 }
 
 type Props = {
-  summoner: TSummoner;
+  summoner: TUpdatedLiveGameParticipants | TSummonerDetailedMatchHistory | undefined;
   displaySummonerData?: boolean;
   imageSize?: 'large' | 'medium';
   displayLevel?: boolean;
@@ -34,9 +33,6 @@ const ChampionProfile = ({
   const { data: championData } = useChampionDataQuery();
   const foundChampion = findChampionById(championData, summoner?.championId);
 
-  const isDetailedMatchHistory = (summoner: TSummoner): summoner is TSummonerDetailedMatchHistory => {
-    return (summoner as TSummonerDetailedMatchHistory | undefined)?.champLevel !== undefined;
-  }
   const summonerMatchHistory = isDetailedMatchHistory(summoner) ? summoner : undefined;
   const summonerLiveGame = !isDetailedMatchHistory(summoner) ? summoner : undefined;
 

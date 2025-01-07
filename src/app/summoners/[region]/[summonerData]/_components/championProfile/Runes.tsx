@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import useChampionRunesQuery from '@/app/_hooks/queries/useChampionRunesQuery';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
+import { reorderRunesByKeystone } from '../../_utils/reorderRunesByKeystone';
 import type { TRuneSlots } from '@/app/_types/apiTypes/apiTypes';
 import type { TSummonerAndImageStyle } from './ChampionProfile';
 
@@ -14,8 +15,7 @@ const Runes = ({
   const currentSummonerRunes = runesData?.filter((rune) => {
     if (summonerMatchHistory) {
       return summonerMatchHistory.perks.styles.find((summonerRune) => rune.id === summonerRune.style);
-    }
-    else {
+    } else {
       return summonerLiveGame?.perks.perkStyle === rune.id
         || summonerLiveGame?.perks.perkSubStyle === rune.id;
     }
@@ -24,7 +24,7 @@ const Runes = ({
   const extractKeystoneRune = <T,>(callback: (keyStone: TRuneSlots) => T) => {
     return currentSummonerRunes?.map((rune) => ({
       ...rune,
-      slots: rune.slots.map((slot) => slot.runes.find((keyStone) =>
+      slots: rune.slots.flatMap((slot) => slot.runes.find((keyStone) =>
         callback(keyStone))).filter(Boolean)
     }));
   }
@@ -34,41 +34,19 @@ const Runes = ({
       return extractKeystoneRune((keyStone) => summonerMatchHistory.perks.styles.some((style) =>
         style.selections[0].perk === keyStone.id
       ));
-    }
-    else {
-      return extractKeystoneRune((agRune) => summonerLiveGame?.perks.perkIds.some((perkId) =>
-        perkId === agRune.id)
-      );
+    } else {
+      return extractKeystoneRune((keyStone) => summonerLiveGame?.perks.perkIds[0] === keyStone.id);
     }
   }
 
-  const sortKeystoneRunes = () => {
-    const summonerKeystoneRune = getSummonerKeyStoneRune();
-    const primaryKeystoneRune = summonerKeystoneRune?.[0];
-    const secondaryKeystoneRune = summonerKeystoneRune?.[1];
-    const reorderedKeystoneRunes = [secondaryKeystoneRune, primaryKeystoneRune];
-
-    if (summonerMatchHistory) {
-      if (primaryKeystoneRune?.id === summonerMatchHistory?.perks.styles[0].style) {
-        return summonerKeystoneRune;
-      }
-      else {
-        return reorderedKeystoneRunes;
-      }
-    }
-    else {
-      if (primaryKeystoneRune?.id === summonerLiveGame?.perks.perkStyle) {
-        return summonerKeystoneRune;
-      }
-      else {
-        return reorderedKeystoneRunes;
-      }
-    }
-  }
+  const reorderedRunes = reorderRunesByKeystone(
+    summonerLiveGame ? summonerLiveGame : summonerMatchHistory,
+    getSummonerKeyStoneRune()
+  );
 
   return (
     <div>
-      {sortKeystoneRunes()?.map((rune, index) => {
+      {reorderedRunes?.map((rune, index) => {
         const isFirstElement = index === 0;
 
         return (
