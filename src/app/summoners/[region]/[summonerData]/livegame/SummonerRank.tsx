@@ -2,10 +2,10 @@ import { memo } from 'react';
 import Image from 'next/image';
 import { calculatePercentage } from '@/app/_utils/matchStats';
 import { getRankedEmblem, formatTierName } from '@/app/_utils/rank';
-import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/customApiTypes';
+import type { TDetailedLiveGameSummoner } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {
-  summoner: TUpdatedLiveGameParticipants;
+  summoner: TDetailedLiveGameSummoner;
 }
 
 const SummonerRank = ({ summoner }: Props) => {

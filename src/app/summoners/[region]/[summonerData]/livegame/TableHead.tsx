@@ -8,11 +8,11 @@ const columns = [
 ];
 
 type Props = {
-  blueTeam: boolean;
+  isBlueTeam: boolean;
 }
 
-const TableHead = ({ blueTeam }: Props) => {
-  const blueText = blueTeam ? 'text-blue' : 'text-red';
+const TableHead = ({ isBlueTeam }: Props) => {
+  const blueText = isBlueTeam ? 'text-blue' : 'text-red';
 
   return (
     <thead>
@@ -26,7 +26,7 @@ const TableHead = ({ blueTeam }: Props) => {
           >
             {index === 0 ? (
               <>
-                <span className={`${blueText} font-bold`}>{blueTeam ? 'Blue' : 'Red'} Team</span>
+                <span className={`${blueText} font-bold`}>{isBlueTeam ? 'Blue' : 'Red'} Team</span>
                 <div className='flex items-center gap-1'>
                   <span className={`${blueText} font-normal`}>Tier Average:</span>
                   <span className={`${blueText} font-bold`}>Diamond</span>

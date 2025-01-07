@@ -195,8 +195,7 @@ export const riotGamesCustomRoutes = {
   },
   summonerLiveGame: (
     summonerPuuid: Nullable<string>,
-    regionLink: Nullable<string>,
-    regionContinentLink: Nullable<string>
+    regionLink: string | undefined,
   ) => {
     return createRouteUrl(
       RouteHandlers.RiotGames,
@@ -204,7 +203,6 @@ export const riotGamesCustomRoutes = {
       {
         [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
         [RouteHandlerParams.RegionLink]: regionLink,
-        [RouteHandlerParams.RegionContinentLink]: regionContinentLink
       }
     );
   }

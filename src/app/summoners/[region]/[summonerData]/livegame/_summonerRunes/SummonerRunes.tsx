@@ -2,11 +2,11 @@ import Image from 'next/image';
 import useChampionRunesQuery from '@/app/_hooks/queries/useChampionRunesQuery';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import { reorderRunesByKeystone } from '../../_utils/reorderRunesByKeystone';
-import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/customApiTypes';
+import type { TDetailedLiveGameSummoner } from '@/app/_types/apiTypes/customApiTypes';
 import { shardData } from './summonerRunesData';
 
 type Props = {
-  summoner: TUpdatedLiveGameParticipants;
+  summoner: TDetailedLiveGameSummoner;
 }
 
 const SummonerRunes = ({ summoner }: Props) => {

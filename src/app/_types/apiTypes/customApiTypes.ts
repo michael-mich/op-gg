@@ -3,11 +3,8 @@ import type {
   TRuneSlots,
   TRune,
   TSummonerRank,
+  TLiveGameSummoner,
   TLiveGame,
-  TLiveGameParticipants,
-  TSummonerAccount,
-  TChampion,
-  TSummonerSpellContent,
   TSummonerMatchHistoryData,
   TMatchHistory
 } from './apiTypes';
@@ -42,34 +39,18 @@ export interface TUpdatedRune extends Omit<TRune, 'slots'> {
   type: RuneType;
 }
 
-export type TBannedChampion = {
-  name: string;
-  image: string;
-  championId: number;
-  teamId: number;
-}
-
-export interface TUpdatedLiveGameParticipants extends Pick<TLiveGameParticipants, 'teamId' | 'perks' | 'spell1Id' | 'spell2Id'>, Pick<TSummonerAccount, 'puuid'> {
-  championData: Pick<TChampion, 'name'> & {
-    image: string;
-  } | undefined;
-  summonerNameAndTagLine: {
-    name: string | undefined;
-    tagLine: string | undefined;
-  } | undefined;
+export interface TDetailedLiveGameSummoner extends TLiveGameSummoner {
+  bannedChampion: Pick<TLiveGameSummoner, 'championId'>;
+  rank: TSummonerRank | undefined;
+  riotId: string;
   summonerLevel: number | undefined;
-  runes: Array<TUpdatedRune | undefined>;
-  rank: TSummonerRank | undefined,
-  spells: Array<TSummonerSpellContent> | undefined,
-  bannedChampion: TBannedChampion | undefined;
-  shardIds: Array<number> | undefined;
-  championId: number;
+  shardIds: Array<number>;
 }
 
-export interface TSummonerLiveGameData extends Pick<TLiveGame, 'gameLength'> {
+export interface TDetailedLiveGame extends Pick<TLiveGame, 'gameLength'> {
   teams: Array<{
     teamType: 'blue' | 'red',
-    teamParticipants: Array<TUpdatedLiveGameParticipants>
+    teamParticipants: Array<TDetailedLiveGameSummoner>
   }>;
 }
 
