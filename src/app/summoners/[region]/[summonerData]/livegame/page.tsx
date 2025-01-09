@@ -15,7 +15,7 @@ import { findChampionById } from '../_utils/utils';
 import type { TDetailedLiveGame } from '@/app/_types/apiTypes/customApiTypes';
 import GameTimer from './GameTimer';
 import TableHead from './TableHead';
-import SummonerRank from './SummonerRank';
+import SummonerPerformance from './SummonerPerformance';
 import ToggleRunesButton from './ToggleRunesButton';
 import SummonerRunes from './_summonerRunes/SummonerRunes';
 import SummonerInactive from './SummonerInactive';
@@ -95,7 +95,7 @@ const Page = () => {
                           <td className='text-xss py-2 px-3'>
                             <ChampionProfile summoner={summoner} displaySummonerData />
                           </td>
-                          <SummonerRank summoner={summoner} />
+                          <SummonerPerformance summoner={summoner} />
                           <ToggleRunesButton
                             activeRuneDisplay={activeRuneDisplay}
                             setActiveRuneDisplay={setActiveRuneDisplay}
