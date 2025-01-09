@@ -1,18 +1,35 @@
-const columns = [
-  '',
-  '',
-  `S${new Date().getFullYear()}`,
-  'Ranked Ratio',
-  'Runes',
-  'Ban'
-];
+import { useEffect, useState } from 'react';
+import { formatTierName } from '@/app/_utils/rank';
+import type { TDetailedLiveGameSummoner, TTeamGeneric } from '@/app/_types/apiTypes/customApiTypes';
+
+interface TTeam extends Pick<TTeamGeneric<''>, 'teamType'> {
+  teamParticipants: Array<TDetailedLiveGameSummoner>;
+}
 
 type Props = {
   isBlueTeam: boolean;
+  team: TTeam;
 }
 
-const TableHead = ({ isBlueTeam }: Props) => {
-  const blueText = isBlueTeam ? 'text-blue' : 'text-red';
+const TableHead = ({ isBlueTeam, team }: Props) => {
+  const [averageTierName, setAverageTierName] = useState('');
+  const isBlueColor = isBlueTeam ? 'text-blue' : 'text-red';
+
+  useEffect(() => {
+    const summonersWithRank = team.teamParticipants.filter((summoner) => summoner.rank);
+
+    const totalRankValue = summonersWithRank.reduce((sum, summoner) => {
+      const tierName = formatTierName(summoner.rank?.tier);
+      return tierName ? sum + tierRankValues[tierName as keyof typeof tierRankValues] : sum;
+    }, 0);
+    const averageRankValue = Math.round(totalRankValue / summonersWithRank.length);
+
+    const tierByRankValue = Object.fromEntries(
+      Object.entries(tierRankValues).map(([tierName, value]) => [value, tierName])
+    );
+
+    setAverageTierName(tierByRankValue[averageRankValue]);
+  }, []);
 
   return (
     <thead>
@@ -26,10 +43,10 @@ const TableHead = ({ isBlueTeam }: Props) => {
           >
             {index === 0 ? (
               <>
-                <span className={`${blueText} font-bold`}>{isBlueTeam ? 'Blue' : 'Red'} Team</span>
+                <span className={`${isBlueColor} font-bold`}>{isBlueTeam ? 'Blue' : 'Red'} Team</span>
                 <div className='flex items-center gap-1'>
-                  <span className={`${blueText} font-normal`}>Tier Average:</span>
-                  <span className={`${blueText} font-bold`}>Diamond</span>
+                  <span className={`${isBlueColor} font-normal`}>Tier Average:</span>
+                  <span className={`${isBlueColor} font-bold`}>{averageTierName}</span>
                 </div>
               </>
             ) : (
@@ -43,3 +60,24 @@ const TableHead = ({ isBlueTeam }: Props) => {
 }
 
 export default TableHead;
+
+const columns = [
+  '',
+  '',
+  `S${new Date().getFullYear()}`,
+  'Ranked Ratio',
+  'Runes',
+  'Ban'
+];
+
+const tierRankValues = {
+  Iron: 0,
+  Bronze: 1,
+  Silver: 2,
+  Gold: 3,
+  Emerald: 4,
+  Diamond: 5,
+  Master: 6,
+  Grandmaster: 7,
+  Challenger: 8,
+};

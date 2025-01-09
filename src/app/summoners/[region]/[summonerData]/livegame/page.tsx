@@ -81,7 +81,7 @@ const Page = () => {
                 aria-label={`live data of ${isBlueTeam ? 'blue' : 'red'} team`}
                 key={team.teamType}
               >
-                <TableHead isBlueTeam={isBlueTeam} />
+                <TableHead isBlueTeam={isBlueTeam} team={team} />
                 <tbody>
                   {team.teamParticipants.map((summoner, summonerIndex) => {
                     const isActiveRuneDisplayed = activeRuneDisplay.clicked && activeRuneDisplay.summonerIndex === summonerIndex && activeRuneDisplay.teamType === team.teamType;

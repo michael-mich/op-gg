@@ -68,7 +68,7 @@ const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
               </thead>
               <tbody>
                 {team?.teamParticipants.map((summoner, summonerIndex) => {
-                  const formattedTierName = formatTierName(summoner?.rank);
+                  const formattedTierName = formatTierName(summoner?.rank.tier);
                   const minionStats = getSummonerMinionStats(summoner, match);
                   const killParticipation = getFormattedKillParticipation(summoner);
 

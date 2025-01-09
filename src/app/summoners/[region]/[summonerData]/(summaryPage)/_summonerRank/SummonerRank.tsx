@@ -32,7 +32,7 @@ const SummonerRank = ({ queueType, smallDataStyle }: Props) => {
 
   const totalPlayedGames = rankedData ? rankedData?.wins + rankedData?.losses : 0;
   const winRate = calculatePercentage(rankedData?.wins, totalPlayedGames);
-  const tierName = formatTierName(rankedData);
+  const tierName = formatTierName(rankedData?.tier);
   const rankedEmblem = getRankedEmblem(rankedData);
 
   return (

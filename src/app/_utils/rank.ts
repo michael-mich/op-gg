@@ -13,19 +13,13 @@ const rankedEmblems = [
   '/ranked-emblems/Silver.png'
 ];
 
-export const formatTierName = (rankedData: TSummonerRank | undefined): string => {
-  if (rankedData?.tier) {
-    const tierName = rankedData.tier;
-    return `${tierName[0]}${tierName.slice(1).toLowerCase()}`;
-  }
-  else {
-    return '';
-  }
+export const formatTierName = (tierName: string | undefined): string => {
+  return tierName ? `${tierName[0]}${tierName.slice(1).toLowerCase()}` : '';
 }
 
 export const getRankedEmblem = (rankedData: TSummonerRank | undefined): string | undefined => {
   return rankedEmblems.find((emblem) => {
     const tierName = emblem.replaceAll('/', ' ').replace('.', ' ').split(' ')[2];
-    return tierName === formatTierName(rankedData);
+    return tierName === formatTierName(rankedData?.tier);
   });
 }
