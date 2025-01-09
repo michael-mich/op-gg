@@ -10,6 +10,7 @@ import useChampionDataQuery from '@/app/_hooks/queries/useChampionDataQuery';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
+import { checkQueueType } from '../_utils/utils';
 import { findChampionById } from '../_utils/utils';
 import type { TDetailedLiveGame } from '@/app/_types/apiTypes/customApiTypes';
 import GameTimer from './GameTimer';
@@ -64,7 +65,7 @@ const Page = () => {
         <>
           <div className='flex items-center px-2 mb-2'>
             <span className='text-sm font-bold border-r border-r-black dark:border-r-[#393948] pr-2'>
-              Ranked Solo/Duo
+              {checkQueueType(liveGameData?.gameQueueConfigId)}
             </span>
             <span className='text-xs px-2 border-r border-r-black dark:border-r-[#393948]'>
               Summoner&apos;s Rift

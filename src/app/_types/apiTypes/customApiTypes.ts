@@ -48,6 +48,7 @@ export interface TDetailedLiveGameSummoner extends TLiveGameSummoner {
 }
 
 export interface TDetailedLiveGame extends Pick<TLiveGame, 'gameLength'> {
+  gameQueueConfigId: number;
   teams: Array<{
     teamType: 'blue' | 'red',
     teamParticipants: Array<TDetailedLiveGameSummoner>
