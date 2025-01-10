@@ -13,7 +13,7 @@ const PageNavigation = () => {
   const params = useParams<TSummonerPageParams>();
   const pathname = usePathname();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const { regionLink, continentLink } = useCurrentRegion() || {};
+  const { regionLink } = useCurrentRegion() || {};
 
   const summonerPageUrl = `/summoners/${params.region}/${params.summonerData}`;
   const liveGamePage = `${summonerPageUrl}/livegame`;
@@ -22,7 +22,7 @@ const PageNavigation = () => {
     enabled: !!summonerPuuid,
     queryKey: ['liveGame', summonerPuuid],
     queryFn: () => fetchApi(
-      riotGamesCustomRoutes.summonerLiveGame(summonerPuuid, regionLink, continentLink)
+      riotGamesCustomRoutes.summonerLiveGame(summonerPuuid, regionLink)
     )
   });
 

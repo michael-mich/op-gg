@@ -2,27 +2,24 @@ import { memo } from 'react';
 import Image from 'next/image';
 import { calculatePercentage } from '@/app/_utils/matchStats';
 import { getRankedEmblem, formatTierName } from '@/app/_utils/rank';
-import type { TUpdatedLiveGameParticipants } from '@/app/_types/apiTypes/customApiTypes';
+import type { TDetailedLiveGameSummoner } from '@/app/_types/apiTypes/customApiTypes';
 
 type Props = {
-  summoner: TUpdatedLiveGameParticipants;
+  summoner: TDetailedLiveGameSummoner;
 }
 
-const SummonerRank = ({ summoner }: Props) => {
+const SummonerPerformance = ({ summoner }: Props) => {
   const totalPlayedGames = summoner.rank ? summoner.rank?.losses + summoner.rank?.wins : 0;
   const winRatio = calculatePercentage(summoner.rank?.wins, totalPlayedGames);
 
-  const getColorBasedOnWinRatio = (winRatio: number, useageType: 'bg' | 'text'): string => {
+  const getColorBasedOnWinRatio = (useageType: 'bg' | 'text'): string => {
     if (winRatio >= 70) {
       return `${useageType}-orange`;
-    }
-    else if (winRatio >= 60) {
+    } else if (winRatio >= 60) {
       return `${useageType}-secondLightBlue`;
-    }
-    else if (winRatio >= 50) {
+    } else if (winRatio >= 50) {
       return `${useageType}-mediumGreen`;
-    }
-    else {
+    } else {
       return `${useageType}-lightMode-secondLighterGray dark:${useageType}-darkMode-lighterGray`
     };
   }
@@ -30,11 +27,9 @@ const SummonerRank = ({ summoner }: Props) => {
   return (
     <>
       <td className='text-xss py-2 pl-3 pr-0'>
-        {isNaN(winRatio) ? (
-          ''
-        ) : (
+        {winRatio > 0 && (
           <Image
-            className='m-auto'
+            className='m-auto mr-6'
             src={getRankedEmblem(summoner.rank) || ''}
             width={15}
             height={15}
@@ -43,21 +38,21 @@ const SummonerRank = ({ summoner }: Props) => {
         )}
       </td>
       <td className='text-xss text-lightMode-secondLighterGray dark:text-darkMode-lighterGray text-center py-2 pr-3 pl-0'>
-        {isNaN(winRatio) ? (
+        {!winRatio ? (
           <span>Level {summoner.summonerLevel}</span>
         ) : (
           <>
-            {formatTierName(summoner.rank)} {summoner.rank?.rank} ({summoner.rank?.leaguePoints}LP)
+            {formatTierName(summoner.rank?.tier)} {summoner.rank?.rank} ({summoner.rank?.leaguePoints}LP)
           </>
         )}
       </td>
-      <td className={`${isNaN(winRatio) && 'text-center'} text-xss py-2 px-3`}>
-        {isNaN(winRatio) ? (
-          <span className='text-center'>-</span>
+      <td className={`${!winRatio && 'text-center'} text-xss py-2 px-3`}>
+        {!winRatio ? (
+          <span className='text-center text-[#c2c9ce] dark:text-[#60606f]'>-</span>
         ) : (
           <>
             <div className='text-center'>
-              <span className={`${getColorBasedOnWinRatio(winRatio, 'text')} font-bold mr-0.5`}>
+              <span className={`${getColorBasedOnWinRatio('text')} font-bold mr-0.5`}>
                 {winRatio}%
               </span>
               <span className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
@@ -66,8 +61,7 @@ const SummonerRank = ({ summoner }: Props) => {
             </div>
             <div className='relative w-[100px] h-[6px] bg-lightMode-thirdLighterGray dark:bg-lightGrayBackground mt-1'>
               <div
-                className={`absolute left-0 z-10 h-full 
-                ${winRatio >= 70 ? 'bg-orange' : winRatio >= 60 ? 'bg-secondLightBlue' : winRatio >= 50 ? 'bg-mediumGreen' : 'bg-lightMode-secondLighterGray dark:bg-darkMode-lighterGray'}`}
+                className={`absolute left-0 z-10 h-full ${getColorBasedOnWinRatio('bg')}`}
                 style={{ width: `${winRatio}%` }}
               ></div>
             </div>
@@ -78,4 +72,4 @@ const SummonerRank = ({ summoner }: Props) => {
   );
 }
 
-export default memo(SummonerRank);
+export default memo(SummonerPerformance);

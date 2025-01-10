@@ -6,13 +6,16 @@ import { useQuery } from '@tanstack/react-query';
 import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import useCurrentRegion from '@/app/_hooks/useCurrentRegion';
+import useChampionDataQuery from '@/app/_hooks/queries/useChampionDataQuery';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
-import type { TSummonerLiveGameData } from '@/app/_types/apiTypes/customApiTypes';
+import { checkQueueType } from '../_utils/utils';
+import { findChampionById } from '../_utils/utils';
+import type { TDetailedLiveGame } from '@/app/_types/apiTypes/customApiTypes';
 import GameTimer from './GameTimer';
 import TableHead from './TableHead';
-import SummonerRank from './SummonerRank';
+import SummonerPerformance from './SummonerPerformance';
 import ToggleRunesButton from './ToggleRunesButton';
 import SummonerRunes from './_summonerRunes/SummonerRunes';
 import SummonerInactive from './SummonerInactive';
@@ -32,9 +35,10 @@ const Page = () => {
     teamType: ''
   });
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const { continentLink, regionLink } = useCurrentRegion() || {};
+  const { regionLink } = useCurrentRegion() || {};
 
   const { data: newestGameVersion } = useGameVersionQuery();
+  const { data: championData } = useChampionDataQuery();
 
   const {
     data: liveGameData,
@@ -44,8 +48,8 @@ const Page = () => {
     enabled: !!summonerPuuid,
     queryKey: ['liveGame', summonerPuuid],
     queryFn: () => {
-      return fetchApi<TSummonerLiveGameData>(
-        riotGamesCustomRoutes.summonerLiveGame(summonerPuuid, regionLink, continentLink)
+      return fetchApi<TDetailedLiveGame>(
+        riotGamesCustomRoutes.summonerLiveGame(summonerPuuid, regionLink)
       );
     }
   });
@@ -61,7 +65,7 @@ const Page = () => {
         <>
           <div className='flex items-center px-2 mb-2'>
             <span className='text-sm font-bold border-r border-r-black dark:border-r-[#393948] pr-2'>
-              Ranked Solo/Duo
+              {checkQueueType(liveGameData?.gameQueueConfigId)}
             </span>
             <span className='text-xs px-2 border-r border-r-black dark:border-r-[#393948]'>
               Summoner&apos;s Rift
@@ -69,28 +73,29 @@ const Page = () => {
             <GameTimer gameLength={liveGameData?.gameLength} />
           </div>
           {liveGameData?.teams?.map((team) => {
-            const blueTeam = team.teamType === 'blue';
+            const isBlueTeam = team.teamType === 'blue';
 
             return (
               <table
                 className='w-full'
-                aria-label={`live data of ${blueTeam ? 'blue' : 'red'} team`}
+                aria-label={`live data of ${isBlueTeam ? 'blue' : 'red'} team`}
                 key={team.teamType}
               >
-                <TableHead blueTeam={blueTeam} />
+                <TableHead isBlueTeam={isBlueTeam} team={team} />
                 <tbody>
                   {team.teamParticipants.map((summoner, summonerIndex) => {
                     const isActiveRuneDisplayed = activeRuneDisplay.clicked && activeRuneDisplay.summonerIndex === summonerIndex && activeRuneDisplay.teamType === team.teamType;
+                    const foundBannedChampion = findChampionById(championData, summoner.bannedChampion?.championId);
 
                     return (
-                      <React.Fragment key={`${summoner.teamId}-${summoner.summonerNameAndTagLine?.name}-${summonerIndex}`}>
-                        <tr className={`${blueTeam ? 'after:bg-blue' : 'after:bg-red'} border-t border-t-almostWhite                       
+                      <React.Fragment key={`${summoner.teamId}-${summoner.riotId}-${summonerIndex}`}>
+                        <tr className={`${isBlueTeam ? 'after:bg-blue' : 'after:bg-red'} border-t border-t-almostWhite                       
                         dark:border-t-darkMode-darkBlue relative after:absolute after:left-0 after:z-10 after:w-1 after:h-full`}
                         >
                           <td className='text-xss py-2 px-3'>
                             <ChampionProfile summoner={summoner} displaySummonerData />
                           </td>
-                          <SummonerRank summoner={summoner} />
+                          <SummonerPerformance summoner={summoner} />
                           <ToggleRunesButton
                             activeRuneDisplay={activeRuneDisplay}
                             setActiveRuneDisplay={setActiveRuneDisplay}
@@ -99,13 +104,13 @@ const Page = () => {
                             teamType={team.teamType}
                           />
                           <td className='py-2 px-3'>
-                            {summoner.bannedChampion && (
+                            {summoner.bannedChampion?.championId !== -1 && (
                               <Image
                                 className='size-8 rounded'
-                                src={`${imageEndpoints.championImage(newestGameVersion)}${summoner.bannedChampion?.image}`}
+                                src={`${imageEndpoints.championImage(newestGameVersion)}${foundBannedChampion?.image.full}`}
                                 width={32}
                                 height={32}
-                                alt={summoner.bannedChampion?.name || ''}
+                                alt={foundBannedChampion?.name || ''}
                               />
                             )}
                           </td>

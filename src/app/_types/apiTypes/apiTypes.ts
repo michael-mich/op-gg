@@ -147,7 +147,7 @@ export type TSpellId = {
   spell2Id: number;
 }
 
-export interface TLiveGameParticipants extends TSpellId, Pick<TSummonerMatchHistoryData, 'summonerId'> {
+export interface TLiveGameSummoner extends TSpellId, Pick<TSummonerMatchHistoryData, 'summonerId'> {
   puuid: TSummonerAccount['puuid'];
   championId: TChampionMastery['championId'];
   profileIconId: TSummonerProfile['profileIconId'];
@@ -162,8 +162,8 @@ export interface TLiveGameParticipants extends TSpellId, Pick<TSummonerMatchHist
 export type TLiveGame = {
   gameMode: string;
   gameLength: number;
-  participants: Array<TLiveGameParticipants>;
-  bannedChampions: Array<Pick<TLiveGameParticipants, 'teamId' | 'championId'>>;
+  participants: Array<TLiveGameSummoner>;
+  bannedChampions: Array<Pick<TLiveGameSummoner, 'teamId' | 'championId'>>;
 }
 
 export interface TSummonerSpellContent extends TChampion {

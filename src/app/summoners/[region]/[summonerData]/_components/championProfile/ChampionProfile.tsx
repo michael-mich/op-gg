@@ -1,23 +1,22 @@
 import useChampionDataQuery from '@/app/_hooks/queries/useChampionDataQuery';
 import { findChampionById } from '../../_utils/utils';
+import { isDetailedMatchHistory } from '../../_utils/typeGuards';
 import type {
-  TUpdatedLiveGameParticipants,
+  TDetailedLiveGameSummoner,
   TSummonerDetailedMatchHistory
 } from '@/app/_types/apiTypes/customApiTypes';
 import ChampionAvatar from '@/app/_components/ChampionAvatar';
 import Runes from './Runes';
 import Spells from './Spells';
 
-export type TSummoner = TUpdatedLiveGameParticipants | TSummonerDetailedMatchHistory | undefined;
-
 export type TSummonerAndImageStyle = {
   summonerMatchHistory: TSummonerDetailedMatchHistory | undefined;
-  summonerLiveGame: TUpdatedLiveGameParticipants | undefined;
+  summonerLiveGame: TDetailedLiveGameSummoner | undefined;
   imageSizeStyle: string;
 }
 
 type Props = {
-  summoner: TSummoner;
+  summoner: TDetailedLiveGameSummoner | TSummonerDetailedMatchHistory | undefined;
   displaySummonerData?: boolean;
   imageSize?: 'large' | 'medium';
   displayLevel?: boolean;
@@ -34,11 +33,10 @@ const ChampionProfile = ({
   const { data: championData } = useChampionDataQuery();
   const foundChampion = findChampionById(championData, summoner?.championId);
 
-  const isDetailedMatchHistory = (summoner: TSummoner): summoner is TSummonerDetailedMatchHistory => {
-    return (summoner as TSummonerDetailedMatchHistory | undefined)?.champLevel !== undefined;
-  }
   const summonerMatchHistory = isDetailedMatchHistory(summoner) ? summoner : undefined;
   const summonerLiveGame = !isDetailedMatchHistory(summoner) ? summoner : undefined;
+
+  const [summonerLiveGameName, summonerLiveGameTagLine] = summonerLiveGame?.riotId.split('#') || [];
 
   const imageLargeSize = imageSize === 'large';
   const imageSizeStyle = imageLargeSize ? 'size-[22px]' : 'size-[15px]';
@@ -70,16 +68,16 @@ const ChampionProfile = ({
       {displaySummonerData && (
         <div className={`${summonerMatchHistory ? 'w-[90px] ml-1.5' : 'ml-3'} flex flex-col gap-[0.1rem]`}>
           <div className={`${summonerMatchHistory && 'overflow-hidden'} flex items-baseline gap-0.5 text-xs hover:underline`}>
-            <span className={`${summonerMatchHistory && 'overflow-hidden text-ellipsis whitespace-nowrap'} 
-            font-bold text-[#202d37] dark:text-white`}
-            >
-              {summonerMatchHistory?.riotIdGameName || summonerLiveGame?.summonerNameAndTagLine?.name}
-            </span>
-            {summonerLiveGame && (
-              <span className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
-                #{summonerLiveGame?.summonerNameAndTagLine?.tagLine}
+            <div className={`${summonerMatchHistory && 'overflow-hidden text-ellipsis whitespace-nowrap'}`}>
+              <span className='font-bold text-[#202d37] dark:text-white'>
+                {summonerMatchHistory?.riotIdGameName || summonerLiveGameName}
               </span>
-            )}
+              {summonerLiveGame && (
+                <span className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
+                  #{summonerLiveGameTagLine}
+                </span>
+              )}
+            </div>
           </div>
           <span className='text-xss text-secondGray dark:text-[#7b7a8e]'>
             Level {summonerMatchHistory?.summonerLevel || summonerLiveGame?.summonerLevel}

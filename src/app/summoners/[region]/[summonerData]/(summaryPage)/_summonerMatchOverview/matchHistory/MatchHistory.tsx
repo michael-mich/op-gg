@@ -8,7 +8,7 @@ import { useInfiniteQuery, useIsFetching, useQueryClient } from '@tanstack/react
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesCustomRoutes } from '@/app/_constants/endpoints';
 import { calculateTimeUnit } from '@/app/_utils/utils';
-import { checkQueueType } from './utils/utils';
+import { checkQueueType } from '../../../_utils/utils';
 import type { TMatchProps } from '../SummonerMatchOverview';
 import type {
   TDetailedMatchHistory,

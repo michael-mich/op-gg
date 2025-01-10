@@ -1,5 +1,6 @@
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { ONE_DAY } from '@/app/_constants/timeUnits';
 import type { TChampion } from '@/app/_types/apiTypes/apiTypes';
 
 type TChampionItem = {
@@ -7,6 +8,8 @@ type TChampionItem = {
     name: string;
   } & Pick<TChampion, 'image'>>;
 }
+
+export const revalidate = ONE_DAY;
 
 export const GET = async () => {
   const newestGameVersion = await fetchApi<string>(riotGamesRoutes.newestGameVersion());
