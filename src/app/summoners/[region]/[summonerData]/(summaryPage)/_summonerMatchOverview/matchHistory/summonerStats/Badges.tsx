@@ -10,7 +10,7 @@ const checkSummonerKills = (currentSummoner: TSummonerDetailedMatchHistory | und
       return 'Quadra';
     }
     else if (currentSummoner.tripleKills > 0) {
-      return 'Tripple';
+      return 'Triple';
     }
     else if (currentSummoner.doubleKills > 0) {
       return 'Double';
