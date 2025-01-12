@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { handleKdaTextColor } from '../../../../_utils/utils';
-import { formatTierName } from '@/app/_utils/rank';
 import { getSummonerMinionStats } from '@/app/_utils/matchStats';
 import {
   getFormattedKda,
@@ -14,7 +13,7 @@ import ChampionItems from '../components/ChampionItems';
 import ChampionDamage from './ChampionDamage';
 import TeamStats from './teamStats/TeamStats';
 
-const tableColumns = ['', 'Rank', 'KDA', 'Damage', 'Wards', 'CS', 'Item'];
+const tableColumns = ['', 'KDA', 'Damage', 'Gold', 'Wards', 'CS', 'Item'];
 
 const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
@@ -33,9 +32,9 @@ const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
             >
               <colgroup>
                 <col width='175' />
-                <col width='65' />
                 <col width='100' />
                 <col width='120' />
+                <col width='65' />
                 <col width='50' />
                 <col width='55' />
                 <col width='175' />
@@ -68,7 +67,6 @@ const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
               </thead>
               <tbody>
                 {team?.teamParticipants.map((summoner, summonerIndex) => {
-                  const formattedTierName = formatTierName(summoner?.rank?.tier);
                   const minionStats = getSummonerMinionStats(summoner, match);
                   const killParticipation = getFormattedKillParticipation(summoner);
 
@@ -85,9 +83,6 @@ const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
                           displaySummonerData
                         />
                       </td>
-                      <td className={`${formattedTierName !== '' ? 'text-lightMode-secondLighterGray dark:text-darkMode-lighterGray' : 'text-[#8c9fad] dark:text-darkMode-secondMediumGray'} text-xss text-center`}>
-                        {formattedTierName || 'Unranked'}
-                      </td>
                       <td>
                         <div className='flex flex-col items-center gap-1 text-xss'>
                           <span className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
@@ -101,6 +96,9 @@ const MatchDetails = ({ match, currentSummoner }: TMatchAndSummonerProps) => {
                         </div>
                       </td>
                       <ChampionDamage summoner={summoner} />
+                      <td className='text-xss text-center text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
+                        {summoner?.goldEarned.toLocaleString()}
+                      </td>
                       <td className='text-xss text-center text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
                         <span className='block mb-0.5'>{summoner?.wardsKilled}</span>
                         <span className='block'>
