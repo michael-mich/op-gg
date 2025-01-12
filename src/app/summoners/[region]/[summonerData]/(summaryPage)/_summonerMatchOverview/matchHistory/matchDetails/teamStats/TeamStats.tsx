@@ -6,7 +6,7 @@ import type { TTeamGeneric, TSummonerDetailedMatchHistory } from '@/app/_types/a
 import ObjectiveImage from './ObjectiveImage';
 
 interface Props extends TMatchAndSummonerProps {
-  teamsInOrder: Array<TTeamGeneric<TSummonerDetailedMatchHistory> | undefined> | undefined;
+  teamsInOrder: Array<TTeamGeneric<TSummonerDetailedMatchHistory> | undefined>;
 }
 
 const TeamStats = ({ teamsInOrder, match, currentSummoner }: Props) => {
@@ -56,22 +56,33 @@ const TeamStats = ({ teamsInOrder, match, currentSummoner }: Props) => {
   return (
     <div className='flex items-center gap-[5px] bg-lightMode-lightGray dark:bg-darkMode-darkGray py-2 px-4 mb-[1px]'>
       {teamsWithObjectives?.map((team, teamIndex) => {
-        const teamObjetives = Object.entries(team?.objectives || {});
-        const filteredObjectives = teamObjetives.filter(([objectiveName]) =>
-          objectiveName !== 'champion'
+        const teamObjectives = Object.entries(team?.objectives || {})
+
+        const formattedObjectiveNames: typeof teamObjectives = teamObjectives.map(
+          ([objectiveName, objectiveData]) => {
+            const firstUppercase = `${objectiveName[0].toUpperCase()}${objectiveName.slice(1)}`;
+            return [firstUppercase, objectiveData];
+          }
         );
+
+        const filteredObjectives = formattedObjectiveNames.filter(([objectiveName, _]) => {
+          if (objectiveName in MatchObjectiveName) {
+            const foundMatchObjectiveName = MatchObjectiveName[objectiveName as keyof typeof MatchObjectiveName];
+            return foundMatchObjectiveName === objectiveName;
+          }
+        });
 
         return (
           <React.Fragment key={teamIndex}>
             <ul
-              className={`${teamIndex === 1 && 'justify-end'} flex-1 flex flex-wrap gap-x-3 gap-y-0.5`}
+              className={`${teamIndex === 1 && 'justify-end'} flex-1 flex flex-wrap gap-x-2 gap-y-0.5`}
               key={team?.teamId}
             >
-              {filteredObjectives.map(([objectiveName, objectiveData], objectiveIndex) => (
+              {filteredObjectives.map(([objectiveName, objectiveData]) => (
                 <li key={objectiveName}>
                   <div className='flex items-center gap-1'>
-                    <ObjectiveImage isWinMatch={team?.win} objectiveIndex={objectiveIndex} />
-                    <span className='text-sm text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
+                    <ObjectiveImage isWinMatch={team?.win} objectiveName={objectiveName} />
+                    <span className='text-xs text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
                       {objectiveData.kills}
                     </span>
                   </div>
@@ -90,7 +101,7 @@ const TeamStats = ({ teamsInOrder, match, currentSummoner }: Props) => {
                         <div
                           className={`${team?.win ? 'bg-blue' : 'bg-red'} absolute left-0 z-[2] h-4`}
                           style={{ width: `${stat.percentageWidth}%` }}
-                        ></div>
+                        />
                         <span className='absolute left-2 z-[3] text-xss'>
                           {stat.firstValue}
                         </span>
@@ -114,3 +125,13 @@ const TeamStats = ({ teamsInOrder, match, currentSummoner }: Props) => {
 }
 
 export default TeamStats;
+
+export enum MatchObjectiveName {
+  Atakhan = 'Atakhan',
+  Baron = 'Baron',
+  Dragon = 'Dragon',
+  Horde = 'Horde',
+  Inhibitor = 'Inhibitor',
+  RiftHerald = 'RiftHerald',
+  Tower = 'Tower',
+}

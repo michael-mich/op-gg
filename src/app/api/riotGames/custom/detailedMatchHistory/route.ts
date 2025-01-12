@@ -2,7 +2,6 @@ import { fetchApi } from '@/app/_utils/fetchApi';
 import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import {
-  getSummonersRank,
   isRecognizedQueueId,
   filterMatchesByMonths,
   segregateSummonersToTeams
@@ -15,7 +14,6 @@ export const GET = async (req: NextRequest) => {
   const {
     summonerPuuid,
     regionContinentLink,
-    regionLink,
     matchHistoryStartIndex
   } = getRouteHandlerParams(req);
 
@@ -30,22 +28,12 @@ export const GET = async (req: NextRequest) => {
   const recentMatches = filterMatchesByMonths(fetchedHistoryMatch);
   const matchHistoryData = isRecognizedQueueId(recentMatches);
 
-  const summonersDataWithRank = matchHistoryData && await Promise.all(matchHistoryData?.map((match) =>
-    Promise.all(match.info.participants.map(async (summoner) => {
-      const rank = await getSummonersRank(summoner, regionLink);
-      return {
-        ...summoner,
-        rank
-      };
-    })))
-  );
-
-  const processedMatchData = matchHistoryData?.map((match, matchIndex) => {
+  const processedMatchData = matchHistoryData?.map((match) => {
     return {
       ...match,
       info: {
         ...match.info,
-        participants: segregateSummonersToTeams(summonersDataWithRank?.[matchIndex]).map((team) => ({
+        participants: segregateSummonersToTeams(match.info.participants).map((team) => ({
           ...team,
           teamParticipants: team.teamParticipants.map((summoner, summonerIndex) => {
             return sortSummonerByPosition(summoner, team, summonerIndex);
@@ -69,8 +57,7 @@ const sortSummonerByPosition = (
   // Some queues don't include position, e.g. ARAM
   if (summoner?.teamPosition === currentPosition || summoner?.teamPosition === '') {
     return summoner;
-  }
-  else {
+  } else {
     return team.teamParticipants.find((findSum) =>
       findSum?.teamPosition === currentPosition
     );

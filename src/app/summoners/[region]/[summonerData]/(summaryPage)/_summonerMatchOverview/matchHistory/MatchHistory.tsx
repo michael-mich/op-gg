@@ -45,7 +45,7 @@ const MatchHistory = ({
   const pathname = usePathname();
   const queryClient = useQueryClient();
   const summonerPuuid = useAppSelector((state) => state.summonerPuuid.summonerPuuid);
-  const { continentLink, regionLink } = useCurrentRegion() || {};
+  const { continentLink } = useCurrentRegion() || {};
 
   const isFetchingSummonerAccount = useIsFetching({ queryKey: ['summonerAccount'] });
   const isFetchingSummonerProfile = useIsFetching({ queryKey: ['summonerProfile'] });
@@ -64,7 +64,6 @@ const MatchHistory = ({
         riotGamesCustomRoutes.detailedMatchHistory(
           summonerPuuid,
           continentLink,
-          regionLink,
           pageParam.toString(),
         )
       );
@@ -73,7 +72,6 @@ const MatchHistory = ({
     maxPages: 20,
     getNextPageParam: (_, __, lastPageParam) => lastPageParam + 20,
   });
-
   const filteredMatchHistory = useMemo(() => {
     return matchHistoryData?.pages.flatMap((page) => page?.filter((match) =>
       match.info.participants?.some((team) => team.teamParticipants.some((summoner) => {

@@ -79,7 +79,7 @@ export interface TTeamGeneric<T> {
 }
 
 export interface TSummonerDetailedMatchHistory extends TSummonerMatchHistoryData {
-  rank: TSummonerRank;
+  rank: TSummonerRank | undefined;
 }
 
 export type TDetailedMatchHistory = {

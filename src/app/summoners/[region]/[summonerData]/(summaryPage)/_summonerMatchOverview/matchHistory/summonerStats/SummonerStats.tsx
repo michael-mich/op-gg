@@ -17,7 +17,15 @@ const SummonerStats = ({ currentSummoner, match }: TMatchAndSummonerProps) => {
         <ChampionProfile summoner={currentSummoner} imageSize='large' displayLevel />
         <div className='flex flex-col w-[108px] ml-3'>
           <div className='text-[15px] font-bold dark:text-darkMode-secondMediumGray'>
-            <span className='text-lightMode-black dark:text-white'>{currentSummoner?.kills}</span> / <span className='text-red'>{currentSummoner?.deaths}</span> / <span className='text-lightMode-black dark:text-white'>{currentSummoner?.assists}</span>
+            <span className='text-lightMode-black dark:text-white'>{currentSummoner?.kills}</span>
+            {' '}
+            /
+            {' '}
+            <span className='text-red'>{currentSummoner?.deaths}</span>
+            {' '}
+            /
+            {' '}
+            <span className='text-lightMode-black dark:text-white'>{currentSummoner?.assists}</span>
           </div>
           <span className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray text-xs'>
             {formattedKda === 'Perfect' ? formattedKda : `${formattedKda} KDA`}
@@ -32,7 +40,7 @@ const SummonerStats = ({ currentSummoner, match }: TMatchAndSummonerProps) => {
           <li>
             CS {minonStats?.totalMinions} ({minonStats?.minionsPerMinute})
           </li>
-          <li>{currentSummoner?.rank?.tier}</li>
+          <li>Gold: {currentSummoner?.goldEarned.toLocaleString()}</li>
         </ul>
       </div>
       <div className='flex items-center gap-2 mt-0.5'>

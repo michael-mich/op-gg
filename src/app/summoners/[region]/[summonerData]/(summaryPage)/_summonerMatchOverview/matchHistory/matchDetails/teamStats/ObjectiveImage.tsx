@@ -1,16 +1,28 @@
+import { MatchObjectiveName } from './TeamStats';
+
 type Props = {
   isWinMatch: boolean | undefined;
-  objectiveIndex: number;
+  objectiveName: string;
 }
 
 const blue = '#5383e8';
 const red = '#e84057';
 
-const ObjectiveImage = ({ isWinMatch, objectiveIndex }: Props) => {
+const ObjectiveImage = ({ isWinMatch, objectiveName }: Props) => {
   const pickedColor = isWinMatch ? blue : red;
 
   const objectiveImages = [
-    <svg key={objectiveIndex} width='16' height='16' viewBox='0 0 16 16' fill={pickedColor} xmlns='http://www.w3.org/2000/svg'>
+    <svg key={MatchObjectiveName.Atakhan} width="16" height="16" viewBox="0 0 16 16" fill={pickedColor} xmlns="http://www.w3.org/2000/svg">
+      <g id="icon_atakhan" fill={pickedColor}>
+        <g id="Union" fill={pickedColor}>
+          <path d="M8 0L6.47619 3.04762L6.98413 5.5873L8 7.11111L9.01587 5.5873L9.52381 3.04762L8 0Z" fill={pickedColor}></path>
+          <path d="M6.47619 5.5873L5.96825 3.55556L3.93651 2.03175V4.06349L2.4127 5.5873V6.60317H3.42857L4.95238 5.07937L6.47619 5.5873Z" fill={pickedColor}></path>
+          <path fillRule="evenodd" clipRule="evenodd" d="M4.44444 6.09524L8 8.12698L11.5556 6.09524L12.5714 7.11111L13.0794 8.63492L13.5873 7.11111L16 6.60317L12.5714 12.6984L11.5556 15.2381L10.5397 14.2222V12.6984L9.01587 13.7143H6.98413L5.46032 12.6984V14.2222L4.44444 15.2381L3.42857 12.6984L0 6.60317L2.4127 7.11111L2.92063 8.63492L3.42857 7.11111L4.44444 6.09524ZM6.47619 9.65078L6.98413 11.1746L4.95238 10.1587L4.44444 8.63491L6.47619 9.65078ZM9.52381 9.65078L9.01587 11.1746L11.0476 10.1587L11.5556 8.63491L9.52381 9.65078Z" fill={pickedColor}></path>
+          <path d="M9.52381 5.5873L10.0317 3.55556L12.0635 2.03175V4.06349L13.5873 5.5873V6.60317H12.5714L11.0476 5.07937L9.52381 5.5873Z" fill={pickedColor}></path>
+        </g>
+      </g>
+    </svg>,
+    <svg key={MatchObjectiveName.Baron} width='16' height='16' viewBox='0 0 16 16' fill={pickedColor} xmlns='http://www.w3.org/2000/svg'>
       <path fillRule='evenodd' clipRule='evenodd' d='M12 4L10 0L16 4L14 8L11 16L10 15H6L5 16L2 8L0 4L6 0L4 4L5 5H7L8 4L9 5H11L12 4ZM7 8C7 7.44695 7.4481 7 8 7C8.55284 7 9 7.44695 9 8C9 8.55211 8.55284 9 8 9C7.4481 9 7 8.55211 7 8ZM9 10C9 9.4481 9.44716 9 10 9C10.5528 9 11 9.4481 11 10C11 10.5519 10.5528 11 10 11C9.44716 11 9 10.5519 9 10ZM8 11C7.4481 11 7 11.4479 7 12C7 12.5531 7.4481 13 8 13C8.55284 13 9 12.5531 9 12C9 11.4479 8.55284 11 8 11ZM5 10C5 9.4481 5.44789 9 6 9C6.55211 9 7 9.4481 7 10C7 10.5519 6.55211 11 6 11C5.44789 11 5 10.5519 5 10Z' fill={pickedColor}></path>
       <mask id='mask0_5762_288543' maskUnits='userSpaceOnUse' x='0' y='0' width='16' height='16' fill={pickedColor}>
         <path fillRule='evenodd' clipRule='evenodd' d='M12 4L10 0L16 4L14 8L11 16L10 15H6L5 16L2 8L0 4L6 0L4 4L5 5H7L8 4L9 5H11L12 4ZM7 8C7 7.44695 7.4481 7 8 7C8.55284 7 9 7.44695 9 8C9 8.55211 8.55284 9 8 9C7.4481 9 7 8.55211 7 8ZM9 10C9 9.4481 9.44716 9 10 9C10.5528 9 11 9.4481 11 10C11 10.5519 10.5528 11 10 11C9.44716 11 9 10.5519 9 10ZM8 11C7.4481 11 7 11.4479 7 12C7 12.5531 7.4481 13 8 13C8.55284 13 9 12.5531 9 12C9 11.4479 8.55284 11 8 11ZM5 10C5 9.4481 5.44789 9 6 9C6.55211 9 7 9.4481 7 10C7 10.5519 6.55211 11 6 11C5.44789 11 5 10.5519 5 10Z' fill={pickedColor}></path>
@@ -18,7 +30,7 @@ const ObjectiveImage = ({ isWinMatch, objectiveIndex }: Props) => {
       <g mask='url(#mask0_5762_288543)' fill={pickedColor}>
       </g>
     </svg>,
-    <svg key={objectiveIndex} width='16' height='16' viewBox='0 0 16 16' fill={pickedColor} xmlns='http://www.w3.org/2000/svg'>
+    <svg key={MatchObjectiveName.Dragon} width='16' height='16' viewBox='0 0 16 16' fill={pickedColor} xmlns='http://www.w3.org/2000/svg'>
       <path fillRule='evenodd' clipRule='evenodd' d='M8 0L6 4L3 1V5H0L3 8V11L7 16H9L13 11V8L16 5H13V1L10 4L8 0ZM9 10.9999L10 8.99993L12 7.99993L11 9.99993L9 10.9999ZM4 7.99993L5 9.99993L7 10.9999L6 8.99993L4 7.99993Z' fill={pickedColor}></path>
       <mask id='mask0_5762_288546' maskUnits='userSpaceOnUse' x='0' y='0' width='16' height='16' fill='currentColor'>
         <path fillRule='evenodd' clipRule='evenodd' d='M8 0L6 4L3 1V5H0L3 8V11L7 16H9L13 11V8L16 5H13V1L10 4L8 0ZM9 10.9999L10 8.99993L12 7.99993L11 9.99993L9 10.9999ZM4 7.99993L5 9.99993L7 10.9999L6 8.99993L4 7.99993Z' fill={pickedColor}></path>
@@ -26,17 +38,17 @@ const ObjectiveImage = ({ isWinMatch, objectiveIndex }: Props) => {
       <g mask='url(#mask0_5762_288546)' fill={pickedColor}>
       </g>
     </svg>,
-    <svg key={objectiveIndex} width='16' height='16' viewBox='0 0 16 16' fill={pickedColor} xmlns='http://www.w3.org/2000/svg'>
+    <svg key={MatchObjectiveName.Horde} width='16' height='16' viewBox='0 0 16 16' fill={pickedColor} xmlns='http://www.w3.org/2000/svg'>
       <path fillRule='evenodd' clipRule='evenodd' d='M11 3.1926L10.2188 2.6718C8.8752 1.77607 7.1248 1.77607 5.7812 2.6718L5 3.1926V4.6926C5 6.1926 4.5 6.6926 3 6.6926H2.5C2.5 6.6926 2.5 8.6926 3.5 10.1926C4.5 11.6926 6 12.6926 6 12.6926C6 12.6926 7 13.2927 8 13.2927C9 13.2927 10 12.6926 10 12.6926C10 12.6926 11.5 11.6926 12.5 10.1926C13.5 8.6926 13.5 6.6926 13.5 6.6926H13C11.5 6.6926 11 6.1926 11 4.6926V3.1926ZM9.5 6.1926C9.5 5.1926 8.5 4.6926 8 4.6926C7.5 4.6926 6.5 5.1926 6.5 6.3926V7.47216C6.5 7.90259 6.22457 8.28441 5.81623 8.42052L5 8.6926L7 10.6926C7 9.6926 8 9.6926 8 9.6926C8 9.6926 9 9.6926 9 10.6926L11 8.6926L10.1838 8.42052C9.77543 8.28441 9.5 7.90268 9.5 7.47225V6.1926ZM13.8839 5.25332C13.4934 5.72473 12.5066 6.15151 12.1161 5.6801C11.7256 5.20869 12.0791 4.0176 12.4697 3.54619C12.8602 3.07478 13.4934 3.07478 13.8839 3.54619C14.2744 4.0176 14.2744 4.78191 13.8839 5.25332ZM3.88389 5.6801C3.49336 6.15151 2.50664 5.72473 2.11612 5.25332C1.7256 4.78191 1.7256 4.0176 2.11612 3.54619C2.50664 3.07478 3.13981 3.07478 3.53033 3.54619C3.92086 4.0176 4.27441 5.20869 3.88389 5.6801ZM15 10.6926H13L11 12.6926H12L11 14.1926C13.4 14.1926 14.1667 13.1926 14.5 12.6926H13C14.5 11.6926 15 10.6926 15 10.6926ZM3 10.6926H1C1 10.6926 1.5 11.6926 3 12.6926H1.5C1.83333 13.1926 2.6 14.1926 5 14.1926L4 12.6926H5L3 10.6926Z' fill={pickedColor}></path>
     </svg>,
-    <svg key={objectiveIndex} width='16' height='16' viewBox='0 0 16 16' fill={pickedColor} xmlns='http://www.w3.org/2000/svg'>
+    <svg key={MatchObjectiveName.Inhibitor} width='16' height='16' viewBox='0 0 16 16' fill={pickedColor} xmlns='http://www.w3.org/2000/svg'>
       <path fillRule='evenodd' clipRule='evenodd' d='M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z' fill={pickedColor}></path>
       <rect x='8' y='4' width='5.65694' height='5.65694' transform='rotate(45 8 4)' fill={pickedColor}></rect>
     </svg>,
-    <svg key={objectiveIndex} width='16' height='16' viewBox='0 0 16 16' fill={pickedColor} xmlns='http://www.w3.org/2000/svg'>
+    <svg key={MatchObjectiveName.RiftHerald} width='16' height='16' viewBox='0 0 16 16' fill={pickedColor} xmlns='http://www.w3.org/2000/svg'>
       <path fillRule='evenodd' clipRule='evenodd' d='M7.87931 12.3184H8.01691C11.0876 12.0307 11.1112 8.63778 11.1112 8.63778C11.134 5.80836 8.07153 6.04968 7.94776 6.06005C7.82468 6.04968 4.76224 5.80836 4.78506 8.63778C4.78506 8.63778 4.80788 12.0307 7.87931 12.3184ZM11.2377 1C11.2377 1 15.6775 3.57635 14.9874 8.84453C14.9874 8.84453 12.94 9.18956 12.8253 10.7308C12.8253 10.7308 11.9741 14.1127 8.06323 14.2503H7.92909C4.01824 14.1127 3.16706 10.7308 3.16706 10.7308C3.05228 9.18956 1.0042 8.84453 1.0042 8.84453C0.314127 3.57635 4.75463 1 4.75463 1C3.5356 4.58864 4.91574 5.25589 4.91574 5.25589C6.00547 4.45104 7.04127 4.16063 7.94776 4.13574V4.13159C7.95571 4.13159 7.96384 4.13211 7.97196 4.13262C7.98009 4.13314 7.98821 4.13366 7.99616 4.13366C8.0042 4.13366 8.01242 4.13313 8.02055 4.13261C8.02849 4.13209 8.03635 4.13159 8.04387 4.13159V4.13574C8.95106 4.16063 9.98616 4.45104 11.0766 5.25589C11.0766 5.25589 12.4567 4.58864 11.2377 1ZM6.95885 9.17476C6.95885 8.01382 7.42212 7.07344 7.99326 7.07344C8.5644 7.07344 9.02698 8.01382 9.02698 9.17476C9.02698 10.335 8.5644 11.2754 7.99326 11.2754C7.42212 11.2754 6.95885 10.335 6.95885 9.17476ZM14.2859 11.3866C14.2859 11.3866 13.5723 14.9524 13.2273 15.3438C13.2273 15.3438 14.7685 15.3666 16 12.9859C16 12.9859 15.5049 11.9391 14.2859 11.3866ZM2.77203 15.3434C2.77203 15.3434 1.23079 15.3662 0 12.9856C0 12.9856 0.494388 11.9387 1.71411 11.3862C1.71411 11.3862 2.427 14.9521 2.77203 15.3434Z' fill={pickedColor}></path>
     </svg>,
-    <svg key={objectiveIndex} width='16' height='16' viewBox='0 0 16 16' fill={pickedColor} xmlns='http://www.w3.org/2000/svg'>
+    <svg key={MatchObjectiveName.Tower} width='16' height='16' viewBox='0 0 16 16' fill={pickedColor} xmlns='http://www.w3.org/2000/svg'>
       <path fillRule='evenodd' clipRule='evenodd' d='M4 4L8 0L11.9992 4L10.9982 5.0012L11 5H14L8 11L2 5H5L4 4ZM6.4 3.99963L8 2.4L9.6 3.99963L8 5.6L6.4 3.99963ZM8 12L12 8L10 16H6L4 8L8 12Z' fill={pickedColor}></path>
       <mask id='mask0_5762_288549' maskUnits='userSpaceOnUse' x='2' y='0' width='12' height='16' fill={pickedColor}>
         <path fillRule='evenodd' clipRule='evenodd' d='M4 4L8 0L11.9992 4L10.9982 5.0012L11 5H14L8 11L2 5H5L4 4ZM6.4 3.99963L8 2.4L9.6 3.99963L8 5.6L6.4 3.99963ZM8 12L12 8L10 16H6L4 8L8 12Z' fill={pickedColor}></path>
@@ -45,7 +57,7 @@ const ObjectiveImage = ({ isWinMatch, objectiveIndex }: Props) => {
       </g>
     </svg>
   ];
-  return objectiveImages[objectiveIndex];
+  return objectiveImages.find(image => image.key === objectiveName);
 }
 
 export default ObjectiveImage;
