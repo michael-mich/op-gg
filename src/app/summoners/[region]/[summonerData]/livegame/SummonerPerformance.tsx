@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import Image from 'next/image';
-import { calculatePercentage } from '@/app/_utils/matchStats';
+import { calculatePercentage } from '@/app/_utils/utils';
 import { getRankedEmblem, formatTierName } from '@/app/_utils/rank';
 import type { TDetailedLiveGameSummoner } from '@/app/_types/apiTypes/customApiTypes';
 
@@ -11,18 +11,6 @@ type Props = {
 const SummonerPerformance = ({ summoner }: Props) => {
   const totalPlayedGames = summoner.rank ? summoner.rank?.losses + summoner.rank?.wins : 0;
   const winRatio = calculatePercentage(summoner.rank?.wins, totalPlayedGames);
-
-  const getColorBasedOnWinRatio = (useageType: 'bg' | 'text'): string => {
-    if (winRatio >= 70) {
-      return `${useageType}-orange`;
-    } else if (winRatio >= 60) {
-      return `${useageType}-secondLightBlue`;
-    } else if (winRatio >= 50) {
-      return `${useageType}-mediumGreen`;
-    } else {
-      return `${useageType}-lightMode-secondLighterGray dark:${useageType}-darkMode-lighterGray`
-    };
-  }
 
   return (
     <>
@@ -52,7 +40,8 @@ const SummonerPerformance = ({ summoner }: Props) => {
         ) : (
           <>
             <div className='text-center'>
-              <span className={`${getColorBasedOnWinRatio('text')} font-bold mr-0.5`}>
+              <span className={`${winRatio >= 70 ? 'text-orange' : winRatio >= 60 ? 'text-secondLightBlue' : winRatio >= 50 ? 'text-mediumGreen' : 'text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'} 
+              font-bold mr-0.5`}>
                 {winRatio}%
               </span>
               <span className='text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
@@ -61,13 +50,14 @@ const SummonerPerformance = ({ summoner }: Props) => {
             </div>
             <div className='relative w-[100px] h-[6px] bg-lightMode-thirdLighterGray dark:bg-lightGrayBackground mt-1'>
               <div
-                className={`absolute left-0 z-10 h-full ${getColorBasedOnWinRatio('bg')}`}
+                className={`${winRatio >= 70 ? 'bg-orange' : winRatio >= 60 ? 'bg-secondLightBlue' : winRatio >= 50 ? 'bg-mediumGreen' : 'bg-lightMode-secondLighterGray dark:bg-darkMode-lighterGray'} 
+                absolute left-0 z-10 h-full`}
                 style={{ width: `${winRatio}%` }}
               ></div>
             </div>
           </>
         )}
-      </td>
+      </td >
     </>
   );
 }

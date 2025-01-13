@@ -2,18 +2,18 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/app/_hooks/useReduxHooks';
 import { setLocalStorageFavoriteSummoners } from '@/app/_lib/features/localStorageFavoriteSummonersSlice';
 import { getLocalStorageData } from '@/app/_utils/utils';
+import type { TBooleanProp } from '../../SearchSummoner';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';
 import { LocalStorageKeys } from '@/app/_enums/enums';
 import SearchHistory from './SearchHistory';
 import FavoriteSummoners from './FavoriteSummoners';
 
-type Props = {
-  pageOtherThanHomePage: boolean;
+interface Props extends TBooleanProp {
   setDisplaySummonerSections: TSetState<boolean>;
 }
 
-const SummonerSections = ({ pageOtherThanHomePage, setDisplaySummonerSections }: Props) => {
+const SummonerSections = ({ isHomePage, setDisplaySummonerSections }: Props) => {
   const dispatch = useAppDispatch();
   const [localStorageSearchHistory, setLocalStorageSearchHistory] = useState<Array<TLocalStorageSummoner>>([]);
   const [displaySection, setDisplaySection] = useState(0);
@@ -37,7 +37,7 @@ const SummonerSections = ({ pageOtherThanHomePage, setDisplaySummonerSections }:
   }, []);
 
   return (
-    <div className={`${pageOtherThanHomePage ? 'top-8 max-w-[472px] left-0' : 'top-[3.2rem]'} 
+    <div className={`${isHomePage ? 'top-[3.2rem]' : 'top-8 max-w-[472px] left-0'}
     absolute left-0 z-50 w-full bg-white dark:bg-darkMode-mediumGray rounded-b shadow-custom-shadow`}
     >
       <div className='flex items-center'>

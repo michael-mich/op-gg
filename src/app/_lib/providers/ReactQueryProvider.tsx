@@ -21,8 +21,7 @@ let browserQueryClient: QueryClient | undefined;
 const getQueryClient = () => {
   if (isServer) {
     return makeQueryClient();
-  }
-  else {
+  } else {
     if (!browserQueryClient) {
       browserQueryClient = makeQueryClient();
     }
@@ -36,7 +35,6 @@ const ReactQueryProvider = ({
   children: React.ReactNode
 }) => {
   const queryClient = getQueryClient();
-
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 }
 

@@ -4,20 +4,20 @@ import { setMarkedRegionData } from '../_lib/features/markedRegionDataSlice';
 import { allRegionsData } from '../_data/allRegionsData';
 
 type Props = {
-  pageOtherThanHomePage?: boolean;
+  isHomePage?: boolean;
   displayRegionsList: boolean;
   setDisplayRegionList: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RegionsList = ({
-  pageOtherThanHomePage,
+  isHomePage,
   displayRegionsList,
   setDisplayRegionList
 }: Props) => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className={`${displayRegionsList ? 'block' : 'hidden'} ${pageOtherThanHomePage ? 'right-[-6px] min-w-[200px] top-[1.64rem]' : 'top-[1.95rem]'} 
+    <div className={`${displayRegionsList ? 'block' : 'hidden'} ${isHomePage ? 'top-[1.95rem]' : 'right-[-6px] min-w-[200px] top-[1.64rem]'}
     absolute z-50 w-full max-h-60 overflow-scroll bg-white dark:bg-darkMode-mediumGray shadow-custom-shadow`}
     >
       {allRegionsData.map((data) => (

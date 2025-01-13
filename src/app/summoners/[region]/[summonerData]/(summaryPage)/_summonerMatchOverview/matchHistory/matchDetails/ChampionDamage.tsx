@@ -1,4 +1,4 @@
-import { calculatePercentage } from '@/app/_utils/matchStats';
+import { calculatePercentage } from '@/app/_utils/utils';
 import type { TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
 import type { TMatchAndSummonerProps } from '../MatchHistory';
 

@@ -5,6 +5,7 @@ import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import { TEN_MINUTES } from '@/app/_constants/timeUnits';
+import { createEmptyStringArray } from '@/app/_utils/utils';
 import type { TChampionItem } from '@/app/_types/apiTypes/apiTypes';
 import type { TMatchAndSummonerProps } from '../MatchHistory';
 
@@ -18,7 +19,7 @@ const ChampionItems = ({ summoner }: TMatchAndSummonerProps) => {
     gcTime: TEN_MINUTES
   });
 
-  const itemIds = new Array(7).fill('').map((_, index) => `${summoner?.[`item${index}`]}`);
+  const itemIds = createEmptyStringArray(7).map((_, index) => `${summoner?.[`item${index}`]}`);
 
   return (
     <div className='flex items-center justify-center gap-0.5'>
@@ -38,6 +39,8 @@ const ChampionItems = ({ summoner }: TMatchAndSummonerProps) => {
                 src={`${imageEndpoints.championItem(newestGameVersion)}${item?.image.full}`}
                 width={32}
                 height={32}
+                placeholder='blur'
+                blurDataURL='/placeholder/question-mark.webp'
                 alt={item?.name || ''}
               />
             )}

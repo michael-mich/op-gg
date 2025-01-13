@@ -15,14 +15,11 @@ const TimeSinceMatch = ({ match }: TMatchAndSummonerProps) => {
   const formatTimeSinceMatch = (): string => {
     if (minutesDiffrence < 60) {
       return `${minutesDiffrence > 1 ? `${minutesDiffrence} minutes` : 'a minute'}`;
-    }
-    else if (hoursDifference < 24) {
+    } else if (hoursDifference < 24) {
       return `${hoursDifference > 1 ? `${hoursDifference} hours` : 'an hour'}`;
-    }
-    else if (daysDifference <= 30) {
+    } else if (daysDifference <= 30) {
       return `${daysDifference} ${daysDifference > 1 ? 'days' : 'day'}`;
-    }
-    else {
+    } else {
       return `${monthsDifference > 1 ? `${monthsDifference} months` : 'a month'}`;
     }
   }

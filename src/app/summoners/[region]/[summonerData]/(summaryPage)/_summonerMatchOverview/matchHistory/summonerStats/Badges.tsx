@@ -5,14 +5,11 @@ const checkSummonerKills = (currentSummoner: TSummonerDetailedMatchHistory | und
   if (currentSummoner) {
     if (currentSummoner.pentaKills > 0) {
       return 'Penta';
-    }
-    else if (currentSummoner.quadraKills > 0) {
+    } else if (currentSummoner.quadraKills > 0) {
       return 'Quadra';
-    }
-    else if (currentSummoner.tripleKills > 0) {
+    } else if (currentSummoner.tripleKills > 0) {
       return 'Triple';
-    }
-    else if (currentSummoner.doubleKills > 0) {
+    } else if (currentSummoner.doubleKills > 0) {
       return 'Double';
     }
   }

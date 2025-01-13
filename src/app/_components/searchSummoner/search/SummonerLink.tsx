@@ -7,14 +7,14 @@ import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import { getLocalStorageData } from '@/app/_utils/utils';
+import type { TBooleanProp } from '../SearchSummoner';
 import type { TSummonerAccount, TSummonerProfile } from '@/app/_types/apiTypes/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';
 import { LocalStorageKeys } from '@/app/_enums/enums';
 
-type Props = {
+interface Props extends TBooleanProp {
   setDisplaySummonerLink: TSetState<boolean>;
-  pageOtherThanHomePage: boolean;
   summonerAccountData: TSummonerAccount;
   summonerName: string;
   setSummonerName: TSetState<string>;
@@ -24,7 +24,7 @@ type Props = {
 
 const SummonerLink = ({
   setDisplaySummonerLink,
-  pageOtherThanHomePage,
+  isHomePage,
   summonerAccountData,
   summonerName,
   isSummonerAccountSuccess,
@@ -67,8 +67,9 @@ const SummonerLink = ({
   }
 
   return (
-    <div className={`${summonerName.length > 0 ? 'block' : 'hidden'} ${pageOtherThanHomePage ? 'top-8 max-w-[472px]' : 'top-[3.2rem]'} absolute left-0 z-50 
-    w-full bg-white dark:bg-darkMode-mediumGray rounded-b shadow-custom-shadow`}
+    <div className={`${summonerName.length > 0 ? 'block' : 'hidden'} 
+    ${isHomePage ? 'top-[3.2rem]' : 'top-8 max-w-[472px]'}
+    absolute left-0 z-50 w-full bg-white dark:bg-darkMode-mediumGray rounded-b shadow-custom-shadow`}
     >
       <Link
         onClick={() => {
@@ -85,6 +86,8 @@ const SummonerLink = ({
           src={`${imageEndpoints.summonerProfileIcon(newestGameVersion)}${summonerLevelAndIconIdData?.profileIconId}.png`}
           width={30}
           height={30}
+          placeholder='blur'
+          blurDataURL='/placeholder/question-mark.webp'
           alt=""
           aria-hidden="true"
         />

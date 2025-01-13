@@ -11,14 +11,14 @@ const PagesNavigation = () => {
       <nav className='flex items-cente justify-between w-[1080px] m-auto'>
         <ul className='flex items-center gap-6'>
           {pages.map((page, index) => {
-            const gamesModesName = page.name === 'Game modes';
-            const activeLink = pathname === page.link;
+            const isGamesModesName = page.name === 'Game modes';
+            const isActiveLink = pathname === page.link;
 
             return (
               <li
-                className={`${activeLink || gamesModesName ? 'opacity-100' : 'opacity-60'} 
-                ${gamesModesName ? 'text-lightGreen' : 'text-white'} relative text-[15px] py-3 
-                transition-opacity hover:opacity-100 white-underline ${activeLink && 'white-underline before:w-full'}`}
+                className={`${isActiveLink || isGamesModesName ? 'opacity-100' : 'opacity-60'} 
+                ${isGamesModesName ? 'text-lightGreen' : 'text-white'} relative text-[15px] py-3 
+                transition-opacity hover:opacity-100 white-underline ${isActiveLink && 'white-underline before:w-full'}`}
                 key={index}
               >
                 <Link className='py-3' href={page.link}>

@@ -1,4 +1,4 @@
-import { QueueType } from '@/app/_enums/match';
+import { QueueType } from '@/app/_enums/queue';
 import SummonerRank from './_summonerRank/SummonerRank';
 import SummonerChampionMastery from '../_components/summonerChampionsMastery/SummonerChampionMastery';
 import SummonerMatchOverview from './_summonerMatchOverview/SummonerMatchOverview';

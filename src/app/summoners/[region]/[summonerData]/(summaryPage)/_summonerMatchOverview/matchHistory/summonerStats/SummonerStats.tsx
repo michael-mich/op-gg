@@ -1,6 +1,9 @@
 import { memo } from 'react';
-import { getFormattedKda, getFormattedKillParticipation } from '../utils/utils';
-import { getSummonerMinionStats } from '@/app/_utils/matchStats';
+import {
+  getFormattedKda,
+  getFormattedKillParticipation,
+  getSummonerMinionStats
+} from '../utils/utils';
 import ChampionProfile from '../../../../_components/championProfile/ChampionProfile';
 import ChampionItems from '../components/ChampionItems';
 import Badges from './Badges';

@@ -75,7 +75,7 @@ const SummonerChampionMastery = ({ getTopChampions }: Props) => {
               return (
                 <div
                   className={`group relative ${getTopChampions ? 'flex-1' : 'flex-[0_0_calc(12.5%-7px)]'} flex flex-col flex-wrap items-center rounded-md
-                      py-2 m-auto transition-colors hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray`}
+                  py-2 m-auto transition-colors hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray`}
                   key={championMastery.championId}
                 >
                   <div>

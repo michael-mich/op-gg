@@ -1,11 +1,11 @@
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
-import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { riotGamesRoutes } from '../../../../_constants/endpoints';
 import {
   isRecognizedQueueId,
   filterMatchesByMonths,
   segregateSummonersToTeams
-} from '@/app/_utils/matchStats';
+} from '@/app/_utils/matchRouteUtils';
 import type { NextRequest } from 'next/server';
 import type { TMatchHistory, TSummonerMatchHistoryData } from '@/app/_types/apiTypes/apiTypes';
 import type { TTeamGeneric } from '@/app/_types/apiTypes/customApiTypes';

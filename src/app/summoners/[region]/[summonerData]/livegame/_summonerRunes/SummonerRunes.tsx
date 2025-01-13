@@ -32,6 +32,8 @@ const SummonerRunes = ({ summoner }: Props) => {
                 src={`${imageEndpoints.rune}${mainRune?.icon}`}
                 width={28}
                 height={28}
+                placeholder='blur'
+                blurDataURL='/placeholder/question-mark.webp'
                 alt={mainRune?.name || ''}
               />
               <div className={`${mainRuneIndex === 0 ? 'pr-2 border-r-2 border-almostWhite dark:border-r-darkMode-secondDarkGray' : 'px-2'} flex flex-col gap-2 mt-2`}>
@@ -50,6 +52,8 @@ const SummonerRunes = ({ summoner }: Props) => {
                             src={`${imageEndpoints.rune}${rune?.icon}`}
                             width={28}
                             height={28}
+                            placeholder='blur'
+                            blurDataURL='/placeholder/question-mark.webp'
                             alt={rune.name}
                           />
                         </div>
@@ -77,6 +81,8 @@ const SummonerRunes = ({ summoner }: Props) => {
                         src={shard.image}
                         width={24}
                         height={24}
+                        placeholder='blur'
+                        blurDataURL='/placeholder/question-mark.webp'
                         alt={`${shard.type} shard`}
                         key={shardIndex}
                       />

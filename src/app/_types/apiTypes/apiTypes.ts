@@ -63,11 +63,6 @@ export type TChampionMasterySummary = {
   totalMasteryScore: number | undefined;
 }
 
-export type TSummonerSpellId = {
-  summoner1Id: number;
-  summoner2Id: number;
-}
-
 export type TKda = {
   assists: number;
   deaths: number;
@@ -82,7 +77,7 @@ export type TChampionStats = {
   pentaKills: number;
 }
 
-export interface TSummonerMatchHistoryData extends TSummonerSpellId, TChampionStats, TKda, Pick<TSummonerProfile, 'summonerLevel'> {
+export interface TSummonerMatchHistoryData extends TChampionStats, TKda, Pick<TSummonerProfile, 'summonerLevel'> {
   puuid: string;
   totalMinionsKilled: number;
   goldEarned: number;
@@ -120,6 +115,8 @@ export interface TSummonerMatchHistoryData extends TSummonerSpellId, TChampionSt
     kda: number;
     killParticipation: number;
   };
+  summoner1Id: number;
+  summoner2Id: number;
 }
 
 export type TMatchHistory = {
@@ -142,12 +139,7 @@ export type TMatchHistory = {
   }
 }
 
-export type TSpellId = {
-  spell1Id: number;
-  spell2Id: number;
-}
-
-export interface TLiveGameSummoner extends TSpellId, Pick<TSummonerMatchHistoryData, 'summonerId'> {
+export interface TLiveGameSummoner extends Pick<TSummonerMatchHistoryData, 'summonerId'> {
   puuid: TSummonerAccount['puuid'];
   championId: TChampionMastery['championId'];
   profileIconId: TSummonerProfile['profileIconId'];
@@ -157,6 +149,8 @@ export interface TLiveGameSummoner extends TSpellId, Pick<TSummonerMatchHistoryD
     perkStyle: number;
     perkSubStyle: number;
   };
+  spell1Id: number;
+  spell2Id: number;
 }
 
 export type TLiveGame = {

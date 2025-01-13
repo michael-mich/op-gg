@@ -29,11 +29,9 @@ const PageNavigation = () => {
   const generatePageUrl = (pageName: string): string => {
     if (pageName === 'Sumary') {
       return summonerPageUrl;
-    }
-    else if (pageName === 'Live Game') {
+    } else if (pageName === 'Live Game') {
       return liveGamePage;
-    }
-    else {
+    } else {
       return `${summonerPageUrl}/${pageName.toLowerCase()}`;
     }
   }

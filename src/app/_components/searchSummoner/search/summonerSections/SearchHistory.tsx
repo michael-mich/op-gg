@@ -48,8 +48,7 @@ const SearchHistory = ({
 
     if (sameSummonerIndex === -1) {
       addFavoriteSummoner(index);
-    }
-    else {
+    } else {
       dispatch(setLocalStorageFavoriteSummoners(removeSummonerFromLocalStorage(sameSummonerIndex!, LocalStorageKeys.FavoriteSummoners)));
     }
   }

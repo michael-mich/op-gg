@@ -92,6 +92,8 @@ const SummonerHeader = () => {
                   src={`${imageEndpoints.summonerProfileIcon(newestGameVersion)}${summonerProfileData?.profileIconId}.png`}
                   width={20}
                   height={20}
+                  placeholder='blur'
+                  blurDataURL='/placeholder/question-mark.webp'
                   alt=''
                   aria-hidden='true'
                 />

@@ -56,6 +56,8 @@ const Runes = ({
             src={`${imageEndpoints.rune}${isFirstElement ? rune?.slots[0]?.icon : rune?.icon}`}
             width={15}
             height={15}
+            placeholder='blur'
+            blurDataURL='/placeholder/question-mark.webp'
             alt={(isFirstElement ? rune?.slots[0]?.name : rune?.name) || ''}
             key={index}
           />

@@ -31,8 +31,7 @@ const FavoriteSummonerButton = ({
       if (favoriteSummonerIndex === -1) {
         favoriteSummonersArray.unshift(favoriteSummonerData);
         updateFavoriteSummoners(favoriteSummonersArray);
-      }
-      else {
+      } else {
         favoriteSummonersArray.splice(favoriteSummonerIndex, 1);
         localStorage.setItem('favoriteSummoners', JSON.stringify(favoriteSummonersArray));
         updateFavoriteSummoners(favoriteSummonersArray);

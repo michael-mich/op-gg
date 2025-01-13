@@ -1,5 +1,5 @@
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { riotGamesRoutes } from '../../../../_constants/endpoints';
 import type { TSummonerSpell } from '@/app/_types/apiTypes/apiTypes';
 
 export const GET = async () => {

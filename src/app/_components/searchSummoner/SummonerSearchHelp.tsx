@@ -31,17 +31,17 @@ const summonerExmaples = [
   }
 ];
 
-const SummonerSearchHelp = ({ pageOtherThanHomePage }: TBooleanProp) => {
+const SummonerSearchHelp = ({ isHomePage }: TBooleanProp) => {
   const [displayHelp, setDisplayHelp] = useState(false);
-  const textColorBasedOnPage = pageOtherThanHomePage ? 'text-white' : 'text-black dark:text-white';
+  const textColorBasedOnPage = isHomePage ? 'text-black dark:text-white' : 'text-white';
 
   const handleDisplayHelp = (): void => {
     setDisplayHelp(!displayHelp);
   }
 
   return (
-    <div className={`${pageOtherThanHomePage && 'self-center'} relative text-center mt-2`}>
-      {!pageOtherThanHomePage ? (
+    <div className={`${!isHomePage && 'self-center'} relative text-center mt-2`}>
+      {isHomePage ? (
         <button
           onClick={handleDisplayHelp}
           className='text-black dark:text-white bg-white dark:bg-darkMode-mediumGray
@@ -59,7 +59,7 @@ const SummonerSearchHelp = ({ pageOtherThanHomePage }: TBooleanProp) => {
         </button>
       )}
       {displayHelp && (
-        <div className={`${pageOtherThanHomePage ? 'top-8 -left-[15.65rem] bg-blue dark:border-almostWhite' : 'top-[2.65rem] left-1/2 border-darkMode-secondMediumGray bg-white dark:bg-darkMode-mediumGray'} 
+        <div className={`${isHomePage ? 'top-[2.65rem] left-1/2 border-darkMode-secondMediumGray bg-white dark:bg-darkMode-mediumGray' : 'top-8 -left-[15.65rem] bg-blue dark:border-almostWhite'}
         absolute -translate-x-1/2 z-10 min-w-[540px] border rounded py-3 px-4`}
         >
           <p className={`${textColorBasedOnPage} text-sm`}>
@@ -69,7 +69,7 @@ const SummonerSearchHelp = ({ pageOtherThanHomePage }: TBooleanProp) => {
           <div className='flex mt-3'>
             {summonerExmaples.map((data) => (
               <div
-                className={`${pageOtherThanHomePage ? 'border-almostWhite' : 'border-darkMode-secondMediumGray'} 
+                className={`${isHomePage ? 'border-darkMode-secondMediumGray' : 'border-almostWhite'} 
                 flex-1 border border-l-0 first-of-type:border-l first-of-type:rounded-tl-lg first-of-type:rounded-bl-lg 
                 last-of-type:rounded-tr-lg last-of-type:rounded-br-lg py-2`}
                 key={data.region}

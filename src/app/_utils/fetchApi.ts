@@ -6,8 +6,7 @@ export const fetchApi = async <T>(endpoint: string): Promise<T | undefined> => {
     }
     const data = await response.json() as T;
     return data;
-  }
-  catch {
+  } catch {
     return;
   }
 }

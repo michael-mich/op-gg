@@ -8,18 +8,18 @@ import Search from './search/Search';
 import SummonerSearchHelp from './SummonerSearchHelp';
 
 export type TBooleanProp = {
-  pageOtherThanHomePage: boolean;
+  isHomePage: boolean;
 }
 
 const SearchSummoner = () => {
   const pathname = usePathname();
-  const pageOtherThanHomePage = pathname !== '/';
+  const isHomePage = pathname === '/';
 
   return (
-    <div className={`${pageOtherThanHomePage && 'bg-blue pt-1'}`}>
-      <div className={`${pageOtherThanHomePage && 'flex gap-6 max-w-[1080px] pl-6 m-auto'}`}>
+    <div className={`${!isHomePage && 'bg-blue pt-1'}`}>
+      <div className={`${!isHomePage && 'flex gap-6 max-w-[1080px] pl-6 m-auto'}`}>
         <Link
-          className={`${pageOtherThanHomePage ? 'block' : 'hidden'}`}
+          className={`${isHomePage ? 'hidden' : 'block'}`}
           href='/'
         >
           <Image
@@ -30,12 +30,13 @@ const SearchSummoner = () => {
             alt='Back to home page'
           />
         </Link>
-        <div className={`grid ${pageOtherThanHomePage ? 'flex-1 grid-cols-[min-content_1fr]' : 'grid-cols-[30%_70%] max-w-[800px]'} items-center m-auto`}
+        <div className={`${isHomePage ? 'grid-cols-[30%_70%] max-w-[800px]' : 'flex-1 grid-cols-[min-content_1fr]'} 
+        grid items-center m-auto`}
         >
-          <Regions pageOtherThanHomePage={pageOtherThanHomePage} />
-          <Search pageOtherThanHomePage={pageOtherThanHomePage} />
+          <Regions isHomePage={isHomePage} />
+          <Search isHomePage={isHomePage} />
         </div>
-        <SummonerSearchHelp pageOtherThanHomePage={pageOtherThanHomePage} />
+        <SummonerSearchHelp isHomePage={isHomePage} />
       </div>
     </div>
   );

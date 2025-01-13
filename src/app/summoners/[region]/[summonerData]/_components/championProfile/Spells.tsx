@@ -27,8 +27,7 @@ const Spells = ({
     if (summonerMatchHistory) {
       return spellKeyNumber === summonerMatchHistory.summoner1Id
         || spellKeyNumber === summonerMatchHistory.summoner2Id;
-    }
-    else {
+    } else {
       return spellKeyNumber === summonerLiveGame?.spell1Id
         || spellKeyNumber === summonerLiveGame?.spell2Id;
     }
@@ -42,6 +41,8 @@ const Spells = ({
           src={`${imageEndpoints.spell(newestGameVersion)}${spell.image.full}`}
           width={15}
           height={15}
+          placeholder='blur'
+          blurDataURL='/placeholder/question-mark.webp'
           alt={spell.name}
           key={index}
         />
