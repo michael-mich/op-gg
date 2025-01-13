@@ -1,14 +1,11 @@
 import type {
   TChampionStats,
-  TRuneSlots,
-  TRune,
   TSummonerRank,
   TLiveGameSummoner,
   TLiveGame,
   TSummonerMatchHistoryData,
   TMatchHistory
 } from './apiTypes';
-import type { RuneType } from '@/app/_enums/match';
 
 export type TAverageKdaStats = {
   kda: number,
@@ -32,11 +29,6 @@ export interface TSummonerChampionStats extends Omit<TChampionStats, 'championId
   };
   championRank: number;
   championId: string;
-}
-
-export interface TUpdatedRune extends Omit<TRune, 'slots'> {
-  slots: Array<TRuneSlots>;
-  type: RuneType;
 }
 
 export interface TDetailedLiveGameSummoner extends TLiveGameSummoner {

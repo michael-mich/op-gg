@@ -1,12 +1,12 @@
 import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
-import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { riotGamesRoutes } from '../../../../_constants/endpoints';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import {
   calculateWinLossStats,
   calculateAverageKdaStats,
   isRecognizedQueueId,
   filterMatchesByMonths
-} from '@/app/_utils/matchStats';
+} from '@/app/_utils/matchRouteUtils';
 import type { NextRequest } from 'next/server';
 import type { PickNumberProperties } from '@/app/_types/types';
 import type {

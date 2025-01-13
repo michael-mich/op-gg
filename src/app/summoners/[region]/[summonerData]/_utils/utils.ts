@@ -1,4 +1,4 @@
-import { QueueId } from '@/app/_enums/match';
+import { QueueId } from '@/app/_enums/queue';
 import type { TChampion } from '@/app/_types/apiTypes/apiTypes';
 
 export const findChampionById = (

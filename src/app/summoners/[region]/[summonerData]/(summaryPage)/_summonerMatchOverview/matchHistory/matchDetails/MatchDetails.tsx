@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import { useAppSelector } from '@/app/_hooks/useReduxHooks';
 import { handleKdaTextColor } from '../../../../_utils/utils';
-import { getSummonerMinionStats } from '@/app/_utils/matchStats';
 import {
   getFormattedKda,
   adjustTeamsOrderBasedOnSummoner,
-  getFormattedKillParticipation
+  getFormattedKillParticipation,
+  getSummonerMinionStats
 } from '../utils/utils';
 import type { TMatchAndSummonerProps } from '../MatchHistory';
 import ChampionProfile from '../../../../_components/championProfile/ChampionProfile';

@@ -5,7 +5,8 @@ type Nullable<T> = T | undefined | null;
 
 enum RouteHandlers {
   Pandascore = '/api/pandascore',
-  RiotGames = '/api/riotGames',
+  RiotGames = '/api/riotGames/riot',
+  RiotGamesCustom = '/api/riotGames/custom'
 }
 
 const createRouteUrl = <T,>(
@@ -19,8 +20,7 @@ const createRouteUrl = <T,>(
 
   if (params) {
     return `${url}?${queryParams}`;
-  }
-  else {
+  } else {
     return url;
   }
 }
@@ -138,8 +138,8 @@ export const riotGamesCustomRoutes = {
     regionLink: string | undefined
   ) => {
     return createRouteUrl(
-      RouteHandlers.RiotGames,
-      '/custom/summonerChampionsMasterySummary',
+      RouteHandlers.RiotGamesCustom,
+      'summonerChampionsMasterySummary',
       {
         [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
         [RouteHandlerParams.RegionLink]: regionLink
@@ -152,8 +152,8 @@ export const riotGamesCustomRoutes = {
     matchHistoryStartIndex: string | null
   ) => {
     return createRouteUrl(
-      RouteHandlers.RiotGames,
-      '/custom/detailedMatchHistory',
+      RouteHandlers.RiotGamesCustom,
+      'detailedMatchHistory',
       {
         [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
         [RouteHandlerParams.RegionContinentLink]: regionContinentLink,
@@ -168,8 +168,8 @@ export const riotGamesCustomRoutes = {
     matchHistoryCount: string | null,
   ) => {
     return createRouteUrl(
-      RouteHandlers.RiotGames,
-      '/custom/matchHistorySummary',
+      RouteHandlers.RiotGamesCustom,
+      'matchHistorySummary',
       {
         [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
         [RouteHandlerParams.RegionContinentLink]: regionContinentLink,
@@ -183,8 +183,8 @@ export const riotGamesCustomRoutes = {
     regionContinentLink: Nullable<string>
   ) => {
     return createRouteUrl(
-      RouteHandlers.RiotGames,
-      '/custom/summonerChampionStats',
+      RouteHandlers.RiotGamesCustom,
+      'summonerChampionStats',
       {
         [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
         [RouteHandlerParams.RegionContinentLink]: regionContinentLink,
@@ -196,8 +196,8 @@ export const riotGamesCustomRoutes = {
     regionLink: string | undefined,
   ) => {
     return createRouteUrl(
-      RouteHandlers.RiotGames,
-      '/custom/summonerLiveGame',
+      RouteHandlers.RiotGamesCustom,
+      'summonerLiveGame',
       {
         [RouteHandlerParams.SummonerPuuid]: summonerPuuid,
         [RouteHandlerParams.RegionLink]: regionLink,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { adjustTeamsOrderBasedOnSummoner } from '../../utils/utils';
-import { calculatePercentage } from '@/app/_utils/matchStats';
+import { calculatePercentage } from '@/app/_utils/utils';
 import type { TMatchAndSummonerProps } from '../../MatchHistory';
 import type { TTeamGeneric, TSummonerDetailedMatchHistory } from '@/app/_types/apiTypes/customApiTypes';
 import ObjectiveImage from './ObjectiveImage';

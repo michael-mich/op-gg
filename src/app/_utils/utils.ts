@@ -33,3 +33,14 @@ export const calculateTimeUnit = (seconds: number | undefined, timeUnit: TimeUni
     return 0;
   }
 }
+
+export const calculatePercentage = (
+  part: number | undefined,
+  total: number | undefined
+): number => {
+  if (part && total) {
+    return Math.round((part / total) * 100);
+  } else {
+    return 0;
+  }
+}

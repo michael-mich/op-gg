@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import Image from 'next/image';
-import { calculatePercentage } from '@/app/_utils/matchStats';
+import { calculatePercentage } from '@/app/_utils/utils';
 import { getRankedEmblem, formatTierName } from '@/app/_utils/rank';
 import type { TDetailedLiveGameSummoner } from '@/app/_types/apiTypes/customApiTypes';
 

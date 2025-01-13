@@ -1,13 +1,13 @@
 import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
-import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { riotGamesRoutes } from '../../../../_constants/endpoints';
 import { fetchApi } from '@/app/_utils/fetchApi';
+import { calculatePercentage } from '@/app/_utils/utils';
 import {
   calculateAverageKdaStats,
-  calculatePercentage,
   calculateWinLossStats,
   isRecognizedQueueId,
   filterMatchesByMonths
-} from '@/app/_utils/matchStats';
+} from '@/app/_utils/matchRouteUtils';
 import type { NextRequest } from 'next/server';
 import type { TMatchHistory, TKda } from '@/app/_types/apiTypes/apiTypes';
 import type { TChampionWinLostRatio } from '@/app/_types/apiTypes/customApiTypes';

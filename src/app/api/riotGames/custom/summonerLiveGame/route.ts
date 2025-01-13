@@ -1,9 +1,11 @@
 import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { fetchApi } from '@/app/_utils/fetchApi';
-import { segregateSummonersToTeams, getSummonersRank } from '@/app/_utils/matchStats';
+import { findQueueTypeData } from '@/app/_utils/rank';
+import { segregateSummonersToTeams } from '@/app/_utils/matchRouteUtils';
 import type { NextRequest } from 'next/server';
-import type { TLiveGame, TSummonerProfile } from '@/app/_types/apiTypes/apiTypes';
+import type { TLiveGame, TSummonerProfile, TSummonerRank } from '@/app/_types/apiTypes/apiTypes';
+import { QueueType } from '@/app/_enums/queue';
 
 export const GET = async (req: NextRequest) => {
   const { summonerPuuid, regionLink } = getRouteHandlerParams(req);
@@ -18,21 +20,22 @@ export const GET = async (req: NextRequest) => {
         ...liveGameData,
         participants: await Promise.all(liveGameData.participants.map(async (summoner, summonerIndex) => {
           const [summonerRank, summonerProfile] = await Promise.all([
-            getSummonersRank(summoner, regionLink),
+            fetchApi<Array<TSummonerRank>>(riotGamesRoutes.summonerRank(summoner.summonerId, regionLink)),
             fetchApi<TSummonerProfile>(riotGamesRoutes.summonerProfile(summoner.puuid, regionLink))
           ]);
 
+          const rankedSolo = findQueueTypeData(summonerRank, QueueType.RankedSolo);
           const shardIds = summoner.perks.perkIds.slice(-3);
 
           return {
             ...summoner,
-            rank: summonerRank,
+            rank: rankedSolo,
             summonerLevel: summonerProfile?.summonerLevel,
             shardIds,
             bannedChampion: liveGameData.bannedChampions[summonerIndex]
           };
         }))
-      }
+      };
     }
   }
 

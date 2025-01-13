@@ -1,4 +1,5 @@
 import type { TSummonerRank } from '@/app/_types/apiTypes/apiTypes';
+import type { QueueType } from '../_enums/queue';
 
 const rankedEmblems = [
   '/ranked-emblems/Bronze.png',
@@ -22,4 +23,11 @@ export const getRankedEmblem = (rankedData: TSummonerRank | undefined): string |
     const tierName = emblem.replaceAll('/', ' ').replace('.', ' ').split(' ')[2];
     return tierName === formatTierName(rankedData?.tier);
   });
+}
+
+export const findQueueTypeData = (
+  queueData: Array<TSummonerRank> | undefined,
+  queueType: QueueType
+): TSummonerRank | undefined => {
+  return queueData?.find((data) => data.queueType === queueType);
 }

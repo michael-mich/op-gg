@@ -1,5 +1,5 @@
 import { getRouteHandlerParams } from '@/app/_utils/routeHandlers';
-import { riotGamesRoutes } from '@/app/_constants/endpoints';
+import { riotGamesRoutes } from '../../../../_constants/endpoints';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import type { NextRequest } from 'next/server';
 import type { TChampionMastery, TChampionMasterySummary } from '@/app/_types/apiTypes/apiTypes';
