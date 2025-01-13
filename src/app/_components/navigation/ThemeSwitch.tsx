@@ -4,7 +4,7 @@ import { FaMoon, FaSun } from 'react-icons/fa';
 import { LuLoader } from 'react-icons/lu';
 
 const ThemeSwitch = () => {
-  const [mounted, setMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { setTheme, resolvedTheme } = useTheme();
   const darkTheme = resolvedTheme === 'dark';
 
@@ -13,10 +13,10 @@ const ThemeSwitch = () => {
   }
 
   useEffect(() => {
-    setMounted(true);
+    setIsMounted(true);
   }, []);
 
-  if (!mounted) {
+  if (!isMounted) {
     return <LuLoader className='text-secondGray size-4' />
   }
 

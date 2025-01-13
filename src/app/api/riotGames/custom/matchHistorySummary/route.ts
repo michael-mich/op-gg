@@ -97,8 +97,7 @@ export const GET = async (req: NextRequest) => {
     championData.kills += kills;
     if (match.win && !match.gameEndedInEarlySurrender) {
       championData.wonMatches += 1;
-    }
-    else if (!match.gameEndedInEarlySurrender) {
+    } else if (!match.gameEndedInEarlySurrender) {
       championData.lostMatches += 1;
     }
 
@@ -117,8 +116,7 @@ export const GET = async (req: NextRequest) => {
     const descendingOrder = championWithStats.sort((a, b) => {
       if (b.playAmount === a.playAmount) {
         return b.kda - a.kda;
-      }
-      else {
+      } else {
         return b.playAmount - a.playAmount;
       }
     });
@@ -133,8 +131,7 @@ export const GET = async (req: NextRequest) => {
 
     if (totalKillParticipation && totalGames) {
       return Math.round((totalKillParticipation / totalGames.length) * 100);
-    }
-    else {
+    } else {
       return 0;
     }
   }

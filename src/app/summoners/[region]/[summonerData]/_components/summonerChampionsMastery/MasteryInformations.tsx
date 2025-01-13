@@ -20,8 +20,7 @@ const MasteryInformations = ({ championData, championMastery, getTopChampions = 
     if (championMastery.championPointsUntilNextLevel < 0) {
       const convertToPositiveNumber = Math.abs(championMastery.championPointsUntilNextLevel);
       return championMastery.championPointsSinceLastLevel - convertToPositiveNumber;
-    }
-    else {
+    } else {
       return championMastery.championPointsSinceLastLevel + championMastery.championPointsUntilNextLevel;
     }
   }

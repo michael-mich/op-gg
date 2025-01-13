@@ -5,16 +5,16 @@ import { MdArrowDropDown } from 'react-icons/md';
 import RegionsList from '@/app/_components/RegionsList';
 import type { TBooleanProp } from './SearchSummoner';
 
-const Regions = ({ pageOtherThanHomePage }: TBooleanProp) => {
+const Regions = ({ isHomePage }: TBooleanProp) => {
   const [displayRegionsList, setDisplayRegionsList] = useState(false);
   const regionListRef = useOutsideClick(displayRegionsList, setDisplayRegionsList);
   const markedRegionData = useAppSelector((state) => state.markedRegionData.markedRegionData);
 
   return (
-    <div className={`${pageOtherThanHomePage ? 'items-center h-8 bg-lightBlue rounded-l pl-3 px-[6px] after:hidden' : 'flex-col justify-center h-[60px] rounded-l-full bg-white dark:bg-darkMode-mediumGray pl-8 pr-2 after:block'} 
+    <div className={`${isHomePage ? 'flex-col justify-center h-[60px] rounded-l-full bg-white dark:bg-darkMode-mediumGray pl-8 pr-2 after:block' : 'items-center h-8 bg-lightBlue rounded-l pl-3 px-[6px] after:hidden'}
     flex relative w-full after:content-[""] after:absolute after:top-1/2 after:right-0 after:translate-y-[-50%] after:h-4 after:w-[1px] after:bg-lightMode-lighterGray after:dark:bg-darkMode-darkBlue`}
     >
-      <span className={`${pageOtherThanHomePage ? 'hidden' : 'block'} text-xs font-bold mb-1`}>
+      <span className={`${isHomePage ? 'block' : 'hidden'} text-xs font-bold mb-1`}>
         Region
       </span>
       <div ref={regionListRef} className='relative w-full'>
@@ -23,15 +23,16 @@ const Regions = ({ pageOtherThanHomePage }: TBooleanProp) => {
           className='flex items-center justify-between w-full'
           type='button'
         >
-          <span className={`${pageOtherThanHomePage ? 'text-xs text-blue' : 'text-sm text-secondGray dark:text-mediumGrayText'}`}>
-            {pageOtherThanHomePage ? markedRegionData.shorthand : markedRegionData.name}
+          <span className={`${isHomePage ? 'text-sm text-secondGray dark:text-mediumGrayText' : 'text-xs text-blue'}`}>
+            {isHomePage ? markedRegionData.name : markedRegionData.shorthand}
           </span>
           <MdArrowDropDown
-            className={`relative ${pageOtherThanHomePage ? 'right-0 text-blue' : 'right-2 text-[#7b7a8e]'} size-5 transition-transform ${displayRegionsList && 'rotate-180'}`}
+            className={`${isHomePage ? 'right-2 text-[#7b7a8e]' : 'right-0 text-blue'}  
+            ${displayRegionsList && 'rotate-180'} relative size-5 transition-transform`}
           />
         </button>
         <RegionsList
-          pageOtherThanHomePage={pageOtherThanHomePage}
+          isHomePage={isHomePage}
           displayRegionsList={displayRegionsList}
           setDisplayRegionList={setDisplayRegionsList}
         />

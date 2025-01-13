@@ -8,8 +8,7 @@ export const findChampionById = (
   return championData?.find((champion) => {
     if (typeof championId === 'string') {
       return champion.key === championId;
-    }
-    else {
+    } else {
       return champion.key === championId?.toString();
     }
   });
@@ -20,18 +19,14 @@ export const handleKdaTextColor = (kda: number | undefined): string => {
   if (kda) {
     if (kda >= 6.0) {
       return 'text-orange';
-    }
-    else if (kda >= 4.0) {
+    } else if (kda >= 4.0) {
       return 'text-secondLightBlue';
-    }
-    else if (kda >= 3.0) {
+    } else if (kda >= 3.0) {
       return 'text-mediumGreen';
-    }
-    else {
+    } else {
       return basicGray;
     }
-  }
-  else {
+  } else {
     return basicGray;
   }
 }

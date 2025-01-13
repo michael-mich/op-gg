@@ -19,8 +19,7 @@ const GameTimer = ({ gameLength }: Props) => {
             minutes: prev.minutes + 1,
             seconds: 0
           };
-        }
-        else {
+        } else {
           return {
             ...prev,
             seconds: prev.seconds + 1

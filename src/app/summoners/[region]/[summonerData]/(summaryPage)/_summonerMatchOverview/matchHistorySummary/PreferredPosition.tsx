@@ -44,7 +44,7 @@ const PreferredPosition = ({ matchHistorySummaryData }: Props) => {
                     key={index}
                     className={`absolute left-0 bottom-0 w-full bg-blue`}
                     style={{ height: `${preferredPosition.playedPercentage}%` }}
-                  ></div>
+                  />
                 )
               ))}
             </div>

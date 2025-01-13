@@ -77,8 +77,7 @@ const MatchHistory = ({
       match.info.participants?.some((team) => team.teamParticipants.some((summoner) => {
         if (markedChampionId === '0') {
           return match;
-        }
-        else {
+        } else {
           return summoner?.championId.toString() === markedChampionId
             && summoner.puuid === summonerPuuid;
         }
@@ -93,8 +92,7 @@ const MatchHistory = ({
         ...markedMatchIndexes,
         [matchIndex]: true,
       })
-    }
-    else {
+    } else {
       setMarkedMatchIndexes({
         ...markedMatchIndexes,
         [matchIndex]: newMarkedState

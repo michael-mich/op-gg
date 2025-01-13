@@ -10,7 +10,7 @@ import type { TBooleanProp } from '../SearchSummoner';
 import SummonerLink from './SummonerLink';
 import SummonerSections from './summonerSections/SummonerSections';
 
-const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
+const Search = ({ isHomePage }: TBooleanProp) => {
   const [summonerName, setSummonerName] = useState('');
   const [displaySummonerSections, setDisplaySummonerSections] = useState(false);
   const [displaySummonerLink, setDisplaySummonerLink] = useState(false);
@@ -56,10 +56,10 @@ const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
   }, [isSummonerAccountError, isSummonerAccountPending, isSummonerAccountSuccess]);
 
   return (
-    <div className={`${pageOtherThanHomePage ? 'h-8 rounded-r bg-white pr-3' : 'flex items-center h-[60px] rounded-r-full bg-white dark:bg-darkMode-mediumGray pl-4 pr-8'} flex justify-between w-full`}>
-      <div ref={summonerSectionsRef} className={`${pageOtherThanHomePage && 'pl-3'} relative w-full`}>
+    <div className={`${isHomePage ? 'flex items-center h-[60px] rounded-r-full bg-white dark:bg-darkMode-mediumGray pl-4 pr-8' : 'h-8 rounded-r bg-white pr-3'} flex justify-between w-full`}>
+      <div ref={summonerSectionsRef} className={`${!isHomePage && 'pl-3'} relative w-full`}>
         <label
-          className={`${pageOtherThanHomePage ? 'hidden' : 'block'} w-full text-xs font-bold cursor-pointer mb-1`}
+          className={`${isHomePage ? 'block' : 'hidden'} w-full text-xs font-bold cursor-pointer mb-1`}
           htmlFor='search-summoner'>
           Search
         </label>
@@ -71,20 +71,28 @@ const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
             onKeyDown={handleKeyboardEvent}
             value={summonerName}
             autoComplete='off'
-            className={`${pageOtherThanHomePage ? 'h-8 text-xs bg-white text-black' : 'h-auto text-sm bg-white dark:bg-darkMode-mediumGray'} relative w-full outline-none`}
+            className={`${isHomePage ? 'h-auto text-sm bg-white dark:bg-darkMode-mediumGray' : 'h-8 text-xs bg-white text-black'} 
+            relative w-full outline-none`}
             type='text'
             id='search-summoner'
           />
           <label
-            className={`${(summonerName.length > 0 || isSummonerAccountError) ? 'hidden' : 'block'} ${pageOtherThanHomePage ? 'h-5 text-xs leading-5 text-secondGray' : 'h-auto text-sm text-secondGray dark:text-mediumGrayText'} 
+            className={`${(summonerName.length > 0 || isSummonerAccountError) ? 'hidden' : 'block'} 
+            ${isHomePage ? 'h-auto text-sm text-secondGray dark:text-mediumGrayText' : 'h-5 text-xs leading-5 text-secondGray'}
             absolute top-1/2 left-0 translate-y-[-50%] h-[20px] cursor-text`}
             htmlFor='search-summoner'
           >
-            Game Name + <span className={`${pageOtherThanHomePage ? 'bg-lightMode-lightGray' : 'bg-lightMode-lightGray dark:bg-darkMode-darkGray'} rounded py-0.5 px-1`}>#{markedRegionData?.shorthand}</span>
+            Game Name +
+            {' '}
+            <span className={`${isHomePage ? 'bg-lightMode-lightGray dark:bg-darkMode-darkGray' : 'bg-lightMode-lightGray'} rounded py-0.5 px-1`}>
+              #{markedRegionData?.shorthand}
+            </span>
           </label>
           {isSummonerAccountError && (
             <label
-              className={`${summonerName.length > 0 && 'hidden'} ${pageOtherThanHomePage ? 'text-xs' : 'text-base'} absolute top-1/2 translate-y-[-50%] left-0 text-red cursor-text`}
+              className={`${summonerName.length > 0 && 'hidden'} 
+              ${isHomePage ? 'text-base' : 'text-xs'}
+              absolute top-1/2 translate-y-[-50%] left-0 text-red cursor-text`}
               htmlFor='search-summoner'
             >
               Invalid summoner name
@@ -94,7 +102,7 @@ const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
         {(isSummonerAccountSuccess && displaySummonerLink) && (
           <SummonerLink
             setDisplaySummonerLink={setDisplaySummonerLink}
-            pageOtherThanHomePage={pageOtherThanHomePage}
+            isHomePage={isHomePage}
             summonerAccountData={summonerAccountData as TSummonerAccount}
             summonerName={summonerName}
             setSummonerName={setSummonerName}
@@ -104,7 +112,7 @@ const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
         )}
         {(summonerName === '' && displaySummonerSections) && (
           <SummonerSections
-            pageOtherThanHomePage={pageOtherThanHomePage}
+            isHomePage={isHomePage}
             setDisplaySummonerSections={setDisplaySummonerSections}
           />
         )}
@@ -114,7 +122,7 @@ const Search = ({ pageOtherThanHomePage }: TBooleanProp) => {
         type='button'
       >
         <Image
-          className={`${pageOtherThanHomePage ? 'w-12 max-h-8' : 'w-16'}`}
+          className={`${isHomePage ? 'w-16' : 'w-12 max-h-8'}`}
           src='/company-logo/blue-logo.svg'
           width={50}
           height={50}

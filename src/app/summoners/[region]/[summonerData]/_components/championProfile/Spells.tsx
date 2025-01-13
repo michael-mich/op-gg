@@ -27,8 +27,7 @@ const Spells = ({
     if (summonerMatchHistory) {
       return spellKeyNumber === summonerMatchHistory.summoner1Id
         || spellKeyNumber === summonerMatchHistory.summoner2Id;
-    }
-    else {
+    } else {
       return spellKeyNumber === summonerLiveGame?.spell1Id
         || spellKeyNumber === summonerLiveGame?.spell2Id;
     }
