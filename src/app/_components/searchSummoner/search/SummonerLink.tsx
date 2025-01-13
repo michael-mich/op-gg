@@ -86,6 +86,8 @@ const SummonerLink = ({
           src={`${imageEndpoints.summonerProfileIcon(newestGameVersion)}${summonerLevelAndIconIdData?.profileIconId}.png`}
           width={30}
           height={30}
+          placeholder='blur'
+          blurDataURL='/placeholder/question-mark.webp'
           alt=""
           aria-hidden="true"
         />

@@ -42,6 +42,8 @@ const ChampionAvatar = ({
       src={`${imageEndpoints.championImage(newestGameVersion)}${championData?.image.full}`}
       width={getImageDimension()}
       height={getImageDimension()}
+      placeholder='blur'
+      blurDataURL='/placeholder/question-mark.webp'
       alt={championData?.name || ''}
     />
   );

@@ -41,6 +41,8 @@ const Spells = ({
           src={`${imageEndpoints.spell(newestGameVersion)}${spell.image.full}`}
           width={15}
           height={15}
+          placeholder='blur'
+          blurDataURL='/placeholder/question-mark.webp'
           alt={spell.name}
           key={index}
         />

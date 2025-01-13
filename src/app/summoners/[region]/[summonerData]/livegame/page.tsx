@@ -110,6 +110,8 @@ const Page = () => {
                                 src={`${imageEndpoints.championImage(newestGameVersion)}${foundBannedChampion?.image.full}`}
                                 width={32}
                                 height={32}
+                                placeholder='blur'
+                                blurDataURL='/placeholder/question-mark.webp'
                                 alt={foundBannedChampion?.name || ''}
                               />
                             )}

@@ -39,6 +39,8 @@ const ChampionItems = ({ summoner }: TMatchAndSummonerProps) => {
                 src={`${imageEndpoints.championItem(newestGameVersion)}${item?.image.full}`}
                 width={32}
                 height={32}
+                placeholder='blur'
+                blurDataURL='/placeholder/question-mark.webp'
                 alt={item?.name || ''}
               />
             )}
