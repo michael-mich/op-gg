@@ -11,12 +11,13 @@ import { useQuery } from '@tanstack/react-query';
 import useGameVersionQuery from '@/app/_hooks/queries/useGameVersionQuery';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import type { TLocalStorageSummoner, TSummonerPageParams } from '@/app/_types/types';
-import SummonerHeaderSkeleton from './Skeleton';
-import FavoriteSummonerButton from './FavoriteSummonerButton';
-import PageNavigation from './PageNavigation';
 import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import type { TSummonerProfile, TSummonerAccount } from '@/app/_types/apiTypes/apiTypes';
+import SummonerHeaderSkeleton from './Skeleton';
+import SummonerHeaderErrorMessage from './SummonerHeaderErrorMessage';
+import FavoriteSummonerButton from './FavoriteSummonerButton';
+import PageNavigation from './PageNavigation';
 
 const SummonerHeader = () => {
   const params = useParams<TSummonerPageParams>();
@@ -56,6 +57,8 @@ const SummonerHeader = () => {
     }
   });
 
+  const isQueryError = isSummonerAccountDataError || isSummonerProfileError;
+
   const favoriteSummonerData: TLocalStorageSummoner = {
     regionShorthand: currentRegionData?.shorthand,
     summonerName: summonerAccountData?.gameName,
@@ -70,20 +73,18 @@ const SummonerHeader = () => {
     }
   }, [isSuccessProfile, summonerProfileData?.id]);
 
-  if (isSummonerAccountDataError || isSummonerProfileError) {
-    return <p>Error</p>
-  }
-
   if (!currentRegionData) {
     notFound();
   }
-
+  console.log(isQueryError)
   return (
-    <section className='bg-white dark:bg-darkMode-mediumGray pt-12'>
-      <div className='border-bottom-theme'>
+    <section className={`${isQueryError ? 'py-8' : 'pt-12'} bg-white dark:bg-darkMode-mediumGray`}>
+      <div className={`${!isQueryError && 'border-bottom-theme'}`}>
         <div className='w-[1080px] m-auto'>
           {(isSummonerAccountDataPending || isSummonerProfilePending) ? (
             <SummonerHeaderSkeleton />
+          ) : (isQueryError) ? (
+            <SummonerHeaderErrorMessage />
           ) : (
             <div className='flex gap-6 pb-8'>
               <div className='flex flex-col'>
@@ -104,7 +105,9 @@ const SummonerHeader = () => {
               <div>
                 <div>
                   <span className='text-2xl font-bold'>{summonerAccountData?.gameName} </span>
-                  <span className='text-2xl text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>#{summonerAccountData?.tagLine} </span>
+                  <span className='text-2xl text-lightMode-secondLighterGray dark:text-darkMode-lighterGray'>
+                    #{summonerAccountData?.tagLine}
+                  </span>
                   <FavoriteSummonerButton
                     favoriteSummonerData={favoriteSummonerData}
                     isSummonerAccountDataFetched={isSummonerAccountDataFetched}
@@ -129,7 +132,7 @@ const SummonerHeader = () => {
           )}
         </div>
       </div>
-      <PageNavigation />
+      {!isQueryError && <PageNavigation />}
     </section >
   );
 }
