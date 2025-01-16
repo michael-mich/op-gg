@@ -7,11 +7,12 @@ import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import { imageEndpoints } from '@/app/_constants/imageEndpoints';
 import { getLocalStorageData } from '@/app/_utils/utils';
-import type { TBooleanProp } from '../SearchSummoner';
+import type { TBooleanProp } from '../../SearchSummoner';
 import type { TSummonerAccount, TSummonerProfile } from '@/app/_types/apiTypes/apiTypes';
 import type { TLocalStorageSummoner } from '@/app/_types/types';
 import type { TSetState } from '@/app/_types/tuples';
 import { LocalStorageKeys } from '@/app/_enums/enums';
+import SummonerLinkSkeleton from './SummonerLinkSkeleton';
 
 interface Props extends TBooleanProp {
   setDisplaySummonerLink: TSetState<boolean>;
@@ -69,10 +70,10 @@ const SummonerLink = ({
   return (
     <div className={`${summonerName.length > 0 ? 'block' : 'hidden'} 
     ${isHomePage ? 'top-[3.2rem]' : 'top-8 max-w-[472px]'}
-    absolute left-0 z-50 w-full bg-white dark:bg-darkMode-mediumGray rounded-b shadow-custom-shadow`}
+    absolute left-0 z-50 w-full bg-white dark:bg-darkMode-mediumGray rounded-b py-1.5 px-4 shadow-custom-shadow`}
     >
       {isSummonerAccountFetching ? (
-        <p>loading</p>
+        <SummonerLinkSkeleton />
       ) : (
         <Link
           onClick={() => {
@@ -81,7 +82,7 @@ const SummonerLink = ({
             setDisplaySummonerLink(false);
             setDisplaySummonerSections(false);
           }}
-          className='flex items-center gap-2 py-1.5 px-4 transition-colors hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray rounded-b'
+          className='flex items-center gap-2 transition-colors hover:bg-lightMode-lightGray dark:hover:bg-darkMode-darkGray rounded-b'
           href={`/summoners/${markedRegionData.shorthand.toLowerCase()}/${summonerAccountData?.gameName}-${summonerAccountData?.tagLine}`}
         >
           <Image

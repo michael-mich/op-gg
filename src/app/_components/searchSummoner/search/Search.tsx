@@ -7,7 +7,7 @@ import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import type { TSummonerAccount } from '@/app/_types/apiTypes/apiTypes';
 import type { TBooleanProp } from '../SearchSummoner';
-import SummonerLink from './SummonerLink';
+import SummonerLink from './summonerLink/SummonerLink';
 import SummonerSections from './summonerSections/SummonerSections';
 
 const Search = ({ isHomePage }: TBooleanProp) => {
