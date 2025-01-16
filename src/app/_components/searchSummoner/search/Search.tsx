@@ -7,7 +7,7 @@ import { fetchApi } from '@/app/_utils/fetchApi';
 import { riotGamesRoutes } from '@/app/_constants/endpoints';
 import type { TSummonerAccount } from '@/app/_types/apiTypes/apiTypes';
 import type { TBooleanProp } from '../SearchSummoner';
-import SummonerLink from './SummonerLink';
+import SummonerLink from './summonerLink/SummonerLink';
 import SummonerSections from './summonerSections/SummonerSections';
 
 const Search = ({ isHomePage }: TBooleanProp) => {
@@ -24,7 +24,7 @@ const Search = ({ isHomePage }: TBooleanProp) => {
     isError: isSummonerAccountError,
     isSuccess: isSummonerAccountSuccess,
     refetch: refetchSummonerAccountData,
-    isPending: isSummonerAccountPending,
+    isFetching: isSummonerAccountFetching,
   } = useQuery({
     enabled: false,
     queryKey: ['searchSummoner'],
@@ -46,21 +46,27 @@ const Search = ({ isHomePage }: TBooleanProp) => {
   }
 
   useEffect(() => {
-    if (isSummonerAccountError && !isSummonerAccountPending) {
+    if (isSummonerAccountError && !isSummonerAccountFetching) {
       setSummonerName('');
     }
 
-    if (!isSummonerAccountPending && isSummonerAccountSuccess) {
+    if (!isSummonerAccountFetching && isSummonerAccountSuccess) {
       setDisplaySummonerLink(true);
     }
-  }, [isSummonerAccountError, isSummonerAccountPending, isSummonerAccountSuccess]);
+  }, [
+    isSummonerAccountError,
+    isSummonerAccountFetching,
+    isSummonerAccountSuccess,
+    isSummonerAccountFetching
+  ]);
 
   return (
     <div className={`${isHomePage ? 'flex items-center h-[60px] rounded-r-full bg-white dark:bg-darkMode-mediumGray pl-4 pr-8' : 'h-8 rounded-r bg-white pr-3'} flex justify-between w-full`}>
       <div ref={summonerSectionsRef} className={`${!isHomePage && 'pl-3'} relative w-full`}>
         <label
           className={`${isHomePage ? 'block' : 'hidden'} w-full text-xs font-bold cursor-pointer mb-1`}
-          htmlFor='search-summoner'>
+          htmlFor='search-summoner'
+        >
           Search
         </label>
         <div className='relative flex items-center'>
@@ -76,19 +82,20 @@ const Search = ({ isHomePage }: TBooleanProp) => {
             type='text'
             id='search-summoner'
           />
-          <label
-            className={`${(summonerName.length > 0 || isSummonerAccountError) ? 'hidden' : 'block'} 
-            ${isHomePage ? 'h-auto text-sm text-secondGray dark:text-mediumGrayText' : 'h-5 text-xs leading-5 text-secondGray'}
+          {(summonerName.length === 0 && !displaySummonerSections) && (
+            <label
+              className={`${isHomePage ? 'h-auto text-sm text-secondGray dark:text-mediumGrayText' : 'h-5 text-xs leading-5 text-secondGray'}
             absolute top-1/2 left-0 translate-y-[-50%] h-[20px] cursor-text`}
-            htmlFor='search-summoner'
-          >
-            Game Name +
-            {' '}
-            <span className={`${isHomePage ? 'bg-lightMode-lightGray dark:bg-darkMode-darkGray' : 'bg-lightMode-lightGray'} rounded py-0.5 px-1`}>
-              #{markedRegionData?.shorthand}
-            </span>
-          </label>
-          {isSummonerAccountError && (
+              htmlFor='search-summoner'
+            >
+              Game Name +
+              {' '}
+              <span className={`${isHomePage ? 'bg-lightMode-lightGray dark:bg-darkMode-darkGray' : 'bg-lightMode-lightGray'} rounded py-0.5 px-1`}>
+                #{markedRegionData?.shorthand}
+              </span>
+            </label>
+          )}
+          {(isSummonerAccountError && displaySummonerSections) && (
             <label
               className={`${summonerName.length > 0 && 'hidden'} 
               ${isHomePage ? 'text-base' : 'text-xs'}
@@ -99,15 +106,15 @@ const Search = ({ isHomePage }: TBooleanProp) => {
             </label>
           )}
         </div>
-        {(isSummonerAccountSuccess && displaySummonerLink) && (
+        {((displaySummonerLink || isSummonerAccountFetching) && !isSummonerAccountError) && (
           <SummonerLink
             setDisplaySummonerLink={setDisplaySummonerLink}
             isHomePage={isHomePage}
-            summonerAccountData={summonerAccountData as TSummonerAccount}
+            summonerAccountData={summonerAccountData}
             summonerName={summonerName}
             setSummonerName={setSummonerName}
             setDisplaySummonerSections={setDisplaySummonerSections}
-            isSummonerAccountSuccess={isSummonerAccountSuccess}
+            isSummonerAccountFetching={isSummonerAccountFetching}
           />
         )}
         {(summonerName === '' && displaySummonerSections) && (
